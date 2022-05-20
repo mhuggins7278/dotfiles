@@ -38,9 +38,17 @@
         dest: ~/.local/share/oh-my-zsh
         update: yes
 
-    - name: Install LunarVim
-      ansible.builtin.shell:
-        cmd: LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
+    - name: Download LunarVim
+      get_url: 
+        url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh dest=/tmp/lvim_install.sh
+	    
+    - name: Execute the lvim-install.sh
+      shell: /tmp/lvim-install.sh
+
+    - name: Remove the lvim-install.sh
+      file: 
+        path: /tmp/lvim-install.sh 
+        state: absent
 
 
 
