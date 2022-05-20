@@ -9,7 +9,6 @@ formula:
   bash:
   bat:
   binwalk:
-  cargo:
   coreutils:
   cowsay:
   ddrescue:
@@ -42,6 +41,7 @@ formula:
   pwgen:
   python:
   rename:
+  rust:
   shellcheck:
   smartmontools:
   ssh-copy-id:
