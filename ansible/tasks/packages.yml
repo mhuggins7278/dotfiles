@@ -100,11 +100,3 @@
   become: true
   when: ansible_os_family == "Debian"
   tags: apt
-
-- name: Manage gems
-  gem:
-    name: '{{ item.key }}'
-    state: "{{ item.value.state | default('latest') }"
-  with_dict: '{{gems}}'
-  tags:
-    - gem
