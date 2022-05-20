@@ -38,23 +38,11 @@
         dest: ~/.local/share/oh-my-zsh
         update: yes
 
-    - name: Install oh-my-fish
-      git:
-        repo: https://github.com/oh-my-fish/oh-my-fish.git
-        dest: ~/.local/share/omf
-        update: yes
+    - name: Install LunarVim
+      ansible.builtin.shell:
+        cmd: LV_BRANCH=rolling bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh)
 
-    - name: Install tmux plugin manager
-      git:
-        repo: https://github.com/tmux-plugins/tpm.git
-        dest: ~/.local/share/tpm
-        update: yes
 
-    - name: Install dein.vim
-      git:
-        repo: https://github.com/Shougo/dein.vim.git
-        dest: ~/.local/share/dein/repos/github.com/Shougo/dein.vim
-        update: yes
 
     - name: Create folder
       file:
@@ -68,15 +56,13 @@
         - "~/.cache/vim/swap/"
         - "~/.cache/vim/undo/"
         - "~/.cache/wget/"
-        - "~/.config/fish/"
         - "~/.config/gtk-3.0"
-        - "~/.config/i3/"
-        - "~/.config/i3blocks/"
+        - "~/.config/gh"
+        - "~/.config/lvim/"
         - "~/.config/karabiner/"
-        - "~/.config/omf/"
+        - "~/.config/planetscale/"
+        - "~/.config/mssqlcli/"
         - "~/.config/terminator/"
-        - "~/.config/termite/"
-        - "~/.config/vscode/"
         - "~/.local/share/zsh/"
         - "~/Coding/"
         - "~/Coding/golang/"
@@ -90,17 +76,6 @@
       tags:
         - packages
 
-    - name: Install oh-my-fish themes and plugins
-      command: fish -c "omf install"
-      args:
-        creates: ~/.local/share/omf/themes/default/
-      tags:
-        - packages
-
-    # Needs to be after packages
-    - include: tasks/tmux_plugins.yml
-      tags:
-        - tmux_plugins
 
     - include: tasks/shells.yml
       tags:
@@ -110,16 +85,6 @@
       when: ansible_os_family == "Darwin"
       tags:
         - macos_defaults
-
-    - include: tasks/arch.yml
-      when: ansible_os_family == "Archlinux"
-      tags:
-        - arch
-
-    - include: tasks/dnscrypt.yml
-      when: use_dnscrypt and ansible_os_family == "Darwin"
-      tags:
-        - dnscrypt
 
   handlers:
     - name: Kill Dock

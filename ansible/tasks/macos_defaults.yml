@@ -206,8 +206,6 @@
 - name: Set some other settings (with sudo)
   osx_defaults: domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
   with_items:
-    # Set LoginwindowText
-    - { domain: "/Library/Preferences/com.apple.loginwindow", key: "LoginwindowText", type: "string", value: "{{ login_window_text }}" }
     # Make sure there is no password hint set.
     - { domain: "/Library/Preferences/com.apple.loginwindow", key: "RetriesUntilHint", type: "int", value: 0 }
     # Disable IR remote control

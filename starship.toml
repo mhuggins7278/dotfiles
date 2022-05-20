@@ -1,0 +1,27 @@
+[aws]
+disabled = true
+
+[directory]
+truncation_length = 3 
+truncate_to_repo = false
+truncation_symbol = "…/"
+
+[git_status]
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+
+[package]
+disabled = true
+
+[time]
+disabled = false
+
+[docker_context]
+disabled = true
+
+[git_commit]
+only_detached = false
+
+[git_metrics]
+disabled = false

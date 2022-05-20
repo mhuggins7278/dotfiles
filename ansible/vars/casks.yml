@@ -1,26 +1,13 @@
 ---
 casks:
+  azure-data-studio:
   docker:
-  firefox:
+  font-hack-nerd-font:
   google-chrome:
-  iina:
+  gitify:
   iterm2:
   karabiner-elements:
-  libreoffice:
+  keycastr:
   macdown:
-  macpass:
-  moneymoney:
-  steam:
-  teamviewer:
-  the-unarchiver:
-  transmission:
-  visual-studio-code:
+  rectangle:
   wireshark:
-  # Quick Look plugins
-  apparency:
-  qlcolorcode:
-  qlimagesize:
-  qlmarkdown:
-  qlstephen:
-  qlvideo:
-  quicklook-json:

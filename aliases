@@ -1,9 +1,9 @@
 # List direcory conqtents
-alias ls='ls -G'
-alias lsa='ls -lah'
-alias l='ls -lah'
-alias ll='ls -lh'
-alias la='ls -lAh'
+alias vim="lvim"
+alias vi="lvim"
+alias cat="bat"
+alias ls="exa --icons"
+
 
 # Color output
 alias grep='grep --color=auto'

@@ -3,6 +3,7 @@ formula:
   ack:
   ansible:
   archey4:
+  awscli:
   axel:
   bash-completion:
   bash:
@@ -11,31 +12,36 @@ formula:
   coreutils:
   cowsay:
   ddrescue:
+  dos2unix:
+  exa:
   fd:
   findutils:
-  fish:
   fzf:
   go:
   grc:
   grep:
   htop:
   httpie:
-  hub:
+  gh:
   iftop:
   iproute2mac:
   jq:
-  kubernetes-cli:
-  kubernetes-helm:
+  lazygit:
   libusb:
   lnav:
   moreutils:
+  msodbcsql17:
+  mssql-tools:
   mtr:
   ncdu:
   nikto:
   nmap:
+  neovim:
   openssl:
+  openvpn:
   peco:
   pwgen:
+  pscale:
   python:
   rename:
   shellcheck:
@@ -44,10 +50,11 @@ formula:
   telnet:
   tmux:
   tree:
+  treesitter:
   unp:
   vim:
     options: override-system-vi,with-lua,with-luajit
   watch:
   wget:
-  youtube-dl:
+  xz:
   zsh:
