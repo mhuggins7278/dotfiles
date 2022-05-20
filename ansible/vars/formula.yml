@@ -9,6 +9,7 @@ formula:
   bash:
   bat:
   binwalk:
+  cargo:
   coreutils:
   cowsay:
   ddrescue:
@@ -44,6 +45,7 @@ formula:
   shellcheck:
   smartmontools:
   ssh-copy-id:
+  pip:
   telnet:
   tmux:
   tree:
