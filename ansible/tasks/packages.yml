@@ -1,9 +1,4 @@
 ---
-- name: Include brew taps list
-  include_vars: vars/taps.yml
-  tags:
-    - brew_taps
-
 - name: Include brew formula list
   include_vars: vars/formula.yml
   tags:
@@ -14,122 +9,97 @@
   tags:
     - brew_cask
 
-- name: Include pacman package list
-  include_vars: vars/pacman.yml
-  tags:
-    - pacman
-
-- name: Include AUR package list
-  include_vars: vars/aur.yml
-  tags:
-    - aur
-
-- name: Include APT package list
-  include_vars: vars/apt.yml
-  tags:
-    - apt
-
-- name: Include gems list
-  include_vars: vars/gems.yml
-  tags:
-    - gem
-
-- name: Include python package list
-  include_vars: vars/pip.yml
-  tags:
-    - pip
-
 - block:
-  - name: Update/Upgrade Homebrew
-    homebrew:
-      update_homebrew: true
-      upgrade_all: true
-    tags:
-      - brew_taps
-      - brew_formula
-      - brew_cask
+    - name: Update/Upgrade Homebrew
+      homebrew:
+        update_homebrew: true
+        upgrade_all: true
+      tags:
+        - brew_taps
+        - brew_formula
+        - brew_cask
 
-  - name: Manage taps
-    homebrew_tap:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('present') }}"
-    with_dict: "{{taps}}"
-    tags:
-      - brew_taps
+    - name: Manage taps
+      homebrew_tap:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('present') }}"
+      with_dict: '{{taps}}'
+      tags:
+        - brew_taps
 
-  - name: Manage formula
-    homebrew:
-      name: "{{ item.key }}"
-      install_options: "{{ item.value.options | default(omit) }}"
-      state: "{{ item.value.state | default('present') }}"
-    with_dict: "{{formula}}"
-    tags:
-      - brew_formula
+    - name: Manage formula
+      homebrew:
+        name: '{{ item.key }}'
+        install_options: '{{ item.value.options | default(omit) }}'
+        state: "{{ item.value.state | default('present') }}"
+      with_dict: '{{formula}}'
+      tags:
+        - brew_formula
 
-  - name: Manage casks
-    homebrew_cask:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('present') }}"
-    with_dict: "{{casks}}"
-    tags:
-      - brew_cask
+    - name: Manage casks
+      homebrew_cask:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('present') }}"
+      with_dict: '{{casks}}'
+      tags:
+        - brew_cask
 
-  - name: Manage python packages
-    pip:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('latest') }}"
-      executable: "{{ item.value.executable | default('pip3') }}"
-    with_dict: "{{pip}}"
-    tags:
-      - pip
+    - name: Manage python packages
+      pip:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('latest') }}"
+        executable: "{{ item.value.executable | default('pip3') }}"
+      with_dict: '{{pip}}'
+      tags:
+        - pip
 
   when: ansible_os_family == "Darwin"
 
 - block:
-  - name: Update/Upgrade pacman
-    pacman:
-      update_cache: true
-      upgrade: true
+    - name: Update/Upgrade pacman
+      pacman:
+        update_cache: true
+        upgrade: true
 
-  - name: Manage pacman packages
-    pacman:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('latest') }}"
-    with_dict: "{{pacman}}"
+    - name: Manage pacman packages
+      pacman:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('latest') }}"
+      with_dict: '{{pacman}}'
 
-  - name: Manage python packages
-    pip:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('latest') }}"
-      executable: "{{ item.value.executable | default('pip3') }}"
-    with_dict: "{{pip}}"
-    tags:
-      - pip
+    - name: Manage python packages
+      pip:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('latest') }}"
+        executable: "{{ item.value.executable | default('pip3') }}"
+      with_dict: '{{pip}}'
+      tags:
+        - pip
 
   become: true
   when: ansible_os_family == "Archlinux"
   tags: pacman
 
 - block:
-  - name: Update/Upgrade apt
-    apt:
-      update_cache: true
-      upgrade: dist
+    - name: Update/Upgrade apt
+      apt:
+        update_cache: true
+        upgrade: dist
 
-  - name: Manage apt packages
-    apt:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('latest') }}"
-    with_dict: "{{apt}}"
+    - name: Manage apt packages
+      apt:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('latest') }}"
+      with_dict: '{{apt}}'
 
-  - name: Manage python packages
-    pip:
-      name: "{{ item.key }}"
-      state: "{{ item.value.state | default('latest') }}"
-      executable: "{{ item.value.executable | default('pip3') }}"
-    with_dict: "{{pip}}"
-    tags:
-      - pip
+    - name: Manage python packages
+      pip:
+        name: '{{ item.key }}'
+        state: "{{ item.value.state | default('latest') }}"
+        executable: "{{ item.value.executable | default('pip3') }}"
+      with_dict: '{{pip}}'
+      tags:
+        - pip
 
   become: true
   when: ansible_os_family == "Debian"
@@ -137,8 +107,8 @@
 
 - name: Manage gems
   gem:
-    name: "{{ item.key }}"
+    name: '{{ item.key }}'
     state: "{{ item.value.state | default('latest') }"
-  with_dict: "{{gems}}"
+  with_dict: '{{gems}}'
   tags:
     - gem
