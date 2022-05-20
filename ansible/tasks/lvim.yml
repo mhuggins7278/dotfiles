@@ -8,7 +8,7 @@
   ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh 
 
 - name: Remove LVIM intaller
-  ansible.builtin.files: 
+  ansible.builtin.file: 
     path: /tmp/lvim-installer.sh
     state: absent
 
