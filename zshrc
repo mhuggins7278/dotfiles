@@ -3,7 +3,7 @@ ZSH=$HOME/.local/share/oh-my-zsh
 
 # Which plugins would you like to load?
 # See https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins
-plugins=(git z)
+plugins=(git z asdf)
 
 source $ZSH/oh-my-zsh.sh
 

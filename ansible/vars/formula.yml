@@ -4,6 +4,7 @@ formula:
   ansible:
   archey4:
   awscli:
+  asdf:
   axel:
   bash-completion:
   bash:
@@ -53,4 +54,4 @@ formula:
   watch:
   wget:
   xz:
-  zsh:
+  zsh: 
