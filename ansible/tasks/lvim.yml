@@ -6,7 +6,8 @@
 
 - name: Install LVIM
   ansible.builtin.shell: LV_BRANCH=rolling vim-installer.sh
-  chdir: /tmp
+  args:
+    chdir: /tmp
 
 - name: Remove LVIM intaller
   ansible.builtin.file:
