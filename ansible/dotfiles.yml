@@ -1,5 +1,5 @@
 ---
-- name: Playbook to manage elnappos dotfiles (https://github.com/elnappo/dotfiles)
+- name: Playbook to manage mhuggins7278 dotfiles (https://github.com/mhuggins7278/dotfiles)
   hosts: localhost
   connection: local
   tasks:
@@ -10,7 +10,7 @@
 
     - name: Make sure dotfiles are present
       git:
-        repo: https://github.com/elnappo/dotfiles.git
+        repo: https://github.com/mhuggins7278/dotfiles.git
         dest: ~/.dotfiles
 
     - name: Allow sudo without password
@@ -38,18 +38,6 @@
         dest: ~/.local/share/oh-my-zsh
         update: yes
 
-    - name: Download LunarVim
-      get_url: 
-        url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
-        dest: /tmp/lvim_install.sh
-
-    - name: Execute the lvim-install.sh
-      shell: /tmp/lvim-install.sh
-
-    - name: Remove the lvim-install.sh
-      file: 
-        path: /tmp/lvim-install.sh 
-        state: absent
 
 
 
@@ -90,6 +78,18 @@
       tags:
         - shells
 
+    - name: Download LunarVim
+      get_url: 
+        url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
+        dest: /tmp/lvim_install.sh
+
+    - name: Execute the lvim-install.sh
+      shell: /tmp/lvim-install.sh
+
+    - name: Remove the lvim-install.sh
+      file: 
+        path: /tmp/lvim-install.sh 
+        state: absent
     - include: tasks/macos_defaults.yml
       when: ansible_os_family == "Darwin"
       tags:

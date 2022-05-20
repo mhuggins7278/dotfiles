@@ -1,5 +1,3 @@
-# elnappo’s dotfiles [![Build Status](https://travis-ci.org/elnappo/dotfiles.svg?branch=master)](https://travis-ci.org/elnappo/dotfiles)
-
 These are my dotfiles, they can be used under macOS and Linux (mainly Arch Linux but Ubuntu is also supported). What is special about it is that Ansible is used to configure and sync your system settings. This has many advantages in contrast to simple bash scripts or a `Makefile`.
 
 ## Features
@@ -38,7 +36,7 @@ These are my dotfiles, they can be used under macOS and Linux (mainly Arch Linux
 ## Install (for me)
 
 ```bash
-$ git clone https://github.com/elnappo/dotfiles.git ~/.dotfiles
+$ git clone https://github.com/mhuggins7278/dotfiles.git ~/.dotfiles
 $ cd ~/.dotfiles/init
 $ ./setup.sh
 ```
