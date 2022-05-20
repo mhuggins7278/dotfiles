@@ -3,7 +3,7 @@ casks:
   azure-data-studio:
   docker:
   font-hack-nerd-font:
-  google-chrome:
+  # google-chrome:
   gitify:
   iterm2:
   karabiner-elements:

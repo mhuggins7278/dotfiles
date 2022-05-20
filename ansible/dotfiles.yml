@@ -17,9 +17,9 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        line: "{{ ansible_user_id }}	ALL=NOPASSWD: ALL"
-        insertafter:  '^%admin\tALL=\(ALL\) ALL'
-        validate: "visudo -cf %s"
+        line: '{{ ansible_user_id }}	ALL=NOPASSWD: ALL'
+        insertafter: '^%admin\tALL=\(ALL\) ALL'
+        validate: 'visudo -cf %s'
       become: yes
       when: sudo_without_password and ansible_os_family == "Darwin"
 
@@ -27,8 +27,8 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        line: "Defaults tty_tickets"
-        validate: "visudo -cf %s"
+        line: 'Defaults tty_tickets'
+        validate: 'visudo -cf %s'
       become: yes
       when: ansible_os_family == "Darwin"
 
@@ -38,32 +38,29 @@
         dest: ~/.local/share/oh-my-zsh
         update: yes
 
-
-
-
     - name: Create folder
       file:
-        path: "{{item}}"
+        path: '{{item}}'
         state: directory
       loop:
-        - "~/.cache/bash/"
-        - "~/.cache/vim/"
-        - "~/.cache/vim/backup/"
-        - "~/.cache/vim/dein/"
-        - "~/.cache/vim/swap/"
-        - "~/.cache/vim/undo/"
-        - "~/.cache/wget/"
-        - "~/.config/gtk-3.0"
-        - "~/.config/gh"
-        - "~/.config/lvim/"
-        - "~/.config/karabiner/"
-        - "~/.config/planetscale/"
-        - "~/.config/mssqlcli/"
-        - "~/.config/terminator/"
-        - "~/.local/share/zsh/"
-        - "~/Coding/"
-        - "~/Coding/golang/"
-        - "~/Library/Application Support/Code/User/"
+        - '~/.cache/bash/'
+        - '~/.cache/vim/'
+        - '~/.cache/vim/backup/'
+        - '~/.cache/vim/dein/'
+        - '~/.cache/vim/swap/'
+        - '~/.cache/vim/undo/'
+        - '~/.cache/wget/'
+        - '~/.config/gtk-3.0'
+        - '~/.config/gh'
+        - '~/.config/lvim/'
+        - '~/.config/karabiner/'
+        - '~/.config/planetscale/'
+        - '~/.config/mssqlcli/'
+        - '~/.config/terminator/'
+        - '~/.local/share/zsh/'
+        - '~/Coding/'
+        - '~/Coding/golang/'
+        - '~/Library/Application Support/Code/User/'
 
     - include: tasks/link_files.yml
       tags:
@@ -72,7 +69,6 @@
     - include: tasks/packages.yml
       tags:
         - packages
-
 
     - include: tasks/shells.yml
       tags:
