@@ -40,7 +40,8 @@
 
     - name: Download LunarVim
       get_url: 
-        url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh dest=/tmp/lvim_install.sh
+        url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
+        dest: /tmp/lvim_install.sh
 
     - name: Execute the lvim-install.sh
       shell: /tmp/lvim-install.sh
