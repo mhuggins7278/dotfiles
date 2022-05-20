@@ -16,10 +16,12 @@
     - {
         src: '~/.dotfiles/config/lvim/config.lua',
         dest: '~/.config/lvim/config.lua',
+        force: yes,
       }
     - {
         src: '~/.dotfiles/config/gitconfig',
         dest: '~/.gitconfig',
+        force: yes,
       }
     - {
         src: '~/.dotfiles/config/gh/config.yml',
