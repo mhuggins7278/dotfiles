@@ -58,9 +58,11 @@
         - '~/.config/mssqlcli/'
         - '~/.config/terminator/'
         - '~/.local/share/zsh/'
-        - '~/Coding/'
-        - '~/Coding/golang/'
         - '~/Library/Application Support/Code/User/'
+        - '~/github/'
+        - '~/github/glg/'
+        - '~/github/mhuggins7278/'
+        - '~/github/LearnBuildTeach/'
 
     - include: tasks/packages.yml
       tags:
