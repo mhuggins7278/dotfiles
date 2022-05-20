@@ -4,6 +4,7 @@
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     state: link
+    force: '{{ item.force }}'
   loop:
     - {
         src: '~/.dotfiles/config/gtk-3.0/settings.ini',
@@ -18,11 +19,7 @@
         dest: '~/.config/lvim/config.lua',
         force: yes,
       }
-    - {
-        src: '~/.dotfiles/config/gitconfig',
-        dest: '~/.gitconfig',
-        force: yes,
-      }
+    - { src: '~/.dotfiles/config/gitconfig', dest: '~/.gitconfig', force: yes }
     - {
         src: '~/.dotfiles/config/gh/config.yml',
         dest: '~/.config/gh/config.yml',
