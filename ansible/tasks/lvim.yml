@@ -1,15 +1,13 @@
 - name: Download LVIM
-  get_url: 
-    url: curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
+  get_url:
+    url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
     dest: /tmp/lvim-installer.sh
     mode: '777'
 
 - name: Install LVIM
-  ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh 
+  ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh
 
 - name: Remove LVIM intaller
-  ansible.builtin.file: 
+  ansible.builtin.file:
     path: /tmp/lvim-installer.sh
     state: absent
-
-
