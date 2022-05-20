@@ -6,7 +6,8 @@
 
 - name: Install LVIM
   ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh --yes --install-dependencies
-# - name: Remove LVIM intaller
-#   ansible.builtin.file:
-#     path: /tmp/lvim-installer.sh
-#     state: absent
+
+- name: Remove LVIM intaller
+  ansible.builtin.file:
+    path: /tmp/lvim-installer.sh
+    state: absent
