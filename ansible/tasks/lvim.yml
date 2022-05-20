@@ -6,7 +6,7 @@
 
 - name: Install LVIM
   ansible.builtin.expect:
-    command: /bin/sh -c "LV_BRANCH=rolling /tmp/vim-installer.sh"
+    command: /bin/sh -c "LV_BRANCH=rolling /tmp/lvim-installer.sh"
     echo: yes
     responses:
       .*: 'y'
