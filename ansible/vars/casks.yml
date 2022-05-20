@@ -2,7 +2,7 @@
 casks:
   azure-data-studio:
   docker:
-  font-hack-nerd-font:
+  cask-fonts:
   google-chrome:
   gitify:
   iterm2:
