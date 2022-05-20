@@ -9,7 +9,8 @@
     command: /bin/sh -c "LV_BRANCH=rolling /tmp/lvim-installer.sh"
     echo: yes
     responses:
-      .*: 'y'
+      Question:
+        - y
 
 - name: Remove LVIM intaller
   ansible.builtin.file:
