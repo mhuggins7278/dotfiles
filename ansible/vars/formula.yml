@@ -43,6 +43,7 @@ formula:
   python:
   rename:
   rust:
+  rg:
   shellcheck:
   smartmontools:
   starship:
