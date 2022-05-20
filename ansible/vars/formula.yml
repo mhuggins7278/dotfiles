@@ -30,8 +30,6 @@ formula:
   libusb:
   lnav:
   moreutils:
-  msodbcsql17:
-  mssql-tools:
   mtr:
   ncdu:
   nikto:
@@ -41,7 +39,6 @@ formula:
   openvpn:
   peco:
   pwgen:
-  pscale:
   python:
   rename:
   shellcheck:
@@ -50,10 +47,7 @@ formula:
   telnet:
   tmux:
   tree:
-  treesitter:
   unp:
-  vim:
-    options: override-system-vi,with-lua,with-luajit
   watch:
   wget:
   xz:
