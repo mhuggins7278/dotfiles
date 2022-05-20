@@ -97,8 +97,6 @@ lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.autotag.enable = true
 
-local lspconfig = require('lspconfig')
-lspconfig.remark_ls.setup {}
 
 -- generic LSP settings
 
