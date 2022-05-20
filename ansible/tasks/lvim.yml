@@ -6,9 +6,9 @@
 
 - name: Install LVIM
   ansible.builtin.expect:
-  command: LV_BRANCH=rolling /tmp/vim-installer.sh
-  responses:
-    (*): 'yes'
+    command: LV_BRANCH=rolling /tmp/vim-installer.sh
+    responses:
+      (*): 'yes'
 
 - name: Remove LVIM intaller
   ansible.builtin.file:
