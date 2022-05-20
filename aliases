@@ -3,6 +3,7 @@ alias vim="lvim"
 alias vi="lvim"
 alias cat="bat"
 alias ls="exa --icons"
+alias python-"python3"
 
 alias kp="kill_app_by_port"
 alias gpl="git_prune_local"
