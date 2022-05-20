@@ -7,7 +7,7 @@
   loop:
     - { src: "~/.dotfiles/config/gtk-3.0/settings.ini", dest: "~/.config/gtk-3.0/settings.ini" }
     - { src: "~/.dotfiles/config/karabiner/karabiner.json", dest: "~/.config/karabiner/karabiner.json" }
-    - { src: "~/.dotfiles/config/starphship.toml", dest: "~/.config/starship.toml" }
+    - { src: "~/.dotfiles/config/starship.toml", dest: "~/.config/starship.toml" }
     - { src: "~/.dotfiles/config/terminator/config", dest: "~/.config/terminator/config" }
     - { src: "~/.dotfiles/curlrc", dest: "~/.curlrc"}
     - { src: "~/.dotfiles/gtkrc-2.0", dest: "~/.gtkrc-2.0" }
