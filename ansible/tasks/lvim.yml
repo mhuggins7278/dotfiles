@@ -5,11 +5,7 @@
     mode: '777'
 
 - name: Install LVIM
-  ansible.builtin.expect:
-    command: /bin/sh -c "LV_BRANCH=rolling /tmp/lvim-installer.sh"
-    echo: yes
-    responses:
-      (.*)(.*): 'y'
+  ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh -y  --install-dependencies"
 
 - name: Remove LVIM intaller
   ansible.builtin.file:
