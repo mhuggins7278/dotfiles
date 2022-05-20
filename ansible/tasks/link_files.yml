@@ -18,6 +18,10 @@
         dest: '~/.config/lvim/config.lua',
       }
     - {
+        src: '~/.dotfiles/config/gitconfig',
+        dest: '~/.gitconfig',
+      }
+    - {
         src: '~/.dotfiles/config/gh/config.yml',
         dest: '~/.config/gh/config.yml',
       }

@@ -1,0 +1,39 @@
+[user]
+	name = Mark Huggins
+	email = mhuggins@glgroup.com
+[push]
+	default = simple
+[core]
+	excludesfile = /Users/markhuggins/.gitignore
+	editor = vim
+[difftool "kdiff3"]
+      path = /usr/local/bin/kdiff3 
+          trustExitCode = false
+[difftool]
+      prompt = false
+[diff]
+      tool = kdiff3
+[mergetool "kdiff3"]
+      path = /usr/local/bin/kdiff3 
+          trustExitCode = false
+[mergetool]
+      keepBackup = false
+[merge]
+      tool = kdiff3
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[credential]
+	helper = osxkeychain
+[alias]
+  gl = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%w(0,4,4)%-b%n%n%-N'
+
+[pull]
+	rebase = false
