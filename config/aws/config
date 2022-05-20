@@ -1,0 +1,21 @@
+[default]
+sso_start_url = https://glgresearch.awsapps.com/start#/
+sso_account_id = 868468680417
+sso_role_name = CLIOnlySecretsAccess
+aws_cli_auto_prompt = on
+region = us-east-1
+output = json
+[profile dev]
+sso_start_url = https://glgresearch.awsapps.com/start#/
+sso_region = us-east-1
+sso_account_id = 054501475751
+sso_role_name = EngineeringReadOnly
+region = us-east-1
+output = json
+[profile secrets]
+sso_start_url = https://glgresearch.awsapps.com/start#/
+sso_region = us-east-1
+sso_account_id = 868468680417
+sso_role_name = CLIOnlySecretsAccess
+region = us-east-1
+output = json

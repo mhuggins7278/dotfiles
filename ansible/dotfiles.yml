@@ -52,6 +52,7 @@
         - '~/.cache/wget/'
         - '~/.config/gtk-3.0'
         - '~/.config/gh'
+        - '~/.aws/'
         - '~/.config/lvim/'
         - '~/.config/karabiner/'
         - '~/.config/planetscale/'

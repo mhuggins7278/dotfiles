@@ -11,6 +11,10 @@
         dest: '~/.config/gtk-3.0/settings.ini',
       }
     - {
+        src: '~/.dotfiles/config/aws/config',
+        dest: '~/.aws/config',
+      }
+    - {
         src: '~/.dotfiles/config/karabiner/karabiner.json',
         dest: '~/.config/karabiner/karabiner.json',
       }
