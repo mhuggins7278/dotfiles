@@ -5,7 +5,9 @@
     mode: '777'
 
 - name: Install LVIM
-  shell: /tmp/lvim-installer.sh
+  shell: vim-installer.sh
+  args:
+    chdir: /tmp
   environment:
     LV_BRANCH: rolling
 
