@@ -9,7 +9,6 @@
     url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
     dest: /tmp/lvim-installer.sh
     mode: '777'
-    when: result is failed
 
 - name: Install LVIM
   ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh --yes --install-dependencies
@@ -19,4 +18,3 @@
   ansible.builtin.file:
     path: /tmp/lvim-installer.sh
     state: absent
-  when: result is failed
