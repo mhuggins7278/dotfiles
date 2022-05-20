@@ -62,10 +62,6 @@
         - '~/Coding/golang/'
         - '~/Library/Application Support/Code/User/'
 
-    - include: tasks/link_files.yml
-      tags:
-        - links
-
     - include: tasks/packages.yml
       tags:
         - packages
@@ -77,6 +73,10 @@
     - include: tasks/lvim.yml
       tags:
         - editors
+
+    - include: tasks/link_files.yml
+      tags:
+        - links
 
     - include: tasks/macos_defaults.yml
       when: ansible_os_family == "Darwin"

@@ -8,6 +8,7 @@ export GOPATH=$HOME/Coding/golang
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
 export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export PATH="$PATH:$HOME/.local/bin"
 
 case "$(uname -s)" in
     Linux)
