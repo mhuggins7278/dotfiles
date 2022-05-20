@@ -1,13 +1,22 @@
+- name: Check if Lvim Installed
+  ansible.builtin.command: lvim +q 
+  register: result
+  ignore_errors: true
+
+
 - name: Download LVIM
   get_url:
     url: https://raw.githubusercontent.com/lunarvim/lunarvim/rolling/utils/installer/install.sh
     dest: /tmp/lvim-installer.sh
     mode: '777'
+    when: result is failed
 
 - name: Install LVIM
   ansible.builtin.shell: LV_BRANCH=rolling /tmp/lvim-installer.sh --yes --install-dependencies
+  when: result is failed
 
 - name: Remove LVIM intaller
   ansible.builtin.file:
     path: /tmp/lvim-installer.sh
     state: absent
+  when: result is failed
