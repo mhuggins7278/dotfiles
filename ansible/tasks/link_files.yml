@@ -4,7 +4,7 @@
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     state: link
-    force: '{{ item.force | no }}'
+    force: '{{ item.force | default(no) }}'
   loop:
     - {
         src: '~/.dotfiles/config/gtk-3.0/settings.ini',
