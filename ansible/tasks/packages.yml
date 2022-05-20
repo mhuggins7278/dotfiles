@@ -49,15 +49,6 @@
       tags:
         - brew_cask
 
-    - name: Manage python packages
-      pip:
-        name: '{{ item.key }}'
-        state: "{{ item.value.state | default('latest') }}"
-        executable: "{{ item.value.executable | default('pip3') }}"
-      with_dict: '{{pip}}'
-      tags:
-        - pip
-
   when: ansible_os_family == "Darwin"
 
 - block:
