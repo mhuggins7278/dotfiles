@@ -4,6 +4,10 @@ alias vi="lvim"
 alias cat="bat"
 alias ls="exa --icons"
 
+alias kp="kill_app_by_port"
+alias gpl="git_prune_local"
+alias gdb="git_delete_branch"
+
 
 # Color output
 alias grep='grep --color=auto'
