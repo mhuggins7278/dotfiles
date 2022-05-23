@@ -1,6 +1,11 @@
 [aws]
 disabled = true
 
+[battery]
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
 [directory]
 truncation_length = 3 
 truncate_to_repo = false
