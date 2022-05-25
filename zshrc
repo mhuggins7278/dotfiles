@@ -32,3 +32,8 @@ case "$(uname -s)" in
         fi
         ;;
 esac
+
+# pnpm
+export PNPM_HOME="/Users/MHuggins/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end

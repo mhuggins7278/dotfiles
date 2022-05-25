@@ -30,7 +30,3 @@ only_detached = false
 
 [git_metrics]
 disabled = false
-
-[node]
-format = "via [🤖 $version](bold green) "
-

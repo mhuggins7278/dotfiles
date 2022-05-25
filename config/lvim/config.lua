@@ -170,13 +170,20 @@ lvim.plugins = {
       }
     end
   },
-  { 'metakirby5/codi.vim' },
+  { "metakirby5/codi.vim" },
   {
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
   },
-  { 'ellisonleao/glow.nvim' },
-  {'windwp/nvim-ts-autotag'}
+  { "ellisonleao/glow.nvim" },
+  { "windwp/nvim-ts-autotag" },
+  {
+    "tpope/vim-surround",
+    keys = { "c", "d", "y" },
+    setup = function()
+     vim.o.timeoutlen = 500
+    end
+  },
 }
 
 
