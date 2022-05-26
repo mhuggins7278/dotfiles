@@ -37,3 +37,5 @@ esac
 export PNPM_HOME="/Users/MHuggins/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+
+source <(glgroup bashcomplete)
