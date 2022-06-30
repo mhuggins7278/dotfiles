@@ -9,10 +9,20 @@ an executable
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
 -- general
-vim.g.gruvbox_contrast_dark = "hard"
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "gruvbox"
+lvim.colorscheme = "github_dark_default"
+vim.g.tokyonight_style = "night"
+
+
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+vim.cmd('imap <silent><script><expr> <C-j> copilot#Accept("")')
+vim.cmd("let g:copilot_no_tab_map = v:true")
+vim.cmd("let g:copilot_assume_mapped = v:true")
+
 
 vim.cmd [[
   set nocompatible
@@ -151,6 +161,7 @@ linters.setup {
 lvim.plugins = {
   { "github/copilot.vim" },
   { "folke/tokyonight.nvim" },
+  { 'projekt0n/github-nvim-theme' },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -180,10 +191,56 @@ lvim.plugins = {
     "tpope/vim-surround",
     keys = { "c", "d", "y" },
     setup = function()
-     vim.o.timeoutlen = 500
+      vim.o.timeoutlen = 500
     end
   },
+  {"p00f/nvim-ts-rainbow"}
 }
+
+local vim = vim
+local api = vim.api
+local M = {}
+-- function to create a list of commands and convert them to autocommands
+-------- This function is taken from https://github.com/norcalli/nvim_utils
+function M.nvim_create_augroups(definitions)
+    for group_name, definition in pairs(definitions) do
+        api.nvim_command('augroup '..group_name)
+        api.nvim_command('autocmd!')
+        for _, def in ipairs(definition) do
+            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+            api.nvim_command(command)
+        end
+        api.nvim_command('augroup END')
+    end
+end
+
+
+local autoCommands = {
+    -- other autocommands
+    open_folds = {
+        {"BufReadPost,FileReadPost", "*", "normal zR"}
+    }
+}
+
+M.nvim_create_augroups(autoCommands)
+
+
+require("nvim-treesitter.configs").setup {
+  highlight = {
+      -- ...
+  },
+  -- ...
+  rainbow = {
+    enable = true,
+    -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+    max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    -- colors = {}, -- table of hex strings
+    -- termcolors = {} -- table of colour name strings
+  }
+}
+
+
 
 
 

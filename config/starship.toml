@@ -41,7 +41,7 @@ disabled = false
 [memory_usage]
 disabled = false
 threshold = -1
-symbol = "💾"
+symbol = "🐏"
 style = "bold dimmed green"
 format = "${symbol} ${ram_pct} ($style) "
 
