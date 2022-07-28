@@ -71,7 +71,7 @@ $ ./setup.sh
 ```bash
 $ git clone https://github.com/<YOURNAME>/dotfiles.git ~/.dotfiles
 $ cd ~/.dotfiles/init
-$ ./setup.sh
+$ .init/setup.sh
 ```
 
 ## What is missing
