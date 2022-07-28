@@ -13,6 +13,7 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 lvim.colorscheme = "github_dark_default"
 vim.g.tokyonight_style = "night"
+vim.background = "dark"
 
 
 
@@ -30,6 +31,8 @@ vim.cmd [[
   syntax enable
   filetype plugin indent on
 ]]
+
+
 
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -64,6 +67,9 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["s"]["w"] = {
   "<cmd>Telescope grep_string<CR>", "Current Word"
+}
+lvim.builtin.which_key.mappings["t"] = {
+  "<cmd>Telescope colorscheme<CR>", "Color Scheme"
 }
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
@@ -194,32 +200,51 @@ lvim.plugins = {
       vim.o.timeoutlen = 500
     end
   },
-  {"p00f/nvim-ts-rainbow"}
+  { "p00f/nvim-ts-rainbow" },
+  { 'catppuccin/vim' },
+  { 'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function()
+      require "octo".setup()
+    end
+  },
+  'David-Kunz/jester',
+  {
+  "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  config = function()
+    require("lsp_lines").setup()
+  end,
 }
 
-local vim = vim
+
+}
+
+
 local api = vim.api
 local M = {}
 -- function to create a list of commands and convert them to autocommands
 -------- This function is taken from https://github.com/norcalli/nvim_utils
 function M.nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        api.nvim_command('augroup '..group_name)
-        api.nvim_command('autocmd!')
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-            api.nvim_command(command)
-        end
-        api.nvim_command('augroup END')
+  for group_name, definition in pairs(definitions) do
+    api.nvim_command('augroup ' .. group_name)
+    api.nvim_command('autocmd!')
+    for _, def in ipairs(definition) do
+      local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
+      api.nvim_command(command)
     end
+    api.nvim_command('augroup END')
+  end
 end
 
-
 local autoCommands = {
-    -- other autocommands
-    open_folds = {
-        {"BufReadPost,FileReadPost", "*", "normal zR"}
-    }
+  -- other autocommands
+  open_folds = {
+    { "BufReadPost,FileReadPost,BufWinEnter", "*", "normal zR" }
+  }
 }
 
 M.nvim_create_augroups(autoCommands)
@@ -227,7 +252,7 @@ M.nvim_create_augroups(autoCommands)
 
 require("nvim-treesitter.configs").setup {
   highlight = {
-      -- ...
+    -- ...
   },
   -- ...
   rainbow = {
@@ -239,6 +264,12 @@ require("nvim-treesitter.configs").setup {
     -- termcolors = {} -- table of colour name strings
   }
 }
+
+require("lsp_lines").setup()
+
+
+lvim.lsp.diagnostics.virtual_text = false
+
 
 
 
