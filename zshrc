@@ -3,7 +3,7 @@ ZSH=$HOME/.local/share/oh-my-zsh
 
 # Which plugins would you like to load?
 # See https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins
-plugins=(git z asdf)
+plugins=(git z asdf fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -51,3 +51,4 @@ export NVM_DIR="$HOME/.nvm"
 # bun
 export BUN_INSTALL="/Users/MHuggins/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"

@@ -15,14 +15,16 @@ lvim.colorscheme = "github_dark_default"
 vim.g.tokyonight_style = "night"
 vim.background = "dark"
 
+local opt = vim.opt
+opt.foldlevel = 20
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
-vim.cmd('imap <silent><script><expr> <C-j> copilot#Accept("")')
-vim.cmd("let g:copilot_no_tab_map = v:true")
 vim.cmd("let g:copilot_assume_mapped = v:true")
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.g.copilot_tab_fallback = ""
+vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 
 vim.cmd [[
@@ -32,7 +34,7 @@ vim.cmd [[
   filetype plugin indent on
 ]]
 
-
+vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/node"
 
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -41,6 +43,7 @@ vim.cmd [[
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -71,6 +74,16 @@ lvim.builtin.which_key.mappings["s"]["w"] = {
 lvim.builtin.which_key.mappings["t"] = {
   "<cmd>Telescope colorscheme<CR>", "Color Scheme"
 }
+
+lvim.builtin.which_key.mappings["z"] = {
+  "<cmd>redir @*> | echon join([expand('%'),  line('.')], ':') | redir END<CR>", "Copy file:line"
+}
+
+
+lvim.builtin.which_key.mappings["o"] = {
+  name = "Octo",
+  i = { "<cmd>Octo issue list glg/Service-Excellence<CR>", "List Issues" }
+}
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
@@ -89,6 +102,8 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.setup.view.adaptive_size = true
+lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -150,17 +165,16 @@ formatters.setup {
     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
     extra_args = { "--print-with", "100" },
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "astro" },
   },
 }
 
 -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  {
-    command = "eslint_d",
-    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  }
+  command = "eslint_d",
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+
 }
 
 -- Additional Plugins
@@ -192,7 +206,6 @@ lvim.plugins = {
     run = function() vim.fn["mkdp#util#install"]() end,
   },
   { "ellisonleao/glow.nvim" },
-  { "windwp/nvim-ts-autotag" },
   {
     "tpope/vim-surround",
     keys = { "c", "d", "y" },
@@ -214,40 +227,38 @@ lvim.plugins = {
   },
   'David-Kunz/jester',
   {
-  "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-  config = function()
-    require("lsp_lines").setup()
-  end,
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
+    end,
+  },
+  { 'ruifm/gitlinker.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+  },
+
+  { 'hrsh7th/cmp-copilot' }
+
 }
 
+table.insert(lvim.builtin.cmp.sources, { name = 'copilot', group_index = 2 })
 
-}
 
 
-local api = vim.api
-local M = {}
--- function to create a list of commands and convert them to autocommands
--------- This function is taken from https://github.com/norcalli/nvim_utils
-function M.nvim_create_augroups(definitions)
-  for group_name, definition in pairs(definitions) do
-    api.nvim_command('augroup ' .. group_name)
-    api.nvim_command('autocmd!')
-    for _, def in ipairs(definition) do
-      local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
-      api.nvim_command(command)
-    end
-    api.nvim_command('augroup END')
-  end
-end
+-- local sortingTable = {
+--   sorting = {
+--     comparators = {
+--       {
+--         name = 'copilot',
+--         priority = 1,
+--         compare = function(a, b)
+--           return a.priority < b.priority
+--         end,
+--       },
+--     }
+--   }
+-- }
 
-local autoCommands = {
-  -- other autocommands
-  open_folds = {
-    { "BufReadPost,FileReadPost", "*", "normal zR" }
-  }
-}
-
-M.nvim_create_augroups(autoCommands)
+-- table.insert(lvim.builtin.cmp, sortingTable)
 
 
 require("nvim-treesitter.configs").setup {
@@ -266,16 +277,13 @@ require("nvim-treesitter.configs").setup {
 }
 
 require("lsp_lines").setup()
-
+require("gitlinker").setup()
 
 lvim.lsp.diagnostics.virtual_text = false
 
+table.insert(lvim.builtin.cmp.sources, { name = 'copilot' })
 
-
-
-
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }
+vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
+  pattern = { "*.astro" },
+  command = "setf astro",
+})
