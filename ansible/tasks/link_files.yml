@@ -46,4 +46,4 @@
     - { src: '~/.dotfiles/wgetrc', dest: '~/.wgetrc' }
     - { src: '~/.dotfiles/xinitrc', dest: '~/.xinitrc' }
     - { src: '~/.dotfiles/zshrc', dest: '~/.zshrc' }
-    - { src: '~/.dotfiles/kitty', dest: '~/.config/kitty', force: yes }
+    - { src: '~/.dotfiles/config/kitty', dest: '~/.config/kitty', force: yes }
