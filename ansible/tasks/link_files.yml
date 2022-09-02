@@ -1,4 +1,9 @@
 ---
+- name: delete default files
+  file:
+    path: ~/.config/kitty
+    state: absent
+
 - name: link dotfiles
   file:
     src: '{{ item.src }}'
