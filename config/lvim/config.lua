@@ -1,3 +1,4 @@
+
 --[[
 lvim is the global options object
 
@@ -14,18 +15,15 @@ lvim.format_on_save = false
 lvim.colorscheme = "github_dark_default"
 vim.g.tokyonight_style = "night"
 vim.background = "dark"
-
 local opt = vim.opt
 opt.foldlevel = 20
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-vim.cmd("let g:copilot_assume_mapped = v:true")
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-
 
 vim.cmd [[
   set nocompatible
@@ -79,7 +77,6 @@ lvim.builtin.which_key.mappings["z"] = {
   "<cmd>redir @*> | echon join([expand('%'),  line('.')], ':') | redir END<CR>", "Copy file:line"
 }
 
-
 lvim.builtin.which_key.mappings["o"] = {
   name = "Octo",
   i = { "<cmd>Octo issue list glg/Service-Excellence<CR>", "List Issues" }
@@ -105,6 +102,7 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.view.adaptive_size = true
 lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
 
+
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
@@ -126,6 +124,7 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.autotag.enable = true
+
 
 
 -- generic LSP settings
@@ -177,9 +176,12 @@ linters.setup {
 
 }
 
+
+
 -- Additional Plugins
 lvim.plugins = {
   { "github/copilot.vim" },
+{"hrsh7th/cmp-copilot"},
   { "folke/tokyonight.nvim" },
   { 'projekt0n/github-nvim-theme' },
   {
@@ -234,32 +236,24 @@ lvim.plugins = {
   },
   { 'ruifm/gitlinker.nvim',
     requires = 'nvim-lua/plenary.nvim',
-  },
-
-  { 'hrsh7th/cmp-copilot' }
-
+  }
 }
 
-table.insert(lvim.builtin.cmp.sources, { name = 'copilot', group_index = 2 })
-
-
-
--- local sortingTable = {
---   sorting = {
---     comparators = {
---       {
---         name = 'copilot',
---         priority = 1,
---         compare = function(a, b)
---           return a.priority < b.priority
---         end,
---       },
+-- Recommended
+-- require("copilot").setup {
+--   cmp = {
+--     enabled = true,
+--     method = "getCompletionsCycling",
+--   },
+--   server_opts_overrides = {
+--     advanced = {
+--       listCount = 10,
+--       inlineSuggestCount = 3,
 --     }
 --   }
 -- }
 
--- table.insert(lvim.builtin.cmp, sortingTable)
-
+table.insert(lvim.builtin.cmp.sources,1, { name = 'copilot'})
 
 require("nvim-treesitter.configs").setup {
   highlight = {
@@ -279,9 +273,10 @@ require("nvim-treesitter.configs").setup {
 require("lsp_lines").setup()
 require("gitlinker").setup()
 
-lvim.lsp.diagnostics.virtual_text = false
 
-table.insert(lvim.builtin.cmp.sources, { name = 'copilot' })
+lvim.lsp.diagnostics.virtual_text = false
+require('telescope').load_extension('fzf')
+
 
 vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
   pattern = { "*.astro" },
