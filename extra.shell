@@ -6,7 +6,7 @@ if [[ $1 -eq 0 ]] ; then
   return 0
 fi
 echo  'Killing ' $1
-lsof -n -a -iTCP:$1 -sTCP:LISTEN -t | xargs kill
+lsof -n -a -i TCP:$1 -sTCP:LISTEN -t | xargs kill
 }
 
 # deletes a branch from both the local repo and the specified remote
@@ -23,7 +23,7 @@ fi;
 git_prune_local() {
 if [ -d .git ]; then
   vared -p "This will delete all local branches where the remote has been removed are you sure you want to continue (y/n)" -c CONT
-  if [ "$CONT" == "y" ]; then
+  if [[ "$CONT" == "y" ]]; then
   git fetch -p && for branch in `git branch -vv | grep ': gone]' | gawk '{print $1}'`; do git branch -D $branch; done
   git remote | xargs git remote prune
   fi;
