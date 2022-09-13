@@ -20,16 +20,29 @@ opt.foldlevel = 20
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 
+
+--Thank you ThePrimeagen for these
+--Center screen after moving up and down by half
+vim.api.nvim_set_keymap("n","<C-d>", "<C-d>zz", {silent = true})
+vim.api.nvim_set_keymap("n","<C-u>", "<C-u>zz", {silent = true})
+--paste in visual mode without overwriting register
+vim.api.nvim_set_keymap("x","<leader>r", "\"_dP", {silent = true})
+--delete without overwriting register
+vim.api.nvim_set_keymap("n","<leader>d", "\"_d", {silent = true})
+vim.api.nvim_set_keymap("v","<leader>d", "\"_d", {silent = true})
+
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
+vim.opt.cmdheight = 1
 vim.cmd [[
   set nocompatible
   filetype off
   syntax enable
   filetype plugin indent on
+  set relativenumber 
 ]]
 
 vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/node"
@@ -124,12 +137,12 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 lvim.builtin.treesitter.autotag.enable = true
+lvim.transparent_window = true
 
 
 
 -- generic LSP settings
 
--- ---@usage disable automatic installation of servers
 -- lvim.lsp.automatic_servers_installation = true
 
 -- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
@@ -281,4 +294,16 @@ require('telescope').load_extension('fzf')
 vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
   pattern = { "*.astro" },
   command = "setf astro",
+})
+
+-- Thank you to ThePrimeagen
+-- make timeout on yank faster
+vim.api.nvim_create_autocmd({'TextYankPost'}, {
+    pattern = {'*'},
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = 'IncSearch',
+            timeout = 40,
+        })
+    end,
 })
