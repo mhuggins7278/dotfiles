@@ -1,4 +1,3 @@
-
 --[[
 lvim is the global options object
 
@@ -12,8 +11,8 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "github_dark_default"
-vim.g.tokyonight_style = "night"
+lvim.colorscheme = "tokyonight"
+vim.g.tokyonight_style = "storm"
 vim.background = "dark"
 local opt = vim.opt
 opt.foldlevel = 20
@@ -23,13 +22,13 @@ opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 --Thank you ThePrimeagen for these
 --Center screen after moving up and down by half
-vim.api.nvim_set_keymap("n","<C-d>", "<C-d>zz", {silent = true})
-vim.api.nvim_set_keymap("n","<C-u>", "<C-u>zz", {silent = true})
+vim.api.nvim_set_keymap("n", "<C-d>", "<C-d>zz", { silent = true })
+vim.api.nvim_set_keymap("n", "<C-u>", "<C-u>zz", { silent = true })
 --paste in visual mode without overwriting register
-vim.api.nvim_set_keymap("x","<leader>r", "\"_dP", {silent = true})
+vim.api.nvim_set_keymap("x", "<leader>r", "\"_dP", { silent = true })
 --delete without overwriting register
-vim.api.nvim_set_keymap("n","<leader>d", "\"_d", {silent = true})
-vim.api.nvim_set_keymap("v","<leader>d", "\"_d", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>d", "\"_d", { silent = true })
+vim.api.nvim_set_keymap("v", "<leader>d", "\"_d", { silent = true })
 
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
@@ -55,6 +54,7 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
+lvim.builtin.bufferline.active = false
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -111,9 +111,9 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.view.adaptive_size = true
+lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
+lvim.builtin.lualine.sections.lualine_z = { "location", "filesize" }
 
 
 -- if you don't want all the parsers change this to a table of the ones you want
@@ -193,10 +193,16 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
+{"effkay/argonaut.vim"},
+
+  { 'brenoprata10/nvim-highlight-colors' },
+  { 'nvim-treesitter/nvim-treesitter-context' },
+  { 'sainnhe/edge' },
   { "github/copilot.vim" },
-{"hrsh7th/cmp-copilot"},
+  { "hrsh7th/cmp-copilot" },
   { "folke/tokyonight.nvim" },
   { 'projekt0n/github-nvim-theme' },
+  { 'Mofiqul/dracula.nvim' },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -215,7 +221,7 @@ lvim.plugins = {
       }
     end
   },
-  { "metakirby5/codi.vim" },
+  { '0x100101/lab.nvim', run = 'cd js && npm ci', requires = { 'nvim-lua/plenary.nvim' } },
   {
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
@@ -266,7 +272,7 @@ lvim.plugins = {
 --   }
 -- }
 
-table.insert(lvim.builtin.cmp.sources,1, { name = 'copilot'})
+table.insert(lvim.builtin.cmp.sources, 1, { name = 'copilot' })
 
 require("nvim-treesitter.configs").setup {
   highlight = {
@@ -285,6 +291,7 @@ require("nvim-treesitter.configs").setup {
 
 require("lsp_lines").setup()
 require("gitlinker").setup()
+require("nvim-highlight-colors").setup()
 
 
 lvim.lsp.diagnostics.virtual_text = false
@@ -298,12 +305,22 @@ vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
 
 -- Thank you to ThePrimeagen
 -- make timeout on yank faster
-vim.api.nvim_create_autocmd({'TextYankPost'}, {
-    pattern = {'*'},
-    callback = function()
-        vim.highlight.on_yank({
-            higroup = 'IncSearch',
-            timeout = 40,
-        })
-    end,
+vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
+  pattern = { '*' },
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = 'IncSearch',
+      timeout = 40,
+    })
+  end,
 })
+
+
+require('lab').setup {
+  code_runner = {
+    enabled = true,
+  },
+  quick_data = {
+    enabled = true,
+  }
+}

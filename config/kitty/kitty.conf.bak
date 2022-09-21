@@ -24,11 +24,11 @@
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
- font_size 18.0
- font_family FiraCode Nerd Font Mono Book
- bold_font FiraCode Nerd Font  Bold
- bold_italic_font FiraCode Nerd Font  Bold Italic
- italic_font FiraCode Nerd Font Italic
+ font_size 22.0
+ font_family CaskaydiaCove Nerd Font Mono 
+ bold_font CaskaydiaCove Nerd Font Mono Bold
+ bold_italic_font CaskaydiaCove Nerd Font Mono Bold Italic
+ italic_font CaskaydiaCove Nerd Font Mono Light Italic
 
 
 #: Font size (in pts)
@@ -52,7 +52,7 @@
 #: support, because it will force kitty to always treat the text as
 #: LTR, which FriBidi expects for terminals.
 
-adjust_line_height 1
+#: adjust_line_height 1
 
 # adjust_column_width 0
 
@@ -2175,3 +2175,14 @@ adjust_line_height 1
 # Fig Kitty Integration: Enabled
 watcher ${HOME}/.fig/tools/kitty-integration.py
 # End of Fig Kitty Integration
+
+
+# BEGIN_KITTY_THEME
+# Tokyo Night
+include current-theme.conf
+# END_KITTY_THEME
+
+
+#OVERRIDE THEME FOR OPACITY
+
+background_opacity 1

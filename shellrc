@@ -22,6 +22,7 @@ esac
 export SQL_DEV_USERNAME=$(security find-generic-password -s "SQL_DEV_USERNAME" -w)
 export SQL_DEV_PASSWORD=$(security find-generic-password -s "SQL_DEV_PASSWORD" -w)
 export GITHUB_PACKAGE_REGISTRY_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
+export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 
