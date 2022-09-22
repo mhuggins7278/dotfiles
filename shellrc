@@ -23,6 +23,7 @@ export SQL_DEV_USERNAME=$(security find-generic-password -s "SQL_DEV_USERNAME" -
 export SQL_DEV_PASSWORD=$(security find-generic-password -s "SQL_DEV_PASSWORD" -w)
 export GITHUB_PACKAGE_REGISTRY_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
 export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
+export TODOIST_API_KEY=$(security find-generic-password -s "TODOIST_API_KEY" -w)
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 

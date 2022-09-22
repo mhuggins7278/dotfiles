@@ -11,9 +11,9 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "tokyonight"
-vim.g.tokyonight_style = "storm"
-vim.background = "dark"
+-- lvim.colorscheme = "tokyonight"
+-- vim.g.tokyonight_style = "storm"
+-- vim.background = "dark"
 local opt = vim.opt
 opt.foldlevel = 20
 opt.foldmethod = "expr"
@@ -193,9 +193,7 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
-{"effkay/argonaut.vim"},
-
-  { 'brenoprata10/nvim-highlight-colors' },
+{'uga-rosa/ccc.nvim'},
   { 'nvim-treesitter/nvim-treesitter-context' },
   { 'sainnhe/edge' },
   { "github/copilot.vim" },
@@ -291,7 +289,6 @@ require("nvim-treesitter.configs").setup {
 
 require("lsp_lines").setup()
 require("gitlinker").setup()
-require("nvim-highlight-colors").setup()
 
 
 lvim.lsp.diagnostics.virtual_text = false
