@@ -18,17 +18,24 @@ local opt = vim.opt
 opt.foldlevel = 20
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.termguicolors = true
 
 
+
+
+local silent = { silent = true }
 --Thank you ThePrimeagen for these
 --Center screen after moving up and down by half
-vim.api.nvim_set_keymap("n", "<C-d>", "<C-d>zz", { silent = true })
-vim.api.nvim_set_keymap("n", "<C-u>", "<C-u>zz", { silent = true })
+vim.api.nvim_set_keymap("n", "<C-d>", "<C-d>zz", silent)
+vim.api.nvim_set_keymap("n", "<C-u>", "<C-u>zz", silent)
 --paste in visual mode without overwriting register
-vim.api.nvim_set_keymap("x", "<leader>r", "\"_dP", { silent = true })
+vim.api.nvim_set_keymap("v", "<leader>r", "\"_dP", silent)
 --delete without overwriting register
-vim.api.nvim_set_keymap("n", "<leader>d", "\"_d", { silent = true })
-vim.api.nvim_set_keymap("v", "<leader>d", "\"_d", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>d", "\"_d", silent)
+vim.api.nvim_set_keymap("v", "<leader>d", "\"_d", silent)
+vim.api.nvim_set_keymap("i", "jj", "<ESC>", silent)
+vim.api.nvim_set_keymap("n", "gp", '<cmd>lua vim.lsp.buf.hover()<CR>', silent)
+
 
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
@@ -42,7 +49,22 @@ vim.cmd [[
   syntax enable
   filetype plugin indent on
   set relativenumber 
+  set colorcolumn=80
 ]]
+
+
+-- local hl = function(thing, opts)
+--   vim.api.nvim_set_hl(0, thing, opts)
+-- end
+
+
+-- hl("ColorColumn",
+--   {
+--     ctermbg = "lightgrey",
+--     bg = "blue",
+--   }
+-- )
+
 
 vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/node"
 
@@ -53,6 +75,7 @@ vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/no
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
 
 lvim.builtin.bufferline.active = false
 -- unmap a default keymapping
@@ -113,7 +136,7 @@ lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
-lvim.builtin.lualine.sections.lualine_z = { "location", "filesize" }
+lvim.builtin.lualine.sections.lualine_z = { "filesize" }
 
 
 -- if you don't want all the parsers change this to a table of the ones you want
@@ -193,12 +216,12 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
-{'uga-rosa/ccc.nvim'},
+{'ThePrimeagen/harpoon'},
+  { 'uga-rosa/ccc.nvim' },
   { 'nvim-treesitter/nvim-treesitter-context' },
   { 'sainnhe/edge' },
   { "github/copilot.vim" },
   { "hrsh7th/cmp-copilot" },
-  { "folke/tokyonight.nvim" },
   { 'projekt0n/github-nvim-theme' },
   { 'Mofiqul/dracula.nvim' },
   {
@@ -291,8 +314,28 @@ require("lsp_lines").setup()
 require("gitlinker").setup()
 
 
+
 lvim.lsp.diagnostics.virtual_text = false
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('harpoon')
+lvim.builtin.telescope.pickers.live_grep = {
+  layout_strategy = "horizontal",
+  layout_config = {
+    width = 0.9,
+    height = 0.9,
+    prompt_position = "top",
+  },
+}
+
+lvim.builtin.telescope.pickers.grep_string = {
+  layout_strategy = "horizontal",
+  layout_config = {
+    width = 0.9,
+    height = 0.9,
+    prompt_position = "top",
+  },
+}
+
 
 
 vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
