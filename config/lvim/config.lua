@@ -22,7 +22,6 @@ opt.termguicolors = true
 
 
 
-
 local silent = { silent = true }
 --Thank you ThePrimeagen for these
 --Center screen after moving up and down by half
@@ -37,10 +36,19 @@ vim.api.nvim_set_keymap("i", "jj", "<ESC>", silent)
 vim.api.nvim_set_keymap("n", "gp", '<cmd>lua vim.lsp.buf.hover()<CR>', silent)
 
 
+--harpoon key maps
+vim.api.nvim_set_keymap("n", "<leader>ha", "<cmd>lua require(\"harpoon.mark\").add_file()<CR>", silent)
+vim.api.nvim_set_keymap("n", "<C-j>", "<cmd>lua require(\"harpoon.ui\").nav_file(1)<CR>", silent)
+vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>lua require(\"harpoon.ui\").nav_file(2)<CR>", silent)
+vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>lua require(\"harpoon.ui\").nav_file(3)<CR>", silent)
+vim.api.nvim_set_keymap("n", "<C-;>", "<cmd>lua require(\"harpoon.ui\").nav_file(4)<CR>", silent)
+vim.api.nvim_set_keymap("n", "<C-n>", "<cmd>lua require(\"harpoon.ui\").toggle_quick_menu()<CR>", silent)
+
+
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
-vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+vim.api.nvim_set_keymap("i", "<C-f>", "copilot#Accept(\"<CR>\")", { silent = true, expr = true })
 
 vim.opt.cmdheight = 1
 vim.cmd [[
@@ -51,6 +59,9 @@ vim.cmd [[
   set relativenumber 
   set colorcolumn=80
 ]]
+
+
+lvim.builtin.breadcrumbs.active = true
 
 
 -- local hl = function(thing, opts)
@@ -137,6 +148,7 @@ lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
 lvim.builtin.lualine.sections.lualine_z = { "filesize" }
+lvim.builtin.terminal.size = 40
 
 
 -- if you don't want all the parsers change this to a table of the ones you want
@@ -154,7 +166,8 @@ lvim.builtin.treesitter.ensure_installed = {
   "java",
   "yaml",
   "html",
-  "svelte"
+  "svelte",
+  "go"
 }
 
 lvim.builtin.treesitter.ignore_install = { "haskell" }
@@ -218,10 +231,21 @@ linters.setup {
 lvim.plugins = {
 {'ThePrimeagen/harpoon'},
   { 'uga-rosa/ccc.nvim' },
-  { 'nvim-treesitter/nvim-treesitter-context' },
-  { 'sainnhe/edge' },
   { "github/copilot.vim" },
-  { "hrsh7th/cmp-copilot" },
+  { "zbirenbaum/copilot.lua",
+    event = { "VimEnter" },
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup {
+	        plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
+        }
+      end, 100)
+    end,
+  },
+
+  { "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua", "nvim-cmp" },
+  },
   { 'projekt0n/github-nvim-theme' },
   { 'Mofiqul/dracula.nvim' },
   {
@@ -279,21 +303,8 @@ lvim.plugins = {
   }
 }
 
--- Recommended
--- require("copilot").setup {
---   cmp = {
---     enabled = true,
---     method = "getCompletionsCycling",
---   },
---   server_opts_overrides = {
---     advanced = {
---       listCount = 10,
---       inlineSuggestCount = 3,
---     }
---   }
--- }
-
-table.insert(lvim.builtin.cmp.sources, 1, { name = 'copilot' })
+lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
+table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
 
 require("nvim-treesitter.configs").setup {
   highlight = {

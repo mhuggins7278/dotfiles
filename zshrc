@@ -37,7 +37,8 @@ esac
 
 # pnpm
 export PNPM_HOME="/Users/MHuggins/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+GOPATH=`go env GOPATH`/bin
+export PATH="$PNPM_HOME:$PATH$GOPATH"
 # pnpm end
 
 source <(glgroup bashcomplete)
