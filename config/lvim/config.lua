@@ -49,7 +49,7 @@ vim.api.nvim_set_keymap("n", "<C-n>", '<cmd>lua require("harpoon.ui").toggle_qui
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
-vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+-- vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 vim.opt.cmdheight = 1
 vim.cmd([[
@@ -57,7 +57,7 @@ vim.cmd([[
   filetype off
   syntax enable
   filetype plugin indent on
-  set relativenumber 
+  set relativenumber
   set colorcolumn=80
   set statusline=""
 ]])
@@ -228,10 +228,16 @@ linters.setup({
 
 -- Additional Plugins
 lvim.plugins = {
+  {
+  "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  config = function()
+    require("lsp_lines").setup()
+  end,
+},
 	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{ "ThePrimeagen/harpoon" },
 	{ "uga-rosa/ccc.nvim" },
-	{ "github/copilot.vim" },
+	-- { "github/copilot.vim" },
 
 	{ "projekt0n/github-nvim-theme" },
 	{ "Mofiqul/dracula.nvim" },
@@ -281,13 +287,7 @@ lvim.plugins = {
 			require("octo").setup()
 		end,
 	},
-	"David-Kunz/jester",
-	{
-		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		config = function()
-			require("lsp_lines").setup()
-		end,
-	},
+	{"David-Kunz/jester"},
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"zbirenbaum/copilot.lua",
@@ -301,12 +301,29 @@ lvim.plugins = {
 		end,
 	},
 
-	{ "zbirenbaum/copilot-cmp", after = { "copilot.lua", "nvim-cmp" } },
+	{ "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua"},
+    config = function ()
+      require("copilot_cmp").setup{
+      method = "getCompletionCycling"
+}
+    end
+  },
+
 }
 
 -- Can not be placed into the config method of the plugins.
+table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot", group_index = 2 })
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
-table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
+local cmp = require("cmp")
+cmp.event:on("menu_opened", function()
+  vim.b.copilot_suggestion_hidden = true
+end)
+
+cmp.event:on("menu_closed", function()
+  vim.b.copilot_suggestion_hidden = false
+end)
+
 require("nvim-treesitter.configs").setup({
 	highlight = {
 		-- ...
@@ -322,7 +339,6 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
-require("lsp_lines").setup()
 require("gitlinker").setup()
 
 lvim.lsp.diagnostics.virtual_text = false
