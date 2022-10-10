@@ -7,6 +7,8 @@ a global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
+local lvim = lvim
+local vim = vim
 
 -- general
 lvim.log.level = "warn"
@@ -14,6 +16,7 @@ lvim.format_on_save = false
 -- lvim.colorscheme = "tokyonight"
 -- vim.g.tokyonight_style = "storm"
 -- vim.background = "dark"
+
 local opt = vim.opt
 opt.foldlevel = 20
 opt.foldmethod = "expr"
@@ -49,6 +52,7 @@ vim.api.nvim_set_keymap("n", "<C-n>", '<cmd>lua require("harpoon.ui").toggle_qui
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
+
 -- vim.api.nvim_set_keymap("i", "<C-f>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 vim.opt.cmdheight = 1
