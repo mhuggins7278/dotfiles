@@ -56,5 +56,8 @@ export BUN_INSTALL="/Users/MHuggins/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
+export DOT_NET="/Users/MHuggins/aspnetcore-runtime-6.0.9-osx-arm64/dotnet"
+export PATH="$DOT_NET:$PATH"
+
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

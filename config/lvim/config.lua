@@ -10,6 +10,8 @@ an executable
 local lvim = lvim
 local vim = vim
 
+require("user.plugins")
+
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
@@ -23,8 +25,6 @@ opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 opt.termguicolors = true
 opt.showtabline = 0
-
-
 
 local silent = { silent = true }
 --Thank you ThePrimeagen for these
@@ -48,7 +48,6 @@ vim.api.nvim_set_keymap("n", "<C-l>", '<cmd>lua require("harpoon.ui").nav_file(3
 vim.api.nvim_set_keymap("n", "<C-;>", '<cmd>lua require("harpoon.ui").nav_file(4)<CR>', silent)
 vim.api.nvim_set_keymap("n", "<C-n>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', silent)
 
-
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
@@ -67,7 +66,6 @@ vim.cmd([[
 ]])
 
 lvim.builtin.breadcrumbs.active = true
-
 
 vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/node"
 
@@ -231,101 +229,17 @@ linters.setup({
 })
 
 -- Additional Plugins
-lvim.plugins = {
-  {
-  "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-  config = function()
-    require("lsp_lines").setup()
-  end,
-},
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
-	{ "ThePrimeagen/harpoon" },
-	{ "uga-rosa/ccc.nvim" },
-	-- { "github/copilot.vim" },
-
-	{ "projekt0n/github-nvim-theme" },
-	{ "Mofiqul/dracula.nvim" },
-	{
-		"folke/trouble.nvim",
-		cmd = "TroubleToggle",
-	},
-	{ "kdheepak/lazygit.nvim" },
-	{ "kchmck/vim-coffee-script" },
-	{ "ellisonleao/gruvbox.nvim" },
-	{
-		"folke/todo-comments.nvim",
-		requires = "nvim-lua/plenary.nvim",
-		config = function()
-			require("todo-comments").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			})
-		end,
-	},
-	{ "0x100101/lab.nvim", run = "cd js && npm ci", requires = { "nvim-lua/plenary.nvim" } },
-	{
-		"iamcco/markdown-preview.nvim",
-		run = function()
-			vim.fn["mkdp#util#install"]()
-		end,
-	},
-	{ "ellisonleao/glow.nvim" },
-	{
-		"tpope/vim-surround",
-		keys = { "c", "d", "y" },
-		setup = function()
-			vim.o.timeoutlen = 500
-		end,
-	},
-	{ "p00f/nvim-ts-rainbow" },
-	{ "catppuccin/vim" },
-	{
-		"pwntester/octo.nvim",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-			"kyazdani42/nvim-web-devicons",
-		},
-		config = function()
-			require("octo").setup()
-		end,
-	},
-	{"David-Kunz/jester"},
-	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
-	{
-		"zbirenbaum/copilot.lua",
-		event = { "VimEnter" },
-		config = function()
-			vim.defer_fn(function()
-				require("copilot").setup({
-					plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
-				})
-			end, 100)
-		end,
-	},
-
-	{ "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua"},
-    config = function ()
-      require("copilot_cmp").setup{
-      method = "getCompletionCycling"
-}
-    end
-  },
-
-}
 
 -- Can not be placed into the config method of the plugins.
 table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot", group_index = 2 })
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
 local cmp = require("cmp")
 cmp.event:on("menu_opened", function()
-  vim.b.copilot_suggestion_hidden = true
+	vim.b.copilot_suggestion_hidden = true
 end)
 
 cmp.event:on("menu_closed", function()
-  vim.b.copilot_suggestion_hidden = false
+	vim.b.copilot_suggestion_hidden = false
 end)
 
 require("nvim-treesitter.configs").setup({

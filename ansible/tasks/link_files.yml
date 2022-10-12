@@ -47,3 +47,4 @@
     - { src: '~/.dotfiles/xinitrc', dest: '~/.xinitrc' }
     - { src: '~/.dotfiles/zshrc', dest: '~/.zshrc' }
     - { src: '~/.dotfiles/config/kitty', dest: '~/.config/kitty', force: yes }
+    - { src: '~/.dotfiles/config/lvim/user', dest: '~/.config/lvim/user', force: yes }
