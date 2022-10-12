@@ -1,6 +1,3 @@
-local lvim = lvim
-local vim = vim
-
 local opt = vim.opt
 opt.foldlevel = 20
 opt.foldmethod = "expr"

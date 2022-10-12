@@ -1,4 +1,3 @@
-local vim = vim
 vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
 	pattern = { "*.astro" },
 	command = "setf astro",

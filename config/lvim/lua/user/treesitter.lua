@@ -1,6 +1,4 @@
 local opt = vim.opt
-local lvim = lvim
-
 
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 

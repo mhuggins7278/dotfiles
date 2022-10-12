@@ -1,5 +1,3 @@
-local lvim = lvim
-local vim = vim
 lvim.plugins = {
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"ThePrimeagen/harpoon",

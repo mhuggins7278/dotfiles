@@ -1,5 +1,4 @@
 local dap = require('dap')
-local vim = vim
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',

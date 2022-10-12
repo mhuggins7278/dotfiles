@@ -1,4 +1,3 @@
-local lvim = lvim
 lvim.builtin.which_key.mappings["z"] = {
 	"<cmd>redir @*> | echon join([expand('%'),  line('.')], ':') | redir END<CR>",
 	"Copy file:line",
