@@ -10,7 +10,6 @@ vim.api.nvim_set_keymap("v", "<leader>r", '"_dP', silent)
 vim.api.nvim_set_keymap("n", "<leader>d", '"_d', silent)
 vim.api.nvim_set_keymap("v", "<leader>d", '"_d', silent)
 vim.api.nvim_set_keymap("i", "jj", "<ESC>", silent)
-vim.api.nvim_set_keymap("i", "jk", "<ESC>", silent)
 vim.api.nvim_set_keymap("n", "gp", "<cmd>lua vim.lsp.buf.hover()<CR>", silent)
 
 --harpoon key maps

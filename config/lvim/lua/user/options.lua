@@ -21,7 +21,6 @@ vim.cmd([[
 lvim.log.level = "warn"
 lvim.format_on_save = false
 
-
 lvim.leader = "space"
 lvim.transparent_window = false
 
