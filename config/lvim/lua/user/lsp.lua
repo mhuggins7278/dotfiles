@@ -4,7 +4,7 @@ lvim.lsp.diagnostics.virtual_text = false
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{
-		command = "prettier_d_slim",
+		command = "prettierd",
 		extra_args = { "--print-with", "100" },
 		filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "astro" },
 	},

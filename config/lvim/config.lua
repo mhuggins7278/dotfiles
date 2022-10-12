@@ -7,11 +7,11 @@ a global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
-require("user.plugins")
 require("user.options")
+require("user.copilot")
+require("user.plugins")
 require("user.keymaps")
 require("user.autocommands")
-require("user.copilot")
 require("user.dap")
 require("user.fidgit")
 require("user.gitlinker")

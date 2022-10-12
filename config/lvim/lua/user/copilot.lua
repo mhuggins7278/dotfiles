@@ -10,6 +10,7 @@ vim.g.copilot_node_command = "/Users/MHuggins/.nvm/versions/node/v16.15.1/bin/no
 -- Can not be placed into the config method of the plugins.
 table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot", group_index = 2 })
 lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
+
 local cmp = require("cmp")
 cmp.event:on("menu_opened", function()
 	vim.b.copilot_suggestion_hidden = true
@@ -18,4 +19,5 @@ end)
 cmp.event:on("menu_closed", function()
 	vim.b.copilot_suggestion_hidden = false
 end)
+
 
