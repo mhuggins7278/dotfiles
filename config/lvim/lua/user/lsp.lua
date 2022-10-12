@@ -23,9 +23,3 @@ linters.setup({
 		filetypes = { "lua" },
 	},
 })
-
-linters.setup({
-	command = "luacheck",
-	filetypes = { "lua" },
-})
-

@@ -56,9 +56,9 @@ lvim.plugins = {
 		event = { "VimEnter" },
 		config = function()
 			vim.defer_fn(function()
-				require("copilot").setup({
-					plugin_manager_path = os.getenv("LUNARVIM_RUNTIME_DIR") .. "/site/pack/packer",
-				})
+				require("copilot").setup{
+					plugin_manager_path = "/Users/MHuggins/.local/share/lunarvim/site/pack/packer"
+				}
 			end, 100)
 		end,
 	},
