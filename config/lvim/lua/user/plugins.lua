@@ -1,20 +1,20 @@
 local lvim = lvim
 local vim = vim
 lvim.plugins = {
- "nvim-treesitter/nvim-treesitter-textobjects",
- "ThePrimeagen/harpoon",
- "uga-rosa/ccc.nvim",
- "j-hui/fidget.nvim",
- "projekt0n/github-nvim-theme",
- "Mofiqul/dracula.nvim",
- "kdheepak/lazygit.nvim",
- "kchmck/vim-coffee-script",
- "ellisonleao/gruvbox.nvim",
- "ellisonleao/glow.nvim",
- "tpope/vim-surround",
- "p00f/nvim-ts-rainbow",
- "catppuccin/vim",
- "David-Kunz/jester",
+	"nvim-treesitter/nvim-treesitter-textobjects",
+	"ThePrimeagen/harpoon",
+	"uga-rosa/ccc.nvim",
+	"j-hui/fidget.nvim",
+	"projekt0n/github-nvim-theme",
+	"Mofiqul/dracula.nvim",
+	"kdheepak/lazygit.nvim",
+	"kchmck/vim-coffee-script",
+	"ellisonleao/gruvbox.nvim",
+	"ellisonleao/glow.nvim",
+	"tpope/vim-surround",
+	"p00f/nvim-ts-rainbow",
+	"catppuccin/vim",
+	"David-Kunz/jester",
 	{
 		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 		config = function()
@@ -56,9 +56,9 @@ lvim.plugins = {
 		event = { "VimEnter" },
 		config = function()
 			vim.defer_fn(function()
-				require("copilot").setup{
-					plugin_manager_path = "/Users/MHuggins/.local/share/lunarvim/site/pack/packer"
-				}
+				require("copilot").setup({
+					plugin_manager_path = os.getenv("LUNARVIM_RUNTIME_DIR") .. "/site/pack/packer",
+				})
 			end, 100)
 		end,
 	},
@@ -67,9 +67,7 @@ lvim.plugins = {
 		"zbirenbaum/copilot-cmp",
 		after = { "copilot.lua" },
 		config = function()
-			require("copilot_cmp").setup({
-				method = "getCompletionCycling",
-			})
+			require("copilot_cmp").setup()
 		end,
 	},
 	{
@@ -77,4 +75,3 @@ lvim.plugins = {
 		cmd = "TroubleToggle",
 	},
 }
-

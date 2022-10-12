@@ -8,8 +8,9 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 require("user.options")
-require("user.copilot")
 require("user.plugins")
+require("user.treesitter")
+require("user.copilot")
 require("user.keymaps")
 require("user.autocommands")
 require("user.dap")
@@ -18,5 +19,4 @@ require("user.gitlinker")
 require("user.lab")
 require("user.lsp")
 require("user.telescope")
-require("user.treesitter")
 require("user.whichkey")
