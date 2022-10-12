@@ -1,24 +1,26 @@
+local lvim = lvim
+local vim = vim
 lvim.plugins = {
+ "nvim-treesitter/nvim-treesitter-textobjects",
+ "ThePrimeagen/harpoon",
+ "uga-rosa/ccc.nvim",
+ "j-hui/fidget.nvim",
+ "projekt0n/github-nvim-theme",
+ "Mofiqul/dracula.nvim",
+ "kdheepak/lazygit.nvim",
+ "kchmck/vim-coffee-script",
+ "ellisonleao/gruvbox.nvim",
+ "ellisonleao/glow.nvim",
+ "tpope/vim-surround",
+ "p00f/nvim-ts-rainbow",
+ "catppuccin/vim",
+ "David-Kunz/jester",
 	{
 		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 		config = function()
 			require("lsp_lines").setup()
 		end,
 	},
-	{ "nvim-treesitter/nvim-treesitter-textobjects" },
-	{ "ThePrimeagen/harpoon" },
-	{ "uga-rosa/ccc.nvim" },
-
-	{ "projekt0n/github-nvim-theme" },
-	{ "Mofiqul/dracula.nvim" },
-	{ "kdheepak/lazygit.nvim" },
-	{ "kchmck/vim-coffee-script" },
-	{ "ellisonleao/gruvbox.nvim" },
-	{ "ellisonleao/glow.nvim" },
-	{ "tpope/vim-surround" },
-	{ "p00f/nvim-ts-rainbow" },
-	{ "catppuccin/vim" },
-	{ "David-Kunz/jester" },
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
