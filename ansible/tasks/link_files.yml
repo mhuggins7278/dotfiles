@@ -22,6 +22,7 @@
     - {
         src: '~/.dotfiles/config/karabiner/karabiner.json',
         dest: '~/.config/karabiner/karabiner.json',
+        force: yes
       }
     - {
         src: '~/.dotfiles/config/lvim/config.lua',
@@ -47,4 +48,4 @@
     - { src: '~/.dotfiles/xinitrc', dest: '~/.xinitrc' }
     - { src: '~/.dotfiles/zshrc', dest: '~/.zshrc' }
     - { src: '~/.dotfiles/config/kitty', dest: '~/.config/kitty', force: yes }
-    - { src: '~/.dotfiles/config/lvim/user', dest: '~/.config/lvim/user', force: yes }
+    - { src: '~/.dotfiles/config/lvim/lua/user', dest: '~/.config/lvim/lua/user', force: yes }
