@@ -32,3 +32,4 @@ lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.size = 40
 lvim.builtin.dap.active = true
+
