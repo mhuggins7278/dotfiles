@@ -4,6 +4,7 @@ opt.foldmethod = "expr"
 opt.termguicolors = true
 opt.showtabline = 0
 
+
 vim.opt.cmdheight = 1
 vim.cmd([[
   set nocompatible
@@ -19,7 +20,7 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 
 lvim.leader = "space"
-lvim.transparent_window = false
+lvim.transparent_window = true
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"

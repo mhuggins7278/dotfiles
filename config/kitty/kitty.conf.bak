@@ -24,8 +24,9 @@
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
- font_size 18.0
+ font_size 16.0
  font_family CaskaydiaCove Nerd Font Mono 
+ # font_family Comic Mono Normal
  bold_font CaskaydiaCove Nerd Font Mono Bold
  bold_italic_font CaskaydiaCove Nerd Font Mono Bold Italic
  italic_font CaskaydiaCove Nerd Font Mono Light Italic
@@ -999,14 +1000,16 @@
 
 # background_image none
 
+background_image ~/.dotfiles/bruins.png
+
 #: Path to a background image. Must be in PNG format.
 
-# background_image_layout tiled
+background_image_layout scaled
 
 #: Whether to tile, scale or clamp the background image. The value can
 #: be one of tiled, mirror-tiled, scaled, clamped.
 
-# background_image_linear no
+background_image_linear yes
 
 #: When background image is scaled, whether linear interpolation
 #: should be used.
@@ -1018,7 +1021,7 @@
 #: decrease_background_opacity) or the remote control facility.
 #: Changing this option by reloading the config is not supported.
 
-# background_tint 0.0
+background_tint 0.5
 
 #: How much to tint the background image by the background color. The
 #: tint is applied only under the text area, not margin/borders. This
@@ -1362,7 +1365,7 @@
 #: background_opacity. If you want to use both, you are probably
 #: better off just hiding the titlebar with hide_window_decorations.
 
-# macos_option_as_alt no
+macos_option_as_alt both
 
 #: Use the Option key as an Alt key on macOS. With this set to no,
 #: kitty will use the macOS native Option+Key to enter Unicode
@@ -2185,4 +2188,4 @@ include current-theme.conf
 
 #OVERRIDE THEME FOR OPACITY
 
-background_opacity 0.8 
+background_opacity 1 
