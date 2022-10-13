@@ -15,3 +15,11 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({"BufWritePost"}, {
+pattern = {"plugins.lua"},
+callback = function()
+    vim.cmd("PackerSync")
+    vim.cmd("PackerCompile")
+  end
+})
+
