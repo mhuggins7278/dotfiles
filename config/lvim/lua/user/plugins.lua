@@ -67,8 +67,9 @@ lvim.plugins = {
       require("copilot_cmp").setup()
     end,
   },
-	{
-		"folke/trouble.nvim",
-		cmd = "TroubleToggle",
-	},
+	-- {
+	-- 	"folke/trouble.nvim",
+	-- 	cmd = "TroubleToggle",
+	-- },
+
 }
