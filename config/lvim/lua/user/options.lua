@@ -1,20 +1,20 @@
 local opt = vim.opt
-opt.foldlevel = 20
-opt.foldmethod = "expr"
-opt.termguicolors = true
-opt.showtabline = 0
-
-
-vim.opt.cmdheight = 1
 vim.cmd([[
-  set nocompatible
   filetype off
   syntax enable
   filetype plugin indent on
-  set relativenumber
-  set colorcolumn=80
-  set statusline=""
+  " spell
 ]])
+
+opt.termguicolors = true
+opt.showtabline = 0
+opt.cmdheight = 1
+opt.relativenumber = true
+opt.colorcolumn = "80"
+opt.statusline = ""
+
+
+vim.o.nocompatible = true
 
 lvim.log.level = "warn"
 lvim.format_on_save = false
@@ -33,4 +33,3 @@ lvim.builtin.nvimtree.setup.sync_root_with_cwd = false
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.size = 40
 lvim.builtin.dap.active = true
-

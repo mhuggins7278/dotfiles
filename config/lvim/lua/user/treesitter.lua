@@ -51,8 +51,9 @@ lvim.builtin.treesitter.textobjects = {
 			["ic"] = "@class.inner",
 			["ab"] = "@block.outer",
 			["ib"] = "@block.inner",
+			["ip"] = "@parameter.inner",
+			["ap"] = "@parameter.outer",
 			-- ["ax"] = "@table.outer",
 		},
 	},
 }
-

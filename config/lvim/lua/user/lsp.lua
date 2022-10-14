@@ -22,3 +22,5 @@ linters.setup({
 		filetypes = { "lua" },
 	},
 })
+
+require("lspconfig").astro.setup({})
