@@ -10,7 +10,7 @@ an executable
 require("user.options")
 require("user.plugins")
 require("user.treesitter")
-require("user.keymaps")
+-- require("user.keymaps")
 require("user.autocommands")
 require("user.dap")
 require("user.fidgit")

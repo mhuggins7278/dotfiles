@@ -49,3 +49,4 @@
     - { src: '~/.dotfiles/zshrc', dest: '~/.zshrc' }
     - { src: '~/.dotfiles/config/kitty', dest: '~/.config/kitty', force: yes }
     - { src: '~/.dotfiles/config/lvim/lua', dest: '~/.config/lvim/lua', force: yes }
+    - { src: '~/.dotfiles/config/lvim/after', dest: '~/.config/lvim/after', force: yes }

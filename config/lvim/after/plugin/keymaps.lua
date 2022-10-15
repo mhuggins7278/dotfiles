@@ -1,4 +1,3 @@
-
 local silent = { silent = true }
 
 vim.api.nvim_set_keymap("n", "<C-d>", "<C-d>zz", silent)

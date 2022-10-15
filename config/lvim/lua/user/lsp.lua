@@ -8,6 +8,7 @@ formatters.setup({
 		filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "astro" },
 	},
 	{ command = "stylua", filetypes = { "lua" } },
+	{ command = "sql-formatter", filetypes = { "sql" } },
 })
 
 -- set additional linters
