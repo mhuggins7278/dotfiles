@@ -13,6 +13,7 @@ lvim.plugins = {
 	"p00f/nvim-ts-rainbow",
 	"catppuccin/vim",
 	"David-Kunz/jester",
+  "tpope/unimpaired",
 	{
 		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 		config = function()
