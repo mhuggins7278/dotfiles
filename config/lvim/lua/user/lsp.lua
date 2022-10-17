@@ -25,3 +25,4 @@ linters.setup({
 })
 
 require("lspconfig").astro.setup({})
+require("lspconfig").emmet_ls.setup({})
