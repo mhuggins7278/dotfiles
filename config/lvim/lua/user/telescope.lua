@@ -15,6 +15,12 @@ lvim.builtin.which_key.mappings["b"] = {
 	"<cmd>Telescope buffers<CR>",
 	"List Buffers",
 }
+
+lvim.builtin.which_key.mappings["r"] = {
+	"<cmd>Telescope resume<CR>",
+	"Telescope Resume",
+}
+
 lvim.builtin.telescope.pickers.live_grep = {
 	layout_strategy = "horizontal",
 	layout_config = {
