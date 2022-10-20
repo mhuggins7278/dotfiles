@@ -1,4 +1,5 @@
 lvim.plugins = {
+	"EdenEast/nightfox.nvim",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"ThePrimeagen/harpoon",
 	"uga-rosa/ccc.nvim",
@@ -13,7 +14,7 @@ lvim.plugins = {
 	"p00f/nvim-ts-rainbow",
 	"catppuccin/vim",
 	"David-Kunz/jester",
-  "tpope/vim-unimpaired",
+	"tpope/vim-unimpaired",
 	{
 		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
 		config = function()
@@ -50,27 +51,33 @@ lvim.plugins = {
 			require("octo").setup()
 		end,
 	},
-{
-    "zbirenbaum/copilot.lua",
-    event = { "VimEnter" },
-    config = function()
-      vim.defer_fn(function()
-        require("copilot").setup {
-          plugin_manager_path = os.getenv "LUNARVIM_RUNTIME_DIR" .. "/site/pack/packer",
-        }
-      end, 100)
-    end,
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua" },
-    config = function()
-      require("copilot_cmp").setup()
-    end,
-  },
+	{
+		"zbirenbaum/copilot.lua",
+		event = { "VimEnter" },
+		config = function()
+			vim.defer_fn(function()
+				require("copilot").setup({
+					plugin_manager_path = os.getenv("LUNARVIM_RUNTIME_DIR") .. "/site/pack/packer",
+				})
+			end, 100)
+		end,
+	},
+	{
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
+	{
+		"folke/zen-mode.nvim",
+
+		config = function()
+			require("zen-mode").setup()
+		end,
+	},
 	-- {
 	-- 	"folke/trouble.nvim",
 	-- 	cmd = "TroubleToggle",
 	-- },
-
 }
