@@ -15,12 +15,7 @@ lvim.plugins = {
 	"catppuccin/vim",
 	"David-Kunz/jester",
 	"tpope/vim-unimpaired",
-	{
-		"https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-		config = function()
-			require("lsp_lines").setup()
-		end,
-	},
+	"arkav/lualine-lsp-progress",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
