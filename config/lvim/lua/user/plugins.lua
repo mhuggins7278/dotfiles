@@ -1,9 +1,7 @@
 lvim.plugins = {
-	"EdenEast/nightfox.nvim",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"ThePrimeagen/harpoon",
 	"uga-rosa/ccc.nvim",
-	"j-hui/fidget.nvim",
 	"projekt0n/github-nvim-theme",
 	"Mofiqul/dracula.nvim",
 	"kdheepak/lazygit.nvim",
@@ -15,7 +13,6 @@ lvim.plugins = {
 	"catppuccin/vim",
 	"David-Kunz/jester",
 	"tpope/vim-unimpaired",
-	"arkav/lualine-lsp-progress",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
@@ -70,6 +67,17 @@ lvim.plugins = {
 		config = function()
 			require("zen-mode").setup()
 		end,
+	},
+	{
+		"folke/noice.nvim",
+		event = "VimEnter",
+		config = function()
+			require("noice").setup()
+		end,
+		requires = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
 	},
 	-- {
 	-- 	"folke/trouble.nvim",
