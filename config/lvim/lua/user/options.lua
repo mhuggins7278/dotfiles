@@ -7,7 +7,7 @@ vim.cmd([[
 
 opt.termguicolors = true
 opt.showtabline = 0
-opt.cmdheight = 1
+opt.cmdheight = 0
 opt.relativenumber = true
 opt.colorcolumn = "80"
 opt.statusline = ""
