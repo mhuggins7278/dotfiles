@@ -1,5 +1,6 @@
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("harpoon")
+require("telescope").load_extension("file_browser")
 
 lvim.builtin.which_key.mappings["s"]["w"] = {
 	"<cmd>Telescope grep_string<CR>",

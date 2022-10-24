@@ -13,6 +13,7 @@ lvim.plugins = {
 	"catppuccin/vim",
 	"David-Kunz/jester",
 	"tpope/vim-unimpaired",
+  "nvim-telescope/telescope-file-browser.nvim",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
