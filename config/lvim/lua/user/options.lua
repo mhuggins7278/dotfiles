@@ -11,6 +11,7 @@ opt.cmdheight = 0
 opt.relativenumber = true
 opt.colorcolumn = "80"
 opt.statusline = ""
+opt.timeoutlen = 300
 
 
 vim.o.nocompatible = true

@@ -14,6 +14,7 @@ lvim.plugins = {
 	"David-Kunz/jester",
 	"tpope/vim-unimpaired",
   "nvim-telescope/telescope-file-browser.nvim",
+  "ggandor/leap.nvim",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
