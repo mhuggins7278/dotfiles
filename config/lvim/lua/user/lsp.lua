@@ -1,6 +1,6 @@
 -- lvim.lsp.diagnostics.virtual_text = false
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters = require("lvim.lsp.null-ls.formatters")
+local formatters = require("lvim.lsp.null_ls.formatters")
 formatters.setup({
 	{
 		command = "prettierd",
@@ -12,7 +12,7 @@ formatters.setup({
 })
 
 -- set additional linters
-local linters = require("lvim.lsp.null-ls.linters")
+local linters = require("lvim.lsp.null_ls.linters")
 linters.setup({
 	{
 		command = "eslint_d",
