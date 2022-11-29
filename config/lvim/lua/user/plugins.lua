@@ -1,5 +1,6 @@
 lvim.plugins = {
 	"nvim-treesitter/nvim-treesitter-textobjects",
+  "nvim-telescope/telescope-ui-select.nvim",
 	"ThePrimeagen/harpoon",
 	"uga-rosa/ccc.nvim",
 	"projekt0n/github-nvim-theme",
