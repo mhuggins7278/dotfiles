@@ -49,16 +49,16 @@ export NVM_DIR="$HOME/.nvm"
 
 
 # bun completions
-[ -s "/Users/MHuggins/.bun/_bun" ] && source "/Users/MHuggins/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="/Users/MHuggins/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
-DOT_NET="/usr/local/share/dotnet/"
+DOT_NET="$HOME/dotnet"
 export PATH="$PATH:$DOT_NET"
-export DOTNET_ROOT="/usr/local/share/dotnet"
+export DOTNET_ROOT="$HOME/dotnet"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
