@@ -56,8 +56,13 @@ export BUN_INSTALL="/Users/MHuggins/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
-export DOT_NET="/Users/MHuggins/aspnetcore-runtime-6.0.9-osx-arm64/dotnet"
-export PATH="$DOT_NET:$PATH"
+DOT_NET="/usr/local/share/dotnet/"
+export PATH="$PATH:$DOT_NET"
+export DOTNET_ROOT="/usr/local/share/dotnet"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true

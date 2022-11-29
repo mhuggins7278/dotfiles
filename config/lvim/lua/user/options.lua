@@ -20,7 +20,7 @@ lvim.log.level = "warn"
 lvim.format_on_save = false
 
 lvim.leader = "space"
-lvim.transparent_window = true
+lvim.transparent_window = false
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"

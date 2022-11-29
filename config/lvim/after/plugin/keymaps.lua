@@ -18,6 +18,8 @@ map("n", "<C-k>", '<cmd>lua require("harpoon.ui").nav_file(2)<CR>', silent)
 map("n", "<C-l>", '<cmd>lua require("harpoon.ui").nav_file(3)<CR>', silent)
 map("n", "<C-;>", '<cmd>lua require("harpoon.ui").nav_file(4)<CR>', silent)
 map("n", "<C-n>", '<cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', silent)
+--zen mode toggle
+map("n", "<C-z>", '<cmd>ZenMode<CR>', silent)
 
 
 -- When going through search results, center the tab/window/buffer/thing.

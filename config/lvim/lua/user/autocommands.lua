@@ -1,7 +1,7 @@
-vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
-	pattern = { "*.astro" },
-	command = "setf astro",
-})
+-- vim.api.nvim_create_autocmd({ "BufNew", "BufRead" }, {
+-- 	pattern = { "*.astro" },
+-- 	command = "setf astro",
+-- })
 
 -- Thank you to ThePrimeagen
 -- make timeout on yank faster

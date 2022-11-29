@@ -1,9 +1,10 @@
 -- lvim.lsp.diagnostics.virtual_text = false
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters = require("lvim.lsp.null_ls.formatters")
+
+local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{
-		command = "prettierd",
+		command = "prettier",
 		extra_args = { "--print-with", "100" },
 		filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "astro" },
 	},
@@ -12,7 +13,7 @@ formatters.setup({
 })
 
 -- set additional linters
-local linters = require("lvim.lsp.null_ls.linters")
+local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{
 		command = "eslint_d",
@@ -26,3 +27,4 @@ linters.setup({
 
 require("lvim.lsp.manager").setup("astro")
 require("lvim.lsp.manager").setup("emmet_ls")
+require("lvim.lsp.manager").setup("deno")
