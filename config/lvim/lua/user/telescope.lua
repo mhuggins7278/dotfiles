@@ -55,3 +55,6 @@ lvim.builtin.telescope.pickers.find_files = {
   layout_config
 }
 
+
+lvim.builtin.telescope.theme = "center"
+

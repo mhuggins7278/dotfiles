@@ -1,6 +1,6 @@
 lvim.plugins = {
 	"nvim-treesitter/nvim-treesitter-textobjects",
-  "nvim-telescope/telescope-ui-select.nvim",
+	"nvim-telescope/telescope-ui-select.nvim",
 	"ThePrimeagen/harpoon",
 	"uga-rosa/ccc.nvim",
 	"projekt0n/github-nvim-theme",
@@ -14,8 +14,8 @@ lvim.plugins = {
 	"catppuccin/vim",
 	"David-Kunz/jester",
 	"tpope/vim-unimpaired",
-  "nvim-telescope/telescope-file-browser.nvim",
-  "ggandor/leap.nvim",
+	"nvim-telescope/telescope-file-browser.nvim",
+	"ggandor/leap.nvim",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
@@ -53,6 +53,9 @@ lvim.plugins = {
 			vim.defer_fn(function()
 				require("copilot").setup({
 					plugin_manager_path = os.getenv("LUNARVIM_RUNTIME_DIR") .. "/site/pack/packer",
+					suggestions = {
+						auto_trigger = true,
+					},
 				})
 			end, 100)
 		end,
@@ -61,7 +64,7 @@ lvim.plugins = {
 		"zbirenbaum/copilot-cmp",
 		after = { "copilot.lua" },
 		config = function()
-			require("copilot_cmp").setup()
+			require("copilot_cmp").setup({ method = "getCompletionsCycling" })
 		end,
 	},
 	{
