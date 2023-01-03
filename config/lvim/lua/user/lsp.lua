@@ -5,7 +5,7 @@ local formatters = require("lvim.lsp.null-ls.formatters")
 local cmp = require("cmp")
 formatters.setup({
 	{
-		command = "prettier",
+		command = "prettierd",
 		extra_args = { "--print-with", "100" },
 		filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "astro" },
 	},
@@ -25,6 +25,7 @@ linters.setup({
 		filetypes = { "lua" },
 	},
 })
+
 
 require("lvim.lsp.manager").setup("astro")
 require("lvim.lsp.manager").setup("emmet_ls")

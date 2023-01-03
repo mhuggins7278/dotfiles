@@ -1,4 +1,5 @@
 lvim.plugins = {
+  "rebelot/kanagawa.nvim",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"nvim-telescope/telescope-ui-select.nvim",
 	"ThePrimeagen/harpoon",
