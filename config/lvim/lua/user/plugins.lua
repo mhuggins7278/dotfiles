@@ -1,22 +1,21 @@
 lvim.plugins = {
-  "rebelot/kanagawa.nvim",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"nvim-telescope/telescope-ui-select.nvim",
 	"ThePrimeagen/harpoon",
-	"uga-rosa/ccc.nvim",
+	-- "uga-rosa/ccc.nvim",
 	"projekt0n/github-nvim-theme",
 	"Mofiqul/dracula.nvim",
 	"kdheepak/lazygit.nvim",
 	"kchmck/vim-coffee-script",
 	"ellisonleao/gruvbox.nvim",
-	"ellisonleao/glow.nvim",
+	-- "ellisonleao/glow.nvim",
 	"tpope/vim-surround",
 	"p00f/nvim-ts-rainbow",
 	"catppuccin/vim",
-	"David-Kunz/jester",
-	"tpope/vim-unimpaired",
+	-- "David-Kunz/jester",
+	-- "tpope/vim-unimpaired",
 	"nvim-telescope/telescope-file-browser.nvim",
-	"ggandor/leap.nvim",
+	-- "ggandor/leap.nvim",
 	{ "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" },
 	{
 		"folke/todo-comments.nvim",
@@ -29,7 +28,6 @@ lvim.plugins = {
 			})
 		end,
 	},
-	{ "0x100101/lab.nvim", run = "cd js && npm ci", requires = { "nvim-lua/plenary.nvim" } },
 	{
 		"iamcco/markdown-preview.nvim",
 		run = function()
