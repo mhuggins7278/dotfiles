@@ -73,13 +73,13 @@ lvim.plugins = {
 			require("zen-mode").setup()
 		end,
 	},
-	{
-		"folke/noice.nvim",
-		requires = {
-			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify",
-		},
-	},
+	-- {
+	-- 	"folke/noice.nvim",
+	-- 	requires = {
+	-- 		"MunifTanjim/nui.nvim",
+	-- 		"rcarriga/nvim-notify",
+	-- 	},
+	-- },
 	-- {
 	-- 	"folke/trouble.nvim",
 	-- 	cmd = "TroubleToggle",
