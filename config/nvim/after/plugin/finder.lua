@@ -8,12 +8,14 @@ require("project_nvim").setup {
     -- refer to the configuration section below
 }
 
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = 'Find All Files' })
 vim.keymap.set('n', '<leader>sg', builtin.git_files, { desc = 'Find Git Files' })
 vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Find Current Word' })
 vim.keymap.set('n', '<leader>st', builtin.live_grep, { desc = 'Find Text' })
 vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = 'Find Buffers' })
+vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = 'Find Recent Files' })
 vim.keymap.set('n', '<leader>sp', "<cmd>Telescope projects<cr>", { desc = 'Find Project' })
 
 require('telescope').setup {

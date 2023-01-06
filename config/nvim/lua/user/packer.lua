@@ -71,7 +71,6 @@ return require('packer').startup(function(use)
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
     use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
-
     use 'folke/zen-mode.nvim'
     use 'github/copilot.vim'
     use 'kchmck/vim-coffee-script'
@@ -86,5 +85,7 @@ return require('packer').startup(function(use)
     use 'nvim-tree/nvim-web-devicons'
     use 'mfussenegger/nvim-dap'
     use 'jayp0521/mason-nvim-dap.nvim'
+    use 'f-person/git-blame.nvim'
+    use 'lewis6991/gitsigns.nvim'
 
 end)
