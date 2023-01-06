@@ -52,3 +52,5 @@ alpha.setup(dashboard.opts)
 vim.cmd([[
     autocmd FileType alpha setlocal nofoldenable
 ]])
+
+vim.keymap.set("n", "<leader>;", ":Alpha<CR>", {desc = "Open Alpha"} )
