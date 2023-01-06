@@ -70,6 +70,7 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
 
     use 'folke/zen-mode.nvim'
     use 'github/copilot.vim'
@@ -83,5 +84,7 @@ return require('packer').startup(function(use)
     use 'folke/tokyonight.nvim'
     use 'tpope/vim-surround'
     use 'nvim-tree/nvim-web-devicons'
+    use 'mfussenegger/nvim-dap'
+    use 'jayp0521/mason-nvim-dap.nvim'
 
 end)
