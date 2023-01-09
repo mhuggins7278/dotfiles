@@ -1,6 +1,7 @@
 local lsp = require("lsp-zero")
 
 lsp.preset("recommended")
+lsp.setup()
 
 lsp.ensure_installed({
   'tsserver',
@@ -69,7 +70,6 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
 
-lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,

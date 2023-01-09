@@ -1,6 +1,6 @@
-require('rose-pine').setup({
-    disable_background = true
-})
+-- require('rose-pine').setup({
+--     disable_background = true
+-- })
 require("tokyonight").setup({
     transparent = true,
     styles = {
@@ -9,7 +9,7 @@ require("tokyonight").setup({
 })
 
 function ColorMyPencils(color)
-    color = color or "rose-pine"
+    color = color or "tokyonight"
     vim.cmd.colorscheme(color)
 
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -17,4 +17,4 @@ function ColorMyPencils(color)
 
 end
 
-ColorMyPencils('tokyonight')
+ColorMyPencils()
