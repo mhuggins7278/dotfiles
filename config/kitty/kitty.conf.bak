@@ -308,7 +308,7 @@
 
 #: Mouse {{{
 
-# mouse_hide_wait 3.0
+# mouse_ide_wait 3.0
 
 #: Hide mouse cursor after the specified number of seconds of the
 #: mouse not being used. Set to zero to disable mouse cursor hiding.
@@ -756,7 +756,8 @@
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
 
-# hide_window_decorations no
+hide_window_decorations titlebar-only
+ 
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only can be used to only hide the titlebar.
@@ -1020,7 +1021,7 @@
 #: decrease_background_opacity) or the remote control facility.
 #: Changing this option by reloading the config is not supported.
 
-background_tint 0.85
+#: background_tint 0.85
 
 #: How much to tint the background image by the background color. The
 #: tint is applied only under the text area, not margin/borders. This
@@ -2180,11 +2181,11 @@ macos_option_as_alt both
 
 
 # BEGIN_KITTY_THEME
-# Tokyo Night
+# kanagawabones
 include current-theme.conf
 # END_KITTY_THEME
 
 
 #OVERRIDE THEME FOR OPACITY
 
-background_opacity 0.85 
+background_opacity 0.50 

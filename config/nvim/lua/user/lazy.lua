@@ -1,34 +1,26 @@
 -- This "file can be loaded by calling `lua require('plugins')` from your init.vim
 
--- Only required if you have packer configured as `opt`
-vim.cmd.packadd('packer.nvim')
+return {
 
-return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
-
-    use {
+    {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
         -- or                            , branch = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
+        dependencies = { { 'nvim-lua/plenary.nvim' } }
+    },
 
-    use({
+    {
         'rose-pine/neovim',
         as = 'rose-pine',
-        config = function()
-            vim.cmd('colorscheme rose-pine')
-        end
-    })
+    },
 
-    use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
-    use('nvim-treesitter/playground')
-    use('theprimeagen/harpoon')
-    use('mbbill/undotree')
+    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    'nvim-treesitter/playground',
+    'theprimeagen/harpoon',
+    'mbbill/undotree',
 
-    use {
+    {
         'VonHeikemen/lsp-zero.nvim',
-        requires = {
+        dependencies = {
             -- LSP Support
             { 'neovim/nvim-lspconfig' },
             { 'williamboman/mason.nvim' },
@@ -46,9 +38,9 @@ return require('packer').startup(function(use)
             { 'L3MON4D3/LuaSnip' },
             { 'rafamadriz/friendly-snippets' },
         }
-    }
+    },
     -- Lua
-    use {
+    {
         'folke/which-key.nvim',
         config = function()
             require('which-key').setup {
@@ -57,27 +49,27 @@ return require('packer').startup(function(use)
                 -- refer to the configuration section below
             }
         end
-    }
-    use {
+    },
+    {
         'goolord/alpha-nvim',
-        requires = { 'nvim-tree/nvim-web-devicons' },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function()
             require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
         end
-    }
-    use {
+    },
+    {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-    }
-    use {
+        dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
+    },
+    {
         'numToStr/Comment.nvim',
         config = function()
             require('Comment').setup()
         end
-    }
-	use {
+    },
+	{
 		"folke/todo-comments.nvim",
-		requires = "nvim-lua/plenary.nvim",
+		dependencies = "nvim-lua/plenary.nvim",
 		config = function()
 			require("todo-comments").setup({
 				-- your configuration comes here
@@ -85,22 +77,26 @@ return require('packer').startup(function(use)
 				-- refer to the configuration section below
 			})
 		end,
-	}
-    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
-    use 'folke/zen-mode.nvim'
-    use 'github/copilot.vim'
-    use 'kchmck/vim-coffee-script'
-    use 'ahmedkhalf/project.nvim'
-    use 'nvim-telescope/telescope-file-browser.nvim'
-    use 'nvim-telescope/telescope-ui-select.nvim'
-    use 'akinsho/toggleterm.nvim'
-    use 'kdheepak/lazygit.nvim'
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    use 'folke/tokyonight.nvim'
-    use 'tpope/vim-surround'
-    use 'nvim-tree/nvim-web-devicons'
-    use 'mfussenegger/nvim-dap'
-    use 'jayp0521/mason-nvim-dap.nvim'
-    use 'lewis6991/gitsigns.nvim'
+	},
+    { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap" } },
+    'folke/zen-mode.nvim',
+    'github/copilot.vim',
+    'kchmck/vim-coffee-script',
+    'ahmedkhalf/project.nvim',
+    'nvim-telescope/telescope-file-browser.nvim',
+    'nvim-telescope/telescope-ui-select.nvim',
+    'akinsho/toggleterm.nvim',
+    'kdheepak/lazygit.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'folke/tokyonight.nvim',
+    'tpope/vim-surround',
+    'nvim-tree/nvim-web-devicons',
+    'mfussenegger/nvim-dap',
+    'jayp0521/mason-nvim-dap.nvim',
+    'lewis6991/gitsigns.nvim',
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    {"catppuccin/nvim", as = "catppuccin"},
+    'rebelot/kanagawa.nvim',
+    'mrjones2014/nvim-ts-rainbow',
 
-end)
+}

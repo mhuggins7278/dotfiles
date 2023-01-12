@@ -28,12 +28,14 @@ require('gitsigns').setup{
     map('n', '<leader>gS', gs.stage_buffer, {desc='Stage buffer'})
     map('n', '<leader>gu', gs.undo_stage_hunk, {desc='Undo stage hunk'})
     map('n', '<leader>gR', gs.reset_buffer, {desc='Reset buffer'})
-    map('n', '<leader>gp', gs.preview_hunk, {desc='Preview hunk'})
+    map('n', '<leader>gP', gs.preview_hunk, {desc='Preview hunk'})
     map('n', '<leader>gB', function() gs.blame_line{full=true} end, {desc='Blame line'})
     map('n', '<leader>gb', gs.toggle_current_line_blame, {desc='Toggle blame'})
     map('n', '<leader>gd', gs.diffthis, {desc='Diff this'})
     map('n', '<leader>gD', function() gs.diffthis('~') end, {desc='Diff this against HEAD'})
     map('n', '<leader>gx', gs.toggle_deleted, {desc='Toggle deleted'})
+    map('n', '<leader>gp', gs.prev_hunk, {desc='Prev Hunk'})
+    map('n', '<leader>gn', gs.next_hunk, {desc='Next Hunk'})
 
     -- Text object
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {desc='Select hunk'})

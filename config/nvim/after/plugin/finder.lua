@@ -16,7 +16,9 @@ vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Find Current Wo
 vim.keymap.set('n', '<leader>st', builtin.live_grep, { desc = 'Find Text' })
 vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = 'Find Buffers' })
 vim.keymap.set('n', '<leader>sr', builtin.oldfiles, { desc = 'Find Recent Files' })
+vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = 'Help' })
 vim.keymap.set('n', '<leader>sp', "<cmd>Telescope projects<cr>", { desc = 'Find Project' })
+vim.keymap.set('n', '<leader>sR', "<cmd>Telescope resume<cr>", { desc = 'Reopen' })
 
 require('telescope').setup {
     extensions = {
