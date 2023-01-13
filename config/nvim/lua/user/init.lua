@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("user.set")
 require("user.remap")
-require('lazy').setup("user.lazy")
 
 local augroup = vim.api.nvim_create_augroup
 local UserGroup = augroup('UserGroup', {})

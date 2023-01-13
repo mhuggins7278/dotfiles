@@ -10,7 +10,6 @@ lvim.plugins = {
 	"ellisonleao/gruvbox.nvim",
 	-- "ellisonleao/glow.nvim",
 	"tpope/vim-surround",
-	"p00f/nvim-ts-rainbow",
 	"catppuccin/vim",
 	-- "David-Kunz/jester",
 	-- "tpope/vim-unimpaired",

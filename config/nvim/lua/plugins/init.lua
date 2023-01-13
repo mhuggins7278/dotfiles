@@ -1,20 +1,11 @@
 -- This "file can be loaded by calling `lua require('plugins')` from your init.vim
-
 return {
-
-    {
-        'nvim-telescope/telescope.nvim', tag = '0.1.0',
-        -- or                            , branch = '0.1.x',
-        dependencies = { { 'nvim-lua/plenary.nvim' } }
-    },
 
     {
         'rose-pine/neovim',
         as = 'rose-pine',
     },
 
-    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    'nvim-treesitter/playground',
     'theprimeagen/harpoon',
     'mbbill/undotree',
 
@@ -48,13 +39,6 @@ return {
                 -- or leave it empty to use the default settings
                 -- refer to the configuration section below
             }
-        end
-    },
-    {
-        'goolord/alpha-nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        config = function()
-            require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
         end
     },
     {
@@ -94,9 +78,7 @@ return {
     'mfussenegger/nvim-dap',
     'jayp0521/mason-nvim-dap.nvim',
     'lewis6991/gitsigns.nvim',
-    'nvim-treesitter/nvim-treesitter-textobjects',
     {"catppuccin/nvim", as = "catppuccin"},
     'rebelot/kanagawa.nvim',
-    'mrjones2014/nvim-ts-rainbow',
 
 }
