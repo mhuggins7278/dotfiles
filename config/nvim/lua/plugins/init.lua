@@ -30,30 +30,15 @@ return {
             require('Comment').setup()
         end
     },
-	{
-		"folke/todo-comments.nvim",
-		dependencies = "nvim-lua/plenary.nvim",
-		config = function()
-			require("todo-comments").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			})
-		end,
-	},
     'folke/zen-mode.nvim',
     'kchmck/vim-coffee-script',
     'ahmedkhalf/project.nvim',
-    'nvim-telescope/telescope-file-browser.nvim',
-    'nvim-telescope/telescope-ui-select.nvim',
-    'akinsho/toggleterm.nvim',
     'kdheepak/lazygit.nvim',
     'folke/tokyonight.nvim',
     'tpope/vim-surround',
     'nvim-tree/nvim-web-devicons',
     'mfussenegger/nvim-dap',
     'jayp0521/mason-nvim-dap.nvim',
-    'lewis6991/gitsigns.nvim',
     {"catppuccin/nvim", as = "catppuccin"},
     'rebelot/kanagawa.nvim',
 
