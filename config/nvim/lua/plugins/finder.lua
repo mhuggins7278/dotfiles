@@ -2,6 +2,7 @@ return {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    event = 'BufEnter',
     config = function()
         require('telescope').load_extension('projects')
         require("telescope").load_extension("fzf")
