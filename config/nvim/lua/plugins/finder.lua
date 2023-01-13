@@ -1,4 +1,4 @@
-return {
+return {{
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -28,4 +28,6 @@ return {
         vim.keymap.set('n', '<leader>sp', "<cmd>Telescope projects<cr>", { desc = 'Find Project' })
         vim.keymap.set('n', '<leader>sR', "<cmd>Telescope resume<cr>", { desc = 'Reopen' })
     end
+},
+{'nvim-telescope/telescope-fzf-native.nvim', build = 'make'} ,
 }

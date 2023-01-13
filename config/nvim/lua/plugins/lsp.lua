@@ -18,6 +18,7 @@ return {
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
         { 'rafamadriz/friendly-snippets' },
+        {'github/copilot.vim'},
     },
     config = function()
         local lsp = require("lsp-zero")
