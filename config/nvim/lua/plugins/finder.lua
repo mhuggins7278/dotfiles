@@ -1,23 +1,29 @@
-return {{
+return { {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
     dependencies = { 'nvim-lua/plenary.nvim' },
     event = 'BufEnter',
     config = function()
-        require('telescope').load_extension('projects')
-        require("telescope").load_extension("fzf")
-        require("telescope").load_extension("ui-select")
+        local actions = require "telescope.actions"
+        local action_state = require "telescope.actions.state"
+        actions.select_default:replace(function()
+            actions.select_default()
+            actions.center()
+        end)
         require("project_nvim").setup {
             patterns = { ".git" }
         }
         require('telescope').setup {
             extensions = {
                 ["ui-select"] = {
-                    require("telescope.themes").get_cursor {
+                    require("telescope.themes").get_dropdown {
                     }
                 }
-            }
+            },
         }
+        require('telescope').load_extension('projects')
+        require("telescope").load_extension("fzf")
+        require("telescope").load_extension("ui-select")
         vim.keymap.set('n', '<leader>sf', "<cmd>Telescope find_files<cr>", { desc = 'Find All Files' })
         vim.keymap.set('n', '<leader>sg', "<cmd>Telescope git_files<cr>", { desc = 'Find Git Files' })
         vim.keymap.set('n', '<leader>sw', "<cmd>Telescope grep_string<cr>", { desc = 'Find Current Word' })
@@ -29,7 +35,7 @@ return {{
         vim.keymap.set('n', '<leader>sR', "<cmd>Telescope resume<cr>", { desc = 'Reopen' })
     end
 },
-{'nvim-telescope/telescope-fzf-native.nvim', build = 'make'} ,
-     'nvim-telescope/telescope-file-browser.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    'nvim-telescope/telescope-file-browser.nvim',
     'nvim-telescope/telescope-ui-select.nvim',
 }
