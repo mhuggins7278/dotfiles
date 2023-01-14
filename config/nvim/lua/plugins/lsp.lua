@@ -18,7 +18,7 @@ return {
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
         { 'rafamadriz/friendly-snippets' },
-        {'github/copilot.vim'},
+        { 'github/copilot.vim' },
     },
     config = function()
         local lsp = require("lsp-zero")
@@ -82,7 +82,7 @@ return {
             -- end
 
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+            vim.keymap.set("n", "H", vim.lsp.buf.hover, opts)
             vim.keymap.set("n", "<leader>lws", vim.lsp.buf.workspace_symbol, opts)
             vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, opts)
             vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
@@ -97,6 +97,14 @@ return {
 
         vim.diagnostic.config({
             virtual_text = true,
+        })
+        require("mason").setup()
+        require("mason").setup()
+        require("mason-nvim-dap").setup({
+            automatic_intallation = true
+        })
+        require("mason-nvim-dap").setup({
+            automatic_intallation = true
         })
 
     end

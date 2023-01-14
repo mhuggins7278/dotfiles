@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, {desc = "Open NetRW"})
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv",{desc = "Move Line Up"})
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
@@ -32,4 +32,4 @@ vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>")
 
-vim.keymap.set("n", "<leader>c", "<cmd>clo<CR>", { desc = "close buffer" })
+vim.keymap.set("n", "<leader>c", "<cmd>bd<CR>", { desc = "close buffer" })
