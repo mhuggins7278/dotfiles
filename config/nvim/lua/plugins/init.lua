@@ -6,8 +6,6 @@ return {
         as = 'rose-pine',
     },
 
-    'theprimeagen/harpoon',
-    'mbbill/undotree',
 
     -- Lua
     {
@@ -20,20 +18,8 @@ return {
             }
         end
     },
-    {
-        'nvim-lualine/lualine.nvim',
-        dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }
-    },
-    {
-        'numToStr/Comment.nvim',
-        config = function()
-            require('Comment').setup()
-        end
-    },
-    'folke/zen-mode.nvim',
     'kchmck/vim-coffee-script',
     'ahmedkhalf/project.nvim',
-    'kdheepak/lazygit.nvim',
     'folke/tokyonight.nvim',
     'tpope/vim-surround',
     'nvim-tree/nvim-web-devicons',
