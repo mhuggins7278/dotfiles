@@ -8,7 +8,7 @@ require("tokyonight").setup({
     }
 })
 require("catppuccin").setup({
-    flavour = "macchiato",
+    flavour = "mocha",
     transparent_background = true,
 })
 
