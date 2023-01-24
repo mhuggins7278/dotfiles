@@ -100,20 +100,14 @@ return {
 		})
 
 		lsp.on_attach(function(client, bufnr)
-			local opts = { buffer = bufnr, remap = false }
 
-			-- if client.name == "eslint" then
-			--     vim.cmd.LspStop('eslint')
-			--     return
-			-- end
-
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			vim.keymap.set("n", "<leader>lca", vim.lsp.buf.code_action, opts)
-			vim.keymap.set("n", "<leader>lrr", vim.lsp.buf.references, opts)
-			vim.keymap.set("n", "<leader>lrn", vim.lsp.buf.rename, opts)
-			vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-			vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, opts)
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, remap = false, desc = "Go To Definition" })
+			vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
+			vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { buffer = bufnr, remap = false, desc = "Code Actions" })
+			vim.keymap.set("n", "<leader>lr", vim.lsp.buf.references, { buffer = bufnr, remap = false, desc = "References" })
+			vim.keymap.set("n", "<leader>lR", vim.lsp.buf.rename, { buffer = bufnr, remap = false, desc = "Rename" })
+			vim.keymap.set("i", "<leader>lh", vim.lsp.buf.signature_help, { buffer = bufnr, remap = false, desc = "Signature Help" })
+			vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { buffer = bufnr, remap = false, desc = "Lsp Format" })
 		end)
 
 		vim.diagnostic.config({
@@ -122,10 +116,7 @@ return {
 		require("mason").setup()
 		require("mason").setup()
 		require("mason-nvim-dap").setup({
-			automatic_intallation = true,
-		})
-		require("mason-nvim-dap").setup({
-			automatic_intallation = true,
+			automatic_installation = true,
 		})
 	end,
 }
