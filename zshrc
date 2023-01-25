@@ -56,9 +56,7 @@ export BUN_INSTALL="/Users/MHuggins/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
-DOT_NET="$HOME/dotnet"
-export PATH="$PATH:$DOT_NET"
-export DOTNET_ROOT="$HOME/dotnet"
+export PATH="$PATH:~/usr/local/share/dotnet"
 
 # tabtab source for packages
 # uninstall by removing these lines
@@ -66,3 +64,5 @@ export DOTNET_ROOT="$HOME/dotnet"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

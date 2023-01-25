@@ -17,6 +17,12 @@ return {
 			})
 		end,
 	},
+  {
+  "ellisonleao/glow.nvim",
+  config = function()
+    require("glow").setup({})
+  end,
+},
 	"kchmck/vim-coffee-script",
 	"ahmedkhalf/project.nvim",
 	"folke/tokyonight.nvim",
