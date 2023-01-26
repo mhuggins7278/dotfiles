@@ -30,7 +30,16 @@ return {
 			"rust_analyzer",
 		})
 		lsp.skip_server_setup({ "denols" })
-
+		-- Fix Undefined global 'vim'
+		lsp.configure("sumneko_lua", {
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+				},
+			},
+		})
     lsp.nvim_workspace()
 
 		lsp.setup()
