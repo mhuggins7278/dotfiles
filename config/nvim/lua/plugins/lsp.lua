@@ -17,7 +17,6 @@ return {
 		-- Snippets
 		{ "L3MON4D3/LuaSnip" },
 		{ "rafamadriz/friendly-snippets" },
-		{ "github/copilot.vim" },
 	},
 	config = function()
 		local lsp = require("lsp-zero")
@@ -32,16 +31,7 @@ return {
 		})
 		lsp.skip_server_setup({ "denols" })
 
-		-- Fix Undefined global 'vim'
-		lsp.configure("sumneko_lua", {
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-				},
-			},
-		})
+    lsp.nvim_workspace()
 
 		lsp.setup()
 		local null_ls = require("null-ls")
@@ -56,16 +46,11 @@ return {
 			},
 		})
 
-		-- See mason-null-ls.nvim's documentation for more details:
-		-- https://github.com/jay-babu/mason-null-ls.nvim#setup
-		require("mason-null-ls").setup({
-			ensure_installed = nil,
-			automatic_installation = false, -- You can still set this to `true`
-			automatic_setup = true,
-		})
 
-		-- Required when `automatic_setup` is true
-		require("mason-null-ls").setup_handlers()
+
+		require("cmp").config.formatting = {
+			format = require("tailwindcss-colorizer-cmp").formatter,
+		}
 
 		local cmp = require("cmp")
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -74,15 +59,11 @@ return {
 			["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
 			["<C-y>"] = cmp.mapping.confirm({ select = true }),
 			["<C-Space>"] = cmp.mapping.complete(),
+      -- disable completion with tab
+      -- this helps with copilot setup
+      ["<Tab>"] = nil,
+      ["<S-Tab>"] = nil
 		})
-		require("cmp").config.formatting = {
-			format = require("tailwindcss-colorizer-cmp").formatter,
-		}
-
-		-- disable completion with tab
-		-- this helps with copilot setup
-		cmp_mappings["<Tab>"] = nil
-		cmp_mappings["<S-Tab>"] = nil
 
 		lsp.setup_nvim_cmp({
 			mapping = cmp_mappings,
@@ -115,9 +96,17 @@ return {
 			virtual_text = true,
 		})
 		require("mason").setup()
-		require("mason").setup()
 		require("mason-nvim-dap").setup({
 			automatic_installation = true,
 		})
+		-- See mason-null-ls.nvim's documentation for more details:
+		-- https://github.com/jay-babu/mason-null-ls.nvim#setup
+		require("mason-null-ls").setup({
+			ensure_installed = nil,
+			automatic_installation = false, -- You can still set this to `true`
+			automatic_setup = true,
+		})
+		-- Required when `automatic_setup` is true
+		require("mason-null-ls").setup_handlers()
 	end,
 }

@@ -21,7 +21,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
-vim.keymap.set("i", "jj", "<Esc>")
+vim.keymap.set("i", "jj", "<Esc>", {silent = true})
 
 vim.keymap.set("n", "Q", "<nop>")
 
@@ -29,11 +29,11 @@ vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 
 vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "chmod +x" })
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>")
 
 vim.keymap.set("n", "<leader>c", "<cmd>bd<CR>", { desc = "close buffer" })
-vim.keymap.set("n", "<leader>ls", vim.lsp.buf.workspace_symbol, {desc = "Symbols"})
-vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, {desc = "Diagnostics"})
-vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+vim.keymap.set("n", "<leader>ls", vim.lsp.buf.workspace_symbol, { desc = "Symbols" })
+vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Diagnostics" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { remap = false, desc = "Next Diag" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, { remap = false, desc = "Prev Diag" })
