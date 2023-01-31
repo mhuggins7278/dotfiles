@@ -17,12 +17,12 @@ return {
 			})
 		end,
 	},
-  {
-  "ellisonleao/glow.nvim",
-  config = function()
-    require("glow").setup({})
-  end,
-},
+	{
+		"ellisonleao/glow.nvim",
+		config = function()
+			require("glow").setup({})
+		end,
+	},
 	"kchmck/vim-coffee-script",
 	"ahmedkhalf/project.nvim",
 	"folke/tokyonight.nvim",
@@ -34,5 +34,6 @@ return {
 	"rebelot/kanagawa.nvim",
 	"jose-elias-alvarez/null-ls.nvim",
 	"jay-babu/mason-null-ls.nvim",
-		 "github/copilot.vim" ,
+	"github/copilot.vim",
+	"nikvdp/ejs-syntax",
 }
