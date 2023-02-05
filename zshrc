@@ -43,20 +43,22 @@ export PATH="$PNPM_HOME:$PATH$GOPATH"
 
 source <(glgroup bashcomplete)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add default node to path
+export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
+
+# Load NVM
+export NVM_DIR=~/.nvm
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# bun
-export BUN_INSTALL="/Users/MHuggins/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
-export PATH="$PATH:~/usr/local/share/dotnet"
+# export PATH="$PATH:~/usr/local/share/dotnet"
 
 # tabtab source for packages
 # uninstall by removing these lines

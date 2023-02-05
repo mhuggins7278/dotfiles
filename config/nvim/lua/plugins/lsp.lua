@@ -42,24 +42,23 @@ return {
 		})
     lsp.nvim_workspace()
 
-		lsp.setup()
-		local null_ls = require("null-ls")
-		local null_opts = lsp.build_options("null-ls", {})
-
-		null_ls.setup({
-			on_attach = function(client, bufnr)
-				null_opts.on_attach(client, bufnr)
-			end,
-			sources = {
-				-- You can add tools not supported by mason.nvim
-			},
-		})
-
+		-- local null_ls = require("null-ls")
+		-- local null_opts = lsp.build_options("null-ls", {})
+		--
+		-- null_ls.setup({
+		-- 	on_attach = function(client, bufnr)
+		-- 		null_opts.on_attach(client, bufnr)
+		-- 	end,
+		-- 	sources = {
+		-- 		-- You can add tools not supported by mason.nvim
+		-- 	},
+		-- })
 
 
-		require("cmp").config.formatting = {
-			format = require("tailwindcss-colorizer-cmp").formatter,
-		}
+
+		-- require("cmp").config.formatting = {
+		-- 	format = require("tailwindcss-colorizer-cmp").formatter,
+		-- }
 
 		local cmp = require("cmp")
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -70,8 +69,8 @@ return {
 			["<C-Space>"] = cmp.mapping.complete(),
       -- disable completion with tab
       -- this helps with copilot setup
-      ["<Tab>"] = nil,
-      ["<S-Tab>"] = nil
+      ["<Tab>"] = cmp.config.disable,
+      ["<S-Tab>"] = cmp.config.disable,
 		})
 
 		lsp.setup_nvim_cmp({
@@ -89,7 +88,6 @@ return {
 		})
 
 		lsp.on_attach(function(client, bufnr)
-
 			vim.keymap.set("n", "gd","<cmd>Telescope lsp_definitions<cr>", { buffer = bufnr, remap = false, desc = "Go To Definition" })
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
 			vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { buffer = bufnr, remap = false, desc = "Code Actions" })
@@ -100,6 +98,8 @@ return {
 			vim.keymap.set("n", "<leader>lh", vim.lsp.buf.signature_help, { buffer = bufnr, remap = false, desc = "Signature Help" })
 			vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { buffer = bufnr, remap = false, desc = "Lsp Format" })
 		end)
+
+		lsp.setup()
 
 		vim.diagnostic.config({
 			virtual_text = true,
@@ -117,5 +117,6 @@ return {
 		})
 		-- Required when `automatic_setup` is true
 		require("mason-null-ls").setup_handlers()
+
 	end,
 }
