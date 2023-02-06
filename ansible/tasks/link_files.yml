@@ -51,3 +51,4 @@
     - { src: '~/.dotfiles/config/lvim/lua', dest: '~/.config/lvim/lua', force: yes }
     - { src: '~/.dotfiles/config/lvim/after', dest: '~/.config/lvim/after', force: yes }
     - { src: '~/.dotfiles/config/nvim', dest: '~/.config/nvim', force: yes }
+    - { src: '~/.dotfiles/config/alacritty', dest: '~/.config/alacritty', force: yes }
