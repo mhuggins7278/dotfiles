@@ -52,3 +52,4 @@
     - { src: '~/.dotfiles/config/lvim/after', dest: '~/.config/lvim/after', force: yes }
     - { src: '~/.dotfiles/config/nvim', dest: '~/.config/nvim', force: yes }
     - { src: '~/.dotfiles/config/alacritty', dest: '~/.config/alacritty', force: yes }
+    - { src: '~/.dotfiles/config/tmux/tmux.conf', dest: '~/tmux.conf', force: yes }

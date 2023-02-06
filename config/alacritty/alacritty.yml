@@ -19,8 +19,8 @@ window:
   # Specified in number of columns/lines, not pixels. If both are zero this
   # setting is ignored.
   dimensions:
-    columns: 100
-    lines: 85
+    columns: 0
+    lines: 0
 
   # Window padding (changes require restart)
   #
@@ -40,7 +40,7 @@ window:
   # - none: neither borders nor title bar
   # - transparent: title bar, transparent background and title bar buttons
   # - buttonless: title bar, transparent background, but no title bar buttons
-  decorations: buttonless
+  decorations: full
 
   # Startup Mode (changes require restart)
   #
@@ -56,21 +56,21 @@ window:
   # Background opacity
   opacity: 0.7
 
-scrolling:
-  # maximum number of lines in the scrollback buffer. Specifying '0' will
-  # disable scrolling.
-  history: 0
-
-  # Number of lines the viewport will move for every line scrolled when
-  # scrollback is enabled (history > 0).
-  multiplier: 3
+# scrolling:
+#   # maximum number of lines in the scrollback buffer. Specifying '0' will
+#   # disable scrolling.
+#   history: 0
+#
+#   # Number of lines the viewport will move for every line scrolled when
+#   # scrollback is enabled (history > 0).
+#   multiplier: 3
 
 # Font configuration (changes require restart)
 font:
   # The normal (roman) font face to use.
   # Style can be specified to pick a specific face.
   normal:
-    family: Iosevka
+    family: JetBrainsMono Nerd Font
     style: Light
     # family: "Fira Code"
     # family: "Source Code Pro"
@@ -78,14 +78,14 @@ font:
 
   # The bold font face
   bold:
-    family: Iosevka
+    family: JetBrainsMono Nerd Font
     style: Medium
     # family: "Fira Code"
     # family: "Source Code Pro"
 
   # The italic font face
   italic:
-    family: Iosevka
+    family: JetBrainsMono Nerd Font
     style: "Light Italic"
     # style: "Light Oblique"
     # family: "Fira Code"
@@ -93,7 +93,7 @@ font:
     # style: "Medium Italic"
 
   # Point size of the font
-  size: 14.0
+  size: 16
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -122,110 +122,110 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: true
+  # use_thin_strokes: true
 
 # When true, bold text is drawn using the bright variant of colors.
-draw_bold_text_with_bright_colors: false
+# draw_bold_text_with_bright_colors: false
 
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
-custom_cursor_colors: true
+# custom_cursor_colors: true
 
 # Colors
-colors:
-
-  # Tomorrow (https://github.com/aarowill/base16-alacritty/blob/master/colors/base16-tomorrow.yml)
-  # Default colors
-  primary:
-    background: '0xffffff'
-    foreground: '0x4d4d4c'
-  # Colors the cursor will use if `custom_cursor_colors` is true
-  cursor:
-    text: '0xffffff'
-    cursor: '0x4d4d4c'
-  # Normal colors
-  normal:
-    black:   '0xffffff'
-    red:     '0xc82829'
-    green:   '0x718c00'
-    yellow:  '0xeab700'
-    blue:    '0x4271ae'
-    magenta: '0x8959a8'
-    cyan:    '0x3e999f'
-    white:   '0x4d4d4c'
-  # Bright colors
-  bright:
-    black:   '0x8e908c'
-    red:     '0xf5871f'
-    green:   '0xe0e0e0'
-    yellow:  '0xd6d6d6'
-    blue:    '0x969896'
-    magenta: '0x282a2e'
-    cyan:    '0xa3685a'
-    white:   '0x1d1f21'
-
-  # # Tomorrow Night (https://github.com/aarowill/base16-alacritty/blob/master/colors/base16-tomorrow-night.yml)
-  # # Default colors
-  # primary:
-  #   background: '0x1d1f21'
-  #   foreground: '0xc5c8c6'
-  # # Colors the cursor will use if `custom_cursor_colors` is true
-  # cursor:
-  #   text: '0x1d1f21'
-  #   cursor: '0xc5c8c6'
-  # # Normal colors
-  # normal:
-  #   black:   '0x1d1f21'
-  #   red:     '0xcc6666'
-  #   green:   '0xb5bd68'
-  #   yellow:  '0xf0c674'
-  #   blue:    '0x81a2be'
-  #   magenta: '0xb294bb'
-  #   cyan:    '0x8abeb7'
-  #   white:   '0xc5c8c6'
-  # # Bright colors
-  # bright:
-  #   black:   '0x969896'
-  #   red:     '0xde935f'
-  #   green:   '0x282a2e'
-  #   yellow:  '0x373b41'
-  #   blue:    '0xb4b7b4'
-  #   magenta: '0xe0e0e0'
-  #   cyan:    '0xa3685a'
-  #   white:   '0xffffff'
-
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #
-  # Example:
-  #   `- { index: 16, color: '0xff00ff' }`
-  #
-  # indexed_colors: []
-
-# Visual Bell
+# colors:
 #
-# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
-# rung, the terminal background will be set to white and transition back to the
-# default background color. You can control the rate of this transition by
-# setting the `duration` property (represented in milliseconds). You can also
-# configure the transition function by setting the `animation` property.
+#   # Tomorrow (https://github.com/aarowill/base16-alacritty/blob/master/colors/base16-tomorrow.yml)
+#   # Default colors
+#   primary:
+#     background: '0xffffff'
+#     foreground: '0x4d4d4c'
+#   # Colors the cursor will use if `custom_cursor_colors` is true
+#   cursor:
+#     text: '0xffffff'
+#     cursor: '0x4d4d4c'
+#   # Normal colors
+#   normal:
+#     black:   '0xffffff'
+#     red:     '0xc82829'
+#     green:   '0x718c00'
+#     yellow:  '0xeab700'
+#     blue:    '0x4271ae'
+#     magenta: '0x8959a8'
+#     cyan:    '0x3e999f'
+#     white:   '0x4d4d4c'
+#   # Bright colors
+#   bright:
+#     black:   '0x8e908c'
+#     red:     '0xf5871f'
+#     green:   '0xe0e0e0'
+#     yellow:  '0xd6d6d6'
+#     blue:    '0x969896'
+#     magenta: '0x282a2e'
+#     cyan:    '0xa3685a'
+#     white:   '0x1d1f21'
 #
-# Possible values for `animation`
-# `Ease`
-# `EaseOut`
-# `EaseOutSine`
-# `EaseOutQuad`
-# `EaseOutCubic`
-# `EaseOutQuart`
-# `EaseOutQuint`
-# `EaseOutExpo`
-# `EaseOutCirc`
-# `Linear`
+#   # # Tomorrow Night (https://github.com/aarowill/base16-alacritty/blob/master/colors/base16-tomorrow-night.yml)
+#   # # Default colors
+#   # primary:
+#   #   background: '0x1d1f21'
+#   #   foreground: '0xc5c8c6'
+#   # # Colors the cursor will use if `custom_cursor_colors` is true
+#   # cursor:
+#   #   text: '0x1d1f21'
+#   #   cursor: '0xc5c8c6'
+#   # # Normal colors
+#   # normal:
+#   #   black:   '0x1d1f21'
+#   #   red:     '0xcc6666'
+#   #   green:   '0xb5bd68'
+#   #   yellow:  '0xf0c674'
+#   #   blue:    '0x81a2be'
+#   #   magenta: '0xb294bb'
+#   #   cyan:    '0x8abeb7'
+#   #   white:   '0xc5c8c6'
+#   # # Bright colors
+#   # bright:
+#   #   black:   '0x969896'
+#   #   red:     '0xde935f'
+#   #   green:   '0x282a2e'
+#   #   yellow:  '0x373b41'
+#   #   blue:    '0xb4b7b4'
+#   #   magenta: '0xe0e0e0'
+#   #   cyan:    '0xa3685a'
+#   #   white:   '0xffffff'
 #
-# To completely disable the visual bell, set its duration to 0.
+#   # Indexed Colors
+#   #
+#   # The indexed colors include all colors from 16 to 256.
+#   # When these are not set, they're filled with sensible defaults.
+#   #
+#   # Example:
+#   #   `- { index: 16, color: '0xff00ff' }`
+#   #
+#   # indexed_colors: []
 #
+# # Visual Bell
+# #
+# # Any time the BEL code is received, Alacritty "rings" the visual bell. Once
+# # rung, the terminal background will be set to white and transition back to the
+# # default background color. You can control the rate of this transition by
+# # setting the `duration` property (represented in milliseconds). You can also
+# # configure the transition function by setting the `animation` property.
+# #
+# # Possible values for `animation`
+# # `Ease`
+# # `EaseOut`
+# # `EaseOutSine`
+# # `EaseOutQuad`
+# # `EaseOutCubic`
+# # `EaseOutQuart`
+# # `EaseOutQuint`
+# # `EaseOutExpo`
+# # `EaseOutCirc`
+# # `Linear`
+# #
+# # To completely disable the visual bell, set its duration to 0.
+# #
 bell:
   animation: EaseOutExpo
   color: '0xffffff'
@@ -481,7 +481,7 @@ debug:
   #   - INFO
   #   - DEBUG
   #   - TRACE
-  log_level: OFF
+  log_level: "Off"
 
   # Print all received window events.
   print_events: false
@@ -489,13 +489,13 @@ debug:
   # Record all characters and escape sequences as test data.
   ref_test: false
 
-# Shell
+# # Shell
+# #
+# # You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
+# # Entries in shell.args are passed unmodified as arguments to the shell.
+# shell:
+#   program: /opt/hombrew/bin/zsh
+#   args:
+#     - --command=tmux
 #
-# You can set shell.program to the path of your favorite shell, e.g. /bin/fish.
-# Entries in shell.args are passed unmodified as arguments to the shell.
-shell:
-  program: /usr/local/bin/fish
-  args:
-    - --command=tmux
-
 # vim: nospell
