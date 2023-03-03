@@ -14,7 +14,6 @@ return {
 		end,
 	},
 	"kchmck/vim-coffee-script",
-	"ahmedkhalf/project.nvim",
 	"folke/tokyonight.nvim",
 	"tpope/vim-surround",
 	"nvim-tree/nvim-web-devicons",
@@ -32,5 +31,5 @@ return {
   'nvim-telescope/telescope-live-grep-args.nvim',
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
-  'mrjones2014/nvim-ts-rainbow',
+  'hiphish/nvim-ts-rainbow2',
 }

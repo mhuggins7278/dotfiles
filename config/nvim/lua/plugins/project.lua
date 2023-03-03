@@ -1,0 +1,3 @@
+return {
+	"ahmedkhalf/project.nvim",
+}
