@@ -1,6 +1,3 @@
--- Set header
-
-
 return {
     'goolord/alpha-nvim',
     dependencies = {

@@ -1,5 +1,4 @@
 return {
-    {
 
          'nvim-treesitter/nvim-treesitter' ,
         run = ':TSUpdate',
@@ -109,9 +108,4 @@ return {
                 },
             }
         end
-    },
-
-    'nvim-treesitter/playground',
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    'mrjones2014/nvim-ts-rainbow',
 }

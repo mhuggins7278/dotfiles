@@ -4,7 +4,7 @@ return {
         event= "BufRead",
         config = {
             window = {
-                width = 90,
+                width = 120,
                 options = {
                     number = true,
                     relativenumber = true,
@@ -14,7 +14,7 @@ return {
     },
     {
 
-        vim.keymap.set("n", "<leader>zz", function()
+        vim.keymap.set("n", "<leader>z", function()
             require("zen-mode").toggle()
             vim.wo.wrap = false
             ColorMyPencils()

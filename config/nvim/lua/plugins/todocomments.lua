@@ -1,5 +1,4 @@
 return {
-	{
 		"folke/todo-comments.nvim",
 		dependencies = "nvim-lua/plenary.nvim",
         event = "BufRead",
@@ -10,5 +9,4 @@ return {
 				-- refer to the configuration section below
 			})
 		end,
-	},
 }

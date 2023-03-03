@@ -8,16 +8,6 @@ return {
 
 	-- Lua
 	{
-		"folke/which-key.nvim",
-		config = function()
-			require("which-key").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			})
-		end,
-	},
-	{
 		"ellisonleao/glow.nvim",
 		config = function()
 			require("glow").setup({})
@@ -36,4 +26,11 @@ return {
 	"jay-babu/mason-null-ls.nvim",
 	"github/copilot.vim",
 	"nikvdp/ejs-syntax",
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+  'nvim-telescope/telescope-file-browser.nvim',
+  'nvim-telescope/telescope-ui-select.nvim',
+  'nvim-telescope/telescope-live-grep-args.nvim',
+  'nvim-treesitter/playground',
+  'nvim-treesitter/nvim-treesitter-textobjects',
+  'mrjones2014/nvim-ts-rainbow',
 }
