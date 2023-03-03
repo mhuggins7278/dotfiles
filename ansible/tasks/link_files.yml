@@ -50,6 +50,6 @@
     - { src: '~/.dotfiles/config/kitty', dest: '~/.config/kitty', force: yes }
     - { src: '~/.dotfiles/config/lvim/lua', dest: '~/.config/lvim/lua', force: yes }
     - { src: '~/.dotfiles/config/lvim/after', dest: '~/.config/lvim/after', force: yes }
+    - { src: '~/.dotfiles/config/lazygit/config.yml', dest: '~/Library/Application Support/lazygit/config.yml', force: yes }
     - { src: '~/.dotfiles/config/nvim', dest: '~/.config/nvim', force: yes }
-    - { src: '~/.dotfiles/config/alacritty', dest: '~/.config/alacritty', force: yes }
     - { src: '~/.dotfiles/config/tmux/tmux.conf', dest: '~/.tmux.conf', force: yes }

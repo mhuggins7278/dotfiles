@@ -60,6 +60,7 @@
         - '~/.config/terminator/'
         - '~/.local/share/zsh/'
         - '~/Library/Application Support/Code/User/'
+        - '~/Library/Application Support/layzgit/'
         - '~/github/'
         - '~/github/glg/'
         - '~/github/mhuggins7278/'

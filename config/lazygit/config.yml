@@ -1,0 +1,11 @@
+git:
+  parseEmoji: true
+os:
+  editCommand: 'vim' # as an example
+customCommands:
+  - key: "C"
+    command: "gitmoji -c"
+    description: "commit with gitmoji"
+    context: "files"
+    loadingText: "opening gitmoji commit tool"
+    subprocess: true

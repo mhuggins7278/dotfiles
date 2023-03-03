@@ -19,6 +19,7 @@ formula:
   findutils:
   fzf:
   go:
+  gitmoji:
   grc:
   grep:
   htop:
@@ -49,11 +50,10 @@ formula:
   starship:
   ssh-copy-id:
   telnet:
-  tmux:
   tree:
   unp:
   watch:
   wget:
   wireguard-tools:
   xz:
-  zsh: 
+  zsh:
