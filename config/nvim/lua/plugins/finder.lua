@@ -9,9 +9,6 @@ return {
             actions.select_default()
             actions.center()
         end)
-        require("project_nvim").setup {
-            patterns = { ".git" }
-        }
         require('telescope').setup {
             extensions = {
                 ["ui-select"] = {
