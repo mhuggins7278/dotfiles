@@ -32,4 +32,5 @@ return {
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
   'hiphish/nvim-ts-rainbow2',
+  'tpope/vim-abolish',
 }

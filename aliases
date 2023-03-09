@@ -1,6 +1,6 @@
 # List direcory conqtents
-alias vim="lvim"
-alias vi="lvim"
+alias vim="nvim"
+alias vi="nvim"
 alias cat="bat"
 alias ls="exa --icons"
 alias python-"python3"

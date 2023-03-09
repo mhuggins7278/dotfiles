@@ -9,7 +9,6 @@ require("tokyonight").setup({
 })
 require("catppuccin").setup({
     flavour = "mocha",
-    transparent_background = true,
 })
 
 require("kanagawa").setup({
