@@ -3,8 +3,9 @@ test -e $HOME/.dotfiles/extra.shell && source $HOME/.dotfiles/extra.shell
 #
 test -e $HOME/.dotfiles/aliases && source $HOME/.dotfiles/aliases
 
-export EDITOR=vim
-export VISUAL=vim
+
+export EDITOR=nvim
+export VISUAL=nvim
 export GOPATH=$HOME/Coding/golang
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
 export FZF_DEFAULT_OPTS="--ansi"
