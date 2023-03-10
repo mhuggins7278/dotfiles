@@ -10,6 +10,14 @@ alias gpl="git_prune_local"
 alias gdb="git_delete_branch"
 
 
+# Zellij
+alias zs="zellij -s"
+alias za="zellij a"
+alias zl="zellij ls"
+alias zk="zellij k"
+alias zl="zellij ls"
+
+
 # Color output
 alias grep='grep --color=auto'
 alias tree="tree -C"
@@ -50,7 +58,7 @@ alias pubkey="more ~/.ssh/id_ed25519.pub | pbcopy | printf '=> Public key copied
 
 # Ping some hosts
 alias p8="ping 8.8.8.8"
-alias pg="ping google.de"
+alias pg="ping google.com"
 
 # Generate some save passwords
 alias pwgen="pwgen --capitalize --numerals --symbols --secure 16"
@@ -66,8 +74,6 @@ alias axel="axel -an 10"
 alias ssh_ignore="ssh -F /dev/null"
 
 # Some more stuff
-alias starwars="telnet towel.blinkenlights.nl"
-alias ubuntu="docker run --rm -ti ubuntu /bin/bash"
 alias brewsync="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml --tags packages"
 alias dotfiles="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml"
 alias play="ansible-playbook"
