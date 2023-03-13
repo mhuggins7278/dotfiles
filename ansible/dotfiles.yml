@@ -58,6 +58,7 @@
         - '~/.config/planetscale/'
         - '~/.config/mssqlcli/'
         - '~/.config/terminator/'
+        - '~/.config/zellij/'
         - '~/.local/share/zsh/'
         - '~/Library/Application Support/Code/User/'
         - '~/Library/Application Support/layzgit/'

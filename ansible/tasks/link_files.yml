@@ -53,3 +53,4 @@
     - { src: '~/.dotfiles/config/lazygit/config.yml', dest: '~/Library/Application Support/lazygit/config.yml', force: yes }
     - { src: '~/.dotfiles/config/nvim', dest: '~/.config/nvim', force: yes }
     - { src: '~/.dotfiles/config/tmux/tmux.conf', dest: '~/.tmux.conf', force: yes }
+    - { src: '~/.dotfiles/config/zellij/config.kdl', dest: '~/.config/zellij/config.kdl', force: yes }
