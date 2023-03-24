@@ -3,7 +3,11 @@ keybinds {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
-        bind "Alt s" {SwitchToMode "Search"}
+        bind "Ctrl f" {SwitchToMode "Search";}
+        bind "Ctrl t" {SwitchToMode "Session";}
+        unbind "Ctrl s"
+        unbind "Ctrl o"
+        unbind "Ctrl ;"
     }
     locked {
         bind "Ctrl g" { SwitchToMode "Normal"; }
@@ -81,7 +85,7 @@ keybinds {
         // bind "Alt c" { Copy; }
     }
     search {
-        bind "Ctrl s" { SwitchToMode "Normal"; }
+        bind "Ctrl f" { SwitchToMode "Normal"; }
         bind "Ctrl c" { ScrollToBottom; SwitchToMode "Normal"; }
         bind "j" "Down" { ScrollDown; }
         bind "k" "Up" { ScrollUp; }
@@ -108,7 +112,7 @@ keybinds {
         bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
     }
     session {
-        bind "Ctrl o" { SwitchToMode "Normal"; }
+        bind "Ctrl t" { SwitchToMode "Normal"; }
         bind "Ctrl s" { SwitchToMode "Scroll"; }
         bind "d" { Detach; }
     }
