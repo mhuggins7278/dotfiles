@@ -135,7 +135,7 @@ return {
         null_ls.builtins.diagnostics.eslint_d,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.diagnostics.sqlfluff.with({
-          extra_args = { "--dialect", "ansi", "--exclude", "capitalisation" }, -- change to your dialect
+          extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
         }),
       },
     })
