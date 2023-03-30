@@ -25,7 +25,7 @@ return {
         require("telescope").load_extension("ui-select")
         require("telescope").load_extension("file_browser")
         require("telescope").load_extension("live_grep_args")
-        vim.keymap.set('n', '<leader>sf', "<cmd>Telescope find_files hidden=true<cr>", { desc = 'Find All Files' })
+        vim.keymap.set('n', '<leader>sf', "<cmd>Telescope find_files<cr>", { desc = 'Find All Files' })
         vim.keymap.set('n', '<leader>sF', "<cmd>Telescope file_browser<cr>", { desc = 'File Browser' })
         vim.keymap.set('n', '<leader>sg', "<cmd>Telescope git_files<cr>", { desc = 'Find Git Files' })
         vim.keymap.set('n', '<leader>sw', "<cmd>Telescope grep_string<cr>", { desc = 'Find Current Word' })

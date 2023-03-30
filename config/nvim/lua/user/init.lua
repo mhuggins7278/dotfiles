@@ -13,6 +13,11 @@ vim.opt.rtp:prepend(lazypath)
 
 require("user.set")
 require("user.remap")
+require("user.autocmds")
+
+function R(name)
+    require("plenary.reload").reload_module(name)
+end
 
 local augroup = vim.api.nvim_create_augroup
 local UserGroup = augroup('UserGroup', {})
@@ -20,9 +25,6 @@ local UserGroup = augroup('UserGroup', {})
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup('HighlightYank', {})
 
-function R(name)
-    require("plenary.reload").reload_module(name)
-end
 
 autocmd('TextYankPost', {
     group = yank_group,
