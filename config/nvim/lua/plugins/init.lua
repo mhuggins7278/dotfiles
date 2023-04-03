@@ -31,6 +31,7 @@ return {
   'nvim-telescope/telescope-live-grep-args.nvim',
   'nvim-treesitter/playground',
   'nvim-treesitter/nvim-treesitter-textobjects',
+  'nvim-treesitter/nvim-treesitter-context',
   'hiphish/nvim-ts-rainbow2',
   'tpope/vim-abolish',
 }
