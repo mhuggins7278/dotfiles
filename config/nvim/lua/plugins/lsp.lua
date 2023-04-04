@@ -28,8 +28,9 @@ return {
 			"eslint",
 			"lua_ls",
 			"rust_analyzer",
+      "sqlls",
 		})
-		lsp.skip_server_setup({ "denols" })
+		lsp.skip_server_setup({ "denols", "sqls" })
 		-- Fix Undefined global 'vim'
 		lsp.configure("lua_ls", {
 			settings = {
