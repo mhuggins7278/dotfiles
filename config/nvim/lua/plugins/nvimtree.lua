@@ -2,7 +2,7 @@ return {
   {
 	"nvim-tree/nvim-tree.lua",
 	config = {
-    sync_root_width_cwd = true,
+    sync_root_with_cwd = true,
 		view = {
 			float = {
 				enable = true,
