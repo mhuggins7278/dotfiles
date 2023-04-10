@@ -120,8 +120,9 @@ return {
 		-- https://github.com/jay-babu/mason-null-ls.nvim#setup
 		require("mason-null-ls").setup({
 			ensure_installed = nil,
-			automatic_installation = false, -- You can still set this to `true`
+			automatic_installation = true, -- You can still set this to `true`
 			automatic_setup = true,
+      handlers = {},
 		})
     local null_ls = require("null-ls")
 		require("null-ls").setup({
@@ -135,6 +136,6 @@ return {
       },
     })
 		-- Required when `automatic_setup` is true
-		require("mason-null-ls").setup_handlers()
+		-- require("mason-null-ls").setup_handlers()
 	end,
 }
