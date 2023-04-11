@@ -37,3 +37,8 @@ vim.keymap.set("n", "<leader>ls", vim.lsp.buf.workspace_symbol, { desc = "Symbol
 vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Diagnostics" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { remap = false, desc = "Next Diag" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, { remap = false, desc = "Prev Diag" })
+
+vim.keymap.set("n", "<leader>lnf", ":Neogen func<CR>", {remap = false, desc = "Doc Function"})
+vim.keymap.set("n", "<leader>lnc", ":Neogen class<CR>", {remap = false, desc = "Doc Class"})
+vim.keymap.set("n", "<leader>lnt", ":Neogen type<CR>", {remap = false, desc = "Doc Type"})
+

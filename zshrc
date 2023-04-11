@@ -56,7 +56,9 @@ export NVM_DIR=~/.nvm
 
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 
-# export PATH="$PATH:~/usr/local/share/dotnet"
+export DOTNET_ROOT=$HOME/dotnet
+
+export PATH="$DOTNET_ROOT:$PATH"
 
 # tabtab source for packages
 # uninstall by removing these lines

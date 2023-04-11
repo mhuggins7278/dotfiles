@@ -34,4 +34,9 @@ return {
   'hiphish/nvim-ts-rainbow2',
   'tpope/vim-abolish',
   {'zbirenbaum/copilot-cmp', config = true},
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true,
+}
 }
