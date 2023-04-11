@@ -28,7 +28,7 @@ return {
 			"eslint",
 			"lua_ls",
 			"rust_analyzer",
-      "sqlls",
+			"sqlls",
 		})
 		lsp.skip_server_setup({ "denols", "sqls" })
 		-- Fix Undefined global 'vim'
@@ -42,22 +42,6 @@ return {
 			},
 		})
 		lsp.nvim_workspace()
-
-		-- local null_ls = require("null-ls")
-		-- local null_opts = lsp.build_options("null-ls", {})
-		--
-		-- null_ls.setup({
-		-- 	on_attach = function(client, bufnr)
-		-- 		null_opts.on_attach(client, bufnr)
-		-- 	end,
-		-- 	sources = {
-		-- 		-- You can add tools not supported by mason.nvim
-		-- 	},
-		-- })
-
-		-- require("cmp").config.formatting = {
-		-- 	format = require("tailwindcss-colorizer-cmp").formatter,
-		-- }
 
 		local cmp = require("cmp")
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -74,6 +58,13 @@ return {
 
 		lsp.setup_nvim_cmp({
 			mapping = cmp_mappings,
+			sources = {
+				{ name = "copilot", group_index = 2 },
+				-- Other Sources
+				{ name = "nvim_lsp", group_index = 2 },
+				{ name = "path", group_index = 2 },
+				{ name = "luasnip", group_index = 2 },
+			},
 		})
 
 		lsp.set_preferences({
@@ -122,19 +113,19 @@ return {
 			ensure_installed = nil,
 			automatic_installation = true, -- You can still set this to `true`
 			automatic_setup = true,
-      handlers = {},
+			handlers = {},
 		})
-    local null_ls = require("null-ls")
+		local null_ls = require("null-ls")
 		require("null-ls").setup({
-      sources = {
-        null_ls.builtins.formatting.prettierd,
-        null_ls.builtins.diagnostics.eslint_d,
-        null_ls.builtins.formatting.stylua,
-        null_ls.builtins.diagnostics.sqlfluff.with({
-          extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
-        }),
-      },
-    })
+			sources = {
+				null_ls.builtins.formatting.prettierd,
+				null_ls.builtins.diagnostics.eslint_d,
+				null_ls.builtins.formatting.stylua,
+				null_ls.builtins.diagnostics.sqlfluff.with({
+					extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
+				}),
+			},
+		})
 		-- Required when `automatic_setup` is true
 		-- require("mason-null-ls").setup_handlers()
 	end,

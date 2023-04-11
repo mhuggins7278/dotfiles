@@ -33,4 +33,5 @@ return {
   'nvim-treesitter/nvim-treesitter-context',
   'hiphish/nvim-ts-rainbow2',
   'tpope/vim-abolish',
+  {'zbirenbaum/copilot-cmp', config = true},
 }
