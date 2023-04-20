@@ -30,8 +30,18 @@ return {
 			"rust_analyzer",
 			"sqlls",
 		})
-		lsp.skip_server_setup({ "denols", "sqls" })
+		-- lsp.skip_server_setup({ "denols", "sqls" })
 		-- Fix Undefined global 'vim'
+		local nvim_lsp = require("lspconfig")
+		lsp.configure("denols", {
+			root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+		})
+
+		lsp.configure("tsserver", {
+			root_dir = nvim_lsp.util.root_pattern("package.json"),
+			single_file_support = false,
+		})
+
 		lsp.configure("lua_ls", {
 			settings = {
 				Lua = {

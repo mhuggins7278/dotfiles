@@ -6,6 +6,7 @@ ZSH=$HOME/.local/share/oh-my-zsh
 plugins=(git z asdf fzf)
 
 source $ZSH/oh-my-zsh.sh
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # History file settings
 HISTFILE=~/.local/share/zsh/zsh_history
