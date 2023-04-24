@@ -81,8 +81,6 @@ return {
 		vim.diagnostic.config(require("lsp-zero").defaults.diagnostics({
 			virtual_text = true,
     }))
-		-- vim.diagnostic.config(lsp.defaults.diagnostics({
-		-- }))
 
 		---
 		-- Snippet config
@@ -154,6 +152,7 @@ return {
 				null_ls.builtins.formatting.prettierd,
 				null_ls.builtins.diagnostics.eslint_d,
 				null_ls.builtins.formatting.stylua,
+				null_ls.builtins.diagnostics.cspell,
 				null_ls.builtins.diagnostics.sqlfluff.with({
 					extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
 				}),
