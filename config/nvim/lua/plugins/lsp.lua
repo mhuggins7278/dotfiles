@@ -61,7 +61,6 @@ return {
 			end,
 		})
 
-
 		require("mason").setup()
 		require("mason-nvim-dap").setup({
 			automatic_installation = true,
@@ -80,7 +79,7 @@ return {
 		require("lsp-zero").set_sign_icons()
 		vim.diagnostic.config(require("lsp-zero").defaults.diagnostics({
 			virtual_text = true,
-    }))
+		}))
 
 		---
 		-- Snippet config
@@ -104,6 +103,7 @@ return {
 		local cmp_config = require("lsp-zero").defaults.cmp_config({
 			mapping = {
 				["<C-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+				["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
 				["<C-Space>"] = cmp.mapping.complete(),
 				-- disable completion with tab
 				-- this helps with copilot setup
@@ -151,8 +151,12 @@ return {
 			sources = {
 				null_ls.builtins.formatting.prettierd,
 				null_ls.builtins.diagnostics.eslint_d,
+				null_ls.builtins.code_actions.eslint_d,
 				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.diagnostics.cspell,
+				null_ls.builtins.diagnostics.cspell.with({
+					extra_args = { "--config", vim.fn.expand("~/cspell.json") },
+				}),
+				null_ls.builtins.code_actions.cspell,
 				null_ls.builtins.diagnostics.sqlfluff.with({
 					extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
 				}),
