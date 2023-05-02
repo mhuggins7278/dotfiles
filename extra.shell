@@ -52,3 +52,22 @@ nvmit() {
     fi
 }
 
+awspro () {
+  echo
+   export AWS_PROFILE=$(sed -n "s/^\[\(profile \)\{0,1\}\(.*\)\]/\2/gp" ~/.aws/config | fzf --reverse --color=16)
+   if [ "${AWS_PROFILE}" = "default" ]
+   then
+       unset AWS_PROFILE
+       return 0
+   fi
+   _whoami=$(aws sts get-caller-identity 2>/dev/null)
+   if [ $? != 0 ]
+   then
+    aws sso login
+    _whoami=$(aws sts get-caller-identity 2>/dev/null)
+   fi
+   echo "${_whoami}" | jq --raw-output '.Arn'
+   unset _whoami
+   echo
+}
+

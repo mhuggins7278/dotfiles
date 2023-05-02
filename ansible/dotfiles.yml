@@ -38,6 +38,12 @@
         dest: ~/.local/share/oh-my-zsh
         update: yes
 
+    - name: Install tpm
+      git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: ~/.tmux/tpm
+        update: yes
+
     - name: Create folder
       file:
         path: '{{item}}'

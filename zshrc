@@ -3,7 +3,8 @@ ZSH=$HOME/.local/share/oh-my-zsh
 
 # Which plugins would you like to load?
 # See https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins
-plugins=(git z asdf fzf)
+plugins=(git asdf fzf)
+eval "$(zoxide init zsh)"
 
 source $ZSH/oh-my-zsh.sh
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -60,6 +61,11 @@ export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export DOTNET_ROOT=$HOME/dotnet
 
 export PATH="$DOTNET_ROOT:$PATH"
+
+# ~/.tmux/plugins
+export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
+# ~/.config/tmux/plugins
+export PATH=$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 
 # tabtab source for packages
 # uninstall by removing these lines

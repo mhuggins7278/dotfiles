@@ -37,6 +37,7 @@ return {
     vim.keymap.set("n", "<leader>sb", "<cmd>Telescope buffers<cr>", { desc = "Find Buffers" })
     vim.keymap.set("n", "<leader>sr", "<cmd>Telescope oldfiles<cr>", { desc = "Find Recent Files" })
     vim.keymap.set("n", "<leader>sh", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+    vim.keymap.set("n", "<leader>sT", "<cmd>TodoTelescope<cr>", { desc = "Find Todos" })
     vim.keymap.set(
       "n",
       "<leader>sp",
@@ -44,5 +45,6 @@ return {
       { desc = "Find Project" }
     )
     vim.keymap.set("n", "<leader>sR", "<cmd>Telescope resume<cr>", { desc = "Reopen" })
+    vim.keymap.set("n", "<leader>sa", ":lua require('nx.actions').actions_finder({opts})<CR>", { desc = "NX actions" })
   end,
 }
