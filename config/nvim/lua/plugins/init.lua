@@ -33,6 +33,7 @@ return {
   'nvim-treesitter/nvim-treesitter-context',
   'hiphish/nvim-ts-rainbow2',
   'tpope/vim-abolish',
+  'christoomey/vim-tmux-navigator',
   {'zbirenbaum/copilot-cmp', config = true},
   {
     "danymat/neogen",
