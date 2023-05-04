@@ -64,6 +64,7 @@
         - '~/.config/planetscale/'
         - '~/.config/mssqlcli/'
         - '~/.config/terminator/'
+        - '~/.config/tmux/'
         - '~/.config/zellij/'
         - '~/.local/share/zsh/'
         - '~/Library/Application Support/Code/User/'
