@@ -3,3 +3,4 @@ taps:
   homebrew/cask-versions:
   homebrew/command-not-found:
   homebrew/cask-fonts:
+  arl/arl:
