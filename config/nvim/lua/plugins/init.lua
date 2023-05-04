@@ -15,6 +15,7 @@ return {
 	},
 	"kchmck/vim-coffee-script",
 	"folke/tokyonight.nvim",
+	"folke/trouble.nvim",
 	"tpope/vim-surround",
 	"nvim-tree/nvim-web-devicons",
 	"mfussenegger/nvim-dap",

@@ -50,7 +50,7 @@ return {
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = "auto",
+				theme = "catppuccin",
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
 				disabled_filetypes = {
@@ -74,8 +74,7 @@ return {
 					{ lsp_progress },
 				},
 				lualine_x = { "encoding", "fileformat", "filetype" },
-				-- lualine_y = { "progress" },
-				lualine_y = {{get_project_name, icon = " "}},
+			  lualine_y = { "progress" },
 			},
 			inactive_sections = {
 				lualine_a = {},

@@ -27,7 +27,7 @@
  font_size 16.0
  font_family JetBrainsMono Nerd Font Regular
  bold_font  JetBrainsMono Nerd Font Bold
- italic_font JetBrainsMono Nerd Font Italic 
+ italic_font JetBrainsMono Nerd Font Italic
  bold_italic_font JetBrainsMono Nerd Font BoldItalic
 
 
@@ -239,7 +239,7 @@
 
 #: Scrollback {{{
 
-# scrollback_lines 2000
+scrollback_lines 999999
 
 #: Number of lines of history to keep in memory for scrolling back.
 #: Memory is allocated on demand. Negative numbers are (effectively)
@@ -756,8 +756,8 @@
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
 
-#: hide_window_decorations titlebar-only
- 
+hide_window_decorations titlebar-only
+
 
 #: Hide the window decorations (title-bar and window borders) with
 #: yes. On macOS, titlebar-only can be used to only hide the titlebar.
@@ -2188,5 +2188,4 @@ include current-theme.conf
 
 #OVERRIDE THEME FOR OPACITY
 
-#background_opacity 0.50 
-#background_tint 0.90
+#background_opacity 0.00
