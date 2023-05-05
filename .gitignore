@@ -27,3 +27,5 @@ Temporary Items
 *.tmproj
 *.tmproject
 tmtags
+
+config/tmux/plugins

@@ -122,6 +122,11 @@ return {
 				{ name = "path", group_index = 2 },
 				{ name = "luasnip", group_index = 2 },
 			},
+      snippet = {
+        expand = function(args)
+          require('luasnip').lsp_expand(args.body)
+        end,
+      },
 		})
 
 		local nvim_lsp = require("lspconfig")
