@@ -14,6 +14,7 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
+vim.opt.autoindent = true
 
 vim.opt.wrap = false
 
@@ -35,12 +36,7 @@ vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
 
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.opt.foldlevel = 9999
-
-
-vim.cmd([[
-  syntax enable
-  filetype plugin indent on
-]])
+vim.opt.list = true
+vim.opt.listchars = {eol = '↲', tab = '▸ ', trail = '·'}
+vim.opt.syntax = "on"
+vim.opt.filetype.plugin = "on"
