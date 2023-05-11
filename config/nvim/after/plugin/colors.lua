@@ -10,7 +10,6 @@ require("tokyonight").setup({
 require("catppuccin").setup({
 	flavour = "mocha",
 	term_colors = true,
-	transparent_background = true,
 	integrations = {
 		octo = true,
 		which_key = true,
@@ -22,8 +21,8 @@ require("catppuccin").setup({
 		mason = true,
 		noice = true,
 		dap = {
-			enabled = false,
-			enable_ui = false,
+			enabled = true,
+			enable_ui = true,
 		},
 	},
 })
@@ -35,10 +34,9 @@ require("kanagawa").setup({
 function ColorMyPencils(color)
 	color = color or "catppuccin"
 	vim.cmd.colorscheme(color)
-
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
-vim.opt.termguicolors = true
+-- vim.opt.termguicolors = true
 ColorMyPencils()
