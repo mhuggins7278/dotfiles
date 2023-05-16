@@ -32,7 +32,7 @@ return {
 					vim.lsp.buf.code_action,
 					{ buffer = bufnr, remap = false, desc = "Code Actions" }
 				)
-				vim.keymap.set("n", "<leader>lr", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
+				vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
 				vim.keymap.set(
 					"n",
 					"<leader>li",
@@ -42,7 +42,7 @@ return {
 				vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
 				vim.keymap.set(
 					"n",
-					"<leader>lR",
+					"<leader>lr",
 					vim.lsp.buf.rename,
 					{ buffer = bufnr, remap = false, desc = "Rename" }
 				)
@@ -158,6 +158,7 @@ return {
 				null_ls.builtins.diagnostics.eslint_d,
 				null_ls.builtins.code_actions.eslint_d,
 				null_ls.builtins.formatting.stylua,
+        null_ls.builtins.code_actions.gitsigns,
 				null_ls.builtins.diagnostics.cspell.with({
 					extra_args = { "--config", vim.fn.expand("~/cspell.json") },
 				}),

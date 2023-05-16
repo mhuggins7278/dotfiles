@@ -24,7 +24,8 @@ return {
     require("telescope").load_extension("ui-select")
     require("telescope").load_extension("file_browser")
     require("telescope").load_extension("live_grep_args")
-    require("telescope").load_extension("refactoring")
+    require('telescope').load_extension("notify")
+    -- require("telescope").load_extension("refactoring")
 
     local wk = require("which-key")
     wk.register({
@@ -52,6 +53,6 @@ return {
           "NX actions",
         },
       },
-    }, { prefix = "<leader>" })
+    }, {mode={'n','v'}, prefix = "<leader>" })
   end,
 }
