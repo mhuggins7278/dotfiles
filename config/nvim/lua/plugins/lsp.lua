@@ -26,6 +26,7 @@ return {
 			on_attach = function(_, bufnr)
 				vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, {buffer = bufnr, remap = false})
 				vim.keymap.set(
 					"n",
 					"<leader>la",
