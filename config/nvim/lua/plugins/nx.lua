@@ -3,14 +3,13 @@ return {
   dependencies = {
     "nvim-telescope/telescope.nvim",
   },
-  cmd = { "Nx" },
   config = function()
     require("nx").setup({
        -- Base command to run all other nx commands, some other values may be:
         -- - `npm nx`
         -- - `yarn nx`
         -- - `pnpm nx`
-        nx_cmd_root = 'nx',
+        nx_cmd_root = 'pnpm nx',
 
         -- Command running capabilities,
         -- see nx.m.command-runners for more details
