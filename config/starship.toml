@@ -7,14 +7,14 @@ charging_symbol = "🔌"
 discharging_symbol = "⚡"
 
 [[battery.display]]
-threshold = 101 
+threshold = 101
 style = ""
 [[battery.display]]
 threshold = 10
 style = "bold red"
 
 [directory]
-truncation_length = 3 
+truncation_length = 3
 truncate_to_repo = false
 truncation_symbol = "…/"
 
@@ -37,11 +37,4 @@ only_detached = false
 
 [git_metrics]
 disabled = false
-
-[memory_usage]
-disabled = false
-threshold = -1
-symbol = "🐏"
-style = "bold dimmed green"
-format = "${symbol} ${ram_pct} ($style) "
 

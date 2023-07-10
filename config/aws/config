@@ -26,3 +26,11 @@ sso_account_id = 868468680417
 sso_role_name = CLIOnlySecretsAccess
 region = us-east-1
 output = json
+[profile personal]
+sso_start_url = https://d-9a67075ee1.awsapps.com/start#/
+sso_region = us-east-2
+sso_account_id = 041288469761
+sso_role_name = personal
+region = us-east-2
+output = json
+
