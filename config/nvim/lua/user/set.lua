@@ -40,3 +40,8 @@ vim.opt.list = true
 vim.opt.listchars = {eol = '↲', tab = '▸ ', trail = '·'}
 vim.opt.syntax = "on"
 vim.opt.filetype.plugin = "on"
+
+
+vim.o.foldlevel = 99
+vim.o.foldmethod = "indent"
+vim.o.foldenable = true

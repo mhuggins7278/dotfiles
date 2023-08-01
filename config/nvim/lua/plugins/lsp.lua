@@ -137,6 +137,7 @@ return {
     require("lspconfig").tsserver.setup({
       root_dir = nvim_lsp.util.root_pattern("package.json"),
       single_file_support = true,
+      -- filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "coffee" },
     })
 
     require("lspconfig").denols.setup({
@@ -160,6 +161,7 @@ return {
         null_ls.builtins.formatting.prettierd.with({
           filetypes = {
             "vue",
+            "coffee",
             "typescript",
             "jsonc",
             "handlebars",

@@ -50,7 +50,7 @@ return {
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = "catppuccin",
+				theme = "auto",
 				component_separators = { left = "", right = "" },
 				section_separators = { left = "", right = "" },
 				disabled_filetypes = {
@@ -68,7 +68,7 @@ return {
 			},
 			sections = {
 				lualine_a = { "mode" },
-				lualine_b = { "branch", "diff", "diagnostics", "filename" },
+				lualine_b = { { "filename", path=1 } },
 				lualine_c = {
 					{ lsp_client, icon = " " },
 					{ lsp_progress },
