@@ -26,7 +26,7 @@ return {
 	{ "catppuccin/nvim", as = "catppuccin" },
 	"rebelot/kanagawa.nvim",
 	"jose-elias-alvarez/null-ls.nvim",
-	"jay-babu/mason-null-ls.nvim",
+	-- "jay-babu/mason-null-ls.nvim",
 	"nikvdp/ejs-syntax",
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	"nvim-telescope/telescope-file-browser.nvim",

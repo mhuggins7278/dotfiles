@@ -10,6 +10,7 @@ require("tokyonight").setup({
 require("catppuccin").setup({
   flavour = "mocha",
   term_colors = true,
+  transparent_background = true,
   integrations = {
     octo = true,
     which_key = true,
@@ -20,11 +21,18 @@ require("catppuccin").setup({
     gitsigns = true,
     mason = true,
     noice = true,
+    notify = true,
+    nvimtree = true,
+    markdown = true,
+    telescope = {
+      enabled = true,
+    },
     dap = {
       enabled = true,
       enable_ui = true,
     },
   },
+   compile_path = vim.fn.stdpath "cache" .. "/catppuccin"
 })
 
 require("kanagawa").setup({
@@ -55,7 +63,7 @@ require("github-theme").setup({
 })
 
 function ColorMyPencils(color)
-  color = color or "github_dark"
+  color = color or "catppuccin"
   vim.cmd.colorscheme(color)
   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })

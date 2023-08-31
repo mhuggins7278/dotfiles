@@ -5,6 +5,7 @@ return {
     { "neovim/nvim-lspconfig" },
     { "williamboman/mason.nvim" },
     { "williamboman/mason-lspconfig.nvim" },
+    -- { "jay-babu/mason-null-ls.nvim" },
 
     -- Autocompletion
     { "hrsh7th/nvim-cmp" },
@@ -21,7 +22,7 @@ return {
     { "rafamadriz/friendly-snippets" },
   },
   config = function()
-    local lsp = require("lsp-zero")
+    local lsp = require("lsp-zero").preset({})
     require("lsp-zero").extend_lspconfig({
       on_attach = function(_, bufnr)
         vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
@@ -154,37 +155,43 @@ return {
       },
     })
 
+    require("lspconfig").null_ls.setup({
+      settings = {
+        format = false,
+      }
+
+    })
+
     lsp.nvim_workspace()
     local null_ls = require("null-ls")
     require("null-ls").setup({
       sources = {
         null_ls.builtins.formatting.prettierd.with({
           filetypes = {
-            "vue",
-            "coffee",
-            "typescript",
-            "jsonc",
-            "handlebars",
+            "astro",
             "css",
-            "html",
-            "json",
-            "javascriptreact",
             "graphql",
-            "typescriptreact",
-            "markdown",
-            "scss",
+            "handlebars",
+            "html",
             "javascript",
-            "markdown.mdx",
+            "javascriptreact",
+            "json",
+            "jsonc",
             "less",
-            "yaml",
             "lua",
             "luau",
+            "markdown",
+            "markdown.mdx",
+            "scss",
             "sql",
-            "astro",
+            "typescript",
+            "typescriptreact",
+            "vue",
+            "yaml",
           },
         }),
-        null_ls.builtins.diagnostics.eslint_d,
-        null_ls.builtins.code_actions.eslint_d,
+        -- null_ls.builtins.diagnostics.eslint_d,
+        -- null_ls.builtins.code_actions.eslint_d,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.code_actions.gitsigns,
         null_ls.builtins.diagnostics.cspell.with({
@@ -192,9 +199,26 @@ return {
         }),
         null_ls.builtins.code_actions.cspell,
         null_ls.builtins.diagnostics.sqlfluff.with({
-          extra_args = { "--dialect", "ansi", "--exclude-rules", "capitalisation" }, -- change to your dialect
+          extra_args = { "--dialect", "tsql", "--exclude-rules", "capitalisation" }, -- change to your dialect
+        }),
+        null_ls.builtins.formatting.sqlfluff.with({
+          extra_args = { "--dialect", "tsql" }, -- change to your dialect
         }),
       },
+      on_attach = function(_, bufnr)
+        local all_formatter = null_ls.get_sources({ method = null_ls.methods.FORMATTING })
+        for _, formatter in pairs(all_formatter) do
+          if formatter.filetypes[vim.bo.filetype] then
+            vim.api.nvim_buf_set_keymap(
+              bufnr,
+              'n',
+              '<leader>f',
+              '<cmd>lua vim.lsp.buf.format()<CR>',
+              {  desc = "Lsp Format"}
+            )
+          end
+        end
+      end,
     })
   end,
 }

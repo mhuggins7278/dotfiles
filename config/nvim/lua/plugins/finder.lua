@@ -24,14 +24,20 @@ return {
     require("telescope").load_extension("ui-select")
     require("telescope").load_extension("file_browser")
     require("telescope").load_extension("live_grep_args")
-    require('telescope').load_extension("notify")
+    require("telescope").load_extension("notify")
     require("telescope").load_extension("refactoring")
+    vim.keymap.set({ "n", "x" }, "<leader>rr", function()
+      require("telescope").extensions.refactoring.refactors()
+    end)
 
     local wk = require("which-key")
     wk.register({
       ["s"] = {
         name = "+search",
-        ["f"] = { "<cmd>Telescope find_files<cr>", "Find All Files" },
+        ["f"] = {
+          "<cmd>Telescope find_files find_command=rg,--hidden,--files,-g=!.git/ <cr>",
+          "Find All Files",
+        },
         ["F"] = { "<cmd>Telescope file_browser<cr>", "File Browser" },
         ["g"] = { "<cmd>Telescope git_files<cr>", "Find Git Files" },
         ["w"] = { "<cmd>Telescope grep_string<cr>", "Find Current Word" },
@@ -53,6 +59,13 @@ return {
           "NX actions",
         },
       },
-    }, {mode={'n','v'}, prefix = "<leader>" })
+      ["r"] = {
+        name = "+refactors",
+        ["r"] = {
+          ":lua require('telescope').extensions.refactoring.refactors()<CR>",
+          "Refactors picker",
+        },
+      },
+    }, { mode = { "n", "v", "x" }, prefix = "<leader>" })
   end,
 }

@@ -70,8 +70,9 @@ return {
 				lualine_a = { "mode" },
 				lualine_b = { { "filename", path=1 } },
 				lualine_c = {
-					{ lsp_client, icon = " " },
+					{ lsp_client},
 					{ lsp_progress },
+          {require('pomodoro').statusline },
 				},
 				lualine_x = { "encoding", "fileformat", "filetype" },
 			  lualine_y = { "progress" },

@@ -37,15 +37,5 @@ local coffeelint = {
     }),
   }),
 }
-local coffeeformatter = {
-    method = null_ls.methods.FORMATTING,
-    filetypes = { "coffee" },
-    generator = null_ls.formatter({
-        command = "sh",
-        args = { "-c", "shellcheck $0 --format=diff | patch $0 -o-", '$FILENAME' },
-        to_stdin = true,
-        from_stderr = true,
-    }),
-}
 
 null_ls.register(coffeelint)

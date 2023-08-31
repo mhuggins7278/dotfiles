@@ -3,7 +3,7 @@ return {
 		"nvim-tree/nvim-tree.lua",
 		config = function()
 			require("nvim-tree").setup({
-				-- disable_netrw = true,
+				-- disable_netrw = false,
         hijack_netrw = false,
 				sync_root_with_cwd = true,
 				respect_buf_cwd = true,
