@@ -194,10 +194,10 @@ return {
         -- null_ls.builtins.code_actions.eslint_d,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.code_actions.gitsigns,
-        null_ls.builtins.diagnostics.cspell.with({
-          extra_args = { "--config", vim.fn.expand("~/cspell.json") },
-        }),
-        null_ls.builtins.code_actions.cspell,
+        -- null_ls.builtins.diagnostics.cspell.with({
+        --   extra_args = { "--config", vim.fn.expand("~/cspell.json") },
+        -- }),
+        -- null_ls.builtins.code_actions.cspell,
         null_ls.builtins.diagnostics.sqlfluff.with({
           extra_args = { "--dialect", "tsql", "--exclude-rules", "capitalisation" }, -- change to your dialect
         }),
