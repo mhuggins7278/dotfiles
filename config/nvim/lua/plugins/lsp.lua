@@ -23,47 +23,47 @@ return {
   },
   config = function()
     local lsp = require("lsp-zero").preset({})
-    require("lsp-zero").extend_lspconfig({
-      on_attach = function(_, bufnr)
-        vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
-        vim.keymap.set("i", "<C-h>", function()
-          vim.lsp.buf.signature_help()
-        end, { buffer = bufnr, remap = false })
-        vim.keymap.set(
-          "n",
-          "<leader>la",
-          vim.lsp.buf.code_action,
-          { buffer = bufnr, remap = false, desc = "Code Actions" }
-        )
-        vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
-        vim.keymap.set(
-          "n",
-          "<leader>li",
-          "<cmd>Telescope lsp_implementations<cr>",
-          { desc = "Implementations" }
-        )
-        vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
-        vim.keymap.set(
-          "n",
-          "<leader>lr",
-          vim.lsp.buf.rename,
-          { buffer = bufnr, remap = false, desc = "Rename" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>lh",
-          vim.lsp.buf.signature_help,
-          { buffer = bufnr, remap = false, desc = "Signature Help" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>f",
-          vim.lsp.buf.format,
-          { buffer = bufnr, remap = false, desc = "Lsp Format" }
-        )
-      end,
-    })
+    -- require("lsp-zero").extend_lspconfig({
+    --   on_attach = function(_, bufnr)
+    --     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
+    --     vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
+    --     vim.keymap.set("i", "<C-h>", function()
+    --       vim.lsp.buf.signature_help()
+    --     end, { buffer = bufnr, remap = false })
+    --     vim.keymap.set(
+    --       "n",
+    --       "<leader>la",
+    --       vim.lsp.buf.code_action,
+    --       { buffer = bufnr, remap = false, desc = "Code Actions" }
+    --     )
+    --     vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
+    --     vim.keymap.set(
+    --       "n",
+    --       "<leader>li",
+    --       "<cmd>Telescope lsp_implementations<cr>",
+    --       { desc = "Implementations" }
+    --     )
+    --     vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
+    --     vim.keymap.set(
+    --       "n",
+    --       "<leader>lr",
+    --       vim.lsp.buf.rename,
+    --       { buffer = bufnr, remap = false, desc = "Rename" }
+    --     )
+    --     vim.keymap.set(
+    --       "n",
+    --       "<leader>lh",
+    --       vim.lsp.buf.signature_help,
+    --       { buffer = bufnr, remap = false, desc = "Signature Help" }
+    --     )
+    --     vim.keymap.set(
+    --       "n",
+    --       "<leader>f",
+    --       vim.lsp.buf.format,
+    --       { buffer = bufnr, remap = false, desc = "Lsp Format" }
+    --     )
+    --   end,
+    -- })
 
     require("mason").setup()
     require("mason-nvim-dap").setup({
@@ -138,7 +138,14 @@ return {
     require("lspconfig").tsserver.setup({
       root_dir = nvim_lsp.util.root_pattern("package.json"),
       single_file_support = true,
-      -- filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "coffee" },
+      filetypes = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+      },
     })
 
     require("lspconfig").denols.setup({
@@ -157,9 +164,8 @@ return {
 
     require("lspconfig").null_ls.setup({
       settings = {
-        format = false,
-      }
-
+        format = true,
+      },
     })
 
     lsp.nvim_workspace()
@@ -205,20 +211,20 @@ return {
           extra_args = { "--dialect", "tsql" }, -- change to your dialect
         }),
       },
-      on_attach = function(_, bufnr)
-        local all_formatter = null_ls.get_sources({ method = null_ls.methods.FORMATTING })
-        for _, formatter in pairs(all_formatter) do
-          if formatter.filetypes[vim.bo.filetype] then
-            vim.api.nvim_buf_set_keymap(
-              bufnr,
-              'n',
-              '<leader>f',
-              '<cmd>lua vim.lsp.buf.format()<CR>',
-              {  desc = "Lsp Format"}
-            )
-          end
-        end
-      end,
+      -- on_attach = function(_, bufnr)
+      --   local all_formatter = null_ls.get_sources({ method = null_ls.methods.FORMATTING })
+      --   for _, formatter in pairs(all_formatter) do
+      --     if formatter.filetypes[vim.bo.filetype] then
+      --       vim.api.nvim_buf_set_keymap(
+      --         bufnr,
+      --         "n",
+      --         "<leader>f",
+      --         "<cmd>lua vim.lsp.buf.format()<CR>",
+      --         { desc = "Lsp Format" }
+      --       )
+      --     end
+      --   end
+      -- end,
     })
   end,
 }
