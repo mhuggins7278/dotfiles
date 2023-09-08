@@ -23,47 +23,47 @@ return {
   },
   config = function()
     local lsp = require("lsp-zero").preset({})
-    -- require("lsp-zero").extend_lspconfig({
-    --   on_attach = function(_, bufnr)
-    --     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
-    --     vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
-    --     vim.keymap.set("i", "<C-h>", function()
-    --       vim.lsp.buf.signature_help()
-    --     end, { buffer = bufnr, remap = false })
-    --     vim.keymap.set(
-    --       "n",
-    --       "<leader>la",
-    --       vim.lsp.buf.code_action,
-    --       { buffer = bufnr, remap = false, desc = "Code Actions" }
-    --     )
-    --     vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
-    --     vim.keymap.set(
-    --       "n",
-    --       "<leader>li",
-    --       "<cmd>Telescope lsp_implementations<cr>",
-    --       { desc = "Implementations" }
-    --     )
-    --     vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
-    --     vim.keymap.set(
-    --       "n",
-    --       "<leader>lr",
-    --       vim.lsp.buf.rename,
-    --       { buffer = bufnr, remap = false, desc = "Rename" }
-    --     )
-    --     vim.keymap.set(
-    --       "n",
-    --       "<leader>lh",
-    --       vim.lsp.buf.signature_help,
-    --       { buffer = bufnr, remap = false, desc = "Signature Help" }
-    --     )
-    --     vim.keymap.set(
-    --       "n",
-    --       "<leader>f",
-    --       vim.lsp.buf.format,
-    --       { buffer = bufnr, remap = false, desc = "Lsp Format" }
-    --     )
-    --   end,
-    -- })
+    require("lsp-zero").extend_lspconfig({
+      on_attach = function(_, bufnr)
+        vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
+        vim.keymap.set("i", "<C-h>", function()
+          vim.lsp.buf.signature_help()
+        end, { buffer = bufnr, remap = false })
+        vim.keymap.set(
+          "n",
+          "<leader>la",
+          vim.lsp.buf.code_action,
+          { buffer = bufnr, remap = false, desc = "Code Actions" }
+        )
+        vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
+        vim.keymap.set(
+          "n",
+          "<leader>li",
+          "<cmd>Telescope lsp_implementations<cr>",
+          { desc = "Implementations" }
+        )
+        vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
+        vim.keymap.set(
+          "n",
+          "<leader>lr",
+          vim.lsp.buf.rename,
+          { buffer = bufnr, remap = false, desc = "Rename" }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>lh",
+          vim.lsp.buf.signature_help,
+          { buffer = bufnr, remap = false, desc = "Signature Help" }
+        )
+        vim.keymap.set(
+          "n",
+          "<leader>f",
+          vim.lsp.buf.format,
+          { buffer = bufnr, remap = false, desc = "Lsp Format" }
+        )
+      end,
+    })
 
     require("mason").setup()
     require("mason-nvim-dap").setup({
