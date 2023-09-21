@@ -28,7 +28,6 @@ return {
       on_attach = function(_, bufnr)
         local wk = require("which-key")
         wk.register({
-
           ["gd"] = { "<cmd>Telescope lsp_definitions<cr>", "Go To Definition" },
           ["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Lsp Hover", buffer = bufnr },
           ["<C-h>"] = {
@@ -49,17 +48,17 @@ return {
           },
           ["<leader>lt"] = { "<cmd>Telescope lsp_type_definitions<cr>", "Type Defs" },
           ["<leader>lr"] = {
-            "vim.lsp.buf.rename",
+            "<cmd> lua vim.lsp.buf.rename()<cr>",
             "Rename",
           },
           ["<leader>lh"] = {
-            "vim.lsp.buf.signature_help",
+            "<cmd> lua vim.lsp.buf.signature_help()<CR>",
             "Signature Help",
             buffer = bufnr,
           },
           ["<leader>f"] = {
-            "vim.lsp.buf.format",
-            "Lsp Fromat",
+            "<cmd> lua vim.lsp.buf.format({async=true})<CR>",
+            "Lsp Format",
             buffer = bufnr,
           },
         })
@@ -142,6 +141,7 @@ return {
     nvim_lsp.tsserver.setup({
       root_dir = nvim_lsp.util.root_pattern("package.json"),
       single_file_support = true,
+      formatter = "auto",
       filetypes = {
         "javascript",
         "javascriptreact",
@@ -166,11 +166,11 @@ return {
       },
     })
 
-    nvim_lsp.null_ls.setup({
-      settings = {
-        format = true,
-      },
-    })
+    -- nvim_lsp.null_ls.setup({
+    --   settings = {
+    --     format = true,
+    --   },
+    -- })
 
     local null_ls = require("null-ls")
     require("null-ls").setup({
@@ -214,7 +214,7 @@ return {
               bufnr,
               "n",
               "<leader>f",
-              "<cmd>lua vim.lsp.buf.format()<CR>",
+              "<cmd> lua vim.lsp.buf.format({async=true})<CR>",
               { desc = "Lsp Format" }
             )
           end
