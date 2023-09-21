@@ -1,4 +1,4 @@
 return {
     'NvChad/nvim-colorizer.lua',
-    config =  {}
+    config = true
 }

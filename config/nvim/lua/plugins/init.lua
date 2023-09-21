@@ -40,7 +40,6 @@ return {
 	"tpope/vim-fugitive",
 	"tpope/vim-repeat",
 	"christoomey/vim-tmux-navigator",
-	{ "zbirenbaum/copilot-cmp", config = true },
 	{
 		"danymat/neogen",
 		dependencies = "nvim-treesitter/nvim-treesitter",

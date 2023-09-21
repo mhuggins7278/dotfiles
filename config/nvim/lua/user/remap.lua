@@ -36,6 +36,7 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc =
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>")
 
 vim.keymap.set("n", "<leader>c", "<cmd>bd<CR>", { desc = "close buffer" })
+vim.keymap.set("n", "<leader>C", "<cmd>bd!<CR>", { desc = "force close buffer" })
 vim.keymap.set("n", "<leader>ls", vim.lsp.buf.workspace_symbol, { desc = "Symbols" })
 vim.keymap.set("n", "<leader>ld", vim.diagnostic.open_float, { desc = "Diagnostics" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { remap = false, desc = "Next Diag" })

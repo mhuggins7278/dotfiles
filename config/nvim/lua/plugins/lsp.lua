@@ -1,5 +1,6 @@
 return {
   "VonHeikemen/lsp-zero.nvim",
+  branch = "v2.x",
   dependencies = {
     -- LSP Support
     { "neovim/nvim-lspconfig" },
@@ -25,43 +26,43 @@ return {
     local lsp = require("lsp-zero").preset({})
     require("lsp-zero").extend_lspconfig({
       on_attach = function(_, bufnr)
-        vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Definition" })
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, remap = false, desc = "Lsp Hover" })
-        vim.keymap.set("i", "<C-h>", function()
-          vim.lsp.buf.signature_help()
-        end, { buffer = bufnr, remap = false })
-        vim.keymap.set(
-          "n",
-          "<leader>la",
-          vim.lsp.buf.code_action,
-          { buffer = bufnr, remap = false, desc = "Code Actions" }
-        )
-        vim.keymap.set("n", "<leader>lR", "<cmd>Telescope lsp_references<cr>", { desc = "References" })
-        vim.keymap.set(
-          "n",
-          "<leader>li",
-          "<cmd>Telescope lsp_implementations<cr>",
-          { desc = "Implementations" }
-        )
-        vim.keymap.set("n", "<leader>lt", "<cmd>Telescope lsp_type_definitions<cr>", { desc = "Type Defs" })
-        vim.keymap.set(
-          "n",
-          "<leader>lr",
-          vim.lsp.buf.rename,
-          { buffer = bufnr, remap = false, desc = "Rename" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>lh",
-          vim.lsp.buf.signature_help,
-          { buffer = bufnr, remap = false, desc = "Signature Help" }
-        )
-        vim.keymap.set(
-          "n",
-          "<leader>f",
-          vim.lsp.buf.format,
-          { buffer = bufnr, remap = false, desc = "Lsp Format" }
-        )
+        local wk = require("which-key")
+        wk.register({
+
+          ["gd"] = { "<cmd>Telescope lsp_definitions<cr>", "Go To Definition" },
+          ["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Lsp Hover", buffer = bufnr },
+          ["<C-h>"] = {
+            "<cmd> lua vim.lsp.buf.signature_help()<cr>",
+            "Signature Help",
+            buffer = bufnr,
+            mode = "i",
+          },
+          ["<leader>la"] = {
+            "<cmd>lua vim.lsp.buf.code_action()<cr>",
+            "Code Actions",
+            buffer = bufnr,
+          },
+          ["<leader>lR"] = { "<cmd>Telescope lsp_references<cr>", "References" },
+          ["<leader>li"] = {
+            "<cmd>Telescope lsp_implementations<cr>",
+            "Implementations",
+          },
+          ["<leader>lt"] = { "<cmd>Telescope lsp_type_definitions<cr>", "Type Defs" },
+          ["<leader>lr"] = {
+            "vim.lsp.buf.rename",
+            "Rename",
+          },
+          ["<leader>lh"] = {
+            "vim.lsp.buf.signature_help",
+            "Signature Help",
+            buffer = bufnr,
+          },
+          ["<leader>f"] = {
+            "vim.lsp.buf.format",
+            "Lsp Fromat",
+            buffer = bufnr,
+          },
+        })
       end,
     })
 
@@ -135,7 +136,10 @@ return {
 
     local nvim_lsp = require("lspconfig")
     cmp.setup(cmp_config)
-    require("lspconfig").tsserver.setup({
+    nvim_lsp.tailwindcss.setup({
+      root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
+    })
+    nvim_lsp.tsserver.setup({
       root_dir = nvim_lsp.util.root_pattern("package.json"),
       single_file_support = true,
       filetypes = {
@@ -148,11 +152,11 @@ return {
       },
     })
 
-    require("lspconfig").denols.setup({
+    nvim_lsp.denols.setup({
       root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
     })
 
-    require("lspconfig").lua_ls.setup({
+    nvim_lsp.lua_ls.setup({
       settings = {
         Lua = {
           diagnostics = {
@@ -162,13 +166,12 @@ return {
       },
     })
 
-    require("lspconfig").null_ls.setup({
+    nvim_lsp.null_ls.setup({
       settings = {
         format = true,
       },
     })
 
-    lsp.nvim_workspace()
     local null_ls = require("null-ls")
     require("null-ls").setup({
       sources = {
@@ -184,8 +187,6 @@ return {
             "json",
             "jsonc",
             "less",
-            "lua",
-            "luau",
             "markdown",
             "markdown.mdx",
             "scss",
@@ -196,14 +197,8 @@ return {
             "yaml",
           },
         }),
-        -- null_ls.builtins.diagnostics.eslint_d,
-        -- null_ls.builtins.code_actions.eslint_d,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.code_actions.gitsigns,
-        -- null_ls.builtins.diagnostics.cspell.with({
-        --   extra_args = { "--config", vim.fn.expand("~/cspell.json") },
-        -- }),
-        -- null_ls.builtins.code_actions.cspell,
         null_ls.builtins.diagnostics.sqlfluff.with({
           extra_args = { "--dialect", "tsql", "--exclude-rules", "capitalisation" }, -- change to your dialect
         }),
@@ -211,20 +206,20 @@ return {
           extra_args = { "--dialect", "tsql" }, -- change to your dialect
         }),
       },
-      -- on_attach = function(_, bufnr)
-      --   local all_formatter = null_ls.get_sources({ method = null_ls.methods.FORMATTING })
-      --   for _, formatter in pairs(all_formatter) do
-      --     if formatter.filetypes[vim.bo.filetype] then
-      --       vim.api.nvim_buf_set_keymap(
-      --         bufnr,
-      --         "n",
-      --         "<leader>f",
-      --         "<cmd>lua vim.lsp.buf.format()<CR>",
-      --         { desc = "Lsp Format" }
-      --       )
-      --     end
-      --   end
-      -- end,
+      on_attach = function(_, bufnr)
+        local all_formatter = null_ls.get_sources({ method = null_ls.methods.FORMATTING })
+        for _, formatter in pairs(all_formatter) do
+          if formatter.filetypes[vim.bo.filetype] then
+            vim.api.nvim_buf_set_keymap(
+              bufnr,
+              "n",
+              "<leader>f",
+              "<cmd>lua vim.lsp.buf.format()<CR>",
+              { desc = "Lsp Format" }
+            )
+          end
+        end
+      end,
     })
   end,
 }
