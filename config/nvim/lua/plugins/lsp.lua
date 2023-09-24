@@ -1,6 +1,6 @@
 return {
   "VonHeikemen/lsp-zero.nvim",
-  branch = "v2.x",
+  branch = "v3.x",
   dependencies = {
     -- LSP Support
     { "neovim/nvim-lspconfig" },
@@ -165,12 +165,6 @@ return {
         },
       },
     })
-
-    -- nvim_lsp.null_ls.setup({
-    --   settings = {
-    --     format = true,
-    --   },
-    -- })
 
     local null_ls = require("null-ls")
     require("null-ls").setup({

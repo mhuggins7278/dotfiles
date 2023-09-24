@@ -2181,11 +2181,11 @@ macos_option_as_alt both
 
 
 # BEGIN_KITTY_THEME
-# GitHub Dark
+# Catppuccin-Macchiato
 include current-theme.conf
 # END_KITTY_THEME
 
 
 #OVERRIDE THEME FOR OPACITY
 
-background_opacity 0.70
+# background_opacity 0.70
