@@ -7,12 +7,6 @@ return {
 	},
 
 	-- Lua
-	{
-		"ellisonleao/glow.nvim",
-		config = function()
-			require("glow").setup({})
-		end,
-	},
 	"kchmck/vim-coffee-script",
 	"folke/tokyonight.nvim",
 	"folke/trouble.nvim",
