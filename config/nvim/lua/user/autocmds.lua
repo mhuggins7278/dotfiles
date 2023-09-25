@@ -1,26 +1,15 @@
-local vim = vim
-local api = vim.api
-local M = {}
--- function to create a list of commands and convert them to autocommands
--------- This function is taken from https://github.com/norcalli/nvim_utils
-function M.nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        api.nvim_command('augroup '..group_name)
-        api.nvim_command('autocmd!')
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-            api.nvim_command(command)
-        end
-        api.nvim_command('augroup END')
-    end
-end
+-----------------------------------------------------------
+-- Autocommand functions
+-----------------------------------------------------------
 
+-- Define autocommands with Lua APIs
+-- See: h:api-autocmd, h:augroup
 
-local autoCommands = {
-    -- other autocommands
-    open_folds = {
-        {"BufReadPost,FileReadPost", "*", "normal zR"}
-    }
-}
+local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
+local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 
-M.nvim_create_augroups(autoCommands)
+augroup('Folding', {clear = true})
+autocmd({"BufReadPost", "FileReadPost", "BufWinEnter"},{
+  group = "Folding",
+  command = "normal zR"
+})

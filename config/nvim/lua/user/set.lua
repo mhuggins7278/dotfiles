@@ -42,7 +42,6 @@ vim.opt.syntax = "on"
 vim.opt.filetype.plugin = "on"
 
 
-vim.o.foldlevel = 99
-vim.o.foldmethod = "indent"
-vim.o.foldenable = true
-vim.lsp.set_log_level 'debug'
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = true
