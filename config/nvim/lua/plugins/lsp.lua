@@ -33,7 +33,7 @@ return {
       -- see :help lsp-zero-keybindings
       -- to learn the available actions
       local opts = { buffer = bufnr }
-      lsp_zero.default_keymaps({preserve_mappings = false})
+      lsp_zero.default_keymaps({ preserve_mappings = false })
       vim.keymap.set({ 'n', 'x' }, '<leader>f', function()
         vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
       end, opts)
