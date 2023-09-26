@@ -68,7 +68,7 @@ return {
         { name = 'copilot' },
         { name = 'nvim_lsp' },
         { name = 'buffer' },
-        { name = 'snippets' },
+        { name = 'luasnip' },
       },
       formatting = cmp_format,
       mapping = cmp.mapping.preset.insert({
