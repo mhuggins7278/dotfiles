@@ -3,10 +3,8 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   config = function()
     local actions = require("telescope.actions")
-    local action_state = require("telescope.actions.state")
     actions.select_default:replace(function()
-      actions.select_default()
-      actions.center()
+      return actions.select_default() + actions.center()
     end)
     require("telescope").setup({
       extensions = {

@@ -3,6 +3,15 @@ return {
   config = function()
     require("chatgpt").setup({
       api_key_cmd = "security find-generic-password -s NVIM_CHAT_GPT_TOKEN -w",
+      openai_params = {
+        model = "gpt-3.5-turbo",
+        frequency_penalty = 0,
+        presence_penalty = 0,
+        max_tokens = 1000,
+        temperature = 0,
+        top_p = 1,
+        n = 1,
+      },
     })
   end,
   dependencies = {
@@ -33,6 +42,6 @@ return {
           mode = { "n", "v" },
         },
       },
-    },{ prefix = "<leader>" })
+    }, { prefix = "<leader>" })
   end,
 }

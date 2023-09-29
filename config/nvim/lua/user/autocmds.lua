@@ -5,11 +5,30 @@
 -- Define autocommands with Lua APIs
 -- See: h:api-autocmd, h:augroup
 
-local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
-local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
-
-augroup('Folding', {clear = true})
-autocmd({"BufReadPost", "FileReadPost", "BufWinEnter"},{
-  group = "Folding",
-  command = "normal zR"
-})
+-- local augroup = vim.api.nvim_create_augroup -- Create/get autocommand group
+-- local autocmd = vim.api.nvim_create_autocmd -- Create autocommand
+--
+--
+-- local function dump(o)
+--    if type(o) == 'table' then
+--       local s = '{ '
+--       for k,v in pairs(o) do
+--          if type(k) ~= 'number' then k = '"'..k..'"' end
+--          s = s .. '['..k..'] = ' .. dump(v) .. ','
+--       end
+--       return s .. '} '
+--    else
+--       return tostring(o)
+--    end
+-- end
+--
+-- augroup('Folding', { clear = true })
+-- autocmd({ "BufReadPost", "FileReadPost" }, {
+--   group = "Folding",
+--   callback = function(args)
+--     print(dump(args))
+--     vim.cmd("normal zR")
+--   end
+--   --command = "normal zR"
+-- })
+--

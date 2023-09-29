@@ -10,24 +10,18 @@ return {
 
     -- Autocompletion
     { "hrsh7th/nvim-cmp" },
-    { "hrsh7th/cmp-vsnip" },
-    { "hrsh7th/vim-vsnip" },
-    { "hrsh7th/cmp-buffer" },
-    { "hrsh7th/cmp-path" },
-    { "saadparwaiz1/cmp_luasnip" },
-    { "hrsh7th/cmp-nvim-lsp" },
-    { "hrsh7th/cmp-nvim-lua" },
-    { "onsails/lspkind-nvim" },
-
-    -- Snippets
-    { "L3MON4D3/LuaSnip" },
-    { "rafamadriz/friendly-snippets" },
   },
   config = function()
-    local lsp_zero = require("lsp-zero")
+    vim.opt.completeopt = { "menu", "menuone", "noselect" }
+    vim.opt.shortmess:append("c")
+    local lsp_zero = require("lsp-zero").preset({})
+    lsp_zero.set_sign_icons({
+      error = " ", warn = " ", hint = " ", info = " "
+    })
 
     local lua_opts = lsp_zero.nvim_lua_ls()
     require('lspconfig').lua_ls.setup(lua_opts)
+
 
     lsp_zero.on_attach(function(_, bufnr)
       -- see :help lsp-zero-keybindings
@@ -49,52 +43,11 @@ return {
       handlers = {
         lsp_zero.default_setup,
         lua_ls = function()
-          local lua_opts = lsp_zero.nvim_lua_ls()
-          require("lspconfig").lua_ls.setup(lua_opts)
+          local lua_lsp_opts = lsp_zero.nvim_lua_ls()
+          require("lspconfig").lua_ls.setup(lua_lsp_opts)
         end,
       },
     })
 
-    local cmp = require("cmp")
-    local cmp_format = lsp_zero.cmp_format()
-    require('luasnip.loaders.from_vscode').lazy_load()
-
-    cmp.setup({
-      preselect = 'item',
-      completion = {
-        completeopt = 'menu,menuone,noinsert'
-      },
-      sources = {
-        { name = 'copilot' },
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-        { name = 'luasnip' },
-      },
-      formatting = cmp_format,
-      mapping = cmp.mapping.preset.insert({
-        -- scroll up and down the documentation window
-        ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-d>"] = cmp.mapping.scroll_docs(4),
-        ["<Tab>"] = cmp.config.disable,
-        ["<S-Tab>"] = cmp.config.disable,
-        ['<CR>'] = cmp.mapping.confirm({
-          -- documentation says this is important.
-          -- I don't know why.
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = false,
-        }),
-        ['<C-y>'] = cmp.mapping.confirm({
-          -- documentation says this is important.
-          -- I don't know why.
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = false,
-        })
-      }),
-      window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-        suggestion = cmp.config.window.bordered(),
-      },
-    })
   end,
 }

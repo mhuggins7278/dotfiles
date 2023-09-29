@@ -9,7 +9,7 @@ return {
 	-- Lua
 	"kchmck/vim-coffee-script",
 	"folke/tokyonight.nvim",
-	"folke/trouble.nvim",
+  {"folke/trouble.nvim", dependencies = "nvim-tree/nvim-web-devicons"},
   "projekt0n/github-nvim-theme",
 	"tpope/vim-surround",
   "mustache/vim-mustache-handlebars",
