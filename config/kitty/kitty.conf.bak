@@ -52,7 +52,7 @@
 #: support, because it will force kitty to always treat the text as
 #: LTR, which FriBidi expects for terminals.
 
-#: adjust_line_height 1
+adjust_line_height 2
 
 # adjust_column_width 0
 
@@ -1004,12 +1004,12 @@ hide_window_decorations titlebar-only
 
 #: Path to a background image. Must be in PNG format.
 
- background_image_layout scaled
+ # background_image_layout scaled
 
 #: Whether to tile, scale or clamp the background image. The value can
 #: be one of tiled, mirror-tiled, scaled, clamped.
 
- background_image_linear yes
+ # background_image_linear yes
 
 #: When background image is scaled, whether linear interpolation
 #: should be used.
@@ -1435,7 +1435,7 @@ macos_option_as_alt both
 #: mouse cursor invisible on dual GPU machines. Changing this option
 #: by reloading the config is not supported.
 
-# macos_colorspace srgb
+ macos_colorspace default
 
 #: The colorspace in which to interpret terminal colors. The default
 #: of srgb will cause colors to match those seen in web browsers. The
@@ -2181,11 +2181,11 @@ macos_option_as_alt both
 
 
 # BEGIN_KITTY_THEME
-# Catppuccin-Macchiato
+# Catppuccin-Mocha
 include current-theme.conf
 # END_KITTY_THEME
 
 
 #OVERRIDE THEME FOR OPACITY
 
-# background_opacity 0.70
+#background_opacity 0.4

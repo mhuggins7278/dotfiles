@@ -9,30 +9,55 @@ require("tokyonight").setup({
 })
 require("catppuccin").setup({
   flavour = "mocha",
-  term_colors = true,
+  term_colors = false,
   transparent_background = false,
   integrations = {
-    octo = true,
-    which_key = true,
     alpha = true,
-    treesitter = true,
-    harpoon = true,
     cmp = true,
-    gitsigns = true,
-    mason = true,
-    noice = true,
-    notify = true,
-    nvimtree = true,
-    markdown = true,
-    telescope = {
-      enabled = true,
-    },
     dap = {
       enabled = true,
       enable_ui = true,
     },
+    gitsigns = true,
+    harpoon = true,
+    lsp_trouble = true,
+    markdown = true,
+    mason = true,
+    native_lsp = {
+      enabled = true,
+      virtual_text = {
+        errors = { "italic" },
+        hints = { "italic" },
+        warnings = { "italic" },
+        information = { "italic" },
+      },
+      underlines = {
+        errors = { "underline" },
+        hints = { "underline" },
+        warnings = { "underline" },
+        information = { "underline" },
+      },
+      inlay_hints = {
+        background = true,
+      },
+    },
+    noice = true,
+    notify = true,
+    nvimtree = true,
+    octo = true,
+    telescope = {
+      enabled = true,
+    },
+    treesitter = true,
+    treesitter_context = true,
+    ts_rainbow2 = true,
+    which_key = true,
   },
-   compile_path = vim.fn.stdpath "cache" .. "/catppuccin"
+  styles = {                 -- Handles the styles of general hi groups (see `:h highlight-args`):
+    comments = { "italic" }, -- Change the style of comments
+    conditionals = { "italic" },
+  },
+  compile_path = vim.fn.stdpath "cache" .. "/catppuccin"
 })
 
 require("kanagawa").setup({

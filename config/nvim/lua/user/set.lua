@@ -37,7 +37,7 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
 
 vim.opt.list = true
-vim.opt.listchars = {eol = '↲', tab = '▸ ', trail = '·'}
+vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
 vim.opt.syntax = "on"
 vim.opt.filetype.plugin = "on"
 
@@ -45,3 +45,8 @@ vim.opt.filetype.plugin = "on"
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldenable = false
+
+vim.g.pomodoro_time_work = 50
+vim.g.pomodoro_time_break_short = 10
+vim.g.pomodoro_time_break_long = 30
+vim.g.pomodoro_timers_to_long_break = 2
