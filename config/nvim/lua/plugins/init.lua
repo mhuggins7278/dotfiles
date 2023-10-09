@@ -29,7 +29,6 @@ return {
 	"nvim-treesitter/playground",
 	"nvim-treesitter/nvim-treesitter-textobjects",
 	"nvim-treesitter/nvim-treesitter-context",
-	"hiphish/nvim-ts-rainbow2",
 	"tpope/vim-abolish",
 	"tpope/vim-fugitive",
 	"tpope/vim-repeat",
