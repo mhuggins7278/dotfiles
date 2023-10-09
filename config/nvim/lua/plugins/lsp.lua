@@ -61,6 +61,9 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>lc", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+        opts.desc = "Format File"
+        keymap.set({ "n", "x" }, "<leader>f", "<cmd>GuardFmt<CR>", opts) -- mapping to restart lsp if necessary
       end
     })
 
@@ -73,24 +76,24 @@ return {
       ensure_installed = { "tsserver", "eslint", "lua_ls", "ansiblels", "astro", "bashls", "clangd", "cssls", "dockerls",
         "emmet_ls", "eslint", "html", "jsonls", "tailwindcss", "vimls", "yamlls" },
       handlers = { default_setup,
-            -- configure lua server (with special settings)
-    lspconfig["lua_ls"].setup({
-      settings = { -- custom settings for lua
-        Lua = {
-          -- make the language server recognize "vim" global
-          diagnostics = {
-            globals = { "vim" },
-          },
-          workspace = {
-            -- make language server aware of runtime files
-            library = {
-              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-              [vim.fn.stdpath("config") .. "/lua"] = true,
+        -- configure lua server (with special settings)
+        lspconfig["lua_ls"].setup({
+          settings = { -- custom settings for lua
+            Lua = {
+              -- make the language server recognize "vim" global
+              diagnostics = {
+                globals = { "vim" },
+              },
+              workspace = {
+                -- make language server aware of runtime files
+                library = {
+                  [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                  [vim.fn.stdpath("config") .. "/lua"] = true,
+                },
+              },
             },
           },
-        },
-      },
-    })
+        })
       },
     })
   end,
