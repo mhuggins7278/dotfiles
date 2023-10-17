@@ -10,7 +10,7 @@ discharging_symbol = "⚡"
 threshold = 101
 style = ""
 [[battery.display]]
-threshold = 10
+threshold = 25
 style = "bold red"
 
 [directory]

@@ -6,18 +6,26 @@ return {
     actions.select_default:replace(function()
       return actions.select_default() + actions.center()
     end)
-    require("telescope").setup({
+    local telescope = require("telescope")
+    local themes = require("telescope.themes")
+
+    telescope.setup({
+      defaults = {
+        layout_config = { prompt_position = "top" },
+        sorting_strategy = "ascending",
+      },
       extensions = {
-        ["ui-select"] = {
-          require("telescope.themes").get_dropdown({}),
-        },
+        ["ui-select"] = themes.get_dropdown({
+        }),
+        ["fzf"] = themes.get_dropdown({
+        }),
         ["file_browser"] = {
           hijack_netrw = true,
         },
       },
     })
-    require("telescope").load_extension("fzf")
     require("telescope").load_extension("ui-select")
+    require("telescope").load_extension("fzf")
     require("telescope").load_extension("file_browser")
     require("telescope").load_extension("live_grep_args")
     require("telescope").load_extension("notify")
@@ -45,10 +53,6 @@ return {
         ["t"] = {
           ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
           "Find Text",
-        },
-        ["p"] = {
-          ":lua require'telescope'.extensions.projects.projects()<CR>",
-          "Find Project",
         },
         ["a"] = {
           ":lua require('nx.actions').actions_finder({opts})<CR>",
