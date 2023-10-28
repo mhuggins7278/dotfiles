@@ -3,11 +3,11 @@ ZSH=$HOME/.local/share/oh-my-zsh
 
 # Which plugins would you like to load?
 # See https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins
-plugins=(git asdf fzf)
+plugins=(git asdf vi-mode fzf)
 eval "$(zoxide init zsh)"
 
 source $ZSH/oh-my-zsh.sh
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+# source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # History file settings
 HISTFILE=~/.local/share/zsh/zsh_history
