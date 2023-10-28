@@ -20,7 +20,7 @@ return {
 				-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
 				-- Using this option may slow down your editor, and you may see some duplicate highlights.
 				-- Instead of true it can also be a list of languages
-				additional_vim_regex_highlighting = {"markdown"},
+				additional_vim_regex_highlighting = { "markdown" },
 			},
 			textobjects = {
 				select = {
@@ -57,7 +57,7 @@ return {
 					-- * query_string: eg '@function.inner'
 					-- * selection_mode: eg 'v'
 					-- and should return true of false
-					include_surrounding_whitespace = false,
+					include_surrounding_whitespace = true,
 				},
 				move = {
 					enable = true,
