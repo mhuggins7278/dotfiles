@@ -1,14 +1,19 @@
 [aws]
-disabled = true
+format = 'on [$symbol$profile]($style) '
+style = 'bold orange'
+symbol = '🅰'
 
 [battery]
-full_symbol = "🔋"
-charging_symbol = "🔌"
-discharging_symbol = "⚡"
+disabled = true
+full_symbol = '🔋'
+charging_symbol = '⚡️ '
+discharging_symbol = '💀 '
+unknown_symbol = ''
 
 [[battery.display]]
 threshold = 101
-style = ""
+style = "green"
+
 [[battery.display]]
 threshold = 25
 style = "bold red"
@@ -18,23 +23,20 @@ truncation_length = 3
 truncate_to_repo = false
 truncation_symbol = "…/"
 
-[git_status]
-ahead = "⇡${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-behind = "⇣${count}"
-
 [package]
 disabled = true
-
-[time]
-disabled = false
 
 [docker_context]
 disabled = true
 
 [git_commit]
 only_detached = false
+disabled = true
 
 [git_metrics]
-disabled = false
+disabled = true
 
+[git_branch]
+disabled = true
+[git_status]
+disabled = true
