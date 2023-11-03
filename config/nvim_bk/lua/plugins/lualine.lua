@@ -38,15 +38,6 @@ return {
 			return table.concat(status, "  ") .. " " .. spinners[frame + 1]
 		end
 
-    local function get_project_name()
-      local project_root = require("lspconfig.util").root_pattern(".git")(vim.fn.expand("%:p:h"))
-      if project_root == nil then
-        return "not found"
-      end
-      return project_root
-    end
-
-
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
@@ -67,15 +58,20 @@ return {
 				},
 			},
 			sections = {
-				lualine_a = { "mode" },
-				lualine_b = { { "filename", path=1 } },
+				lualine_a = { {
+					"mode",
+					fmt = function(str)
+						return str:sub(1, 1)
+					end,
+				} },
+				lualine_b = { { "filename", path = 1 } },
 				lualine_c = {
-					{ lsp_client},
+					{ lsp_client },
 					{ lsp_progress },
-          {require('pomodoro').statusline },
+					{ "diagnostics", { sources = { "nvim_workspace_diagnostic" } } },
 				},
 				lualine_x = { "encoding", "fileformat", "filetype" },
-			  lualine_y = { "progress" },
+				lualine_y = { "progress" },
 			},
 			inactive_sections = {
 				lualine_a = {},
