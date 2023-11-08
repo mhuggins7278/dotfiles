@@ -29,13 +29,13 @@ return {
         formatters = {
           json = "jq",
           html = function(body)
-            return vim.fn.system({"tidy", "-i", "-q", "-"}, body)
-          end
+            return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
+          end,
         },
       },
       -- Jump to request line on run
       jump_to_request = false,
-      env_file = '.env',
+      env_file = ".env",
       custom_dynamic_variables = {},
       yank_dry_run = true,
     })
@@ -43,11 +43,11 @@ return {
   init = function()
     local wk = require("which-key")
     wk.register({
-    ["t"] = {
-        name = "REST Client",
+      ["t"] = {
+        name = "+restClient",
         ["r"] = { "<Plug>RestNvim", "Run Request" },
         ["p"] = { "<Plug>RestNvimPreview", "Preview Curl" },
-      }
+      },
     }, { prefix = "<leader>" })
-  end
+  end,
 }

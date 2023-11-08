@@ -1,3 +1,4 @@
 return {
-  { "Jxstxs/conceal.nvim", enabled = false },
+  "Jxstxs/conceal.nvim",
+  enabled = false,
 }
