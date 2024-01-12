@@ -5,6 +5,7 @@ return {
     name = "catppuccin",
     opts = {
       flavour = "mocha",
+      transparent_background = false,
       integrations = {
         alpha = true,
         cmp = true,
@@ -36,7 +37,7 @@ return {
         neotree = true,
         octo = true,
         semantic_tokens = true,
-        telescope = true,
+        telescope = { enabled = true },
         treesitter = true,
         which_key = true,
       },

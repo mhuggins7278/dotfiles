@@ -36,4 +36,4 @@ map("n", "<leader>Wd", "<C-W>c", { desc = "Delete window", remap = true })
 map("n", "<leader>W-", "<C-W>s", { desc = "Split window below", remap = true })
 map("n", "<leader>W|", "<C-W>v", { desc = "Split window right", remap = true })
 
-map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file", remap = true })
+map("n", "<leader>w", ":w<CR>", { desc = "Save file", remap = true, silent = true })
