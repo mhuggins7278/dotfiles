@@ -12,12 +12,6 @@ export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export PATH="$HOME/.local/bin:$HOME/.local/share:$PATH"
 
-case "$(uname -s)" in
-    Linux)
-        ;;
-    Darwin)
-        ;;
-esac
 
 
 export SQL_DEV_USERNAME=$(security find-generic-password -s "SQL_DEV_USERNAME" -w)
@@ -30,4 +24,3 @@ export GITHUB_AUTH_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN"
 
 
 
-eval "$(starship init zsh)"

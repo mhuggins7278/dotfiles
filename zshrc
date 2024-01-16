@@ -1,3 +1,4 @@
+ZSH_DISABLE_COMPFIX=true
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.local/share/oh-my-zsh
 
@@ -66,3 +67,5 @@ export PATH=$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 # uninstall by removing these lines
 # [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+
