@@ -1,7 +1,13 @@
+promptToReturnFromSubprocess: false
 git:
   parseEmoji: true
+  paging:
+    colorArg: always
+    pager: delta --dark --line-numbers --side-by-side --paging=never
+gui:
+  nerdFontVersion: "3"
 os:
-  editPreset: 'vim' # as an example
+  editPreset: "nvim" # as an example
 customCommands:
   - key: "C"
     command: "gitmoji -c"
@@ -14,4 +20,10 @@ customCommands:
     description: "commit with commitizen"
     context: "files"
     loadingText: "opening commitizen commit tool"
+    subprocess: true
+  - key: "O"
+    command: "nvim -c ':Octo pr create'"
+    context: "localBranches"
+    loadingText: "Loading Octo"
+    description: "Open pull request with Octo"
     subprocess: true
