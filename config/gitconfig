@@ -5,7 +5,8 @@
 	default = simple
 [core]
 	excludesfile = /Users/markhuggins/.gitignore
-	editor = vim
+	editor = nvim
+	pager = delta --line-numbers --dark
 [difftool "kdiff3"]
       path = /usr/local/bin/kdiff3 
           trustExitCode = false

@@ -3,24 +3,11 @@ format = 'on [$symbol$profile]($style) '
 style = 'bold orange'
 symbol = '🅰'
 
-[battery]
-disabled = true
-full_symbol = '🔋'
-charging_symbol = '⚡️ '
-discharging_symbol = '💀 '
-unknown_symbol = ''
 
-[[battery.display]]
-threshold = 101
-style = "green"
-
-[[battery.display]]
-threshold = 25
-style = "bold red"
 
 [directory]
 truncation_length = 3
-truncate_to_repo = false
+truncate_to_repo = true
 truncation_symbol = "…/"
 
 [package]
@@ -40,3 +27,8 @@ disabled = true
 disabled = true
 [git_status]
 disabled = true
+
+[nodejs]
+# disabled = true
+detect_files = ["package.json", ".nvmrc"]
+detect_extensions = []
