@@ -10,15 +10,15 @@ plugins=(gh vi-mode fzf grc starship zoxide nvm)
 
 # Lazy Load NVM
 zstyle ':omz:plugins:nvm' lazy yes
-zstyle ':omz:update' frequency 14 
+zstyle ':omz:update' frequency 14
 
 
 source $ZSH/oh-my-zsh.sh
 
-if [ "$(find ~/.zcompdump -mtime +1)" ] ; then
-    compinit
-fi
-compinit -C
+# if [ "$(find ~/.zcompdump -mtime +1)" ] ; then
+#     compinit
+# fi
+# compinit -C
 
 # History file settings
 HISTFILE=~/.local/share/zsh/zsh_history
@@ -32,15 +32,15 @@ source $HOME/.dotfiles/shellrc
 
 
 # pnpm
-# export PNPM_HOME="/Users/MHuggins/Library/pnpm"
-# GOPATH=$(go env GOPATH)/bin
-# export PATH="$PNPM_HOME:$PATH:$GOPATH"
+export PNPM_HOME="/Users/MHuggins/Library/pnpm"
+GOPATH=$(go env GOPATH)/bin
+export PATH="$PNPM_HOME:$PATH:$GOPATH"
 # pnpm end
 
 source <(glgroup bashcomplete)
 
 export BAT_THEME="Solarized (dark)"
 # Add default node to path
-# export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
+export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
 
 # zprof
