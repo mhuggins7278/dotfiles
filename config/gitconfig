@@ -1,32 +1,27 @@
 [user]
 	name = Mark Huggins
 	email = mhuggins@glgroup.com
+
 [push]
 	default = simple
+
 [core]
 	excludesfile = /Users/markhuggins/.gitignore
 	editor = nvim
-	pager = delta --line-numbers --dark
-[difftool "kdiff3"]
-      path = /usr/local/bin/kdiff3 
-          trustExitCode = false
-[difftool]
-      prompt = false
-[diff]
-      tool = kdiff3
-[mergetool "kdiff3"]
-      path = /usr/local/bin/kdiff3 
-          trustExitCode = false
-[mergetool]
-      keepBackup = false
+  pager = delta --line-numbers --dark
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+
 [merge]
-      tool = kdiff3
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f

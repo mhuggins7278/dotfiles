@@ -37,3 +37,5 @@ map("n", "<leader>W-", "<C-W>s", { desc = "Split window below", remap = true })
 map("n", "<leader>W|", "<C-W>v", { desc = "Split window right", remap = true })
 
 map("n", "<leader>w", ":w<CR>", { desc = "Save file", remap = true, silent = true })
+
+map("n", "<leader>gg", ":!tmux new-window 'lazygit'<CR>", { desc = "Open lazygit", remap = true, silent = true })

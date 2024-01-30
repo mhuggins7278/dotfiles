@@ -1,6 +1,6 @@
 # zmodload zsh/zprof
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/.local/share/oh-my-zsh
+OH_MY_ZSH=$HOME/.local/share/oh-my-zsh
 NVM_HOMEBREW=$(brew --prefix nvm)
 
 # Which plugins would you like to load?
@@ -13,12 +13,8 @@ zstyle ':omz:plugins:nvm' lazy yes
 zstyle ':omz:update' frequency 14
 
 
-source $ZSH/oh-my-zsh.sh
+source $OH_MY_ZSH/oh-my-zsh.sh
 
-# if [ "$(find ~/.zcompdump -mtime +1)" ] ; then
-#     compinit
-# fi
-# compinit -C
 
 # History file settings
 HISTFILE=~/.local/share/zsh/zsh_history
@@ -37,10 +33,26 @@ GOPATH=$(go env GOPATH)/bin
 export PATH="$PNPM_HOME:$PATH:$GOPATH"
 # pnpm end
 
-source <(glgroup bashcomplete)
 
 export BAT_THEME="Solarized (dark)"
 # Add default node to path
 export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
 
 # zprof
+
+# The following lines were added by compinstall
+
+# zstyle ':completion:*' completer _expand _complete _ignored _correct
+# zstyle ':completion:*' list-colors ''
+# zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+# zstyle ':completion:*' menu select=0 select=0
+# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+# zstyle :compinstall filename '/Users/MHuggins/.zshrc'
+#
+# autoload -Uz compinit
+# compinit
+# # load bashcompinit for some old bash completions 
+# autoload bashcompinit && bashcompinit
+# # End of lines added by compinstall
+# Source completion files
+source <(glgroup bashcomplete)

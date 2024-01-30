@@ -1,47 +1,67 @@
 return {
   {
     "catppuccin/nvim",
-    lazy = true,
     name = "catppuccin",
-    opts = {
-      flavour = "mocha",
-      transparent_background = false,
-      integrations = {
-        alpha = true,
-        cmp = true,
-        dap = {
-          enabled = true,
-          enable_ui = true,
-        },
-        flash = true,
-        gitsigns = true,
-        illuminate = true,
-        indent_blankline = { enabled = true },
-        harpoon = true,
-        lsp_trouble = true,
-        mason = true,
-        mini = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
+    priority = 2000,
+    ---@class CatppuccinOptions
+    opts = function()
+      -- TODO: generate dynamics colors
+      return {
+        flavour = "mocha",
+        transparent_background = true,
+        color_overrides = { all = {} },
+        custom_highlights = function(colors)
+          return {
+            CurSearch = { bg = colors.yellow },
+            DiffChanged = { fg = colors.yellow },
+            Diffchanged = { fg = colors.yellow },
+          }
+        end,
+        integrations = {
+          alpha = true,
+          cmp = true,
+          nvimtree = true,
+          fidget = true,
+          gitsigns = true,
+          harpoon = true,
+          lsp_trouble = true,
+          mason = true,
+          neotest = true,
+          noice = true,
+          notify = true,
+          octo = true,
+          telescope = {
+            enabled = true,
+          },
+          treesitter = true,
+          treesitter_context = false,
+          symbols_outline = true,
+          illuminate = true,
+          which_key = true,
+          barbecue = {
+            dim_dirname = true,
+            bold_basename = true,
+            dim_context = false,
+            alt_background = false,
+          },
+          native_lsp = {
+            enabled = true,
+            virtual_text = {
+              errors = { "italic" },
+              hints = { "italic" },
+              warnings = { "italic" },
+              information = { "italic" },
+            },
+            underlines = {
+              errors = { "underline" },
+              hints = { "underline" },
+              warnings = { "underline" },
+              information = { "underline" },
+            },
           },
         },
-        navic = { enabled = true, custom_bg = "lualine" },
-        neotest = true,
-        noice = true,
-        notify = true,
-        neotree = true,
-        octo = true,
-        semantic_tokens = true,
-        telescope = { enabled = true },
-        treesitter = true,
-        which_key = true,
-      },
-    },
+      }
+    end,
   },
   {
     "LazyVim/LazyVim",

@@ -6,6 +6,7 @@ git:
     pager: delta --dark --line-numbers --side-by-side --paging=never
 gui:
   nerdFontVersion: "3"
+  sidePanelWidth: 0.2
 os:
   editPreset: "nvim" # as an example
 customCommands:
