@@ -102,10 +102,6 @@
       command: killall Transmission
       ignore_errors: yes
 
-    - name: Kill Safari
-      command: killall Safari
-      ignore_errors: yes
-
     - name: Kill Terminal
       command: killall Terminal
       ignore_errors: yes
