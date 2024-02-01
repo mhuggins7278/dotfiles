@@ -17,9 +17,9 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        line: '{{ ansible_user_id }}	ALL=NOPASSWD: ALL'
+        line: "{{ ansible_user_id }}	ALL=NOPASSWD: ALL"
         insertafter: '^%admin\tALL=\(ALL\) ALL'
-        validate: 'visudo -cf %s'
+        validate: "visudo -cf %s"
       become: yes
       when: sudo_without_password and ansible_os_family == "Darwin"
 
@@ -27,8 +27,8 @@
       lineinfile:
         dest: /etc/sudoers
         state: present
-        line: 'Defaults tty_tickets'
-        validate: 'visudo -cf %s'
+        line: "Defaults tty_tickets"
+        validate: "visudo -cf %s"
       become: yes
       when: ansible_os_family == "Darwin"
 
@@ -46,51 +46,51 @@
 
     - name: Create folder
       file:
-        path: '{{item}}'
+        path: "{{item}}"
         state: directory
       loop:
-        - '~/.cache/bash/'
-        - '~/.cache/vim/'
-        - '~/.cache/vim/backup/'
-        - '~/.cache/vim/dein/'
-        - '~/.cache/vim/swap/'
-        - '~/.cache/vim/undo/'
-        - '~/.cache/wget/'
-        - '~/.config/gtk-3.0'
-        - '~/.config/gh'
-        - '~/.aws/'
-        - '~/.config/lvim/'
-        - '~/.config/karabiner/'
-        - '~/.config/planetscale/'
-        - '~/.config/mssqlcli/'
-        - '~/.config/terminator/'
-        - '~/.config/tmux/'
-        - '~/.config/zellij/'
-        - '~/.local/share/zsh/'
-        - '~/Library/Application Support/Code/User/'
-        - '~/Library/Application Support/layzgit/'
-        - '~/github/'
-        - '~/github/glg/'
-        - '~/github/mhuggins7278/'
-        - '~/github/LearnBuildTeach/'
+        - "~/.cache/bash/"
+        - "~/.cache/vim/"
+        - "~/.cache/vim/backup/"
+        - "~/.cache/vim/dein/"
+        - "~/.cache/vim/swap/"
+        - "~/.cache/vim/undo/"
+        - "~/.cache/wget/"
+        - "~/.config/gtk-3.0"
+        - "~/.config/gh"
+        - "~/.aws/"
+        - "~/.config/lvim/"
+        - "~/.config/karabiner/"
+        - "~/.config/planetscale/"
+        - "~/.config/mssqlcli/"
+        - "~/.config/terminator/"
+        - "~/.config/tmux/"
+        - "~/.config/zellij/"
+        - "~/.local/share/zsh/"
+        - "~/Library/Application Support/Code/User/"
+        - "~/Library/Application Support/layzgit/"
+        - "~/github/"
+        - "~/github/glg/"
+        - "~/github/mhuggins7278/"
+        - "~/github/LearnBuildTeach/"
 
-    - include: tasks/packages.yml
+    - include_tasks: tasks/packages.yml
       tags:
         - packages
 
-    - include: tasks/shells.yml
+    - include_tasks: tasks/shells.yml
       tags:
         - shells
 
-    - include: tasks/lvim.yml
+    - include_tasks: tasks/lvim.yml
       tags:
         - editors
 
-    - include: tasks/link_files.yml
+    - include_tasks: tasks/link_files.yml
       tags:
         - links
 
-    - include: tasks/macos_defaults.yml
+    - include_tasks: tasks/macos_defaults.yml
       when: ansible_os_family == "Darwin"
       tags:
         - macos_defaults
