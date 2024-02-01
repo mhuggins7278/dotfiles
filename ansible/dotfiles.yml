@@ -59,13 +59,13 @@
         - "~/.config/gtk-3.0"
         - "~/.config/gh"
         - "~/.aws/"
-        - "~/.config/lvim/"
         - "~/.config/karabiner/"
         - "~/.config/planetscale/"
         - "~/.config/mssqlcli/"
         - "~/.config/terminator/"
         - "~/.config/tmux/"
         - "~/.config/zellij/"
+        - "~/.config/wezterm/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"
         - "~/Library/Application Support/layzgit/"
@@ -81,10 +81,6 @@
     - include_tasks: tasks/shells.yml
       tags:
         - shells
-
-    - include_tasks: tasks/lvim.yml
-      tags:
-        - editors
 
     - include_tasks: tasks/link_files.yml
       tags:
