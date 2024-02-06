@@ -23,18 +23,13 @@ local function scheme_for_appearance(appearance)
 end
 
 config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
-config.font_size = 22.0
-config.font = wezterm.font("Monaspace Xenon Var")
-config.window_background_opacity = 0.8
+config.font_size = 24.0
+config.font = wezterm.font("Monaspace Radon Var", { weight = "Regular" })
+config.window_background_opacity = 0.2
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
-config.window_padding = {
-	left = "1cell",
-	right = "1cell",
-	top = "1cell",
-	bottom = "1cell",
-}
+config.macos_window_background_blur = 30
 config.term = "wezterm"
 -- and finally, return the configuration to wezterm
 return config

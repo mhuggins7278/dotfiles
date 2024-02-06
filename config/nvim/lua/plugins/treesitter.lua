@@ -5,6 +5,8 @@ return {
     vim.list_extend(opts.ensure_installed, {
       "astro",
       "http",
+      "markdown",
+      "markdown_inline",
     })
   end,
 }
