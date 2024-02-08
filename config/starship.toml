@@ -1,8 +1,8 @@
 palette = "catppuccin_mocha"
 
 [aws]
-format = 'on [$symbol$profile]($style) '
-style = 'bold orange'
+format = '[$symbol $profile]($style) '
+style = 'red'
 symbol = '🅰'
 
 
