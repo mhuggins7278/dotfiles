@@ -23,7 +23,7 @@ local function scheme_for_appearance(appearance)
 end
 
 config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
-config.font_size = 24.0
+config.font_size = 18.0
 config.font = wezterm.font("Monaspace Radon Var", { weight = "Regular" })
 config.window_background_opacity = 0.2
 config.window_decorations = "RESIZE"
