@@ -74,8 +74,8 @@ alias axel="axel -an 10"
 alias ssh_ignore="ssh -F /dev/null"
 
 # Some more stuff
-alias brewsync="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml --tags packages"
-alias dotfiles="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml"
+alias brewsync="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml --tags packages --ask-become-pass"
+alias dotfiles="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml --ask-become-pass"
 alias play="ansible-playbook"
 alias smod='stat -c "%a %n"'
 
