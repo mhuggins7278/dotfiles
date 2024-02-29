@@ -1,15 +1,29 @@
 ---
 casks:
+  amethyst:
   azure-data-studio:
+  bitwarden:
+  discord:
   docker:
+  font-caskaydia-cove-nerd-font:
+  font-fira-code-nerd-font:
   font-hack-nerd-font:
-  # google-chrome:
+  font-juliamono:
+  font-monaspace:
+  gimp:
   gitify:
   iterm2:
   karabiner-elements:
+  kdiff3:
   keycastr:
   kitty:
+  licecap:
   macdown:
+  notion:
+  polypane:
+  postman:
   rectangle:
   spotify:
+  visual-studio-code:
+  wezterm:
   wireshark:
