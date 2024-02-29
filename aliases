@@ -78,3 +78,5 @@ alias brewsync="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dot
 alias dotfiles="ansible-playbook -i $HOME/.dotfiles/ansible/inventory $HOME/.dotfiles/ansible/dotfiles.yml"
 alias play="ansible-playbook"
 alias smod='stat -c "%a %n"'
+
+alias assume=". assume"

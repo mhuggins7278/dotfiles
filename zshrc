@@ -10,7 +10,7 @@ plugins=(gh vi-mode fzf grc starship zoxide nvm)
 
 # Lazy Load NVM
 zstyle ':omz:plugins:nvm' lazy yes
-zstyle ':omz:update' frequency 14
+zstyle ':omz:update' frequency 7 
 
 
 source $OH_MY_ZSH/oh-my-zsh.sh
@@ -56,3 +56,4 @@ export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
 # # End of lines added by compinstall
 # Source completion files
 source <(glgroup bashcomplete)
+# zprof

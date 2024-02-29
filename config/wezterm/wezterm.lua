@@ -22,7 +22,6 @@ local function scheme_for_appearance(appearance)
 	end
 end
 
-config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
 config.font_size = 18.0
 config.font = wezterm.font("Monaspace Radon Var", { weight = "Regular" })
 config.window_background_opacity = 0.7
@@ -31,5 +30,6 @@ config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
 config.macos_window_background_blur = 60
 config.term = "wezterm"
+config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
 -- and finally, return the configuration to wezterm
 return config

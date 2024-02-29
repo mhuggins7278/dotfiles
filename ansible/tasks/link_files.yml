@@ -39,6 +39,7 @@
     - { src: "~/.dotfiles/wgetrc", dest: "~/.wgetrc" }
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }
     - { src: "~/.dotfiles/zshrc", dest: "~/.zshrc" }
+    - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile" }
     - { src: "~/.dotfiles/config/kitty", dest: "~/.config/kitty", force: yes }
     - {
         src: "~/.dotfiles/config/lazygit/config.yml",

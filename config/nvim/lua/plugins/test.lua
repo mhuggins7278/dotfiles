@@ -2,6 +2,9 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
+      -- {
+      --   dir = "~/github/mhuggins7278/neotest-jest",
+      -- },
       "haydenmeade/neotest-jest",
       "marilari88/neotest-vitest",
     },
@@ -22,7 +25,7 @@ return {
       },
       {
         "<leader>tw",
-        "<cmd>lua require('neotest').run.run({ jestCommand = 'jest --watch ' })<cr>",
+        "<cmd>lua require('neotest').run.run({ jestCommand = 'npm run test:watch' })<cr>",
         desc = "Run Watch",
       },
     },
@@ -31,8 +34,8 @@ return {
         opts.adapters,
         require("neotest-jest")({
           jestCommand = "npm test --",
-          jestConfigFile = "jest.config.ts",
-          env = { CI = true },
+          -- jestConfigFile = "./jest.config.ts",
+          env = {},
           cwd = function()
             return vim.fn.getcwd()
           end,
