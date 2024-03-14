@@ -8,19 +8,14 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = augroup("snowflake"),
-  callback = function()
-    if vim.o.buftype == "snowflake" then
-      vim.cmd("set filetype=sql")
-    end
-  end,
-})
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  group = augroup("mustache"),
-  callback = function()
-    if vim.o.buftype == "mustache" then
-      vim.cmd("set filetype=sql")
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+--   group = augroup("snowflake"),
+--   callback = function()
+--     if vim.o.filetype == "snowflake" then
+--       vim.cmd("set filetype=sql")
+--     end
+--   end,
+-- })
+vim.api.nvim_command(
+  "autocmd BufNewFile,BufRead **/epiquery-templates/**/*.mustache,**/epiquery-templates/**/*.snowflake setfiletype sql"
+)

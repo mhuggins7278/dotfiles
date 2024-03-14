@@ -3,16 +3,19 @@
   include_vars: vars/taps.yml
   tags:
     - brew_taps
+    - packages
 
 - name: Include brew formula list
   include_vars: vars/formula.yml
   tags:
     - brew_formula
+    - packages
 
 - name: Include brew casks list
   include_vars: vars/casks.yml
   tags:
     - brew_cask
+    - packages
 
 - block:
     - name: Update/Upgrade Homebrew
@@ -23,31 +26,35 @@
         - brew_taps
         - brew_formula
         - brew_cask
+        - packages
 
     - name: Manage taps
       homebrew_tap:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('present') }}"
-      with_dict: '{{taps}}'
+      with_dict: "{{taps}}"
       tags:
         - brew_taps
+        - packages
 
     - name: Manage formula
       homebrew:
-        name: '{{ item.key }}'
-        install_options: '{{ item.value.options | default(omit) }}'
+        name: "{{ item.key }}"
+        install_options: "{{ item.value.options | default(omit) }}"
         state: "{{ item.value.state | default('present') }}"
-      with_dict: '{{formula}}'
+      with_dict: "{{formula}}"
       tags:
         - brew_formula
+        - packages
 
     - name: Manage casks
       homebrew_cask:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('present') }}"
-      with_dict: '{{casks}}'
+      with_dict: "{{casks}}"
       tags:
         - brew_cask
+        - packages
 
   when: ansible_os_family == "Darwin"
 
@@ -59,16 +66,16 @@
 
     - name: Manage pacman packages
       pacman:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('latest') }}"
-      with_dict: '{{pacman}}'
+      with_dict: "{{pacman}}"
 
     - name: Manage python packages
       pip:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('latest') }}"
         executable: "{{ item.value.executable | default('pip3') }}"
-      with_dict: '{{pip}}'
+      with_dict: "{{pip}}"
       tags:
         - pip
 
@@ -84,16 +91,16 @@
 
     - name: Manage apt packages
       apt:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('latest') }}"
-      with_dict: '{{apt}}'
+      with_dict: "{{apt}}"
 
     - name: Manage python packages
       pip:
-        name: '{{ item.key }}'
+        name: "{{ item.key }}"
         state: "{{ item.value.state | default('latest') }}"
         executable: "{{ item.value.executable | default('pip3') }}"
-      with_dict: '{{pip}}'
+      with_dict: "{{pip}}"
       tags:
         - pip
 
