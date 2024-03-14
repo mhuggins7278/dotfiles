@@ -6,6 +6,7 @@ formula:
   aom:
   archey4:
   asdf:
+  atuin:
   autoconf:
   automake:
   awscli:
@@ -198,6 +199,7 @@ formula:
   sesh:
   shared-mime-info:
   shellcheck:
+  silicon:
   six:
   smartmontools:
   sqlite:

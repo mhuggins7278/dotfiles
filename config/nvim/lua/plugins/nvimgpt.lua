@@ -4,10 +4,18 @@ return {
     require("chatgpt").setup({
       api_key_cmd = "security find-generic-password -s NVIM_CHAT_GPT_TOKEN -w",
       openai_params = {
-        model = "gpt-3.5-turbo",
+        model = "gpt-4-turbo-preview",
         frequency_penalty = 0,
         presence_penalty = 0,
         max_tokens = 2000,
+        temperature = 0,
+        top_p = 1,
+        n = 1,
+      },
+      openai_edit_params = {
+        model = "gpt-4-turbo-preview",
+        frequency_penalty = 0,
+        presence_penalty = 0,
         temperature = 0,
         top_p = 1,
         n = 1,

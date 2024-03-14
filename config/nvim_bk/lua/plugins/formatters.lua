@@ -17,6 +17,7 @@ return {
 	opts = {
 		formatters_by_ft = {
 			lua = { "stylua" },
+			sql = { "sql_formatter" },
 			javascript = { { "prettierd", "prettier" } },
 			javascriptreact = { { "prettierd", "prettier" } },
 			typescriptreact = { { "prettierd", "prettier" } },
