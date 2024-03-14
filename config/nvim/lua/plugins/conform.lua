@@ -1,5 +1,6 @@
 return {
   "stevearc/conform.nvim",
+  optional = true,
   opts = {
     formatters_by_ft = {
       ["javascript"] = { "prettierd" },
@@ -18,6 +19,12 @@ return {
       ["markdown.mdx"] = { "prettierd" },
       ["graphql"] = { "prettierd" },
       ["handlebars"] = { "prettierd" },
+      ["sql"] = { "sql_formatter" },
+    },
+    formatters = {
+      sql_formatter = {
+        prepend_args = { "-l", "tsql" },
+      },
     },
   },
 }
