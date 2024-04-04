@@ -1,54 +1,73 @@
 return {
-  "rest-nvim/rest.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  ft = { "http", "rest" },
-  config = function()
-    require("rest-nvim").setup({
-      -- Open request results in a horizontal split
-      result_split_horizontal = true,
-      -- Keep the http file buffer above|left when split horizontal|vertical
-      result_split_in_place = true,
-      -- Skip SSL verification, useful for unknown certificates
-      skip_ssl_verification = false,
-      -- Encode URL before making request
-      encode_url = true,
-      -- Highlight request on run
-      highlight = {
-        enabled = true,
-        timeout = 150,
-      },
-      result = {
-        -- toggle showing URL, HTTP info, headers at top the of result window
-        show_url = true,
-        -- show the generated curl command in case you want to launch
-        -- the same request via the terminal (can be verbose)
-        show_curl_command = true,
-        show_http_info = true,
-        show_headers = true,
-        -- executables or functions for formatting response body [optional]
-        -- set them to false if you want to disable them
-        formatters = {
-          json = "jq",
-          html = function(body)
-            return vim.fn.system({ "tidy", "-i", "-q", "-" }, body)
-          end,
+  {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    config = true,
+  },
+  {
+    "rest-nvim/rest.nvim",
+    ft = "http",
+    dependencies = { "luarocks.nvim" },
+    config = function()
+      require("rest-nvim").setup({
+        client = "curl",
+        env_file = ".env",
+        env_pattern = "\\.env$",
+        env_edit_command = "tabedit",
+        encode_url = false,
+        skip_ssl_verification = false,
+        custom_dynamic_variables = {},
+        logs = {
+          level = "info",
+          save = true,
         },
-      },
-      -- Jump to request line on run
-      jump_to_request = false,
-      env_file = ".env",
-      custom_dynamic_variables = {},
-      yank_dry_run = true,
-    })
-  end,
-  init = function()
-    local wk = require("which-key")
-    wk.register({
-      ["R"] = {
-        name = "+restClient",
-        ["r"] = { "<Plug>RestNvim", "Run Request" },
-        ["p"] = { "<Plug>RestNvimPreview", "Preview Curl" },
-      },
-    }, { prefix = "<leader>" })
-  end,
+        highlight = {
+          enable = true,
+          timeout = 750,
+        },
+        result = {
+          split = {
+            in_place = false,
+            horizontal = true,
+            stay_in_current_window_after_split = true,
+          },
+          behavior = {
+            decode_url = true,
+            show_info = {
+              url = true,
+              headers = true,
+              http_info = true,
+              curl_command = true,
+            },
+            formatters = {
+              json = "jq",
+              html = function(body)
+                if vim.fn.executable("tidy") == 0 then
+                  return body, { found = false, name = "tidy" }
+                end
+                local fmt_body = vim.fn
+                  .system({
+                    "tidy",
+                    "-i",
+                    "-q",
+                    "--tidy-mark",
+                    "no",
+                    "--show-body-only",
+                    "auto",
+                    "--show-errors",
+                    "0",
+                    "--show-warnings",
+                    "0",
+                    "-",
+                  }, body)
+                  :gsub("\n$", "")
+
+                return fmt_body, { found = true, name = "tidy" }
+              end,
+            },
+          },
+        },
+      })
+    end,
+  },
 }

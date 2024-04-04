@@ -5,7 +5,7 @@ NVM_HOMEBREW=$(brew --prefix nvm)
 
 # Which plugins would you like to load?
 # See https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins
-plugins=(gh vi-mode fzf grc starship zoxide nvm)
+plugins=(gh vi-mode fzf starship zoxide nvm)
 
 
 # Lazy Load NVM
@@ -27,16 +27,16 @@ setopt HIST_REDUCE_BLANKS
 source $HOME/.dotfiles/shellrc
 
 
-# pnpm
+export BAT_THEME="Solarized (dark)"
 export PNPM_HOME="/Users/MHuggins/Library/pnpm"
 GOPATH=$(go env GOPATH)/bin
-export PATH="$PNPM_HOME:$PATH:$GOPATH"
-# pnpm end
-
-
-export BAT_THEME="Solarized (dark)"
-# Add default node to path
-export PATH=~/.nvm/versions/node/v18.13.0/bin:$PATH
+path=( 
+$path
+$GOPATH
+$PNPM_HOME
+"~/.nvm/versions/node/v18.13.0/bin"
+"$(brew --prefix)/opt/curl/bin"
+)
 
 # zprof
 

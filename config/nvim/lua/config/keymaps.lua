@@ -19,7 +19,7 @@ map("n", "{", "{zz")
 map("n", "}", "}zz")
 
 --move line up and down
-map("n", "J", "mzJ`z")
+map("n", "J", "mzJ`z", { desc = "Join Line Below" })
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Line Up" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Line Down" })
 
@@ -39,11 +39,3 @@ map("n", "<leader>W|", "<C-W>v", { desc = "Split window right", remap = true })
 map("n", "<leader>w", ":w<CR>", { desc = "Save file", remap = true, silent = true })
 
 map("n", "<leader>gg", ":!tmux new-window 'lazygit'<CR>", { desc = "Open lazygit", remap = true, silent = true })
-
---keymaps to move the current line up and down in normal mode
-map("n", "<C-j>", ":m .+1<CR>==", { desc = "Move line down", remap = true })
-map("n", "<C-k>", ":m .-2<CR>==", { desc = "Move line up", remap = true })
-
---keymaps to move the current selection up and down in visual mode
-map("v", "<C-j>", ":m '>+1<CR>gv=gv", { desc = "Move line down", remap = true })
-map("v", "<C-k>", ":m '<-2<CR>gv=gv", { desc = "Move line up", remap = true })

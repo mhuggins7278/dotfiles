@@ -45,6 +45,8 @@
         update: yes
 
     - name: Create folder
+      tags:
+        - links
       file:
         path: "{{item}}"
         state: directory
@@ -66,6 +68,7 @@
         - "~/.config/tmux/"
         - "~/.config/zellij/"
         - "~/.config/wezterm/"
+        - "~/.config/sesh/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"
         - "~/Library/Application Support/layzgit/"

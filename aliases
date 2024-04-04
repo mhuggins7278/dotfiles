@@ -10,14 +10,6 @@ alias gpl="git_prune_local"
 alias gdb="git_delete_branch"
 
 
-# Zellij
-alias zs="zellij -s"
-alias za="zellij a"
-alias zl="zellij ls"
-alias zk="zellij k"
-alias zl="zellij ls"
-
-
 # Color output
 alias grep='grep --color=auto'
 alias tree="tree -C"

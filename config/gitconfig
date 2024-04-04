@@ -30,6 +30,8 @@
 	helper = osxkeychain
 [alias]
   gl = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%w(0,4,4)%-b%n%n%-N'
+  bllame = blame -w -C -C -C
+	fpush = push
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
@@ -41,3 +43,12 @@
 [pull]
 	rebase = false
 	ff = only
+[rerere]
+	autoUpdate = true
+	enabled = true
+[maintenance]
+	repo = /Users/MHuggins/github/glg/streamliner
+[branch]
+	sort = -committerdate
+[rebase]
+	updateRefs = true

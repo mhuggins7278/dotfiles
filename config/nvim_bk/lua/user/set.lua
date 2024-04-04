@@ -13,7 +13,7 @@ vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
-vim.opt.smartindent = true
+vim.opt.smartindent = false
 vim.opt.autoindent = true
 
 vim.opt.wrap = false
@@ -37,10 +37,9 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "100"
 
 vim.opt.list = true
-vim.opt.listchars = { eol = '↲', tab = '▸ ', trail = '·' }
+vim.opt.listchars = { eol = "↲", tab = "▸ ", trail = "·" }
 vim.opt.syntax = "on"
 vim.opt.filetype.plugin = "on"
-
 
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

@@ -20,7 +20,12 @@ return {
         integrations = {
           alpha = true,
           cmp = true,
+          dap = {
+            enabled = true,
+            enable_ui = true,
+          },
           nvimtree = true,
+          neotree = true,
           fidget = true,
           gitsigns = true,
           harpoon = true,
