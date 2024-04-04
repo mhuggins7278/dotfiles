@@ -10,6 +10,8 @@
     dest: "{{ item.dest }}"
     state: link
     force: '{{ item.force | default("no") }}'
+    tags:
+      - links
   loop:
     - {
         src: "~/.dotfiles/config/gtk-3.0/settings.ini",
@@ -48,6 +50,7 @@
       }
     - { src: "~/.dotfiles/config/nvim", dest: "~/.config/nvim", force: yes }
     - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: yes }
+    - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: yes }
     - {
         src: "~/.dotfiles/config/zellij/config.kdl",
         dest: "~/.config/zellij/config.kdl",
