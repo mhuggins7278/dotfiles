@@ -31,9 +31,9 @@
 [alias]
   l = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%w(0,4,4)%-b%n%n%-N'
   bllame = blame -w -C -C -C
-  P = push --force-with-lease
-  fp = push --force
-  p = pull
+  p = push 
+  fp = push --force-with-lease
+  P = pull
   pl = fetch --prune origin
 [credential "https://github.com"]
 	helper = 
