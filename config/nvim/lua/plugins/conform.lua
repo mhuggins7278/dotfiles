@@ -3,6 +3,7 @@ return {
   optional = true,
   opts = {
     formatters_by_ft = {
+      lua = { "stylua" },
       ["javascript"] = { "prettierd" },
       ["javascriptreact"] = { "prettierd" },
       ["typescript"] = { "prettierd" },

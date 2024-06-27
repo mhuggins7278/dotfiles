@@ -42,6 +42,7 @@ return {
         })
       )
       table.insert(opts.adapters, require("neotest-vitest"))
+      table.insert(opts.discovery, { enabled = false })
     end,
   },
 }

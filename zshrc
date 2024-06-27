@@ -11,6 +11,8 @@ plugins=(gh vi-mode fzf starship zoxide nvm)
 # Lazy Load NVM
 zstyle ':omz:plugins:nvm' lazy yes
 zstyle ':omz:update' frequency 7 
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' menu select
 
 
 source $OH_MY_ZSH/oh-my-zsh.sh
@@ -34,26 +36,11 @@ path=(
 $path
 $GOPATH
 $PNPM_HOME
-"~/.nvm/versions/node/v18.13.0/bin"
+# "~/.nvm/versions/node/v18.13.0/bin"
 "$(brew --prefix)/opt/curl/bin"
 )
 
-# zprof
-
-# The following lines were added by compinstall
-
-# zstyle ':completion:*' completer _expand _complete _ignored _correct
-# zstyle ':completion:*' list-colors ''
-# zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-# zstyle ':completion:*' menu select=0 select=0
-# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-# zstyle :compinstall filename '/Users/MHuggins/.zshrc'
-#
-# autoload -Uz compinit
-# compinit
-# # load bashcompinit for some old bash completions 
-# autoload bashcompinit && bashcompinit
-# # End of lines added by compinstall
 # Source completion files
 source <(glgroup bashcomplete)
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 # zprof
