@@ -23,9 +23,9 @@ local function scheme_for_appearance(appearance)
 	end
 end
 
-config.font_size = 16.0
+config.font_size = 18.0
 config.font = wezterm.font("Monaspace Radon Var", { weight = "Regular" })
-config.window_background_opacity = 0.7
+config.window_background_opacity = 1
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.tab_bar_at_bottom = true
