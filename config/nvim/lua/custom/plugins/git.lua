@@ -19,8 +19,8 @@ return {
     },
     init = function()
       local wk = require 'which-key'
-      wk.register {
-        ['<leader>gg'] = { '<cmd>Neogit<cr>', '[N]eogit' },
+      wk.add {
+        { '<leader>gg', '<cmd>Neogit<cr>', desc = '[N]eogit' },
       }
     end,
   },
@@ -43,16 +43,16 @@ return {
     },
     init = function()
       local wk = require 'which-key'
-      wk.register {
-        ['[h'] = { '<cmd>Gitsigns prev_hunk<cr>', 'Previous hunk' },
-        [']h'] = { '<cmd>Gitsigns next_hunk<cr>', 'Next hunk' },
-        ['<leader>gp'] = { '<cmd>Gitsigns preview_hunk<cr>', '[P]review hunk' },
-        ['<leader>gb'] = { '<cmd>Gitsigns blame_line<cr>', '[B]lame line' },
-        ['<leader>gs'] = { '<cmd>Gitsigns stage_hunk<cr>', '[S]tage hunk' },
-        ['<leader>gS'] = { '<cmd>Gitsigns stage_buffer<cr>', '[S]tage buffer' },
-        ['<leader>gu'] = { '<cmd>Gitsigns undo_stage_hunk<cr>', '[U]nstage hunk' },
-        ['<leader>gr'] = { '<cmd>Gitsigns reset_hunk<cr>', '[R]eset hunk' },
-        ['<leader>gR'] = { '<cmd>Gitsigns reset_buffer<cr>', '[R]eset buffer' },
+      wk.add {
+        { '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', desc = '[R]eset buffer' },
+        { '<leader>gS', '<cmd>Gitsigns stage_buffer<cr>', desc = '[S]tage buffer' },
+        { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = '[B]lame line' },
+        { '<leader>gp', '<cmd>Gitsigns preview_hunk<cr>', desc = '[P]review hunk' },
+        { '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', desc = '[R]eset hunk' },
+        { '<leader>gs', '<cmd>Gitsigns stage_hunk<cr>', desc = '[S]tage hunk' },
+        { '<leader>gu', '<cmd>Gitsigns undo_stage_hunk<cr>', desc = '[U]nstage hunk' },
+        { '[h', '<cmd>Gitsigns prev_hunk<cr>', desc = 'Previous hunk' },
+        { ']h', '<cmd>Gitsigns next_hunk<cr>', desc = 'Next hunk' },
       }
     end,
   },

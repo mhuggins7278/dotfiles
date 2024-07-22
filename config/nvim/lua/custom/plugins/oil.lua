@@ -15,8 +15,8 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   init = function()
     local wk = require 'which-key'
-    wk.register {
-      ['<leader>o'] = { '<cmd> Oil<cr>', '[E]xplorer' },
+    wk.add {
+      { '<leader>o', '<cmd> Oil<cr>', desc = '[E]xplorer' },
     }
   end,
 }
