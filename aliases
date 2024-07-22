@@ -2,8 +2,7 @@
 alias vim="nvim"
 alias vi="nvim"
 alias cat="bat"
-alias ls="exa --icons"
-alias python-"python3"
+alias ls="eza --icons"
 
 alias kp="kill_app_by_port"
 alias gpl="git_prune_local"
