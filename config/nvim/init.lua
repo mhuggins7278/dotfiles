@@ -731,6 +731,7 @@ require('lazy').setup {
           },
           transparent_background = false,
           term_colors = false,
+          default_integrations = true,
           integrations = {
             alpha = true,
             cmp = true,
