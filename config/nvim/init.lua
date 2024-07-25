@@ -724,16 +724,18 @@ require('lazy').setup {
       priority = 1000,
       config = function()
         require('catppuccin').setup {
-          flavour = 'latte',
-          transparent_background = true,
-          term_colors = true,
+          flavour = 'auto',
+          background = { -- :h background
+            light = 'latte',
+            dark = 'mocha',
+          },
+          transparent_background = false,
+          term_colors = false,
           integrations = {
             alpha = true,
             cmp = true,
-            dap = {
-              enabled = true,
-              enable_ui = true,
-            },
+            dap = true,
+            dap_ui = true,
             gitsigns = true,
             harpoon = true,
             lsp_trouble = true,
