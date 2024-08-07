@@ -55,6 +55,13 @@ return {
         end,
         desc = 'Toggle Output Panel',
       },
+      {
+        '<leader>tc',
+        function()
+          require('neotest').output_panel.clear()
+        end,
+        desc = 'Clear Output Panel',
+      },
     },
     config = function()
       require('neotest').setup {

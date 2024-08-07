@@ -39,7 +39,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' menu select
 zstyle ':completion:*' completer _expand _complete _ignored
 zstyle :compinstall filename '/Users/MHuggins/.zshrc'
-# autoload -U +X bashcompinit && bashcompinit
+autoload -U +X bashcompinit && bashcompinit
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
 	compinit;
@@ -47,5 +47,5 @@ else
 	compinit -C;
 fi;
 # End of lines added by compinstall
-# source <(glgroup bashcomplete)
+source <(glgroup bashcomplete)
 # zprof
