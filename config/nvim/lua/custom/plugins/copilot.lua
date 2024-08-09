@@ -192,11 +192,6 @@ return {
         -- Generate commit message based on the git diff
         {
           '<leader>mm',
-          '<cmd>CopilotChatCommit<cr>',
-          desc = 'CopilotChat - Generate commit message for all changes',
-        },
-        {
-          '<leader>mM',
           '<cmd>CopilotChatCommitStaged<cr>',
           desc = 'CopilotChat - Generate commit message for staged changes',
         },
