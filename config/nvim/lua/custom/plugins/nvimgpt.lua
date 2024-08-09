@@ -3,21 +3,23 @@ return {
   config = function()
     require('chatgpt').setup {
       api_key_cmd = 'security find-generic-password -s NVIM_CHAT_GPT_TOKEN -w',
+      max_tokens = 4096,
       openai_params = {
-        model = 'gpt-4o',
+        model = 'gpt-4o-2024-08-06',
         frequency_penalty = 0,
         presence_penalty = 0,
-        max_tokens = 2000,
-        temperature = 0,
-        top_p = 1,
+        temperature = 0.2,
+        max_tokens = 4096,
+        top_p = 0.1,
         n = 1,
       },
       openai_edit_params = {
-        model = 'gpt-4o',
+        model = 'gpt-4o-2024-08-06',
         frequency_penalty = 0,
         presence_penalty = 0,
-        temperature = 0,
-        top_p = 1,
+        max_tokens = 4096,
+        temperature = 0.2,
+        top_p = 0.1,
         n = 1,
       },
     }
