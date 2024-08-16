@@ -168,7 +168,7 @@ return {
         -- Chat with Copilot in visual mode
         {
           '<leader>mv',
-          ':CopilotChatVisual',
+          ':CopilotChatVisual<cr>',
           mode = 'x',
           desc = 'CopilotChat - Open in vertical split',
         },

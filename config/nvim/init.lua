@@ -698,6 +698,7 @@ require('lazy').setup {
             { name = 'path' },
           },
         }
+        cmp.setup.filetype({ 'sql' }, { sources = { { name = 'vim-dadbod-completion' }, { name = 'buffer' } } })
       end,
     },
 
@@ -730,7 +731,7 @@ require('lazy').setup {
             dark = 'mocha',
           },
           transparent_background = false,
-          term_colors = false,
+          term_colors = true,
           default_integrations = true,
           integrations = {
             alpha = true,
@@ -788,7 +789,6 @@ require('lazy').setup {
         vim.cmd.colorscheme 'catppuccin-mocha'
       end,
     },
-
     -- Highlight todo, notes, etc in comments
     { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
     { -- Collection of various small independent plugins/modules
