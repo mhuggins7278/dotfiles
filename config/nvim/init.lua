@@ -158,6 +158,23 @@ vim.api.nvim_create_autocmd('FileType', {
   group = octo_group,
 })
 
+local specific_directory = vim.fn.expand '~' .. '/github/glg/epiquery-templates/'
+
+-- Create an autocommand group
+vim.api.nvim_create_augroup('MustacheToSQL', { clear = true })
+
+-- Create an autocommand
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  group = 'MustacheToSQL',
+  pattern = '*.mustache',
+  callback = function()
+    local current_file = vim.fn.expand '%:p'
+    if string.find(current_file, specific_directory, 1, true) then
+      vim.bo.filetype = 'sql'
+    end
+  end,
+})
+
 -- vim.api.nvim_create_autocmd({ 'FileType' }, {
 --   desc = 'Enable completions for dadbod/sql',
 --   group = vim.api.nvim_create_augroup('dadbad', {}),
@@ -729,6 +746,13 @@ require('lazy').setup {
           background = { -- :h background
             light = 'latte',
             dark = 'mocha',
+            color_overrides = {
+              mocha = {
+                base = '#000000',
+                mantle = '#000000',
+                crust = '#000000',
+              },
+            },
           },
           transparent_background = false,
           term_colors = true,
@@ -821,6 +845,10 @@ require('lazy').setup {
         ---@diagnostic disable-next-line: duplicate-set-field
         statusline.section_location = function()
           return '%2l:%-2v'
+        end
+        ---@diagnostic disable-next-line: duplicate-set-field
+        statusline.section_git = function()
+          return ''
         end
 
         -- ... and there is more!
