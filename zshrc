@@ -33,6 +33,35 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source $HOME/.dotfiles/shellrc
 
+
+function sesh-sessions() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+session=$(sesh list -t -c | fzf \
+  --height 40% \
+  --reverse \
+  --border-label 'sesh' \
+  --border \
+  --prompt '⚡' \
+  --header ' ^a all ^t tmux ^x zoxide ^f find' \
+  --bind 'tab:down,btab:up' \
+  --bind 'ctrl-a:change-prompt(⚡)+reload(sesh list)' \
+  --bind 'ctrl-t:change-prompt(🪟)+reload(sesh list -t)' \
+  --bind 'ctrl-x:change-prompt(📁)+reload(sesh list -z)' \
+  --bind 'ctrl-f:change-prompt(🔎)+reload(fd -H -d 3 -t d -E .Trash . ~/github/)'
+)
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+
+zle     -N             sesh-sessions
+bindkey -M emacs '\es' sesh-sessions
+bindkey -M vicmd '\es' sesh-sessions
+bindkey -M viins '\es' sesh-sessions
+
 # The following lines were added by compinstall
 
 zstyle ':completion:*' use-cache on
