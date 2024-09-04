@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 tmux split-window -h -l 30%
-tmux send-keys "nvmit" Enter
-tmux select-pane -t :.+
+tmux send-keys "nvmit && npm run local" Enter
+tmux split-window
+tmux select-pane -t :.0
 tmux send-keys "nvim ." Enter
+tmux select-pane -t :.2
+tmux send-keys "glgroup localdev up -p ../gds.clusterconfig.dev" Enter
+tmux select-pane -t :.0

@@ -68,6 +68,7 @@
         - "~/.config/tmux/"
         - "~/.config/zellij/"
         - "~/.config/wezterm/"
+        - "~/.config/aerospace/"
         - "~/.config/sesh/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"
@@ -86,8 +87,7 @@
         - shells
 
     - include_tasks: tasks/link_files.yml
-      tags:
-        - links
+      tags: links
 
     - include_tasks: tasks/macos_defaults.yml
       when: ansible_os_family == "Darwin"

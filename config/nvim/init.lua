@@ -544,6 +544,9 @@ require('lazy').setup {
             },
           },
           rubocop = {},
+          html = {},
+          taplo = {},
+          jsonls = {},
           tsserver = {
             enabled = false,
           },
@@ -591,6 +594,7 @@ require('lazy').setup {
           'sql-formatter',
           'sqlfluff',
           'tsserver',
+          'jq',
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

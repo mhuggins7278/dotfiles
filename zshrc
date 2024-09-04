@@ -28,7 +28,7 @@ $PNPM_HOME
 "$(brew --prefix)/opt/curl/bin"
 )
 # Source completion files
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source $HOME/.dotfiles/shellrc
@@ -39,7 +39,7 @@ function sesh-sessions() {
     exec </dev/tty
     exec <&1
     local session
-session=$(sesh list -t -c | fzf \
+session=$(sesh list -z | fzf \
   --height 40% \
   --reverse \
   --border-label 'sesh' \

@@ -1,4 +1,6 @@
-[[startup_scripts]]
-session_path = "~/github/glg/streamliner"
-script_path = "~/.config/sesh/scripts/streamliner.sh"
+[[session]]
+name = "streamliner"
+path = "~/github/glg/streamliner"
+startup_command = ". ~/.config/sesh/scripts/streamliner.sh"
+
 
