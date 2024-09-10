@@ -3,4 +3,7 @@ name = "streamliner"
 path = "~/github/glg/streamliner"
 startup_command = ". ~/.config/sesh/scripts/streamliner.sh"
 
-
+[[session]]
+name = "Client-Solutions-Experience"
+path = "~/github/glg/Client-Solutions-Experience"
+startup_command = "gh dash"

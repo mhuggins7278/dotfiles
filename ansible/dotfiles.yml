@@ -68,7 +68,6 @@
         - "~/.config/tmux/"
         - "~/.config/zellij/"
         - "~/.config/wezterm/"
-        - "~/.config/aerospace/"
         - "~/.config/sesh/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"

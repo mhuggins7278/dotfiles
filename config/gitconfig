@@ -1,33 +1,38 @@
 [user]
-	name = Mark Huggins
-	email = mhuggins@glgroup.com
+  name = Mark Huggins
+  email = mhuggins@glgroup.com
 
 [push]
-	default = simple
+ default = simple
 
 [core]
-	excludesfile = /Users/markhuggins/.gitignore
-	editor = nvim
-  pager = delta --line-numbers --dark
-
-[interactive]
-    diffFilter = delta --color-only
+  excludesfile = /Users/markhuggins/.gitignore
+  editor = nvim
+  pager = delta
 
 [delta]
-    navigate = true
+  navigate = true
+  dark = true
+  line-numbers = true
+  side-by-side = true
+
+[interactive]
+  diffFilter = delta --color-only
 
 [merge]
-    conflictstyle = diff3
+  conflictstyle = diff3
 
 [diff]
-    colorMoved = default
+  colorMoved = default
 
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
+
 [alias]
   l = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n%w(0,4,4)%-b%n%n%-N'
   bllame = blame -w -C -C -C
@@ -35,23 +40,24 @@
   fp = push --force-with-lease
   P = pull
   pl = fetch --prune origin
+
 [credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+  helper = 
+  helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+  helper = 
+  helper = !/opt/homebrew/bin/gh auth git-credential
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [pull]
-	rebase = false
-	ff = only
+  rebase = false
+  ff = only
 [rerere]
-	autoUpdate = true
-	enabled = true
+  autoUpdate = true
+  enabled = true
 [maintenance]
-	repo = /Users/MHuggins/github/glg/streamliner
+  repo = /Users/MHuggins/github/glg/streamliner
 [branch]
-	sort = -committerdate
+  sort = -committerdate
 [rebase]
-	updateRefs = true
+  updateRefs = true

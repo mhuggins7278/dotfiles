@@ -1,13 +1,8 @@
 ---
-- name: delete default files
-  file:
-    path: ~/.config/kitty
-    state: absent
-
 - name: link dotfiles
   file:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ item.src | expanduser }}"
+    dest: "{{ item.dest | expanduser }}"
     state: link
     force: '{{ item.force | default("no") }}'
   loop:
@@ -19,9 +14,9 @@
     - {
         src: "~/.dotfiles/config/karabiner/karabiner.json",
         dest: "~/.config/karabiner/karabiner.json",
-        force: yes,
+        force: true,
       }
-    - { src: "~/.dotfiles/config/gitconfig", dest: "~/.gitconfig", force: yes }
+    - { src: "~/.dotfiles/config/gitconfig", dest: "~/.gitconfig", force: true }
     - {
         src: "~/.dotfiles/config/gh/config.yml",
         dest: "~/.config/gh/config.yml",
@@ -31,8 +26,9 @@
         dest: "~/.config/starship.toml",
       }
     - {
-        src: "~/.dotfiles/config/aerospace/aerospace.toml",
-        dest: "~/.config/aerospace/aerospace.toml",
+        src: "~/.dotfiles/config/aerospace",
+        dest: "~/.config/aerospace",
+        force: true,
       }
     - {
         src: "~/.dotfiles/config/terminator/config",
@@ -44,22 +40,23 @@
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }
     - { src: "~/.dotfiles/zshrc", dest: "~/.zshrc" }
     - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile" }
-    - { src: "~/.dotfiles/config/kitty", dest: "~/.config/kitty", force: yes }
+    - { src: "~/.dotfiles/config/kitty", dest: "~/.config/kitty", force: true }
     - {
         src: "~/.dotfiles/config/lazygit/config.yml",
         dest: "~/Library/Application Support/lazygit/config.yml",
-        force: yes,
+        force: true,
       }
-    - { src: "~/.dotfiles/config/nvim", dest: "~/.config/nvim", force: yes }
-    - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: yes }
-    - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: yes }
+    - { src: "~/.dotfiles/config/nvim", dest: "~/.config/nvim", force: true }
+    - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: true }
+    - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: true }
     - {
         src: "~/.dotfiles/config/zellij/config.kdl",
         dest: "~/.config/zellij/config.kdl",
-        force: yes,
+        force: true,
       }
     - {
         src: "~/.dotfiles/config/wezterm",
         dest: "~/.config/wezterm",
-        force: yes,
+        force: true,
       }
+  tags: links

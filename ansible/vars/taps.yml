@@ -5,9 +5,7 @@ taps:
   fsouza/prettierd:
   homebrew/cask-fonts:
   homebrew/cask-versions:
-  homebrew/cask:
   homebrew/command-not-found:
-  homebrew/core:
   homebrew/services:
   joshmedeski/sesh:
   microsoft/mssql-release:

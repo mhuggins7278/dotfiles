@@ -96,6 +96,9 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 vim.keymap.set('i', 'jj', '<Esc>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file', remap = true, silent = true })
+vim.keymap.set('n', '<leader>i', function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
+end, { desc = 'Toggle [I]nlay Hints', remap = true, silent = true })
 
 --center cursor after various movement commands
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -175,6 +178,29 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
       vim.bo.filetype = 'sql'
     end
   end,
+})
+
+--autocommand to add any missing imports, removed unused imports and then sort imports using vtsls if the lsp is attached
+
+vim.api.nvim_create_augroup('vtsls', { clear = true })
+-- Function to organize imports, remove unused imports, and add missing imports
+function OrganizeImports()
+  local clients = vim.lsp.get_clients()
+  for _, client in pairs(clients) do
+    if client.name == 'vtsls' then
+      local vtsls_commands = require('vtsls').commands
+      vtsls_commands.organize_imports()
+      vtsls_commands.remove_unused()
+      vtsls_commands.add_missing_imports()
+      return
+    end
+  end
+end
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = 'vtsls',
+  pattern = { '*.ts', '*.js', '*.tsx', '*.jsx' },
+  callback = OrganizeImports,
 })
 
 -- vim.api.nvim_create_autocmd({ 'FileType' }, {
@@ -471,6 +497,7 @@ require('lazy').setup {
             -- or a suggestion from your LSP for this to activate.
             map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
             map('<leader>cr', vim.lsp.buf.rename, '[C]ode Lsp[R]ename')
+            --Call organzie imports
 
             -- Opens a popup that displays documentation about the word under your cursor
             --  See `:help K` for why this keymap
@@ -544,13 +571,38 @@ require('lazy').setup {
             },
           },
           rubocop = {},
+          yamlls = {},
           html = {},
           taplo = {},
           jsonls = {},
-          tsserver = {
-            enabled = false,
-          },
           vtsls = {
+            filetypes = {
+              'javascript',
+              'javascriptreact',
+              'javascript.jsx',
+              'typescript',
+              'typescriptreact',
+              'typescript.tsx',
+            },
+            keys = {
+              {
+                vim.keymap.set('n', '<leader>cO', function()
+                  require('vtsls').commands.organize_imports()
+                end, { desc = '[O]rganize Imports' }),
+              },
+            },
+            handlers = {
+              source_definition = function(err, locations) end,
+              file_references = function(err, locations) end,
+              code_action = function(err, actions) end,
+            },
+            -- automatically trigger renaming of extracted symbol
+            refactor_auto_rename = true,
+            refactor_move_to_file = {
+              -- If dressing.nvim is installed, telescope will be used for selection prompt. Use this to customize
+              -- the opts for telescope picker.
+              telescope_opts = function(items, default) end,
+            },
             settings = {
               complete_function_calls = true,
               vtsls = {
@@ -563,13 +615,17 @@ require('lazy').setup {
                 },
               },
               typescript = {
+                updateImportsOnFileMove = { enabled = 'always' },
+                suggest = {
+                  completeFunctionCalls = true,
+                },
                 inlayHints = {
+                  enumMemberValues = { enabled = true },
+                  functionLikeReturnTypes = { enabled = true },
                   parameterNames = { enabled = 'literals' },
                   parameterTypes = { enabled = true },
-                  variableTypes = { enabled = true },
                   propertyDeclarationTypes = { enabled = true },
-                  functionLikeReturnTypes = { enabled = true },
-                  enumMemberValues = { enabled = true },
+                  variableTypes = { enabled = false },
                 },
               },
             },
@@ -588,13 +644,19 @@ require('lazy').setup {
         -- for you, so that they are available from within Neovim.
         local ensure_installed = vim.tbl_keys(servers or {})
         vim.list_extend(ensure_installed, {
-          'stylua',
-          'prettierd',
+          'delve',
           'eslint-lsp',
+          'gofumpt',
+          'goimports',
+          'gomodifytags',
+          'gopls',
+          'impl',
+          'jq',
+          'prettierd',
           'sql-formatter',
           'sqlfluff',
-          'tsserver',
-          'jq',
+          'stylua',
+          'vtsls',
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -668,6 +730,14 @@ require('lazy').setup {
               ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
               show_labelDetails = true, -- show labelDetails in menu. Disabled by default
               symbol_map = { Codeium = '', Supermaven = '' },
+              menu = {
+                path = '[Path]',
+                buffer = '[Buffer]',
+                nvim_lsp = '[LSP]',
+                luasnip = '[LuaSnip]',
+                lazydev = '[Lua]',
+                copilot = '[Copilot]',
+              },
 
               -- The function below will be called before any actual modifications from lspkind
               -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
@@ -719,6 +789,7 @@ require('lazy').setup {
             { name = 'copilot' },
             { name = 'luasnip' },
             { name = 'path' },
+            { name = 'buffer' },
           },
         }
         cmp.setup.filetype({ 'sql' }, { sources = { { name = 'vim-dadbod-completion' }, { name = 'buffer' } } })

@@ -30,6 +30,7 @@ return {
         ['handlebars'] = { 'prettierd' },
         -- ['sql'] = { 'sqlfluff' },
         ['lua'] = { 'stylua' },
+        ['go'] = { 'goimports', 'gofumpt' },
       },
       formatters = {
         sql_formatter = {

@@ -3,6 +3,7 @@ alias vim="nvim"
 alias vi="nvim"
 alias cat="bat"
 alias ls="eza --icons"
+alias cd="z"
 
 alias kp="kill_app_by_port"
 alias gpl="git_prune_local"

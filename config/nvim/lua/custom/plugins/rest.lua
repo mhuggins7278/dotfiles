@@ -81,8 +81,6 @@ return {
             prev = 'H',
             ---@type string Mapping for cycle to next result pane
             next = 'L',
-            ---@type string Close the results paint
-            quit = 'q',
           },
         },
         ---@class rest.Config.Highlight

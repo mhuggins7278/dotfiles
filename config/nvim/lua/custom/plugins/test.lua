@@ -10,6 +10,7 @@ return {
       'antoinemadec/FixCursorHold.nvim',
       'nvim-treesitter/nvim-treesitter',
       'nvim-neotest/neotest-jest',
+      'nvim-neotest/neotest-go',
       'marilari88/neotest-vitest',
     },
     keys = {
@@ -76,6 +77,7 @@ return {
             end,
           },
           require 'neotest-vitest',
+          require 'neotest-go',
         },
       }
     end,
