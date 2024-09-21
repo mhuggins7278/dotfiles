@@ -1,37 +1,75 @@
-# zmodload zsh/zprof
+#
 # Path to your oh-my-zsh configuration.
-NVM_HOMEBREW=$(brew --prefix nvm)
-export NVM_LAZY=1
-source <(fzf --zsh)
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  # If you're using macOS, you'll want this enabled
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
+
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
+
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+
+# Plugins
+# zinit snippet OMZP::nvm
+
+# Load completions
+autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
+zinit cdreplay -q
 
 # History file settings
 HISTFILE=~/.local/share/zsh/zsh_history
-setopt NO_HIST_VERIFY
-setopt APPEND_HISTORY                   # adds history
-setopt INC_APPEND_HISTORY SHARE_HISTORY # adds history incrementally and share it across sessions
-setopt HIST_IGNORE_ALL_DUPS             # don't record dupes in history
-setopt HIST_REDUCE_BLANKS
+# History
+HISTSIZE=5000
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-export BAT_THEME="Solarized (dark)"
-export PNPM_HOME="/Users/MHuggins/Library/pnpm"
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+
 GOPATH=$(go env GOPATH)/bin
 path=( 
 $path
 $GOPATH
 $PNPM_HOME
-# "~/.nvm/versions/node/v18.13.0/bin"
 "$(brew --prefix)/opt/curl/bin"
+$HOME/.local/bin
+$HOME/.local/share
 )
 # Source completion files
 # export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-source $HOME/.dotfiles/shellrc
 
 
 function sesh-sessions() {
@@ -56,25 +94,10 @@ session=$(sesh list -z | fzf \
     sesh connect $session
   }
 }
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
+eval "$(fnm env --shell zsh)"
 
-zle     -N             sesh-sessions
-bindkey -M emacs '\es' sesh-sessions
-bindkey -M vicmd '\es' sesh-sessions
-bindkey -M viins '\es' sesh-sessions
-
-# The following lines were added by compinstall
-
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' menu select
-zstyle ':completion:*' completer _expand _complete _ignored
-zstyle :compinstall filename '/Users/MHuggins/.zshrc'
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-	compinit;
-else
-	compinit -C;
-fi;
-# End of lines added by compinstall
+source $HOME/.dotfiles/shellrc
 source <(glgroup bashcomplete)
 # zprof

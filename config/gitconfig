@@ -1,6 +1,7 @@
 [user]
   name = Mark Huggins
   email = mhuggins@glgroup.com
+  username=mhuggins7278
 
 [push]
  default = simple
@@ -42,11 +43,11 @@
   pl = fetch --prune origin
 
 [credential "https://github.com"]
-  helper = 
-  helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-  helper = 
-  helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
 [init]
   defaultBranch = main
 [pull]
@@ -61,3 +62,5 @@
   sort = -committerdate
 [rebase]
   updateRefs = true
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/

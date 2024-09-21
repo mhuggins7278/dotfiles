@@ -10,17 +10,20 @@ export GOPATH=$HOME/Coding/golang
 export FZF_DEFAULT_COMMAND="fd --type file --color=always"
 export FZF_DEFAULT_OPTS="--ansi"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export PATH="$HOME/.local/bin:$HOME/.local/share:$PATH"
+
+export BAT_THEME="Solarized (dark)"
+export PNPM_HOME="/Users/MHuggins/Library/pnpm"
+export GOPRIVATE="github.com/glg"
+export GIT_TERMINAL_PROMPT=1
 
 
-
-export SQL_DEV_USERNAME=$(security find-generic-password -s "SQL_DEV_USERNAME" -w)
-export SQL_DEV_PASSWORD=$(security find-generic-password -s "SQL_DEV_PASSWORD" -w)
-export GITHUB_PACKAGE_REGISTRY_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
-export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
-export TODOIST_API_KEY=$(security find-generic-password -s "TODOIST_API_KEY" -w)
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-export GITHUB_AUTH_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
+# export SQL_DEV_USERNAME=$(security find-generic-password -s "SQL_DEV_USERNAME" -w)
+# export SQL_DEV_PASSWORD=$(security find-generic-password -s "SQL_DEV_PASSWORD" -w)
+# export GITHUB_PACKAGE_REGISTRY_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
+# export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
+# export TODOIST_API_KEY=$(security find-generic-password -s "TODOIST_API_KEY" -w)
+# export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+# export GITHUB_AUTH_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
 
 
 

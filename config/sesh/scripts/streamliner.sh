@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 tmux split-window -h -l 30%
-tmux send-keys "nvmit && npm run local" Enter
+tmux send-keys "fnm use && npm run local" Enter
 tmux split-window
 tmux select-pane -t :.0
 tmux send-keys "nvim ." Enter

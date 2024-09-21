@@ -4,6 +4,7 @@ return {
     dependencies = { 'zbirenbaum/copilot.lua' },
     event = 'InsertEnter',
     config = true,
+    build = 'make tiktoken',
     init = function()
       require('copilot').setup {
         suggestion = {
@@ -26,6 +27,7 @@ return {
         { 'nvim-lua/plenary.nvim' },
       },
       opts = {
+        model = 'gpt-4o', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
         question_header = '## User ',
         answer_header = '## Copilot ',
         error_header = '## Error ',
@@ -173,9 +175,8 @@ return {
           desc = 'CopilotChat - Open in vertical split',
         },
         {
-          '<leader>mx',
-          ':CopilotChatInline<cr>',
-          mode = 'x',
+          '<leader>mI',
+          '<cmd>CopilotChatInline<cr>',
           desc = 'CopilotChat - Inline chat',
         },
         -- Custom input for CopilotChat

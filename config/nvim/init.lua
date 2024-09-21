@@ -180,28 +180,11 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   end,
 })
 
---autocommand to add any missing imports, removed unused imports and then sort imports using vtsls if the lsp is attached
-
-vim.api.nvim_create_augroup('vtsls', { clear = true })
--- Function to organize imports, remove unused imports, and add missing imports
-function OrganizeImports()
-  local clients = vim.lsp.get_clients()
-  for _, client in pairs(clients) do
-    if client.name == 'vtsls' then
-      local vtsls_commands = require('vtsls').commands
-      vtsls_commands.organize_imports()
-      vtsls_commands.remove_unused()
-      vtsls_commands.add_missing_imports()
-      return
-    end
-  end
-end
-
-vim.api.nvim_create_autocmd('BufWritePre', {
-  group = 'vtsls',
-  pattern = { '*.ts', '*.js', '*.tsx', '*.jsx' },
-  callback = OrganizeImports,
-})
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   group = 'vtsls',
+--   pattern = { '*.ts', '*.js', '*.tsx', '*.jsx' },
+--   callback = OrganizeImports,
+-- })
 
 -- vim.api.nvim_create_autocmd({ 'FileType' }, {
 --   desc = 'Enable completions for dadbod/sql',
@@ -319,7 +302,7 @@ require('lazy').setup {
         -- Useful for getting pretty icons, but requires special font.
         --  If you already have a Nerd Font, or terminal set up with fallback fonts
         --  you can enable this
-        -- { 'nvim-tree/nvim-web-devicons' }
+        { 'nvim-tree/nvim-web-devicons' },
       },
       config = function()
         -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -383,6 +366,7 @@ require('lazy').setup {
         vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
         vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files' })
         vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+        vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
         -- Slightly advanced example of overriding default behavior and theme
         vim.keymap.set('n', '<leader>/', function()
@@ -422,6 +406,17 @@ require('lazy').setup {
         { 'j-hui/fidget.nvim', opts = {} },
       },
       config = function()
+        vim.diagnostic.config {
+          signs = true,
+          underline = true,
+          update_in_insert = false,
+          virtual_text = { source = 'if_many' },
+        }
+        local signs = { Error = '󰅚 ', Warn = '󰀪 ', Hint = '󰌶 ', Info = ' ' }
+        for type, icon in pairs(signs) do
+          local hl = 'DiagnosticSign' .. type
+          vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+        end
         -- Brief Aside: **What is LSP?**
         --
         -- LSP is an acronym you've probably heard, but might not understand what it is.
@@ -453,6 +448,7 @@ require('lazy').setup {
         --    function will be executed to configure the current buffer
         vim.api.nvim_create_autocmd('LspAttach', {
           group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+
           callback = function(event)
             -- NOTE: Remember that lua is a real programming language, and as such it is possible
             -- to define small helper and utility functions so you don't have to repeat yourself
@@ -545,7 +541,44 @@ require('lazy').setup {
         --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
         local servers = {
           -- clangd = {},
-          gopls = {},
+          gopls = {
+            settings = {
+              gopls = {
+                gofumpt = true,
+                codelenses = {
+                  gc_details = false,
+                  generate = true,
+                  regenerate_cgo = true,
+                  run_govulncheck = true,
+                  test = true,
+                  tidy = true,
+                  upgrade_dependency = true,
+                  vendor = true,
+                },
+                hints = {
+                  assignVariableTypes = true,
+                  compositeLiteralFields = true,
+                  compositeLiteralTypes = true,
+                  constantValues = true,
+                  functionTypeParameters = true,
+                  parameterNames = true,
+                  rangeVariableTypes = true,
+                },
+                analyses = {
+                  fieldalignment = true,
+                  nilness = true,
+                  unusedparams = true,
+                  unusedwrite = true,
+                  useany = true,
+                },
+                usePlaceholders = true,
+                completeUnimported = true,
+                staticcheck = true,
+                directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
+                semanticTokens = true,
+              },
+            },
+          },
           -- pyright = {},
           -- rust_analyzer = {},
           -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -571,65 +604,11 @@ require('lazy').setup {
             },
           },
           rubocop = {},
+          terraformls = {},
           yamlls = {},
           html = {},
           taplo = {},
           jsonls = {},
-          vtsls = {
-            filetypes = {
-              'javascript',
-              'javascriptreact',
-              'javascript.jsx',
-              'typescript',
-              'typescriptreact',
-              'typescript.tsx',
-            },
-            keys = {
-              {
-                vim.keymap.set('n', '<leader>cO', function()
-                  require('vtsls').commands.organize_imports()
-                end, { desc = '[O]rganize Imports' }),
-              },
-            },
-            handlers = {
-              source_definition = function(err, locations) end,
-              file_references = function(err, locations) end,
-              code_action = function(err, actions) end,
-            },
-            -- automatically trigger renaming of extracted symbol
-            refactor_auto_rename = true,
-            refactor_move_to_file = {
-              -- If dressing.nvim is installed, telescope will be used for selection prompt. Use this to customize
-              -- the opts for telescope picker.
-              telescope_opts = function(items, default) end,
-            },
-            settings = {
-              complete_function_calls = true,
-              vtsls = {
-                enableMoveToFileCodeAction = true,
-                autoUseWorkspaceTsdk = true,
-                experimental = {
-                  completion = {
-                    enableServerSideFuzzyMatch = true,
-                  },
-                },
-              },
-              typescript = {
-                updateImportsOnFileMove = { enabled = 'always' },
-                suggest = {
-                  completeFunctionCalls = true,
-                },
-                inlayHints = {
-                  enumMemberValues = { enabled = true },
-                  functionLikeReturnTypes = { enabled = true },
-                  parameterNames = { enabled = 'literals' },
-                  parameterTypes = { enabled = true },
-                  propertyDeclarationTypes = { enabled = true },
-                  variableTypes = { enabled = false },
-                },
-              },
-            },
-          },
         }
 
         -- Ensure the servers and tools above are installed
@@ -656,7 +635,6 @@ require('lazy').setup {
           'sql-formatter',
           'sqlfluff',
           'stylua',
-          'vtsls',
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -673,6 +651,11 @@ require('lazy').setup {
           },
         }
       end,
+    },
+    {
+      'pmizio/typescript-tools.nvim',
+      dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+      opts = {},
     },
 
     { -- Autocompletion

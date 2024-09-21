@@ -7,3 +7,8 @@ startup_command = ". ~/.config/sesh/scripts/streamliner.sh"
 name = "Client-Solutions-Experience"
 path = "~/github/glg/Client-Solutions-Experience"
 startup_command = "gh dash"
+
+[[session]]
+name = "consultations-api"
+path = "~/github/glg/consultations-api"
+startup_command = ". ~/.config/sesh/scripts/node-app.sh"
