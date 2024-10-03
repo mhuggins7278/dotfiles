@@ -1,5 +1,4 @@
 #
-# Path to your oh-my-zsh configuration.
 if [[ -f "/opt/homebrew/bin/brew" ]] then
   # If you're using macOS, you'll want this enabled
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -28,13 +27,19 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light softmoth/zsh-vim-mode
 
-# Plugins
-# zinit snippet OMZP::nvm
 
 # Load completions
-autoload -Uz compinit && compinit
-autoload -U +X bashcompinit && bashcompinit
+autoload -Uz compinit 
+autoload -U +X bashcompinit 
+if [ "$(find ~/.zcompdump -mtime +1)" ]; then
+    compinit
+    bashcompinit
+else
+  compinit -C
+  bashcompinit -C
+fi
 
 zinit cdreplay -q
 

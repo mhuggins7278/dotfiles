@@ -42,6 +42,7 @@ Session.vim
 
 ## Directory-based project format:
 .idea/
+node_modules/
 
 ## File-based project format:
 *.ipr

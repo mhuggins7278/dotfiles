@@ -13,6 +13,9 @@ vim.g.maplocalleader = ' '
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
+vim.opt.shiftwidth = 2
+
+vim.opt.shiftround = true
 
 vim.opt.conceallevel = 1
 
@@ -337,7 +340,7 @@ require('lazy').setup {
           -- },
           pickers = {
             find_files = {
-              hidden = false,
+              hidden = true,
             },
             oldfiles = {
               cwd_only = true,
