@@ -14,6 +14,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.wrap = false
 vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 
 vim.opt.shiftround = true
 
@@ -40,7 +41,7 @@ vim.opt.breakindent = true
 -- Save undo history
 vim.opt.undofile = true
 
--- Case-insensitive searching UNLESS \C or capital in search
+-- Case-insensitive searching UNLESS \C or capital in qsearch
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
@@ -287,6 +288,7 @@ require('lazy').setup {
       branch = '0.1.x',
       dependencies = {
         'nvim-lua/plenary.nvim',
+        'tpope/vim-fugitive',
         { -- If encountering errors, see telescope-fzf-native README for install instructions
           'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -306,6 +308,7 @@ require('lazy').setup {
         --  If you already have a Nerd Font, or terminal set up with fallback fonts
         --  you can enable this
         { 'nvim-tree/nvim-web-devicons' },
+        'isak102/telescope-git-file-history.nvim',
       },
       config = function()
         -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -356,10 +359,13 @@ require('lazy').setup {
         -- Enable telescope extensions, if they are installed
         pcall(require('telescope').load_extension, 'fzf')
         pcall(require('telescope').load_extension, 'ui-select')
+        pcall(require('telescope').load_extension 'git_file_history')
 
         -- See `:help telescope.builtin`
         local builtin = require 'telescope.builtin'
+        local githistory = require('telescope').extensions.git_file_history
         vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+        vim.keymap.set('n', '<leader>sH', githistory.git_file_history, { desc = '[S]earch [H]istory' })
         vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
         vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
         vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
