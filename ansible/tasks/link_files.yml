@@ -59,4 +59,9 @@
         dest: "~/.config/wezterm",
         force: true,
       }
+    - {
+        src: "~/.dotfiles/config/gh-dash",
+        dest: "~/.config/gh-dash",
+        force: true,
+      }
   tags: links

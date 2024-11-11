@@ -27,11 +27,12 @@ return {
         { 'nvim-lua/plenary.nvim' },
       },
       opts = {
-        model = 'gpt-4o', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+        model = 'claude-3.5-sonnet', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
         question_header = '## User ',
         answer_header = '## Copilot ',
         error_header = '## Error ',
         auto_follow_cursor = false, -- Don't follow the cursor after getting response
+        auto_insert_mode = true,
         show_help = false, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
         mappings = {
           -- Use tab for completion

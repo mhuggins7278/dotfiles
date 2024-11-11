@@ -68,6 +68,7 @@
         - "~/.config/tmux/"
         - "~/.config/zellij/"
         - "~/.config/wezterm/"
+        - "~/.config/gh-dash/"
         - "~/.config/sesh/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"

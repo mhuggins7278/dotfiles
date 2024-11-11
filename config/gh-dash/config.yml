@@ -1,0 +1,78 @@
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Work Pending
+    filters: is:open review-requested:@me org:glg
+  - title: Work Involved
+    filters: is:open involves:@me -author:@me org:glg
+  - title: Other Pending
+    filters: is:open review-requested:@me -org:glg
+  - title: Other Involved
+    filters: is:open involves:@me -author:@me -org:glg
+issuesSections:
+  - title: CSX Board
+    filters: is:open repo:glg/Client-Solutions-Experience
+  - title: My Issues
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+defaults:
+  preview:
+    open: true
+    grow: true
+    width: 60
+  prsLimit: 20
+  issuesLimit: 20
+  view: prs
+  layout:
+    prs:
+      updatedAt:
+        width: 7
+      repo:
+        grow: true
+        width: 15
+      author:
+        width: 15
+      reviewStatus:
+        width: 15
+        hidden: false
+      assignees:
+        width: 20
+        hidden: true
+      base:
+        width: 15
+        hidden: true
+      lines:
+        width: 16
+    issues:
+      updatedAt:
+        width: 7
+      repo:
+        width: 15
+      creator:
+        width: 10
+      assignees:
+        width: 20
+        hidden: true
+keybindings:
+  issues:
+    - key: B
+      command: >
+        tmux display-popup -d {{.RepoPath}} -w 65 -h 10 -E 'ghprb {{.IssueNumber}}'
+    - key: e
+      command: >
+        tmux new-window -c {{.RepoPath}} 'nvim -c ":silent Octo issue edit {{.IssueNumber}}"'
+    - key: i
+      command: >
+        tmux display-popup -d {{.RepoPath}} -w 80% -h 90% -E 'nvim -c ":silent Octo issue create"'
+  prs:
+    - key: O
+      command: >
+        tmux new-window -c {{.RepoPath}} 'nvim -c ":silent Octo pr edit {{.PrNumber}}"'
+repoPaths:
+  glg/*: ~/github/glg/*
+  Learn-Build-Teach/*: ~/github/mhuggins7278/*
+pager:
+  diff: "delta"

@@ -17,14 +17,14 @@ end
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "catppuccin-mocha"
+		return "Catppuccin Mocha"
 	else
-		return "catppuccin-latte"
+		return "Catppuccin Latte"
 	end
 end
 
 config.font_size = 14.0
-config.font = wezterm.font("Monaspace Radon Var")
+config.font = wezterm.font("Monaspace Xenon Var")
 config.window_background_opacity = 1
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true

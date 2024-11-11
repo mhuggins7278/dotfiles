@@ -14,6 +14,15 @@ return {
     -- Optional, for search and quick-switch functionality.
     'nvim-telescope/telescope.nvim',
   },
+  init = function(_, opts)
+    local wk = require 'which-key'
+    wk.add {
+      { '<leader>O', group = 'Obsidian' }, -- group
+      { '<leader>On', '<cmd>ObsidianToday<cr>', desc = "Open Today's Note" },
+      { '<leader>so', '<cmd>ObsidianSearch<cr>', desc = 'Search Notes' },
+      { '<leader>Ol', '<cmd>ObsidianLinkNew<cr>', desc = 'Create New Link' },
+    }
+  end,
   opts = {
     dir = '~/github/mhuggins7278/notes', -- no need to call 'vim.fn.expand' here
     daily_notes = {

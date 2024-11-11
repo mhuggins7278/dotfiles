@@ -341,10 +341,16 @@ require('lazy').setup {
           --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           --   },
           -- },
+          defaults = {
+            layout_strategy = 'vertical',
+            layout_config = { width = 0.95, height = 0.95, prompt_position = 'top', mirror = true },
+            sorting_strategy = 'ascending',
+          },
           pickers = {
             find_files = {
               hidden = true,
             },
+            grep_string = {},
             oldfiles = {
               cwd_only = true,
             },
@@ -664,7 +670,22 @@ require('lazy').setup {
     {
       'pmizio/typescript-tools.nvim',
       dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-      opts = {},
+      opts = {
+        settings = {
+          tsserver_file_preferences = {
+            includeCompletionsForModuleExports = true,
+            quotePreference = 'auto',
+            includeInlayParameterNameHints = 'all',
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          },
+        },
+      },
     },
 
     { -- Autocompletion

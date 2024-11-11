@@ -28,7 +28,7 @@ return {
         ['markdown.mdx'] = { 'prettierd' },
         ['graphql'] = { 'prettierd' },
         ['handlebars'] = { 'prettierd' },
-        -- ['sql'] = { 'sqlfluff' },
+        -- ['sql'] = { 'sql_formatter' },
         ['lua'] = { 'stylua' },
         ['go'] = { 'goimports', 'gofumpt' },
       },

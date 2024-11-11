@@ -41,6 +41,7 @@
   fp = push --force-with-lease
   P = pull
   pl = fetch --prune origin
+	fa = fetch --all
 
 [credential "https://github.com"]
 	helper = 

@@ -83,8 +83,9 @@ function sesh-sessions() {
     exec <&1
     local session
 session=$(sesh list -z | fzf \
-  --height 40% \
+  --height 60% \
   --reverse \
+  --tmux \
   --border-label 'sesh' \
   --border \
   --prompt '⚡' \
