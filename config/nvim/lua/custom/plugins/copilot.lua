@@ -4,7 +4,6 @@ return {
     dependencies = { 'zbirenbaum/copilot.lua' },
     event = 'InsertEnter',
     config = true,
-    build = 'make tiktoken',
     init = function()
       require('copilot').setup {
         suggestion = {
@@ -20,20 +19,22 @@ return {
     {
       'CopilotC-Nvim/CopilotChat.nvim',
       -- version = 'v2.11.0',
-      branch = 'canary', -- Use the canary branch if you want to test the latest features but it might be unstable
+      build = 'make tiktoken',
+      branch = 'main',
       -- Do not use branch and version together, either use branch or version
       dependencies = {
         { 'nvim-telescope/telescope.nvim' }, -- Use telescope for help actions
         { 'nvim-lua/plenary.nvim' },
       },
       opts = {
-        model = 'claude-3.5-sonnet', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+        model = 'gpt-4o', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+        chat_autocomplete = true,
         question_header = '## User ',
         answer_header = '## Copilot ',
         error_header = '## Error ',
-        auto_follow_cursor = false, -- Don't follow the cursor after getting response
+        auto_follow_cursor = true, -- Don't follow the cursor after getting response
         auto_insert_mode = true,
-        show_help = false, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
+        show_help = true, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
         mappings = {
           -- Use tab for completion
           complete = {
@@ -53,7 +54,7 @@ return {
           -- Submit the prompt to Copilot
           submit_prompt = {
             normal = '<CR>',
-            insert = '<C-CR>',
+            insert = '<C-s>',
           },
           -- Accept the diff
           accept_diff = {
@@ -69,11 +70,11 @@ return {
             normal = 'gmd',
           },
           -- Show the prompt
-          show_system_prompt = {
+          show_info = {
             normal = 'gmp',
           },
           -- Show the user selection
-          show_user_selection = {
+          show_context = {
             normal = 'gms',
           },
         },
@@ -85,8 +86,6 @@ return {
         opts.selection = select.unnamed
 
         chat.setup(opts)
-        -- Setup the CMP integration
-        require('CopilotChat.integrations.cmp').setup()
 
         vim.api.nvim_create_user_command('CopilotChatVisual', function(args)
           chat.ask(args.args, { selection = select.visual })
@@ -194,7 +193,7 @@ return {
         -- Generate commit message based on the git diff
         {
           '<leader>mm',
-          '<cmd>CopilotChatCommitStaged<cr>',
+          '<cmd>CopilotChatCommit<cr>',
           desc = 'CopilotChat - Generate commit message for staged changes',
         },
         -- Quick chat with Copilot

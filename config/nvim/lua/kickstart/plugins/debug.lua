@@ -139,6 +139,7 @@ return {
           name = 'Launch file',
           program = '${file}',
           cwd = vim.fn.getcwd(),
+          runtimeExecutable = 'node',
           sourceMaps = true,
         },
         -- Debug nodejs processes (make sure to add --inspect when you run the process)

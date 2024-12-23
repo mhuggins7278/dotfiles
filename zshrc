@@ -107,3 +107,6 @@ eval "$(fnm env --shell zsh)"
 source $HOME/.dotfiles/shellrc
 source <(glgroup bashcomplete)
 # zprof
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform

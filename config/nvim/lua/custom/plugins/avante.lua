@@ -2,9 +2,14 @@ return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
   lazy = false,
+  -- enabled = false,
   version = false, -- set this if you want to always pull the latest change
   opts = {
     -- add any opts here
+    windows = {
+      postion = 'left',
+      width = 40,
+    },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
@@ -23,9 +28,6 @@ return {
       event = 'VeryLazy',
       opts = {
         -- recommended settings
-        windows = {
-          postion = 'left',
-        },
         default = {
           embed_image_as_base64 = true,
           prompt_for_file_name = true,

@@ -46,7 +46,7 @@ return {
       wk.add {
         { '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', desc = '[R]eset buffer' },
         { '<leader>gS', '<cmd>Gitsigns stage_buffer<cr>', desc = '[S]tage buffer' },
-        { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = '[B]lame line' },
+        -- { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = '[B]lame line' },
         { '<leader>gp', '<cmd>Gitsigns preview_hunk<cr>', desc = '[P]review hunk' },
         { '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', desc = '[R]eset hunk' },
         { '<leader>gs', '<cmd>Gitsigns stage_hunk<cr>', desc = '[S]tage hunk' },

@@ -50,6 +50,7 @@ vim.opt.smartindent = false
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
+vim.opt.guifont = 'FiraCode Nerd Font:h14'
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -73,6 +74,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 999
+
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = '80'
 
@@ -198,6 +200,14 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --     vim.schedule(require('cmp').setup.buffer { sources = { { name = 'dadbod' } } })
 --   end,
 -- })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = { 'aerospace.toml' },
+  command = "execute 'silent !aerospace reload-config'",
+})
+vim.api.nvim_create_autocmd('BufWritePost', {
+  pattern = { '*tmux.conf' },
+  command = "execute 'silent !tmux source <afile> --silent'",
+})
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -425,7 +435,7 @@ require('lazy').setup {
           signs = true,
           underline = true,
           update_in_insert = false,
-          virtual_text = { source = 'if_many' },
+          virtual_text = false,
         }
         local signs = { Error = '󰅚 ', Warn = '󰀪 ', Hint = '󰌶 ', Info = ' ' }
         for type, icon in pairs(signs) do
@@ -624,6 +634,45 @@ require('lazy').setup {
           html = {},
           taplo = {},
           jsonls = {},
+          vtsls = {
+            -- explicitly add default filetypes, so that we can extend
+            -- them in related extras
+            filetypes = {
+              'javascript',
+              'javascriptreact',
+              'javascript.jsx',
+              'typescript',
+              'typescriptreact',
+              'typescript.tsx',
+            },
+            settings = {
+              complete_function_calls = true,
+              vtsls = {
+                enableMoveToFileCodeAction = true,
+                autoUseWorkspaceTsdk = true,
+                experimental = {
+                  maxInlayHintLength = 30,
+                  completion = {
+                    enableServerSideFuzzyMatch = true,
+                  },
+                },
+              },
+              typescript = {
+                updateImportsOnFileMove = { enabled = 'always' },
+                suggest = {
+                  completeFunctionCalls = true,
+                },
+                inlayHints = {
+                  enumMemberValues = { enabled = true },
+                  functionLikeReturnTypes = { enabled = true },
+                  parameterNames = { enabled = 'literals' },
+                  parameterTypes = { enabled = true },
+                  propertyDeclarationTypes = { enabled = true },
+                  variableTypes = { enabled = false },
+                },
+              },
+            },
+          },
         }
 
         -- Ensure the servers and tools above are installed
@@ -650,6 +699,7 @@ require('lazy').setup {
           'sql-formatter',
           'sqlfluff',
           'stylua',
+          'vtsls',
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -667,27 +717,6 @@ require('lazy').setup {
         }
       end,
     },
-    {
-      'pmizio/typescript-tools.nvim',
-      dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-      opts = {
-        settings = {
-          tsserver_file_preferences = {
-            includeCompletionsForModuleExports = true,
-            quotePreference = 'auto',
-            includeInlayParameterNameHints = 'all',
-            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-          },
-        },
-      },
-    },
-
     { -- Autocompletion
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
@@ -724,6 +753,7 @@ require('lazy').setup {
         require('luasnip.loaders.from_vscode').lazy_load()
 
         cmp.setup {
+          preselect = cmp.PreselectMode.None,
           snippet = {
             expand = function(args)
               luasnip.lsp_expand(args.body)
@@ -809,23 +839,6 @@ require('lazy').setup {
       end,
     },
 
-    --[[ { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-    'folke/tokyonight.nvim',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      -- Load the colorscheme here
-      vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  }, ]]
-
     {
       'catppuccin/nvim',
       name = 'catppuccin',
@@ -844,12 +857,13 @@ require('lazy').setup {
               },
             },
           },
-          transparent_background = false,
+          transparent_background = true,
           term_colors = true,
           default_integrations = true,
           integrations = {
             alpha = true,
             cmp = true,
+            copilot_vim = true,
             dadbod_ui = true,
             dap = true,
             dap_ui = true,
@@ -964,6 +978,15 @@ require('lazy').setup {
     --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
     --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
     { import = 'custom.plugins' },
+
+    {
+      'rachartier/tiny-inline-diagnostic.nvim',
+      event = 'VeryLazy', -- Or `LspAttach`
+      priority = 1000, -- needs to be loaded in first
+      config = function()
+        require('tiny-inline-diagnostic').setup()
+      end,
+    },
   },
   checker = { enabled = true, notify = true, frequency = 3600 },
 }

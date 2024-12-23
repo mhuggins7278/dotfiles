@@ -53,10 +53,10 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 [gaps]
 inner.horizontal = 2
 inner.vertical = 2
-outer.left = 4
-outer.bottom = 4
-outer.top = 4
-outer.right = 4
+outer.left = 40
+outer.bottom = 40
+outer.top = 40
+outer.right = 40
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -161,16 +161,30 @@ run = ['move-node-to-workspace A']   # The callback itself
 [[on-window-detected]]
 if.app-id = 'com.hnc.Discord'
 run = ['move-node-to-workspace C'] # The callback itself
+
 [[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
 run = ['move-node-to-workspace C'] # The callback itself
+
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'
 run = ['move-node-to-workspace G']  # The callback itself
+
 [[on-window-detected]]
 if.app-id = 'com.spotify.client'
 run = ['move-node-to-workspace X'] # The callback itself
 
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['layout floating']      # The callback itself
+
+[[on-window-detected]]
+if.app-id = 'com.electron.dockerdesktop'
+run = ['layout floating']                # The callback itself
+
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'
+run = ['layout floating']         # The callback itself
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]

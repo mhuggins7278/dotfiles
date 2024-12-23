@@ -109,4 +109,11 @@ granted_sso_region         = us-east-1
 granted_sso_account_id     = 054501475751
 granted_sso_role_name      = EngineeringReadOnly
 common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/glgdev/EngineeringReadOnly
+redential_process         = granted credential-process --profile glg/glgdev/EngineeringReadOnly
+
+[profile localstack]
+region=us-east-1
+output=json
+endpoint_url = http://localhost:4566
+aws_access_key_id = dummy
+aws_secret_access_key = dummy
