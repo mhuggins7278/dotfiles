@@ -1,6 +1,5 @@
 ---
 casks:
-  amethyst:
   azure-data-studio:
   bitwarden:
   discord:
@@ -11,17 +10,16 @@ casks:
   font-juliamono:
   font-monaspace:
   gimp:
+  ghostty:
   iterm2:
   karabiner-elements:
   kdiff3:
   keycastr:
-  kitty:
   licecap:
   macdown:
   notion:
   polypane:
   postman:
-  rectangle:
   spotify:
   visual-studio-code:
   wezterm:

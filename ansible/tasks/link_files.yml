@@ -50,6 +50,11 @@
     - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: true }
     - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: true }
     - {
+        src: "~/.dotfiles/config/ghostty",
+        dest: "~/.config/ghostty",
+        force: true,
+      }
+    - {
         src: "~/.dotfiles/config/zellij/config.kdl",
         dest: "~/.config/zellij/config.kdl",
         force: true,
