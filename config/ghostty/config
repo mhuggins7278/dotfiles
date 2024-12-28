@@ -1,3 +1,5 @@
+# vim: set filetype=dosini :
+
 theme = catppuccin-mocha
 background-opacity = 0.7
 background-blur-radius = 15 
@@ -9,7 +11,7 @@ clipboard-write = allow
 
 font-family = "Monaspace Radon Var"
 font-size = 14.0 
-# font-thicken
+#font-thicken
 font-feature = calt
 font-feature = liga
 font-feature = dlig
@@ -21,4 +23,7 @@ font-feature = ss05
 font-feature = ss06
 font-feature = ss07
 font-feature = ss09
+
+
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
 
