@@ -271,8 +271,8 @@ require('lazy').setup {
         require('which-key').add {
           { '<leader>c', group = '[C]ode' },
           { '<leader>c_', hidden = true },
-          { '<leader>d', group = '[D]ocument' },
-          { '<leader>d_', hidden = true },
+          -- { '<leader>d', group = '[D]ocument' },
+          -- { '<leader>d_', hidden = true },
           { '<leader>g', group = '[G]it' },
           { '<leader>g_', hidden = true },
           { '<leader>r', group = '[R]ename' },
@@ -504,7 +504,7 @@ require('lazy').setup {
 
             -- Fuzzy find all the symbols in your current document.
             --  Symbols are things like variables, functions, types, etc.
-            map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+            -- map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
             -- Fuzzy find all the symbols in your current workspace
             --  Similar to document symbols, except searches over your whole project.
@@ -628,7 +628,6 @@ require('lazy').setup {
               },
             },
           },
-          rubocop = {},
           terraformls = {},
           yamlls = {},
           html = {},
