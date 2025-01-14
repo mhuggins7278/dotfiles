@@ -27,6 +27,7 @@ return {
     -- Installs the debug adapters for you
     'williamboman/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
+    'theHamsta/nvim-dap-virtual-text',
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
@@ -82,6 +83,13 @@ return {
         require('dapui').toggle()
       end,
       desc = 'Debug: See last session result.',
+    },
+    {
+      '<space>?',
+      function()
+        require('dapui').eval(nil, { enter = true })
+      end,
+      desc = 'Debug: Evaluate expression',
     },
   },
   config = function()
@@ -145,6 +153,8 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
+    require('nvim-dap-virtual-text').setup()
+
     -- Install golang specific config
     require('dap-go').setup {
       delve = {
@@ -153,13 +163,21 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
-
     require('dap').adapters['pwa-node'] = {
       type = 'server',
       host = 'localhost',
       port = '${port}',
       executable = {
         command = 'js-debug-adapter', -- As I'm using mason, this will be in the path
+        args = { '${port}' },
+      },
+    }
+    require('dap').adapters['pwa-chrome'] = {
+      type = 'server',
+      host = 'localhost',
+      port = '${port}',
+      executable = {
+        command = 'chrome-debug-adapter', -- As I'm using mason, this will be in the path
         args = { '${port}' },
       },
     }

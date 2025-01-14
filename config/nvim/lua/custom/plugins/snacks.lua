@@ -1,11 +1,11 @@
 return {
   'folke/snacks.nvim',
-  priority = 1000,
+  priority = 10000,
   lazy = false,
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    dashboard = { enabled = false },
     gitbrowse = { enabled = true },
     notifier = {
       enabled = true,

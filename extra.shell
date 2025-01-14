@@ -63,7 +63,7 @@ vv() {
   NVIM_APPNAME=$(basename $config) nvim $@
 }
 
-sudo() {
-  PW=$(bw get password glgdomain)
-  echo $PW | command sudo -S $@
-}
+# sudo() {
+#   PW=$(bw get password glgdomain)
+#   echo $PW | command sudo -S $@
+# }

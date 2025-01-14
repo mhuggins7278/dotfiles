@@ -270,7 +270,7 @@ require('lazy').setup {
         -- Document existing key chains
         require('which-key').add {
           { '<leader>c', group = '[C]ode' },
-          { '<leader>c_', hidden = true },
+          -- { '<leader>c_', hidden = true },
           -- { '<leader>d', group = '[D]ocument' },
           -- { '<leader>d_', hidden = true },
           { '<leader>g', group = '[G]it' },
@@ -484,6 +484,9 @@ require('lazy').setup {
             local map = function(keys, func, desc)
               vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
             end
+            local mapx = function(keys, func, desc)
+              vim.keymap.set('x', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            end
 
             -- Jump to the definition of the word under your cursor.
             --  This is where a variable was first declared, or where a function is defined, etc.
@@ -517,6 +520,7 @@ require('lazy').setup {
             -- Execute a code action, usually your cursor needs to be on top of an error
             -- or a suggestion from your LSP for this to activate.
             map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+            mapx('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
             map('<leader>cr', vim.lsp.buf.rename, '[C]ode Lsp[R]ename')
             --Call organzie imports
 
