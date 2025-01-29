@@ -1,4 +1,3 @@
--- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
@@ -70,7 +69,7 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 999
@@ -159,7 +158,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 local octo_group = vim.api.nvim_create_augroup('octo_mappings', { clear = true })
--- Define the key mappings for Python files
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'octo',
   callback = function()
@@ -169,19 +167,31 @@ vim.api.nvim_create_autocmd('FileType', {
   group = octo_group,
 })
 
-local specific_directory = vim.fn.expand '~' .. '/github/glg/epiquery-templates/'
+local epi_directory = vim.fn.expand '~' .. '/github/glg/epiquery-templates/'
+local sl_directory = vim.fn.expand '~' .. '/github/glg/streamliner/'
 
 -- Create an autocommand group
-vim.api.nvim_create_augroup('MustacheToSQL', { clear = true })
+vim.api.nvim_create_augroup('MustacheToFileType', { clear = true })
 
 -- Create an autocommand
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  group = 'MustacheToSQL',
+  group = 'MustacheToFileType',
   pattern = '*.mustache',
   callback = function()
     local current_file = vim.fn.expand '%:p'
-    if string.find(current_file, specific_directory, 1, true) then
+    if string.find(current_file, epi_directory, 1, true) then
       vim.bo.filetype = 'sql'
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  group = 'MustacheToFileType',
+  pattern = '*.mustache',
+  callback = function()
+    local current_file = vim.fn.expand '%:p'
+    if string.find(current_file, sl_directory, 1, true) then
+      vim.bo.filetype = 'html'
     end
   end,
 })
@@ -229,6 +239,8 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
+
+---@diagnostic disable-next-line: missing-fields
 require('lazy').setup {
   spec = {
     -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -706,6 +718,7 @@ require('lazy').setup {
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+        ---@diagnostic disable-next-line: missing-fields
         require('mason-lspconfig').setup {
           handlers = {
             function(server_name)
@@ -767,6 +780,7 @@ require('lazy').setup {
             completion = cmp.config.window.bordered(),
             documentation = cmp.config.window.bordered(),
           },
+          ---@diagnostic disable-next-line: missing-fields
           formatting = {
             format = lspkind.cmp_format {
               mode = 'text_symbol',
@@ -922,46 +936,6 @@ require('lazy').setup {
     },
     -- Highlight todo, notes, etc in comments
     { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-    { -- Collection of various small independent plugins/modules
-      'echasnovski/mini.nvim',
-      config = function()
-        -- Better Around/Inside textobjects
-        --
-        -- Examples:
-        --  - va)  - [V]isually select [A]round [)]paren
-        --  - yinq - [Y]ank [I]nside [N]ext [']quote
-        --  - ci'  - [C]hange [I]nside [']quote
-        require('mini.ai').setup { n_lines = 500 }
-
-        -- Add/delete/replace surroundings (brackets, quotes, etc.)
-        --
-        -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-        -- - sd'   - [S]urround [D]elete [']quotes
-        -- - sr)'  - [S]urround [R]eplace [)] [']
-        require('mini.surround').setup()
-
-        -- Simple and easy statusline.
-        --  You could remove this setup call if you don't like it,
-        --  and try some other statusline plugin
-        local statusline = require 'mini.statusline'
-        statusline.setup()
-
-        -- You can configure sections in the statusline by overriding their
-        -- default behavior. For example, here we set the section for
-        -- cursor location to LINE:COLUMN
-        ---@diagnostic disable-next-line: duplicate-set-field
-        statusline.section_location = function()
-          return '%2l:%-2v'
-        end
-        ---@diagnostic disable-next-line: duplicate-set-field
-        statusline.section_git = function()
-          return ''
-        end
-
-        -- ... and there is more!
-        --  Check out: https://github.com/echasnovski/mini.nvim
-      end,
-    },
 
     -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
     -- init.lua. If you want these files, they are in the repository, so you can just download them and
@@ -973,7 +947,6 @@ require('lazy').setup {
     --  Uncomment any of the lines below to enable them (you will need to restart nvim).
     --
     require 'kickstart.plugins.debug',
-    require 'kickstart.plugins.indent_line',
 
     -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
     --    This is the easiest way to modularize your config.

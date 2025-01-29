@@ -9,6 +9,8 @@ prSections:
     filters: is:open review-requested:@me -org:glg
   - title: Other Involved
     filters: is:open involves:@me -author:@me -org:glg
+  - title: Pending Verification
+    filters: is:merged author:@me -label:"1 - Deployment Verified" repo:glg/streamliner merged:>=2024-01-01
 issuesSections:
   - title: CSX Board
     filters: is:open repo:glg/Client-Solutions-Experience

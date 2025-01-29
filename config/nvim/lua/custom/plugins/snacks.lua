@@ -7,12 +7,16 @@ return {
     bigfile = { enabled = true },
     dashboard = { enabled = false },
     gitbrowse = { enabled = true },
+    indent = { enabled = true },
+    input = { enabled = true },
     notifier = {
       enabled = true,
       style = 'fancy',
       timeout = 3000,
     },
+    notify = { enabled = true },
     quickfile = { enabled = true },
+    picker = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
     styles = {

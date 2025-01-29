@@ -102,7 +102,7 @@ return {
             close_review_tab = { lhs = '<C-c>', desc = 'close review tab' },
           },
           review_diff = {
-            add_review_comment = { lhs = '<localleader>Ca', desc = 'add a new review comment' },
+            add_review_comment = { lhs = '<localleader>ca', desc = 'add a new review comment' },
             add_review_suggestion = { lhs = '<localleader>sa', desc = 'add a new review suggestion' },
             focus_files = { lhs = '<localleader>e', desc = 'move focus to changed file panel' },
             toggle_files = { lhs = '<localleader>b', desc = 'hide/show changed files panel' },

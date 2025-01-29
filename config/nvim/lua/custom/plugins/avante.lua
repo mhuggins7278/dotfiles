@@ -1,15 +1,18 @@
 return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
-  provider = 'copilot',
   lazy = false,
   -- enabled = false,
   version = false, -- set this if you want to always pull the latest change
   opts = {
+    provider = 'copilot',
     -- add any opts here
     windows = {
-      postion = 'left',
-      width = 40,
+      postion = 'right',
+      width = 30,
+    },
+    file_selector = {
+      provider = 'mini.pick',
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

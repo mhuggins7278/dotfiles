@@ -27,7 +27,7 @@ return {
         { 'nvim-lua/plenary.nvim' },
       },
       opts = {
-        model = 'gpt-4o', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+        model = 'o1-mini', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
         chat_autocomplete = true,
         question_header = '## User ',
         answer_header = '## Copilot ',
@@ -210,7 +210,7 @@ return {
         -- Debug
         { '<leader>md', '<cmd>CopilotChatDebugInfo<cr>', desc = 'CopilotChat - Debug Info' },
         -- Fix the issue with diagnostic
-        { '<leader>mf', '<cmd>CopilotChatFixDiagnostic<cr>', desc = 'CopilotChat - Fix Diagnostic' },
+        { '<leader>mf', '<cmd>CopilotChatFix<cr>', desc = 'CopilotChat - Fix Diagnostic' },
         -- Clear buffer and chat history
         { '<leader>ml', '<cmd>CopilotChatReset<cr>', desc = 'CopilotChat - Clear buffer and chat history' },
         -- Toggle Copilot Chat Vsplit
