@@ -53,10 +53,10 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 [gaps]
 inner.horizontal = 2
 inner.vertical = 2
-outer.left = 40
-outer.bottom = 40
-outer.top = 40
-outer.right = 40
+outer.left = 10
+outer.bottom = 10
+outer.top = 10
+outer.right = 10
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -97,7 +97,7 @@ ctrl-shift-h = 'focus left'
 ctrl-shift-j = 'focus down'
 ctrl-shift-k = 'focus up'
 ctrl-shift-l = 'focus right'
-ctrl-m = 'fullscreen'
+ctrl-shift-m = 'fullscreen'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'
@@ -155,6 +155,10 @@ if.app-id = 'com.google.Chrome'
 run = ['move-node-to-workspace S'] # The callback itself
 
 [[on-window-detected]]
+if.app-id = 'com.azuredatastudio.oss'
+run = ['move-node-to-workspace W']    # The callback itself
+
+[[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = ['move-node-to-workspace A']  # The callback itself
 
@@ -184,7 +188,7 @@ run = ['layout floating']                # The callback itself
 
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
-run = ['layout floating']         # The callback itself
+run = ['move-node-to-workspace C'] # The callback itself
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
