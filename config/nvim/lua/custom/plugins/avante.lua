@@ -3,16 +3,25 @@ return {
   event = 'VeryLazy',
   lazy = false,
   -- enabled = false,
-  version = false, -- set this if you want to always pull the latest change
+  version = '*', -- set this if you want to always pull the latest change
+  -- add any opts here
   opts = {
-    provider = 'copilot',
-    -- add any opts here
+    provider = 'copilot', -- "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | "custom_provider_name"
     windows = {
       postion = 'right',
       width = 30,
     },
     file_selector = {
       provider = 'mini.pick',
+    },
+    --add  custom providers here
+    vendors = {
+      ollama = {
+        __inherited_from = 'openai',
+        api_key_name = '',
+        endpoint = 'http://127.0.0.1:11434/v1',
+        model = 'deepseek-r1:14b',
+      },
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

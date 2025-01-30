@@ -27,11 +27,12 @@ return {
         { 'nvim-lua/plenary.nvim' },
       },
       opts = {
+        agent = 'copilot', -- Agent to use, 'copilot' or 'openai'
         model = 'o1-mini', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
         chat_autocomplete = true,
-        question_header = '## User ',
-        answer_header = '## Copilot ',
-        error_header = '## Error ',
+        question_header = ' ',
+        answer_header = ' ',
+        error_header = '🚨',
         auto_follow_cursor = true, -- Don't follow the cursor after getting response
         auto_insert_mode = true,
         show_help = true, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
