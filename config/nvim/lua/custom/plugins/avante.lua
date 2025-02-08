@@ -8,11 +8,14 @@ return {
   opts = {
     provider = 'copilot', -- "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | "custom_provider_name"
     windows = {
-      postion = 'right',
-      width = 30,
+      sidebar_header = {
+        postion = 'right',
+        width = 30,
+        rounded = false,
+      },
     },
     file_selector = {
-      provider = 'mini.pick',
+      provider = 'telescope',
     },
     --add  custom providers here
     vendors = {

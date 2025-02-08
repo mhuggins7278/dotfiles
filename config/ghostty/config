@@ -1,7 +1,7 @@
 # vim: set filetype=dosini
 
 theme = catppuccin-mocha
-background-opacity = 0.6
+background-opacity = 1 
 background-blur-radius = 15 
 macos-titlebar-style = hidden
 macos-option-as-alt = true
@@ -10,7 +10,7 @@ clipboard-write = allow
 
 
 font-family = "Monaspace Radon Var"
-font-size = 14.0 
+font-size = 16.0 
 #font-thicken
 font-feature = calt
 font-feature = liga

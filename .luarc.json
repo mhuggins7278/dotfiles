@@ -3,5 +3,8 @@
     "Lua.diagnostics.globals": [
         "vim"
     ],
-    "Lua.workspace.checkThirdParty": false
+    "Lua.workspace.checkThirdParty": false,
+    "diagnostics.disable": [
+        "missing-fields"
+    ]
 }

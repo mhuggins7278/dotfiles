@@ -28,7 +28,7 @@ return {
       },
       opts = {
         agent = 'copilot', -- Agent to use, 'copilot' or 'openai'
-        model = 'o1-mini', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
+        model = 'o1', -- GPT model to use, 'gpt-3.5-turbo', 'gpt-4', or 'gpt-4o'
         chat_autocomplete = true,
         question_header = ' ',
         answer_header = ' ',

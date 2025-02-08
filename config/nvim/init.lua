@@ -867,15 +867,8 @@ require('lazy').setup {
           background = { -- :h background
             light = 'latte',
             dark = 'mocha',
-            color_overrides = {
-              mocha = {
-                base = '#000000',
-                mantle = '#000000',
-                crust = '#000000',
-              },
-            },
           },
-          transparent_background = true,
+          transparent_background = false,
           term_colors = true,
           default_integrations = true,
           integrations = {
@@ -932,7 +925,7 @@ require('lazy').setup {
             conditionals = { 'italic' },
           },
         }
-        vim.cmd.colorscheme 'catppuccin-mocha'
+        vim.cmd.colorscheme 'catppuccin'
       end,
     },
     -- Highlight todo, notes, etc in comments
