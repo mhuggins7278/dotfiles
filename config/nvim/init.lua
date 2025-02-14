@@ -868,7 +868,7 @@ require('lazy').setup {
             light = 'latte',
             dark = 'mocha',
           },
-          transparent_background = false,
+          transparent_background = true,
           term_colors = true,
           default_integrations = true,
           integrations = {
@@ -925,7 +925,7 @@ require('lazy').setup {
             conditionals = { 'italic' },
           },
         }
-        vim.cmd.colorscheme 'catppuccin'
+        vim.cmd.colorscheme 'catppuccin-mocha'
       end,
     },
     -- Highlight todo, notes, etc in comments
