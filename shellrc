@@ -23,9 +23,14 @@ export GIT_TERMINAL_PROMPT=1
 # export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
 # export TODOIST_API_KEY=$(security find-generic-password -s "TODOIST_API_KEY" -w)
 # export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+export BW_CLIENTID=$(security find-generic-password -s "BW_CLIENTID" -w)
+export BW_CLIENTSECRET=$(security find-generic-password -s "BW_CLIENTSECRET" -w)
+export BW_PASSWORD=$(security find-generic-password -s "BW_PASSWORD" -w)
 export GITHUB_AUTH_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
 export GLG_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
 export ANTHROPIC_API_KEY=$(security find-generic-password -s "avante-api-key" -w)
+export TAVILY_API_KEY=$(security find-generic-password -s "TAVILY_API_KEY" -w)
 
 
 

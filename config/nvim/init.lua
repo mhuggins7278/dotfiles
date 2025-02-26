@@ -534,7 +534,7 @@ require('lazy').setup {
             -- or a suggestion from your LSP for this to activate.
             map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
             mapx('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-            map('<leader>cr', vim.lsp.buf.rename, '[C]ode Lsp[R]ename')
+            map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
             --Call organzie imports
 
             -- Opens a popup that displays documentation about the word under your cursor
@@ -632,7 +632,7 @@ require('lazy').setup {
           --
           tailwindcss = {
             root_dir = function(fname)
-              local root_pattern = require('lspconfig').util.root_pattern('tailwind.config.cjs', 'tailwind.config.js', 'postcss.config.js')
+              local root_pattern = require('lspconfig').util.root_pattern('tailwind.config.cjs', 'tailwind.config.js', 'postcss.config.ts')
               return root_pattern(fname)
             end,
           },
@@ -873,6 +873,7 @@ require('lazy').setup {
           default_integrations = true,
           integrations = {
             alpha = true,
+            avante = true,
             cmp = true,
             copilot_vim = true,
             dadbod_ui = true,
