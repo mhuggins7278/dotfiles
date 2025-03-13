@@ -115,3 +115,6 @@ fpath=(/Users/MHuggins/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# Added by Windsurf
+export PATH="/Users/MHuggins/.codeium/windsurf/bin:$PATH"

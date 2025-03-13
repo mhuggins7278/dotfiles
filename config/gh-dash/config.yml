@@ -78,6 +78,7 @@ repoPaths:
   Learn-Build-Teach/*: ~/github/mhuggins7278/*
 pager:
   diff: "delta"
+smartFilteringAtLaunch: false
 theme:
   ui:
     sectionsShowCount: true

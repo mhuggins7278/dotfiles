@@ -2,7 +2,7 @@
 
 theme = catppuccin-mocha
 background-opacity = 0.8  
-background-blur-radius = 20 
+background-blur-radius = 40 
 macos-titlebar-style = hidden
 macos-option-as-alt = true
 clipboard-read = allow

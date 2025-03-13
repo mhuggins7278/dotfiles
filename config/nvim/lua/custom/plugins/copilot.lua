@@ -33,7 +33,7 @@ return {
         question_header = ' ',
         answer_header = ' ',
         error_header = '🚨',
-        auto_follow_cursor = true, -- Don't follow the cursor after getting response
+        auto_follow_cursor = true, -- Follow the cursor after getting response
         auto_insert_mode = true,
         show_help = true, -- Show help in virtual text, set to true if that's 1st time using Copilot Chat
         mappings = {
