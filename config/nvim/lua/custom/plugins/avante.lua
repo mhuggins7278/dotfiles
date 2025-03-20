@@ -2,14 +2,33 @@ return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
-  opts = {
-    -- add any opts here
-    -- for example
-    provider = 'copilot',
-    ollama = {
-      model = 'qwen2.5-coder:7b',
-    },
-  },
+  config = function()
+    require('avante').setup {
+      -- other config
+      -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
+      -- cursor_applying_provider = 'ollama',
+      behaviour = {
+        enable_cursor_planning_mode = true,
+      },
+      provider = 'copilot',
+      copilot = {
+        model = 'claude-3.7-sonnet-thought',
+      },
+      ollama = {
+        model = 'deepseek-r1:8b',
+      },
+      system_prompt = function()
+        local hub = require('mcphub').get_hub_instance()
+        return hub:get_active_servers_prompt()
+      end,
+      -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+      custom_tools = function()
+        return {
+          require('mcphub.extensions.avante').mcp_tool(),
+        }
+      end,
+    }
+  end,
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows

@@ -183,12 +183,21 @@ if.app-id = 'com.apple.finder'
 run = ['layout floating']      # The callback itself
 
 [[on-window-detected]]
+if.app-id = 'com.cockos.LICEcap'
+run = ['layout floating']        # The callback itself
+
+[[on-window-detected]]
 if.app-id = 'com.electron.dockerdesktop'
 run = ['layout floating']                # The callback itself
 
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
 run = ['move-node-to-workspace C'] # The callback itself
+
+
+[[on-window-detected]]
+if.app-id = 'notion.id '
+run = ['move-node-to-workspace V'] # The callback itself
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
