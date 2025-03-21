@@ -23,15 +23,16 @@ export GIT_TERMINAL_PROMPT=1
 # export GDSWATCH_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_PACKAGE_REGISTRY_TOKEN" -w)
 # export TODOIST_API_KEY=$(security find-generic-password -s "TODOIST_API_KEY" -w)
 # export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+#
 
-export BW_CLIENTID=$(security find-generic-password -s "BW_CLIENTID" -w)
-export BW_CLIENTSECRET=$(security find-generic-password -s "BW_CLIENTSECRET" -w)
 export BW_PASSWORD=$(security find-generic-password -s "BW_PASSWORD" -w)
-export GITHUB_AUTH_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
-export GLG_GITHUB_TOKEN=$(security find-generic-password -s "GITHUB_AUTH_TOKEN" -w)
-export ANTHROPIC_API_KEY=$(security find-generic-password -s "avante-api-key" -w)
-export TAVILY_API_KEY=$(security find-generic-password -s "TAVILY_API_KEY" -w)
-
-
+export BWS_ACCESS_TOKEN=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w)
+SECRETS=$(bws secret list 61f9a3e0-71a7-4d86-9255-b2a7002e5690)
+export BW_CLIENTID=$(echo $SECRETS | jq -c '.[] | select(.key | contains("BW_CLIENTID")).value')
+export BW_CLIENTSECRET=$(echo $SECRETS | jq -c '.[] | select(.key | contains("BW_CLIENTSECRET")).value')
+export TAVILY_API_KEY=$(echo $SECRETS | jq -c '.[] | select(.key | contains("TAVILY_API_KEY")).value')
+export GITHUB_AUTH_TOKEN=$(echo $SECRETS | jq -c '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')
+export GLG_GITHUB_TOKEN=$(echo $SECRETS | jq -c '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')
+export ANTHROPIC_API_KEY=$(echo $SECRETS | jq -c '.[] | select(.key | contains("ANTHROPIC_API_KEY")).value')
 
 
