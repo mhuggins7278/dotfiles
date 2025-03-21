@@ -22,11 +22,11 @@ return {
         return hub:get_active_servers_prompt()
       end,
       -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-      custom_tools = function()
+      --[[ custom_tools = function()
         return {
           require('mcphub.extensions.avante').mcp_tool(),
         }
-      end,
+      end, ]]
     }
   end,
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
