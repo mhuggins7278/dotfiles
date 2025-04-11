@@ -1,14 +1,13 @@
 return {
-  "michaelrommel/nvim-silicon",
+  'michaelrommel/nvim-silicon',
   lazy = true,
-  cmd = "Silicon",
+  cmd = 'Silicon',
   config = function()
-    require("silicon").setup({
+    require('silicon').setup {
       -- Configuration here, or leave empty to use defaults
-      font = "Monaspace Radon Var=34",
+      font = 'Monaspace Radon=24',
       to_clipboard = true,
-      theme = "Catppuccin Mocha",
-    })
+      theme = 'Catppuccin Mocha',
+    }
   end,
 }
-
