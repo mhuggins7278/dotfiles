@@ -6,6 +6,7 @@ return {
       'nvim-telescope/telescope.nvim',
       'nvim-tree/nvim-web-devicons',
     },
+    cmd = 'Octo',
     config = function()
       require('octo').setup {
         use_local_fs = true,

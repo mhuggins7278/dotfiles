@@ -1,0 +1,35 @@
+INFO:     [07-04-2025 19:40:24] Set chroma_server_nofile to 65535
+DEBUG:    [07-04-2025 19:40:24] Starting component System
+DEBUG:    [07-04-2025 19:40:24] Starting component OpenTelemetryClient
+DEBUG:    [07-04-2025 19:40:24] Starting component SqliteDB
+DEBUG:    [07-04-2025 19:40:24] Starting component SimpleQuotaEnforcer
+DEBUG:    [07-04-2025 19:40:24] Starting component Posthog
+DEBUG:    [07-04-2025 19:40:24] Starting component SimpleRateLimitEnforcer
+DEBUG:    [07-04-2025 19:40:24] Starting component LocalSegmentManager
+DEBUG:    [07-04-2025 19:40:24] Starting component LocalExecutor
+DEBUG:    [07-04-2025 19:40:24] Starting component SegmentAPI
+DEBUG:    [07-04-2025 19:40:24] Starting component SimpleAsyncRateLimitEnforcer
+INFO:     [07-04-2025 19:40:24] Started server process [39583]
+INFO:     [07-04-2025 19:40:24] Waiting for application startup.
+INFO:     [07-04-2025 19:40:24] Application startup complete.
+INFO:     [07-04-2025 19:40:24] Uvicorn running on http://localhost:52381 (Press CTRL+C to quit)
+INFO:     [07-04-2025 19:40:24] ::1:52407 - "GET /api/v1/heartbeat HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:24] ::1:52409 - "GET /api/v2/auth/identity HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:24] ::1:52409 - "GET /api/v2/tenants/default_tenant HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:24] ::1:52409 - "GET /api/v2/tenants/default_tenant/databases/default_database?tenant=default_tenant HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:29] ::1:52409 - "GET /api/v2/tenants/default_tenant/databases/default_database/collections/08c11da361f507526d2d1fe387a9582c3160f2e27cf834a28c1dd1fbcef6505 HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:29] ::1:52409 - "DELETE /api/v2/tenants/default_tenant/databases/default_database/collections/08c11da361f507526d2d1fe387a9582c3160f2e27cf834a28c1dd1fbcef6505 HTTP/1.1" 200
+INFO:     [07-04-2025 19:40:29] Shutting down
+INFO:     [07-04-2025 19:40:29] Waiting for application shutdown.
+DEBUG:    [07-04-2025 19:40:29] Stopping component System
+DEBUG:    [07-04-2025 19:40:29] Stopping component SegmentAPI
+DEBUG:    [07-04-2025 19:40:29] Stopping component LocalExecutor
+DEBUG:    [07-04-2025 19:40:29] Stopping component LocalSegmentManager
+DEBUG:    [07-04-2025 19:40:29] Stopping component SimpleAsyncRateLimitEnforcer
+DEBUG:    [07-04-2025 19:40:29] Stopping component SimpleRateLimitEnforcer
+DEBUG:    [07-04-2025 19:40:29] Stopping component Posthog
+DEBUG:    [07-04-2025 19:40:29] Stopping component SimpleQuotaEnforcer
+DEBUG:    [07-04-2025 19:40:29] Stopping component SqliteDB
+DEBUG:    [07-04-2025 19:40:29] Stopping component OpenTelemetryClient
+INFO:     [07-04-2025 19:40:29] Application shutdown complete.
+INFO:     [07-04-2025 19:40:29] Finished server process [39583]

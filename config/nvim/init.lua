@@ -89,14 +89,22 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.keymap.set('n', '<leader>y', '<cmd>let @*=expand("%:~:.")<cr>', { desc = '[Y]ank Relatvie File Path' })
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = -1 }
+end, { desc = 'Go to previous [D]iagnostic message' })
+
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = 1 }
+end, { desc = 'Go to next [D]iagnostic message' })
+
 vim.keymap.set('n', '[e', function()
-  vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR }
-end, { desc = 'Go to previous [D]iagnostic message' })
+  vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR }
+end, { desc = 'Go to previous [E]rror message' })
+
 vim.keymap.set('n', ']e', function()
-  vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR }
-end, { desc = 'Go to previous [D]iagnostic message' })
+  vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR }
+end, { desc = 'Go to previous [E]rror message' })
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -929,8 +937,6 @@ require('lazy').setup {
         vim.cmd.colorscheme 'catppuccin-mocha'
       end,
     },
-    -- Highlight todo, notes, etc in comments
-    { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
     -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
     -- init.lua. If you want these files, they are in the repository, so you can just download them and

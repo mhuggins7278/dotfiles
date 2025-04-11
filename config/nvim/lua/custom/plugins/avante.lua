@@ -12,29 +12,36 @@ return {
       -- cursor_applying_provider = 'ollama',
       behaviour = {
         enable_cursor_planning_mode = true,
+        enable_claude_text_editor_tool_mode = true,
       },
       provider = 'copilot',
       copilot = {
         model = 'claude-3.7-sonnet',
       },
       ollama = {
-        model = 'deepseek-r1:8b',
+        model = 'qwen2.5-coder:7b',
       },
-      --[[ system_prompt = function()
+      rag_service = {
+        enabled = true, -- Enables the RAG service
+        host_mount = os.getenv 'HOME' .. '/github', -- Host mount path for the rag service (subfolder under home)
+        provider = 'ollama', -- The provider to use for RAG service (e.g. openai or ollama)
+        llm_model = 'deepseek-r1:8b',
+        endpoint = 'http://localhost:11434', -- The API endpoint for RAG service
+      },
+      system_prompt = function()
         local hub = require('mcphub').get_hub_instance()
         return hub:get_active_servers_prompt()
-      end, ]]
-      -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
-      -- custom_tools = function()
-      --   return {
-      --     require('mcphub.extensions.avante').mcp_tool(),
-      --   }
-      -- end,
+      end,
+      --The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+      custom_tools = function()
+        return {
+          require('mcphub.extensions.avante').mcp_tool(),
+        }
+      end,
     }
   end,
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = 'make',
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'stevearc/dressing.nvim',

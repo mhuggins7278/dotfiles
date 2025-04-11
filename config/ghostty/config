@@ -7,11 +7,13 @@ macos-titlebar-style = hidden
 macos-option-as-alt = true
 clipboard-read = allow
 clipboard-write = allow
+alpha-blending = linear-corrected
 
 
 font-family = "Monaspace Radon Var"
-font-size = 14.0 
-font-thicken
+font-size = 16.0 
+font-thicken = true
+font-thicken-strength = 100 
 font-feature = calt
 font-feature = liga
 font-feature = dlig
