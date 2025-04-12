@@ -1,5 +1,6 @@
 return {
   'epwalsh/obsidian.nvim',
+  enabled = false,
   -- lazy = true,
   -- event = { 'BufReadPre ' .. vim.fn.expand '~' .. '/github/mhuggins7278/notes/**.md' },
   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand':
