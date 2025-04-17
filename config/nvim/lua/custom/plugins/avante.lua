@@ -7,6 +7,17 @@ return {
       windows = {
         width = 40,
       },
+      --- @class AvanteFileSelectorConfig
+      file_selector = {
+        provider = 'snacks',
+        -- Options override for custom providers
+        provider_opts = {},
+      },
+      selector = {
+        ---@alias avante.SelectorProvider "native" | "fzf_lua" | "mini_pick" | "snacks" | "telescope" | fun(selector: avante.ui.Selector): nil
+        provider = 'snacks',
+        provider_opts = {},
+      },
       -- other config
       -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
       -- cursor_applying_provider = 'ollama',
@@ -48,9 +59,7 @@ return {
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     --- The below dependencies are optional,
-    'echasnovski/mini.pick', -- for file_selector provider mini.pick
     'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
-    'ibhagwan/fzf-lua', -- for file_selector provider fzf
     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
     'zbirenbaum/copilot.lua', -- for providers='copilot'
     {

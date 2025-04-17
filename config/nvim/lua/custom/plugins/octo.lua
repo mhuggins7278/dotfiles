@@ -11,6 +11,7 @@ return {
       require('octo').setup {
         use_local_fs = true,
         default_to_projects_v2 = false,
+        picker = 'snacks',
         enable_builtin = true,
         mappings = {
           issue = {

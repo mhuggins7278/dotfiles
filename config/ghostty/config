@@ -1,8 +1,8 @@
 # vim: set filetype=dosini
 
-theme = catppuccin-mocha
-background-opacity = 0.8  
-background-blur-radius = 40 
+theme = dark:catppuccin-mocha,light:catppuccin-latte
+# background-opacity = 0.8
+# background-blur-radius = 40
 macos-titlebar-style = hidden
 macos-option-as-alt = true
 clipboard-read = allow
@@ -11,9 +11,9 @@ alpha-blending = linear-corrected
 
 
 font-family = "Monaspace Radon Var"
-font-size = 16.0 
+font-size = 12.0
 font-thicken = true
-font-thicken-strength = 100 
+font-thicken-strength = 100
 font-feature = calt
 font-feature = liga
 font-feature = dlig

@@ -4,6 +4,7 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
+    animate = { enabled = true },
     bigfile = { enabled = true },
     bufdelete = { enabled = all },
     dashboard = { enabled = false },
@@ -18,7 +19,7 @@ return {
     },
     notify = { enabled = true },
     quickfile = { enabled = true },
-    picker = { enabled = true },
+    picker = { enabled = true, ui_select = true, focus = 'input' },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
