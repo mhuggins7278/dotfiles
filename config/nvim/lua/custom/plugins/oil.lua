@@ -1,5 +1,6 @@
 return {
   'stevearc/oil.nvim',
+  enabled = false,
   opts = {
     columns = {
       'icon',
@@ -11,7 +12,7 @@ return {
       show_hidden = true,
     },
     win_options = {
-      signcolumn = "yes",
+      signcolumn = 'yes',
     },
   },
   -- Optional dependencies

@@ -6,21 +6,23 @@ return {
   opts = {
     animate = { enabled = true },
     bigfile = { enabled = true },
-    bufdelete = { enabled = all },
-    dashboard = { enabled = false },
+    bufdelete = { enabled = 'all' },
+    dashboard = {
+      enabled = true,
+      sections = {
+        { section = 'header' },
+        { section = 'keys', gap = 1 },
+        { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = { 2, 2 } },
+        { section = 'startup' },
+      },
+    },
     gitbrowse = { enabled = true },
     indent = { enabled = true },
     image = { enable = true },
-    input = { enabled = true },
-    notifier = {
-      enabled = true,
-      style = 'fancy',
-      timeout = 3000,
-    },
-    notify = { enabled = true },
+    notifier = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
     quickfile = { enabled = true },
     picker = { enabled = true, ui_select = true, focus = 'input' },
-    scroll = { enabled = true },
+    scroll = { enabled = false },
     statuscolumn = { enabled = true },
     words = { enabled = true },
     styles = {
