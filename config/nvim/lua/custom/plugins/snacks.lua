@@ -17,6 +17,7 @@ return {
       },
     },
     gitbrowse = { enabled = true },
+    git = { enabled = true },
     indent = { enabled = true },
     image = { enable = true },
     notifier = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
@@ -105,9 +106,16 @@ return {
     },
     -- git
     {
-      '<leader>gb',
+      '<leader>gB',
       function()
         Snacks.picker.git_branches()
+      end,
+      desc = 'Git Branches',
+    },
+    {
+      '<leader>gb',
+      function()
+        Snacks.git.blame_line()
       end,
       desc = 'Git Branches',
     },
