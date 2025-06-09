@@ -3,7 +3,7 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
-    enabled = false,
+    enabled = true,
     opts = {
       presets = {
         bottom_search = false, -- use a classic bottom cmdline for search

@@ -159,12 +159,18 @@ return {
     vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
     vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
     local breakpoint_icons = vim.g.have_nerd_font
-        and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
+        and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
       or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
+    
+    -- Set up DAP signs using Neovim's native API
     for type, icon in pairs(breakpoint_icons) do
       local tp = 'Dap' .. type
       local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
+      -- Register the sign with Neovim's diagnostic system
+      vim.fn.sign_undefine(tp)  -- Undefine if it exists
       vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
+      -- Note: This is still using sign_define because DAP uses a different system than diagnostics
+      -- For a complete solution, DAP would need to be updated to use a different API
     end
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open

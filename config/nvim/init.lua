@@ -16,6 +16,7 @@ vim.opt.relativenumber = true
 vim.opt.wrap = false
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
+vim.opt.guicursor = ''
 
 vim.opt.shiftround = true
 
@@ -269,6 +270,8 @@ require('lazy').setup {
 
     -- "gc" to comment visual regions/lines
     { 'numToStr/Comment.nvim', opts = {} },
+
+    { 'dundalek/bloat.nvim', cmd = 'Bloat' },
 
     -- NOTE: Plugins can also be configured to run lua code when they are loaded.
     --

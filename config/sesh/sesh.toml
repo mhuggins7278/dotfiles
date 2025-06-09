@@ -17,3 +17,8 @@ startup_command = ". ~/.config/sesh/scripts/node-app.sh"
 name = "settings-api"
 path = "~/github/glg/settings-api"
 startup_command = ". ~/.config/sesh/scripts/node-app.sh"
+
+[[session]]
+name = "prism"
+path = "~/github/glg/prism"
+startup_command = ". ~/.config/sesh/scripts/node-app.sh"

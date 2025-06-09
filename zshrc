@@ -1,4 +1,5 @@
 #
+zmodload zsh/zprof
 if [[ -f "/opt/homebrew/bin/brew" ]] then
   # If you're using macOS, you'll want this enabled
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -22,11 +23,19 @@ zinit ice as"command" from"gh-r" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 
-# Add in zsh plugins
+# Add in zsh plugins - defer heavy ones for faster startup
+zinit ice wait"1" lucid
 zinit light zsh-users/zsh-syntax-highlighting
+
 zinit light zsh-users/zsh-completions
+
+zinit ice wait"1" lucid atload"_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
+
+zinit ice wait"1" lucid
 zinit light Aloxaf/fzf-tab
+
+# Load vim-mode without wait to avoid key binding issues
 zinit light softmoth/zsh-vim-mode
 
 
@@ -64,7 +73,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 
-GOPATH=$(go env GOPATH)/bin
+# Cache GOPATH to avoid expensive go env call
+GOPATH=${GOPATH:-$(go env GOPATH)}/bin
 path=( 
 $path
 $GOPATH
@@ -100,21 +110,41 @@ session=$(sesh list -z | fzf \
     sesh connect $session
   }
 }
-eval "$(fzf --zsh)"
-eval "$(zoxide init zsh)"
-eval "$(fnm env --shell zsh)"
+# Cache expensive eval commands for faster startup
+_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+mkdir -p "$_cache_dir"
+
+_fzf_cache="$_cache_dir/fzf.zsh"
+if [[ ! -f "$_fzf_cache" ]] || [[ /opt/homebrew/bin/fzf -nt "$_fzf_cache" ]]; then
+  fzf --zsh > "$_fzf_cache"
+fi
+source "$_fzf_cache"
+
+_zoxide_cache="$_cache_dir/zoxide.zsh"
+if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cache" ]]; then
+  zoxide init zsh > "$_zoxide_cache"
+fi
+source "$_zoxide_cache"
+
+_fnm_cache="$_cache_dir/fnm.zsh"
+if [[ ! -f "$_fnm_cache" ]] || [[ /opt/homebrew/bin/fnm -nt "$_fnm_cache" ]]; then
+  fnm env --shell zsh > "$_fnm_cache"
+fi
+source "$_fnm_cache"
 
 source $HOME/.dotfiles/shellrc
-source <(glgroup bashcomplete)
+# Cache glgroup bashcomplete
+_glgroup_cache="$_cache_dir/glgroup.bash"
+if [[ ! -f "$_glgroup_cache" ]] || [[ $(which glgroup) -nt "$_glgroup_cache" ]]; then
+  glgroup bashcomplete > "$_glgroup_cache" 2>/dev/null || touch "$_glgroup_cache"
+fi
+[[ -s "$_glgroup_cache" ]] && source "$_glgroup_cache"
 # zprof
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+# Docker CLI completions (remove duplicate compinit)
 fpath=(/Users/MHuggins/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
+# Terraform completion
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # Added by Windsurf
 export PATH="/Users/MHuggins/.codeium/windsurf/bin:$PATH"

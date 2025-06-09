@@ -1,12 +1,15 @@
 return {
   'yetone/avante.nvim',
   event = 'VeryLazy',
+  -- enabled = false,
   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   config = function()
     require('avante').setup {
+      debug = false,
       windows = {
-        width = 40,
+        width = 50,
       },
+      mode = 'agentic',
       --- @class AvanteFileSelectorConfig
       file_selector = {
         provider = 'snacks',
@@ -21,19 +24,17 @@ return {
       -- other config
       -- The system_prompt type supports both a string and a function that returns a string. Using a function here allows dynamically updating the prompt with mcphub
       -- cursor_applying_provider = 'ollama',
-      behaviour = {
-        enable_cursor_planning_mode = true,
-        enable_claude_text_editor_tool_mode = true,
-      },
       provider = 'copilot',
-      copilot = {
-        model = 'claude-3.7-sonnet',
-      },
-      ollama = {
-        model = 'qwen2.5-coder:7b',
+      providers = {
+        copilot = {
+          model = 'claude-sonnet-4',
+        },
+        ollama = {
+          model = 'qwen2.5-coder:7b',
+        },
       },
       rag_service = {
-        enabled = true, -- Enables the RAG service
+        enabled = false,
         host_mount = os.getenv 'HOME' .. '/github', -- Host mount path for the rag service (subfolder under home)
         provider = 'ollama', -- The provider to use for RAG service (e.g. openai or ollama)
         llm_model = 'deepseek-r1:8b',
@@ -82,9 +83,9 @@ return {
       -- Make sure to set this up properly if you have lazy=true
       'MeanderingProgrammer/render-markdown.nvim',
       opts = {
-        file_types = { 'markdown', 'Avante' },
+        file_types = { 'markdown', 'Avante', 'codecompanion' },
       },
-      ft = { 'markdown', 'Avante' },
+      ft = { 'markdown', 'Avante', 'codecompanion' },
     },
   },
 }

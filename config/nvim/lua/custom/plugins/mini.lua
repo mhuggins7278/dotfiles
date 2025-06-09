@@ -4,7 +4,7 @@ return { -- Collection of various small independent plugins/modules
   config = function()
     require('mini.ai').setup { n_lines = 500 }
     require('mini.bracketed').setup()
-    require('mini.files').setup()
+    -- require('mini.files').setup()
     require('mini.indentscope').setup()
     require('mini.operators').setup()
     require('mini.pairs').setup()

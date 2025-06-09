@@ -21,6 +21,7 @@ return {
     indent = { enabled = true },
     image = { enable = true },
     notifier = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
+    notify = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
     quickfile = { enabled = true },
     picker = { enabled = true, ui_select = true, focus = 'input' },
     scroll = { enabled = false },
@@ -100,7 +101,7 @@ return {
     {
       '<leader>fr',
       function()
-        Snacks.picker.recent()
+        Snacks.picker.recent { filter = { cwd = true } }
       end,
       desc = 'Recent',
     },
