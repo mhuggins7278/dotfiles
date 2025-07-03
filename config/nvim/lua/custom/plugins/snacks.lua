@@ -20,6 +20,7 @@ return {
     git = { enabled = true },
     indent = { enabled = true },
     image = { enable = true },
+    lazygit = { enable = false },
     notifier = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
     notify = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
     quickfile = { enabled = true },

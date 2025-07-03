@@ -5,7 +5,7 @@ return {
   config = function()
     require('silicon').setup {
       -- Configuration here, or leave empty to use defaults
-      font = 'Monaspace Radon=24',
+      font = 'Maple Mono=24',
       to_clipboard = true,
       theme = 'Catppuccin Mocha',
     }

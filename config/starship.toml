@@ -46,7 +46,6 @@ deleted = '🗑'
 [nodejs]
 # disabled = true
 detect_files = ["package.json", ".nvmrc"]
-detect_extensions = []
 
 
 [palettes.catppuccin_mocha]

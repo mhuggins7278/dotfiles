@@ -40,15 +40,8 @@ zinit light softmoth/zsh-vim-mode
 
 
 # Load completions
-autoload -Uz compinit 
-autoload -U +X bashcompinit 
-if [ "$(find ~/.zcompdump -mtime +1)" ]; then
-    compinit
-    bashcompinit
-else
-  compinit -C
-  bashcompinit -C
-fi
+autoload -Uz compinit && compinit -C
+autoload -U +X bashcompinit && bashcompinit
 
 zinit cdreplay -q
 
