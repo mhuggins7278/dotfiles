@@ -27,6 +27,7 @@ zinit light starship/starship
 zinit ice wait"1" lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
+zinit ice wait"1" lucid
 zinit light zsh-users/zsh-completions
 
 zinit ice wait"1" lucid atload"_zsh_autosuggest_start"
@@ -36,11 +37,16 @@ zinit ice wait"1" lucid
 zinit light Aloxaf/fzf-tab
 
 # Load vim-mode without wait to avoid key binding issues
-zinit light softmoth/zsh-vim-mode
+zinit ice wait"1" lucid light softmoth/zsh-vim-mode
 
 
 # Load completions
-autoload -Uz compinit && compinit -C
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh-1) ]]; then
+  compinit -i -C
+else
+  compinit -i
+fi
 autoload -U +X bashcompinit && bashcompinit
 
 zinit cdreplay -q
@@ -67,7 +73,11 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 
 # Cache GOPATH to avoid expensive go env call
-GOPATH=${GOPATH:-$(go env GOPATH)}/bin
+_go_path_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/gopath"
+if [[ ! -f "$_go_path_cache" ]] || [[ $(which go) -nt "$_go_path_cache" ]]; then
+  go env GOPATH > "$_go_path_cache"
+fi
+GOPATH=$(cat "$_go_path_cache")/bin
 path=( 
 $path
 $GOPATH
