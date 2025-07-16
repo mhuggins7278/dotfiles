@@ -6,9 +6,6 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'saghen/blink.cmp',
-
-    -- Useful status updates for LSP.
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
     { 'j-hui/fidget.nvim', opts = {} },
   },
   config = function()
@@ -203,14 +200,6 @@ return { -- LSP Configuration & Plugins
         end,
       },
 
-      eslint = {
-        settings = {
-          useFlatConfig = false, -- set if using flat config
-          experimental = {
-            useFlatConfig = nil, -- option not in the latest eslint-lsp
-          },
-        },
-      },
       terraformls = {},
       yamlls = {},
       html = {},
@@ -236,6 +225,14 @@ return { -- LSP Configuration & Plugins
               maxInlayHintLength = 30,
               completion = {
                 enableServerSideFuzzyMatch = true,
+              },
+              plugins = {
+                ['typescript-eslint-plugin'] = {
+                  enabled = true,
+                  diagnostics = true,
+                  codeAction = true,
+                  fixAll = true,
+                },
               },
             },
           },
