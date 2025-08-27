@@ -151,3 +151,5 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # Added by Windsurf
 export PATH="/Users/MHuggins/.codeium/windsurf/bin:$PATH"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

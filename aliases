@@ -2,7 +2,7 @@
 alias vim="nvim"
 alias vi="nvim"
 alias cat="bat"
-alias ls="eza --icons"
+alias ls="eza"
 alias cd="z"
 
 alias kp="kill_app_by_port"
@@ -72,3 +72,4 @@ alias play="ansible-playbook"
 alias smod='stat -c "%a %n"'
 
 alias assume=". assume"
+
