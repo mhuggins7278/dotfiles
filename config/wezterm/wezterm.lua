@@ -27,8 +27,7 @@ config.font_size = 14.0
 -- config.max_fps = 120
 config.font = wezterm.font_with_fallback({
 	{
-		family = "Monaspace Radon Var",
-		weight = "Bold",
+		family = "Maple Mono",
 		harfbuzz_features = {
 			"calt=1",
 			"liga=1",

@@ -1,6 +1,6 @@
 # vim: set filetype=dosini
 
-theme = dark:catppuccin-mocha,light:catppuccin-latte
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 background-opacity = 0.8
 background-blur-radius = 40
 macos-titlebar-style = hidden
@@ -11,7 +11,7 @@ alpha-blending = linear-corrected
 
 
 font-family = "Maple Mono"
-font-size = 12.0
+font-size = 14.0
 
 
 keybind = global:ctrl+grave_accent=toggle_quick_terminal

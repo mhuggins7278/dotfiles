@@ -65,3 +65,5 @@
   updateRefs = true
 [url "ssh://git@github.com/"]
   insteadOf = https://github.com/
+[coderabbit]
+	machineId = cli/911b882189444f8ea3d3c3ff8fd3632b

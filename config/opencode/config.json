@@ -1,0 +1,55 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "tokyonight",
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "enabled": true
+    },
+    "playwright": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "enabled": true
+    },
+    "whoIs": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@glg/mcp-whois"
+      ],
+      "enabled": true
+    },
+    "gdsData": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@glg/mcp-gds"
+      ],
+      "enabled": true
+    },
+    "zenhub": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-remote",
+        "https://api.zenhub.com/mcp",
+        "--header",
+        "Authorization:{env:ZH_API_KEY}",
+        "--header",
+        "X-zh-workspace:{env:CSX_ZH_WORKSPACE_ID}"
+      ],
+    }
+  }
+}

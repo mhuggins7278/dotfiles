@@ -41,5 +41,7 @@ export GLG_GITHUB_TOKEN=$(echo $SECRETS | jq -r '.[] | select(.key | contains("G
 export OPENAI_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("OPENAI_API_KEY")).value')
 export CONVERSATIONS_AGENTS_DEV_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')
 export AVAILABILITY_UPDATE_OPENAI_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')
+export ZH_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')
+export CSX_ZH_WORKSPACE_ID=5d7a5516d7fbc600019bc8ae
 
 
