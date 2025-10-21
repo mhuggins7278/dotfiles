@@ -25,23 +25,42 @@ export GIT_TERMINAL_PROMPT=1
 # export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 #
 
-export BW_PASSWORD=$(security find-generic-password -s "BW_PASSWORD" -w)
-export BWS_ACCESS_TOKEN=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w)
-_bws_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/bws"
-if [[ ! -f "$_bws_cache" ]] || [[ $(which bws) -nt "$_bws_cache" ]] || [[ -n "$(find "$_bws_cache" -mtime +0)" ]]; then
-  bws secret list 61f9a3e0-71a7-4d86-9255-b2a7002e5690 > "$_bws_cache"
+# Cache BWS secrets and keychain lookups
+_bws_env_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/bws_env"
+_regenerate_bws_cache=false
+
+# Check if we need to regenerate the cache (once per day or if missing)
+if [[ ! -f "$_bws_env_cache" ]] || [[ -n "$(find "$_bws_env_cache" -mtime +0 2>/dev/null)" ]]; then
+  _regenerate_bws_cache=true
 fi
-SECRETS=$(cat "$_bws_cache")
-export BW_CLIENTID=$(echo $SECRETS | jq -r '.[] | select(.key | contains("BW_CLIENTID")).value')
-export BW_CLIENTSECRET=$(echo $SECRETS | jq -r '.[] | select(.key | contains("BW_CLIENTSECRET")).value')
-export TAVILY_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("TAVILY_API_KEY")).value')
-export GITHUB_AUTH_TOKEN=$(echo $SECRETS | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')
-export GLG_GITHUB_TOKEN=$(echo $SECRETS | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')
-# export ANTHROPIC_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("ANTHROPIC_API_KEY")).value')
-export OPENAI_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("OPENAI_API_KEY")).value')
-export CONVERSATIONS_AGENTS_DEV_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')
-export AVAILABILITY_UPDATE_OPENAI_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')
-export ZH_API_KEY=$(echo $SECRETS | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')
+
+if [[ "$_regenerate_bws_cache" = true ]]; then
+  # Fetch secrets from keychain
+  _bw_password=$(security find-generic-password -s "BW_PASSWORD" -w)
+  _bws_token=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w)
+  
+  # Fetch and parse BWS secrets
+  _bws_json=$(BWS_ACCESS_TOKEN="$_bws_token" bws secret list 61f9a3e0-71a7-4d86-9255-b2a7002e5690)
+  
+  # Generate env cache file
+  cat > "$_bws_env_cache" <<EOF
+export BW_PASSWORD="$_bw_password"
+export BWS_ACCESS_TOKEN="$_bws_token"
+export BW_CLIENTID="$(echo $_bws_json | jq -r '.[] | select(.key | contains("BW_CLIENTID")).value')"
+export BW_CLIENTSECRET="$(echo $_bws_json | jq -r '.[] | select(.key | contains("BW_CLIENTSECRET")).value')"
+export TAVILY_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("TAVILY_API_KEY")).value')"
+export GITHUB_AUTH_TOKEN="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')"
+export GLG_GITHUB_TOKEN="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')"
+export OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("OPENAI_API_KEY")).value')"
+export CONVERSATIONS_AGENTS_DEV_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
+export AVAILABILITY_UPDATE_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
+export ZH_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')"
+EOF
+  chmod 600 "$_bws_env_cache"
+fi
+
+# Source the cached environment variables
+source "$_bws_env_cache"
 export CSX_ZH_WORKSPACE_ID=5d7a5516d7fbc600019bc8ae
 
 

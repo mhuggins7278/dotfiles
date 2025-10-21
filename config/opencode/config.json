@@ -11,15 +11,6 @@
       ],
       "enabled": true
     },
-    "playwright": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@playwright/mcp@latest"
-      ],
-      "enabled": true
-    },
     "whoIs": {
       "type": "local",
       "command": [
@@ -38,18 +29,13 @@
       ],
       "enabled": true
     },
-    "zenhub": {
+    "chrome-devtools": {
       "type": "local",
       "command": [
         "npx",
-        "-y",
-        "mcp-remote",
-        "https://api.zenhub.com/mcp",
-        "--header",
-        "Authorization:{env:ZH_API_KEY}",
-        "--header",
-        "X-zh-workspace:{env:CSX_ZH_WORKSPACE_ID}"
+        "chrome-devtools-mcp@latest"
       ],
+      "enabled": true
     }
   }
 }

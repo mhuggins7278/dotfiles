@@ -80,5 +80,6 @@ feat(lang): add Polish language
 - **Auto-staging**: If no files are staged, automatically stage all changes with `git add .`
 - **File priority**: If files are already staged, only commit those specific files
 - **Never push the commit**: I will manually push up the changes when I'm ready.
+- **Never create a pull request** : I will manually create prs when ready.
 - **Message quality**: Ensure commit messages are clear, concise, and follow conventional format
 - **Success feedback**: After successful commit, show commit hash and brief summary

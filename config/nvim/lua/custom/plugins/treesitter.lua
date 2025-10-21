@@ -20,11 +20,13 @@ return { -- Highlight, edit, and navigate code
         'vimdoc',
         'xml',
         'http',
+        'javascript',
         'json5',
         'json',
         'graphql',
         'jsdoc',
         'go',
+        'typescript',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

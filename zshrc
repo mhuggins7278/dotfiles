@@ -23,29 +23,30 @@ zinit ice as"command" from"gh-r" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 
-# Add in zsh plugins - defer heavy ones for faster startup
-zinit ice wait"1" lucid
+# Add in zsh plugins - defer all for faster startup
+zinit ice wait"0a" lucid
 zinit light zsh-users/zsh-syntax-highlighting
 
-zinit ice wait"1" lucid
+zinit ice wait"0b" lucid
 zinit light zsh-users/zsh-completions
 
-zinit ice wait"1" lucid atload"_zsh_autosuggest_start"
+zinit ice wait"0c" lucid atload"_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
 
-zinit ice wait"1" lucid
+zinit ice wait"0d" lucid
 zinit light Aloxaf/fzf-tab
 
-# Load vim-mode without wait to avoid key binding issues
-zinit ice wait"1" lucid light softmoth/zsh-vim-mode
+# Load vim-mode with minimal delay
+zinit ice wait"0" lucid
+zinit light softmoth/zsh-vim-mode
 
 
-# Load completions
+# Load completions - check cache age (rebuild daily)
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh-1) ]]; then
-  compinit -i -C
-else
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit -i
+else
+  compinit -i -C
 fi
 autoload -U +X bashcompinit && bashcompinit
 
@@ -78,11 +79,18 @@ if [[ ! -f "$_go_path_cache" ]] || [[ $(which go) -nt "$_go_path_cache" ]]; then
   go env GOPATH > "$_go_path_cache"
 fi
 GOPATH=$(cat "$_go_path_cache")/bin
+# Cache brew prefix
+_brew_prefix_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/brew_prefix"
+if [[ ! -f "$_brew_prefix_cache" ]]; then
+  brew --prefix > "$_brew_prefix_cache"
+fi
+_brew_prefix=$(cat "$_brew_prefix_cache")
+
 path=( 
 $path
 $GOPATH
 $PNPM_HOME
-"$(brew --prefix)/opt/curl/bin"
+"$_brew_prefix/opt/curl/bin"
 $HOME/.local/bin
 $HOME/.local/share
 )
