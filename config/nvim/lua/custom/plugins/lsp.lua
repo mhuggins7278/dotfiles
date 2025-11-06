@@ -10,6 +10,11 @@ return { -- LSP Configuration & Plugins
   },
   config = function()
     local signs = { Error = '󰅚 ', Warn = '󰀪 ', Hint = '󰌶 ', Info = ' ' }
+    local ok, util = pcall(require, 'lspconfig.util')
+    if not ok then
+      vim.notify 'lspconfig.util could not be loaded'
+      return
+    end
     vim.diagnostic.config {
       signs = {
         text = {
@@ -194,10 +199,11 @@ return { -- LSP Configuration & Plugins
       -- But for many setups, the LSP (`tsserver`) will work just fine
       --
       tailwindcss = {
-        root_dir = function(fname)
-          local root_pattern = require('lspconfig').util.root_pattern('tailwind.config.cjs', 'tailwind.config.js', 'postcss.config.ts')
-          return root_pattern(fname)
-        end,
+        root_dir = util.root_pattern('tailwind.config.cjs', 'tailwind.config.js', 'postcss.config.ts'),
+      },
+
+      biome = {
+        root_dir = util.root_pattern 'biome.json',
       },
 
       terraformls = {},
@@ -266,6 +272,7 @@ return { -- LSP Configuration & Plugins
     -- for you, so that they are available from within Neovim.
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
+      'biome',
       'delve',
       'eslint-lsp',
       'gofumpt',

@@ -12,10 +12,10 @@ return {
       end,
 
       formatters_by_ft = {
-        ['javascript'] = { 'prettierd' },
-        ['javascriptreact'] = { 'prettierd' },
-        ['typescript'] = { 'prettierd' },
-        ['typescriptreact'] = { 'prettierd' },
+        ['javascript'] = { 'biome', 'prettierd', stop_after_first = true },
+        ['javascriptreact'] = { 'biome', 'prettierd', stop_after_first = true },
+        ['typescript'] = { 'biome', 'prettierd', stop_after_first = true },
+        ['typescriptreact'] = { 'biome', 'prettierd', stop_after_first = true },
         ['vue'] = { 'prettierd' },
         ['css'] = { 'prettierd' },
         ['scss'] = { 'prettierd' },
@@ -33,6 +33,10 @@ return {
         ['go'] = { 'goimports', 'gofumpt' },
       },
       formatters = {
+        biome = {
+          cwd = require('conform.util').root_file { 'biome.json' },
+          require_cwd = true,
+        },
         sql_formatter = {
           prepend_args = { '-l', 'tsql' },
         },
