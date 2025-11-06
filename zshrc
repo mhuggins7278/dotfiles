@@ -98,29 +98,22 @@ $HOME/.local/share
 # export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
 
-function sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-session=$(sesh list -z | fzf \
-  --height 60% \
-  --reverse \
-  --tmux \
-  --border-label 'sesh' \
-  --border \
-  --prompt '⚡' \
-  --header ' ^a all ^t tmux ^x zoxide ^f find' \
-  --bind 'tab:down,btab:up' \
-  --bind 'ctrl-a:change-prompt(⚡)+reload(sesh list)' \
-  --bind 'ctrl-t:change-prompt(🪟)+reload(sesh list -t)' \
-  --bind 'ctrl-x:change-prompt(📁)+reload(sesh list -z)' \
-  --bind 'ctrl-f:change-prompt(🔎)+reload(fd -H -d 3 -t d -E .Trash . ~/github/)'
-)
-    [[ -z "$session" ]] && return
-    sesh connect $session
-  }
+function launch_sesh() {
+  sesh connect "$(
+    sesh list -ti | fzf-tmux -p 55%,60% \
+      --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
+      --reverse \
+      --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+      --bind 'tab:down,btab:up' \
+      --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list)' \
+      --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t)' \
+      --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c)' \
+      --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z)' \
+      --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~/github)' \
+      --bind 'ctrl-d:execute(tmux kill-session -t {})+change-prompt(⚡  )+reload(sesh list -t)'
+  )"
 }
+
 # Cache expensive eval commands for faster startup
 _cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 mkdir -p "$_cache_dir"
@@ -130,6 +123,9 @@ if [[ ! -f "$_fzf_cache" ]] || [[ /opt/homebrew/bin/fzf -nt "$_fzf_cache" ]]; th
   fzf --zsh > "$_fzf_cache"
 fi
 source "$_fzf_cache"
+
+# Ensure Ctrl+R uses fzf for history search
+bindkey '^R' fzf-history-widget
 
 _zoxide_cache="$_cache_dir/zoxide.zsh"
 if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cache" ]]; then
