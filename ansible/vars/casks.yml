@@ -1,26 +1,33 @@
 ---
 casks:
+  aerospace:
   azure-data-studio:
   bitwarden:
   discord:
   docker:
+  docker-desktop:
+  figma:
   font-caskaydia-cove-nerd-font:
   font-fira-code-nerd-font:
   font-hack-nerd-font:
   font-juliamono:
+  font-maple-mono:
+  font-maple-mono-nf:
   font-monaspace:
-  gimp:
+  font-symbols-only-nerd-font:
   ghostty:
+  gimp:
   iterm2:
   karabiner-elements:
   kdiff3:
   keycastr:
   licecap:
   macdown:
+  ngrok:
   notion:
-  polypane:
+  orbstack:
   postman:
   spotify:
   visual-studio-code:
-  wezterm:
   wireshark:
+  wireshark-app:

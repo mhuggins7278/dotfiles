@@ -1,12 +1,19 @@
 ---
 taps:
   arl/arl:
+  cfergeau/crc:
   common-fate/granted:
   fsouza/prettierd:
+  hashicorp/tap:
   homebrew/cask-fonts:
-  homebrew/cask-versions:
   homebrew/command-not-found:
   homebrew/services:
+  jesseduffield/lazydocker:
   joshmedeski/sesh:
+  julien-cpsn/atac:
   microsoft/mssql-release:
+  mutagen-io/mutagen:
+  nikitabobko/tap:
+  oven-sh/bun:
+  sst/tap:
   supabase/tap:

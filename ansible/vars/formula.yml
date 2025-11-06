@@ -5,10 +5,10 @@ formula:
   ansible:
   aom:
   archey4:
+  aribb24:
+  artillery:
   asdf:
-  atuin:
-  autoconf:
-  automake:
+  atac:
   awscli:
   axel:
   bash:
@@ -16,32 +16,51 @@ formula:
   bat:
   binwalk:
   brotli:
+  btop:
+  bun:
   c-ares:
   ca-certificates:
   caddy:
   cairo:
+  capstone:
+  certifi:
   cffi:
-  cmake:
+  cjson:
+  colima:
   commitizen:
   coreutils:
   cowsay:
+  cryptography:
+  curl:
+  dav1d:
   ddrescue:
   deno:
-  docutils:
+  docker:
+  docker-buildx:
+  docker-completion:
+  docker-compose:
   dos2unix:
+  dtc:
   duf:
   eslint:
-  exa:
+  expat:
+  eza:
   fd:
+  ffmpeg@7:
+  ffmpegthumbnailer:
   findutils:
+  fish:
+  flac:
   flock:
+  fnm:
   fontconfig:
+  freetds:
   freetype:
+  frei0r:
   fribidi:
   fx:
   fzf:
   gawk:
-  gcc:
   gdbm:
   gettext:
   gh:
@@ -53,8 +72,11 @@ formula:
   gitmux:
   glib:
   gmp:
+  gnupg:
+  gnutls:
   go:
-  gobject-introspection:
+  gpgme:
+  gpgmepp:
   granted:
   graphite2:
   grc:
@@ -64,51 +86,68 @@ formula:
   htop:
   httpie:
   hyperfine:
-  icu4c:
+  icu4c@76:
+  icu4c@77:
   iftop:
   imagemagick:
   imath:
   iproute2mac:
-  isl:
   jansson:
   jasper:
   jbig2dec:
-  jpeg:
   jpeg-turbo:
   jpeg-xl:
   jq:
   krb5:
-  lazygit:
+  lame:
+  lazydocker:
   leptonica:
   libarchive:
+  libass:
+  libassuan:
   libb2:
+  libbluray:
   libde265:
+  libdeflate:
   libevent:
-  libffi:
+  libgcrypt:
   libgit2:
-  libgit2@1.6:
+  libgpg-error:
   libheif:
   libidn:
   libidn2:
-  libimagequant:
+  libksba:
   liblinear:
   liblqr:
-  libmpc:
+  libmicrohttpd:
   libnghttp2:
+  libnghttp3:
+  libngtcp2:
+  libogg:
   libomp:
   libpng:
-  libpthread-stubs:
-  libraqm:
+  libpq:
   libraw:
+  librist:
+  libsamplerate:
+  libslirp:
+  libsndfile:
+  libsodium:
+  libsoxr:
+  libssh:
   libssh2:
-  libtermkey:
+  libtasn1:
   libtiff:
   libtool:
+  libudfread:
+  libunibreak:
   libunistring:
   libusb:
   libuv:
+  libvidstab:
   libvmaf:
-  libvterm:
+  libvorbis:
+  libvpx:
   libx11:
   libxau:
   libxcb:
@@ -116,125 +155,154 @@ formula:
   libxext:
   libxrender:
   libyaml:
+  libzip:
+  lima:
   little-cms2:
   llvm:
-  llvm@16:
   lnav:
+  lpeg:
   lua:
-  lua@5.3:
   luajit:
-  luajit-openresty:
   luarocks:
   luv:
   lz4:
   lzo:
   m4:
+  mbedtls:
+  mercurial:
   moreutils:
   mpdecimal:
   mpfr:
-  msgpack:
+  mpg123:
   msodbcsql17:
   mssql-tools:
   mtr:
+  mutagen:
   ncdu:
   ncurses:
   neovim:
-  netlify-cli:
+  nettle:
   nikto:
   nmap:
   node:
+  npth:
   nspr:
   nss:
-  numpy:
   nvm:
   oniguruma:
-  openblas:
+  openapi-generator:
+  opencode:
+  opencore-amr:
   openexr:
-  openjdk@11:
+  openjdk:
   openjpeg:
+  openjph:
   openssl@1.1:
   openssl@3:
+  opentofu:
   openvpn:
+  opus:
+  p11-kit:
   p7zip:
   pango:
   pcre:
   pcre2:
   peco:
-  pillow:
+  pinentry:
+  pipx:
   pixman:
   pkcs11-helper:
-  pkg-config:
+  pkgconf:
+  pngpaste:
   pnpm:
+  poppler:
   postgresql@13:
   prettierd:
   pwgen:
   pycparser:
-  pygments:
   python-argcomplete:
   python-certifi:
   python-cryptography:
-  python-dateutil:
-  python-jinja:
-  python-lxml:
   python-markupsafe:
   python-packaging:
-  python-psutil:
-  python-pyparsing:
-  python-pytz:
-  python-setuptools:
   python-typing-extensions:
   python@3.10:
   python@3.11:
   python@3.12:
-  python@3.9:
+  python@3.13:
+  python@3.14:
   pyyaml:
-  qhull:
+  qemu:
+  rav1e:
   readline:
   reattach-to-user-namespace:
   redis:
   rename:
   ripgrep:
+  rtmpdump:
+  rubberband:
+  ruby:
   rust:
+  rustup:
   rustup-init:
+  sdl2:
   sesh:
+  sevenzip:
   shared-mime-info:
   shellcheck:
   silicon:
-  six:
+  simdjson:
   smartmontools:
+  snappy:
+  speex:
   sqlite:
   sqls:
-  ssdeep:
+  srt:
   ssh-copy-id:
   starship:
   supabase:
+  svt-av1:
   swagger-codegen:
-  tcl-tk:
   telnet:
+  terraform:
   tesseract:
   the_silver_searcher:
+  theora:
   tidy-html5:
   tmux:
   tree:
   tree-sitter:
+  unbound:
   unibilium:
   unixodbc:
   unp:
   utf8proc:
+  uv:
+  uvwasi:
+  vde:
+  vfkit:
   watch:
   webp:
   wget:
   wireguard-go:
   wireguard-tools:
+  x264:
   x265:
   xorgproto:
+  xvid:
   xz:
   yarn:
+  yazi:
   z3:
   zellij:
+  zeromq:
   zf:
+  zimg:
   zoxide:
   zsh:
+  zsh-autocomplete:
+  zsh-autosuggestions:
   zsh-completions:
+  zsh-syntax-highlighting:
   zsh-vi-mode:
   zstd:
