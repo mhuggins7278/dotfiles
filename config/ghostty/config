@@ -8,6 +8,8 @@ macos-option-as-alt = true
 clipboard-read = allow
 clipboard-write = allow
 alpha-blending = linear-corrected
+cursor-opacity = 0.7
+initial-command = zsh -i -c "launch_sesh"
 
 
 font-family = "Maple Mono"
