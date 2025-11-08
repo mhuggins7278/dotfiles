@@ -110,8 +110,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
-        'js',
-        'chrome',
+        'js-debug-adapter',
       },
     }
 
@@ -201,7 +200,7 @@ return {
       host = 'localhost',
       port = '${port}',
       executable = {
-        command = 'chrome-debug-adapter', -- As I'm using mason, this will be in the path
+        command = 'js-debug-adapter', -- js-debug-adapter now handles Chrome debugging too
         args = { '${port}' },
       },
     }

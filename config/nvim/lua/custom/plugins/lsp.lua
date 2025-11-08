@@ -162,7 +162,7 @@ return { -- LSP Configuration & Plugins
 
         -- Enable inlay hints by default for buffers that support it
         if client and client.server_capabilities.inlayHintProvider then
-          vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+          vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
         end
 
         -- The following two autocommands are used to highlight references of the
@@ -596,7 +596,7 @@ return { -- LSP Configuration & Plugins
       local config = vim.tbl_deep_extend('force', {
         capabilities = capabilities,
       }, server_config)
-      
+
       -- Use the new vim.lsp.config() API to set defaults
       vim.lsp.config(server_name, config)
     end

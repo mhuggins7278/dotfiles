@@ -8,7 +8,7 @@ return {
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
-        return { timeout_ms = 500, lsp_format = 'fallback' }
+        return { timeout_ms = 1000, lsp_format = 'fallback' }
       end,
 
       formatters_by_ft = {
@@ -28,9 +28,8 @@ return {
         ['markdown.mdx'] = { 'prettierd' },
         ['graphql'] = { 'prettierd' },
         ['handlebars'] = { 'prettierd' },
-        -- ['sql'] = { 'sql_formatter' },
         ['lua'] = { 'stylua' },
-        ['go'] = { 'goimports', 'gofumpt' },
+        ['go'] = { 'goimports-reviser', 'gofumpt' },
       },
       formatters = {
         biome = {
