@@ -1,5 +1,6 @@
 palette = "catppuccin_mocha"
-command_timeout = 750
+command_timeout = 500
+scan_timeout = 10
 add_newline = true
 
 
@@ -24,6 +25,8 @@ disabled = true
 only_detached = false
 disabled = true
 
+# Note: git_metrics can slow down prompts in large repositories
+# Disable if you experience slowness
 [git_metrics]
 disabled = false
 

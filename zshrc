@@ -86,6 +86,8 @@ if [[ ! -f "$_brew_prefix_cache" ]]; then
 fi
 _brew_prefix=$(cat "$_brew_prefix_cache")
 
+# Deduplicate PATH entries
+typeset -U path
 path=( 
 $path
 $GOPATH
