@@ -91,31 +91,20 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 vim.keymap.set('n', '<leader>y', '<cmd>let @*=expand("%:~:.")<cr>', { desc = '[Y]ank Relatvie File Path' })
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', function()
-  vim.diagnostic.jump { count = -1 }
-end, { desc = 'Go to previous [D]iagnostic message' })
 
-vim.keymap.set('n', ']d', function()
-  vim.diagnostic.jump { count = 1 }
-end, { desc = 'Go to next [D]iagnostic message' })
-
+-- Diagnostic keymaps - [e/]e for errors only
+-- NOTE: [d/]d, <leader>e, <leader>q are defined in lsp.lua LspAttach
 vim.keymap.set('n', '[e', function()
   vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR }
 end, { desc = 'Go to previous [E]rror message' })
 
 vim.keymap.set('n', ']e', function()
   vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR }
-end, { desc = 'Go to previous [E]rror message' })
-
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+end, { desc = 'Go to next [E]rror message' })
 
 vim.keymap.set('i', 'jj', '<Esc>', { silent = true })
 vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save file', remap = true, silent = true })
-vim.keymap.set('n', '<leader>i', function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
-end, { desc = 'Toggle [I]nlay Hints', remap = true, silent = true })
+-- NOTE: Inlay hints toggle is at <leader>uh (via snacks.nvim)
 
 --center cursor after various movement commands
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -306,8 +295,6 @@ require('lazy').setup {
           { '<leader>r_', hidden = true },
           { '<leader>s', group = '[S]earch' },
           { '<leader>s_', hidden = true },
-          { '<leader>w', group = '[W]orkspace' },
-          { '<leader>w_', hidden = true },
         }
       end,
     },
@@ -368,9 +355,9 @@ require('lazy').setup {
                 warnings = { 'undercurl' },
                 information = { 'undercurl' },
               },
-              inlay_hints = {
-                background = true,
-              },
+              -- inlay_hints = {
+              --   background = true,
+              -- },
             },
             neogit = true,
             neotest = true,

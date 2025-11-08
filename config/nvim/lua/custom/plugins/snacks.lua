@@ -4,7 +4,7 @@ return {
   lazy = false,
   ---@type snacks.Config
   opts = {
-    animate = { enabled = true },
+    -- animate = { enabled = true },
     bigfile = { enabled = true },
     bufdelete = { enabled = 'all' },
     dashboard = {
@@ -21,8 +21,9 @@ return {
     indent = { enabled = true },
     image = { enable = true },
     lazygit = { enable = false },
-    notifier = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
-    notify = { enabled = true, timeout = 3000 }, -- Show notifications for 3 seconds
+    -- Notifications handled by noice.nvim
+    notifier = { enabled = false },
+    notify = { enabled = false },
     quickfile = { enabled = true },
     picker = { enabled = true, ui_select = true, focus = 'input' },
     scroll = { enabled = false },
@@ -216,13 +217,6 @@ return {
       desc = 'Autocmds',
     },
     {
-      '<leader>sb',
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = 'Buffer Lines',
-    },
-    {
       '<leader>sc',
       function()
         Snacks.picker.command_history()
@@ -342,35 +336,7 @@ return {
       desc = 'Colorschemes',
     },
     -- LSP
-    {
-      'gd',
-      function()
-        Snacks.picker.lsp_definitions()
-      end,
-      desc = 'Goto Definition',
-    },
-    {
-      'gD',
-      function()
-        Snacks.picker.lsp_declarations()
-      end,
-      desc = 'Goto Declaration',
-    },
-    {
-      'gr',
-      function()
-        Snacks.picker.lsp_references()
-      end,
-      nowait = true,
-      desc = 'References',
-    },
-    {
-      'gI',
-      function()
-        Snacks.picker.lsp_implementations()
-      end,
-      desc = 'Goto Implementation',
-    },
+    -- NOTE: gd, gD, gr, gI are defined in lsp.lua LspAttach
     {
       'gy',
       function()

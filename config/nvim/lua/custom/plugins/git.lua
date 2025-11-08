@@ -40,11 +40,11 @@ return {
       local wk = require 'which-key'
       wk.add {
         { '<leader>gR', '<cmd>Gitsigns reset_buffer<cr>', desc = '[R]eset buffer' },
-        { '<leader>gS', '<cmd>Gitsigns stage_buffer<cr>', desc = '[S]tage buffer' },
+        { '<leader>ga', '<cmd>Gitsigns stage_buffer<cr>', desc = 'Stage [A]ll (buffer)' },
         -- { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = '[B]lame line' },
         { '<leader>gp', '<cmd>Gitsigns preview_hunk<cr>', desc = '[P]review hunk' },
         { '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', desc = '[R]eset hunk' },
-        { '<leader>gs', '<cmd>Gitsigns stage_hunk<cr>', desc = '[S]tage hunk' },
+        { '<leader>gh', '<cmd>Gitsigns stage_hunk<cr>', desc = 'Stage [H]unk' },
         { '<leader>gu', '<cmd>Gitsigns undo_stage_hunk<cr>', desc = '[U]nstage hunk' },
         { '[h', '<cmd>Gitsigns prev_hunk<cr>', desc = 'Previous hunk' },
         { ']h', '<cmd>Gitsigns next_hunk<cr>', desc = 'Next hunk' },

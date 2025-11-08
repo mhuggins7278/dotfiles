@@ -1,5 +1,14 @@
 # Agent Guidelines for Dotfiles Repository
 
+## Available Subagents
+
+- **docs**: Documentation specialist for fetching library docs using Context7
+- **browser**: Browser automation and web testing using Chrome DevTools
+- **whois**: GLG employee directory lookup specialist
+- **zenhub**: ZenHub project management specialist
+- **deployment**: GLG Deployment System (GDS) infrastructure specialist
+- **ui-dev**: Frontend UI development with React/Material-UI and Figma
+
 ## Key Commands
 
 - Update system: `update` (homebrew, git pull dotfiles)

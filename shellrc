@@ -56,6 +56,7 @@ export GLG_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contai
 export CONVERSATIONS_AGENTS_DEV_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
 export AVAILABILITY_UPDATE_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
 export ZH_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')"
+export CONTEXT7_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONTEXT7_API_KEY")).value')"
 EOF
   chmod 600 "$_bws_env_cache"
 fi

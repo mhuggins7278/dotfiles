@@ -8,6 +8,9 @@ alias cd="z"
 alias kp="kill_app_by_port"
 alias gpl="git_prune_local"
 alias gdb="git_delete_branch"
+alias gpo="git pull origin"
+alias gf="git fetch --all"
+alias gPo="git push origin"
 
 
 # Color output

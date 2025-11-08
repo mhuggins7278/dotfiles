@@ -8,7 +8,7 @@ macos-option-as-alt = true
 clipboard-read = allow
 clipboard-write = allow
 alpha-blending = linear-corrected
-cursor-opacity = 0.7
+cursor-opacity = 0.5
 initial-command = zsh -i -c "launch_sesh"
 
 
