@@ -9,10 +9,44 @@ return {
     cmd = 'Octo',
     config = function()
       require('octo').setup {
-        use_local_fs = true,
-        default_to_projects_v2 = false,
-        picker = 'snacks',
-        enable_builtin = true,
+        use_local_fs = true, -- use local files on right side of reviews
+        default_to_projects_v2 = false, -- use projects v2 for card commands
+        picker = 'snacks', -- picker to use for lists (telescope, fzf-lua, or snacks)
+        enable_builtin = true, -- shows a list of builtin actions when no action is provided
+        default_merge_method = 'merge', -- default merge method (merge, rebase, or squash)
+        default_delete_branch = false, -- whether to delete branch when merging PR
+        ssh_aliases = {}, -- SSH aliases for custom domains
+        picker_config = {
+          use_emojis = false, -- use emojis in pickers (fzf-lua only)
+          mappings = {
+            open_in_browser = { lhs = '<C-b>', desc = 'open in browser' },
+            copy_url = { lhs = '<C-y>', desc = 'copy url to system clipboard' },
+            checkout_pr = { lhs = '<C-o>', desc = 'checkout pull request' },
+            merge_pr = { lhs = '<C-r>', desc = 'merge pull request' },
+          },
+        },
+        ui = {
+          use_signcolumn = false, -- show "modified" marks on sign column
+          use_signstatus = true, -- show "modified" marks on status column
+        },
+        issues = {
+          order_by = {
+            field = 'CREATED_AT', -- COMMENTS, CREATED_AT, or UPDATED_AT
+            direction = 'DESC', -- DESC or ASC
+          },
+        },
+        pull_requests = {
+          order_by = {
+            field = 'CREATED_AT',
+            direction = 'DESC',
+          },
+          always_select_remote_on_create = false, -- always prompt for remote repo when creating PRs
+          use_branch_name_as_title = false, -- use branch name as PR title
+        },
+        file_panel = {
+          size = 10, -- changed files panel rows
+          use_icons = true, -- use web-devicons in file panel
+        },
         mappings = {
           issue = {
             close_issue = { lhs = '<localleader>ic', desc = 'close issue' },
@@ -98,7 +132,7 @@ return {
             react_confused = { lhs = '<localleader>rc', desc = 'add/remove 😕 reaction' },
           },
           submit_win = {
-            approve_review = { lhs = '<C-s>', desc = 'approve review', mode = { 'n', 'i' } },
+            approve_review = { lhs = '<C-a>', desc = 'approve review', mode = { 'n', 'i' } },
             comment_review = { lhs = '<C-m>', desc = 'comment review', mode = { 'n', 'i' } },
             request_changes = { lhs = '<C-r>', desc = 'request changes review', mode = { 'n', 'i' } },
             close_review_tab = { lhs = '<C-c>', desc = 'close review tab', mode = { 'n', 'i' } },
