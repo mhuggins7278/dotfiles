@@ -36,8 +36,8 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice wait"0d" lucid
 zinit light Aloxaf/fzf-tab
 
-# Load vim-mode with minimal delay
-zinit ice wait"0" lucid
+# Load vim-mode with minimal delay, then rebind Ctrl-R to fzf
+zinit ice wait"0" lucid atload"bindkey '^R' fzf-history-widget"
 zinit light softmoth/zsh-vim-mode
 
 
@@ -124,8 +124,24 @@ if [[ ! -f "$_fzf_cache" ]] || [[ /opt/homebrew/bin/fzf -nt "$_fzf_cache" ]]; th
 fi
 source "$_fzf_cache"
 
-# Ensure Ctrl+R uses fzf for history search
-bindkey '^R' fzf-history-widget
+# Override fzf-history-widget to use centered popup
+fzf-history-widget() {
+  local selected num
+  setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2> /dev/null
+  selected=( $(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
+    FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --scheme=history --bind=ctrl-r:toggle-sort,ctrl-z:ignore ${FZF_DEFAULT_OPTS-} ${FZF_CTRL_R_OPTS-}" \
+    fzf-tmux -p 55%,60% --border-label ' History ' --prompt '🔍  ' --query "$LBUFFER") )
+  local ret=$?
+  if [ -n "$selected" ]; then
+    num=$selected[1]
+    if [ -n "$num" ]; then
+      zle vi-fetch-history -n $num
+    fi
+  fi
+  zle reset-prompt
+  return $ret
+}
+zle -N fzf-history-widget
 
 _zoxide_cache="$_cache_dir/zoxide.zsh"
 if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cache" ]]; then
@@ -140,6 +156,10 @@ fi
 source "$_fnm_cache"
 
 source $HOME/.dotfiles/shellrc
+
+# Ensure Ctrl+R uses fzf for history search (after all plugins loaded)
+bindkey '^R' fzf-history-widget
+
 # Cache glgroup bashcomplete
 _glgroup_cache="$_cache_dir/glgroup.bash"
 if [[ ! -f "$_glgroup_cache" ]] || [[ $(which glgroup) -nt "$_glgroup_cache" ]]; then
