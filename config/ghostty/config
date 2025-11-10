@@ -1,22 +1,46 @@
 # vim: set filetype=dosini
 
+# Terminal Compatibility
+term = xterm-ghostty
+shell-integration = detect
+
+# Theme & Appearance
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 background-opacity = 0.8
 background-blur-radius = 40
 macos-titlebar-style = hidden
-macos-option-as-alt = true
-clipboard-read = allow
-clipboard-write = allow
 alpha-blending = linear-corrected
 cursor-opacity = 0.5
-initial-command = zsh -i -c "launch_sesh"
 
-
+# Font Configuration
 font-family = "Maple Mono"
 font-size = 14.0
 
+# Clipboard (OSC 52 for tmux/vim)
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = false
 
+# macOS Specific
+macos-option-as-alt = true
+
+# Session Management
+initial-command = zsh -i -c "launch_sesh"
+
+# Mouse Support (better tmux integration)
+mouse-hide-while-typing = true
+
+# Keybindings
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+# Performance & Compatibility
+adjust-cell-width = 0
+adjust-cell-height = 0
+command = /bin/zsh
+focus-follows-mouse = false
+
+# True color support for neovim
+# Ghostty automatically supports 24-bit color
 
 
 

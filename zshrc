@@ -153,9 +153,13 @@ source "$_zoxide_cache"
 
 _fnm_cache="$_cache_dir/fnm.zsh"
 if [[ ! -f "$_fnm_cache" ]] || [[ /opt/homebrew/bin/fnm -nt "$_fnm_cache" ]]; then
-  fnm env --shell zsh > "$_fnm_cache"
+  # Disable all auto-switching behavior
+  fnm env --shell zsh --resolve-engines=false --version-file-strategy=local > "$_fnm_cache"
 fi
 source "$_fnm_cache"
+
+# Ensure fnm doesn't auto-switch - override any inherited behavior
+export FNM_RESOLVE_ENGINES=false
 
 source $HOME/.dotfiles/shellrc
 

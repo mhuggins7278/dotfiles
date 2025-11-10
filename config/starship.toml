@@ -47,8 +47,10 @@ renamed = '👅'
 deleted = '🗑'
 
 [nodejs]
-# disabled = true
-detect_files = ["package.json", ".nvmrc"]
+# Display actual node version in use, not from .nvmrc file
+format = "via [$symbol($version )]($style)"
+detect_files = ["package.json"]
+detect_folders = ["node_modules"]
 
 
 [palettes.catppuccin_mocha]
