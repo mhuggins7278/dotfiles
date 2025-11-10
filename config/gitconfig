@@ -3,11 +3,8 @@
   email = mhuggins@glgroup.com
   username=mhuggins7278
 
-[push]
- default = simple
-
 [core]
-  excludesfile = /Users/markhuggins/.gitignore
+  excludesfile = ~/.gitignore_global
   editor = nvim
   pager = delta
 
@@ -25,6 +22,15 @@
 
 [diff]
   colorMoved = default
+
+[fetch]
+  prune = true
+
+[status]
+  submoduleSummary = true
+
+[log]
+  date = relative
 
 [filter "lfs"]
   clean = git-lfs clean %f
