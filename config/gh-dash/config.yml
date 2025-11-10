@@ -28,6 +28,7 @@ defaults:
   prsLimit: 20
   issuesLimit: 20
   view: prs
+  refetchIntervalMinutes: 30
   layout:
     prs:
       updatedAt:
@@ -84,6 +85,7 @@ theme:
     sectionsShowCount: true
     table:
       compact: false
+      showSeparators: true
   colors:
     text:
       primary: "#cdd6f4"
