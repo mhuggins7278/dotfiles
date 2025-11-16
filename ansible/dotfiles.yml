@@ -70,6 +70,7 @@
         - "~/.config/wezterm/"
         - "~/.config/gh-dash/"
         - "~/.config/sesh/"
+        - "~/.config/kanata/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"
         - "~/Library/Application Support/layzgit/"

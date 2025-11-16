@@ -93,11 +93,13 @@ formula:
   imath:
   iproute2mac:
   jansson:
+  jaraco.text:
   jasper:
   jbig2dec:
   jpeg-turbo:
   jpeg-xl:
   jq:
+  kanata:
   krb5:
   lame:
   lazydocker:

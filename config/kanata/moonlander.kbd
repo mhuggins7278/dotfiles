@@ -1,0 +1,106 @@
+;; Kanata configuration based on Moonlander Oryx layout
+;; Converted from mark-s-layout
+
+(defcfg
+  process-unmapped-keys yes
+  danger-enable-cmd yes
+  sequence-timeout 2000
+  sequence-input-mode visible-backspaced
+  sequence-backtrack-modcancel yes
+  concurrent-tap-hold yes
+)
+
+;; Source layer - standard laptop keyboard
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+
+;; Note: For layer activation on a standard keyboard, we'll use:
+;; - Left Ctrl = Toggle Numpad layer
+;; - Left Cmd (physical key) = Window Management layer (one-shot)
+;; - Right Cmd (physical key) = Symbols layer (one-shot)  
+;; - Right Alt (physical key) = Open Raycast (Alt+Space)
+;; - Caps Lock (hold) = Navigation layer, tap for Escape
+;; - Space stays as Space
+
+;; Aliases for home row mods (matching Moonlander timing)
+(defalias
+  ;; Left hand home row mods
+  a (tap-hold 190 190 a lmet)
+  s (tap-hold 190 190 s lalt)
+  d (tap-hold 190 190 d lctl)
+  f (tap-hold 190 190 f lsft)
+  
+  ;; Right hand home row mods
+  j (tap-hold 190 190 j rsft)
+  k (tap-hold 190 190 k rctl)
+  l (tap-hold 190 190 l ralt)
+  sem (tap-hold 190 190 ; rmet)
+  
+  ;; Meh key (Ctrl+Shift+Alt)
+  mbk (tap-hold 190 190 bspc (multi lctl lsft lalt))
+  mqt (tap-hold 190 190 ' (multi lctl lsft lalt))
+  
+  ;; Layer tap - caps becomes navigation layer when held
+  cap (tap-hold 190 190 esc (layer-toggle nav))
+  
+  ;; Layer toggle and one-shot keys
+  sym (one-shot 2000 (layer-toggle symbols))  ;; Right thumb cluster
+  win (one-shot 2000 (layer-toggle wm))       ;; Left thumb cluster
+  num (layer-toggle numpad)                    ;; Toggle numpad layer
+  
+  ;; Caps word toggle
+  cpw (caps-word 2000)
+  
+  ;; Raycast launcher (Alt+Space)
+  ray (multi lalt spc)
+)
+
+;; Layer 0 - Base Layer (QWERTY with home row mods)
+(deflayer base
+  _    1    2    3    4    5    6    7    8    9    0    _    _    _
+  esc  q    w    e    r    t    y    u    i    o    p    _    _    \
+  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @sem @mqt ret
+  tab  z    x    c    v    b    n    m    ,    .    /    grv
+  @num @win lalt           spc            @ray @sym _
+)
+
+;; Layer 1 - Symbols Layer
+(deflayer symbols
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  _    _
+  _    S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  _    _    f12
+  _    S-;  S-9  [    S-[  -    S--  S-]  ]    S-0  ;    grv  _
+  _    ,    S-=  =    _    S-grv S-/ S-,  S-.  S-\  /    _
+  _    _    _              _              _    _    _
+)
+
+;; Layer 2 - Number Pad & Media
+(deflayer numpad
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    -    7    8    9    /    _    _    _
+  _    _    prev pp   next _    S-=  4    5    6    S-8  _    _
+  _    _    vold volu mute _    =    1    2    3    0    _
+  _    _    _              _              _    _    _
+)
+
+;; Layer 3 - Window Management & Navigation
+(deflayer wm
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    C-A-S-q C-A-S-w C-A-S-e C-A-S-r C-A-S-t _    C-A-u C-A-up C-A-i _    _    _    _
+  _    C-A-S-a C-A-S-s C-A-S-d C-A-S-f C-A-S-g M-S-[ C-A-lft C-A-S-k C-A-rght _    _    _
+  _    C-A-S-z C-A-S-x C-A-S-c M-S-v M-[  M-S-] C-A-S-m C-A-down C-A-k _    _
+  _    _    C-lft          C-rght         _    M-=  M--
+)
+
+;; Layer 4 - Navigation (Arrow keys)
+(deflayer nav
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    lft  down up   rght _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _    _
+)

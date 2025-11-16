@@ -74,4 +74,9 @@
         dest: "~/.config/gh-dash",
         force: true,
       }
+    - {
+        src: "~/.dotfiles/config/kanata",
+        dest: "~/.config/kanata",
+        force: true,
+      }
   tags: links

@@ -75,6 +75,26 @@
   notify:
     - Kill Dock
 
+- name: Install Kanata LaunchAgent
+  file:
+    src: "{{ item.src | expanduser }}"
+    dest: "{{ item.dest | expanduser }}"
+    state: link
+    force: yes
+  loop:
+    - {
+        src: "~/.dotfiles/config/kanata/com.kanata.service.plist",
+        dest: "~/Library/LaunchAgents/com.kanata.service.plist",
+      }
+  when: ansible_os_family == "Darwin"
+  tags: kanata
+
+- name: Load Kanata LaunchAgent
+  shell: launchctl load ~/Library/LaunchAgents/com.kanata.service.plist
+  when: ansible_os_family == "Darwin"
+  ignore_errors: yes
+  tags: kanata
+
 - name: Set Terminal settings
   osx_defaults: domain=com.apple.Terminal key={{ item.key }} type={{ item.type }} value={{ item.value }}
   with_items:
