@@ -5,6 +5,10 @@ alias cat="bat"
 alias ls="eza"
 alias cd="z"
 
+# Kanata keyboard remapping
+alias kanata-start="~/.dotfiles/scripts/kanata-start.sh"
+alias kanata-stop="~/.dotfiles/scripts/kanata-stop.sh"
+
 alias kp="kill_app_by_port"
 alias gpl="git_prune_local"
 alias gdb="git_delete_branch"
@@ -75,4 +79,10 @@ alias play="ansible-playbook"
 alias smod='stat -c "%a %n"'
 
 alias assume=". assume"
+
+# fnm - Node version management
+# Use specific version (e.g., nv 20, nv 18.16.0)
+alias nv="fnm use"
+# Use version from .nvmrc or .node-version in current directory
+alias nvuse="fnm use"
 

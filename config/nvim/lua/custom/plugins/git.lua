@@ -25,16 +25,15 @@ return {
           -- Show helpful message when opening conflicts
           diff_buf_read = function()
             local git_dir = vim.fn.system('git rev-parse --git-dir 2>/dev/null'):gsub('\n', '')
-            if git_dir == '' then return end
-            
+            if git_dir == '' then
+              return
+            end
+
             local rebase_merge = git_dir .. '/rebase-merge'
             local rebase_apply = git_dir .. '/rebase-apply'
-            
+
             if vim.fn.isdirectory(rebase_merge) == 1 or vim.fn.isdirectory(rebase_apply) == 1 then
-              vim.notify(
-                '🔄 REBASE MODE: OURS=target branch, THEIRS=your changes',
-                vim.log.levels.INFO
-              )
+              vim.notify('🔄 REBASE MODE: OURS=target branch, THEIRS=your changes', vim.log.levels.INFO)
             end
           end,
         },

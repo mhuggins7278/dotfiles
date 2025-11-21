@@ -151,15 +151,12 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
 fi
 source "$_zoxide_cache"
 
-_fnm_cache="$_cache_dir/fnm.zsh"
-if [[ ! -f "$_fnm_cache" ]] || [[ /opt/homebrew/bin/fnm -nt "$_fnm_cache" ]]; then
-  # Disable all auto-switching behavior
-  fnm env --shell zsh --resolve-engines=false --version-file-strategy=local > "$_fnm_cache"
-fi
-source "$_fnm_cache"
-
-# Ensure fnm doesn't auto-switch - override any inherited behavior
-export FNM_RESOLVE_ENGINES=false
+# fnm setup - cache disabled to prevent version leaking
+# Problem: fnm creates a multishell directory per shell that symlinks to ~/.local/share/fnm/aliases/default
+# When caching, old multishell paths in the cache would still point to the shared default alias,
+# causing Node versions to leak between shells
+# Solution: Evaluate fnm directly each time (small performance cost but prevents version leaking)
+eval "$(fnm env --shell zsh --resolve-engines)"
 
 source $HOME/.dotfiles/shellrc
 

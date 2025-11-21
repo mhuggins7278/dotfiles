@@ -11,11 +11,6 @@
         dest: "~/.config/gtk-3.0/settings.ini",
       }
     - { src: "~/.dotfiles/config/aws/config", dest: "~/.aws/config" }
-    - {
-        src: "~/.dotfiles/config/karabiner/karabiner.json",
-        dest: "~/.config/karabiner/karabiner.json",
-        force: true,
-      }
     - { src: "~/.dotfiles/config/gitconfig", dest: "~/.gitconfig", force: true }
     - {
         src: "~/.dotfiles/config/gh/config.yml",
@@ -77,6 +72,11 @@
     - {
         src: "~/.dotfiles/config/kanata",
         dest: "~/.config/kanata",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/sketchybar",
+        dest: "~/.config/sketchybar",
         force: true,
       }
   tags: links

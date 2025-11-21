@@ -16,6 +16,7 @@ return {
         default_merge_method = 'merge', -- default merge method (merge, rebase, or squash)
         default_delete_branch = false, -- whether to delete branch when merging PR
         ssh_aliases = {}, -- SSH aliases for custom domains
+        users = 'assignable',
         picker_config = {
           use_emojis = false, -- use emojis in pickers (fzf-lua only)
           mappings = {
