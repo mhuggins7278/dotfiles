@@ -67,7 +67,10 @@ return { -- Collection of various small independent plugins/modules
     require('mini.operators').setup()
     require('mini.pairs').setup()
     require('mini.splitjoin').setup()
-    require('mini.sessions').setup()
+    require('mini.sessions').setup {
+      -- Don't auto-save sessions to avoid jump list crossing projects
+      autowrite = false,
+    }
     require('mini.surround').setup {
       -- Increase search range to find surroundings more reliably
       n_lines = 50,

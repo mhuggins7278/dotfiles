@@ -9,7 +9,7 @@ SSID=$(echo "$WIFI_INFO" | awk -F': ' '/Current Network Information:/{getline; g
 # Check if WiFi is connected
 if [ -z "$SSID" ] || [ "$SSID" = "Off" ]; then
   # Not connected
-  sketchybar --set wifi icon="󰖪" label="Disconnected"
+  sketchybar --set wifi icon="󰖪" label=""
 else
   # Get signal strength (RSSI) - extract first number after "Signal / Noise:"
   RSSI=$(echo "$WIFI_INFO" | grep "Signal / Noise:" | head -1 | awk '{print $4}')
@@ -31,9 +31,5 @@ else
     ICON="󰤯"  # Very weak signal
   fi
   
-  sketchybar --set wifi icon="$ICON" label="$SSID"
-fi
-
-  
-  sketchybar --set wifi icon="$ICON" label="$SSID"
+  sketchybar --set wifi icon="$ICON" label=""
 fi

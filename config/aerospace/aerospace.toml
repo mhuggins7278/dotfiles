@@ -129,6 +129,7 @@ alt-a = 'workspace A' # In your config, you can drop workspace bindings that you
 alt-c = 'workspace C'
 alt-e = 'workspace E'
 alt-g = 'workspace G'
+alt-r = 'workspace R'
 alt-s = 'workspace S'
 alt-v = 'workspace V'
 alt-w = 'workspace W'
@@ -144,6 +145,7 @@ alt-shift-a = 'move-node-to-workspace A'
 alt-shift-c = 'move-node-to-workspace C'
 alt-shift-e = 'move-node-to-workspace E'
 alt-shift-g = 'move-node-to-workspace G'
+alt-shift-r = 'move-node-to-workspace R'
 alt-shift-s = 'move-node-to-workspace S'
 alt-shift-v = 'move-node-to-workspace V'
 alt-shift-w = 'move-node-to-workspace W'
@@ -209,6 +211,10 @@ run = ['move-node-to-workspace V'] # The callback itself
 [[on-window-detected]]
 if.app-id = 'com.apple.calculator'
 run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['move-node-to-workspace R']
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

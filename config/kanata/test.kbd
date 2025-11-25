@@ -1,0 +1,13 @@
+;; Minimal test config
+(defcfg
+  process-unmapped-keys yes
+  danger-enable-cmd yes
+)
+
+(defsrc
+  caps a
+)
+
+(deflayer base
+  esc  lctl
+)
