@@ -19,6 +19,10 @@ return {
         path = '~/github/mhuggins7278/notes',
       },
     },
+    ui = {
+      enable = false, -- completely disable all obsidian.nvim UI features
+      checkboxes = {}, -- disable checkbox rendering
+    },
     daily_notes = {
       -- Optional, if you keep daily notes in a separate directory.
       folder = 'dailies',
@@ -32,14 +36,14 @@ return {
       '<leader>nt',
       function()
         local tasknotes = require 'tasknotes'
-        
+
         -- Prompt for task title
         vim.ui.input({ prompt = 'Task title: ' }, function(title)
           if not title or title == '' then
             vim.notify('Task creation cancelled', vim.log.levels.INFO)
             return
           end
-          
+
           -- Prompt for task details
           vim.ui.input({ prompt = 'Task details (optional): ' }, function(details)
             -- Create the task with basic data
@@ -48,14 +52,14 @@ return {
               status = 'todo',
               priority = 'normal',
             }
-            
+
             -- Add details if provided
             if details and details ~= '' then
               task_data.details = details
             end
-            
+
             local response = tasknotes.tasks.create(task_data)
-            
+
             if response.success then
               vim.notify('Created task: ' .. title, vim.log.levels.INFO)
             else

@@ -6,14 +6,14 @@ shell-integration = detect
 
 # Theme & Appearance
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
-# background-opacity = 0.8
-# background-blur-radius = 40
+background-opacity = 0.8
+background-blur-radius = 40
 macos-titlebar-style = hidden
 alpha-blending = linear-corrected
 cursor-opacity = 0.5
 
 # Font Configuration
-font-family = "Maple Mono"
+font-family = "Maple Mono NF"
 font-size = 14.0
 
 # Clipboard (OSC 52 for tmux/vim)
@@ -36,6 +36,7 @@ keybind = global:ctrl+grave_accent=toggle_quick_terminal
 # Performance & Compatibility
 adjust-cell-width = 0
 adjust-cell-height = 0
+grapheme-width-method = legacy
 command = /bin/zsh
 focus-follows-mouse = false
 

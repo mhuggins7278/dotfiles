@@ -20,7 +20,7 @@ vim.opt.guicursor = ''
 
 vim.opt.shiftround = true
 
-vim.opt.conceallevel = 1
+vim.opt.conceallevel = 2
 
 -- Use separate ShaDa file per tmux session to prevent jump list crossing projects
 -- This fixes Ctrl-O jumping to files in other projects when using multiple tmux sessions
@@ -202,6 +202,14 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   end,
 })
 
+-- Treat Snowflake files as SQL
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  pattern = { '*.snowflake', '*.sf', '*.sf.sql' },
+  callback = function()
+    vim.bo.filetype = 'sql'
+  end,
+})
+
 -- vim.api.nvim_create_autocmd('BufWritePre', {
 --   group = 'vtsls',
 --   pattern = { '*.ts', '*.js', '*.tsx', '*.jsx' },
@@ -322,7 +330,7 @@ require('lazy').setup {
             light = 'latte',
             dark = 'mocha',
           },
-          transparent_background = false,
+          transparent_background = true,
           term_colors = false,
           default_integrations = true,
           integrations = {

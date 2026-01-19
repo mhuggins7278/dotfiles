@@ -1,6 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "tokyonight",
+  "agent": {
+    "plan": {
+      "model": "github-copilot/gpt-5.2-codex",
+      "reasoningEffort": "high"
+    }
+  },
   "mcp": {
     "whoIs": {
       "type": "local",
@@ -61,6 +67,7 @@
   },
   "keybinds": {
     "session_child_cycle": "alt+j",
-    "session_child_cycle_reverse": "alt+l"
+    "session_child_cycle_reverse": "alt+l",
+    "sidebar_toggle": "<leader>b"
   }
 }

@@ -21,6 +21,14 @@ return {
     -- Required for `opts.events.reload`.
     vim.o.autoread = true
 
+    -- Disable the VimLeave autocmd that closes opencode on exit
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'VeryLazy',
+      callback = function()
+        vim.api.nvim_clear_autocmds({ group = 'OpencodeProvider' })
+      end,
+    })
+
     -- Recommended/example keymaps.
     vim.keymap.set({ 'n', 'x' }, '<leader>a', function()
       require('opencode').ask('@this: ', { submit = true })

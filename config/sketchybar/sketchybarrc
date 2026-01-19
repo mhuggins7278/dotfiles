@@ -65,7 +65,8 @@ sketchybar --default "${default[@]}"
 ##### Adding AeroSpace Workspace Indicator #####
 # Display current AeroSpace workspace
 
-sketchybar --add item aerospace left \
+sketchybar --add event aerospace_workspace_change \
+           --add item aerospace left \
            --set aerospace \
            icon.padding_left=7 \
            icon.padding_right=7 \

@@ -131,6 +131,7 @@ alt-e = 'workspace E'
 alt-g = 'workspace G'
 alt-r = 'workspace R'
 alt-s = 'workspace S'
+alt-f = 'workspace F'
 alt-v = 'workspace V'
 alt-w = 'workspace W'
 alt-x = 'workspace X'
@@ -147,6 +148,7 @@ alt-shift-e = 'move-node-to-workspace E'
 alt-shift-g = 'move-node-to-workspace G'
 alt-shift-r = 'move-node-to-workspace R'
 alt-shift-s = 'move-node-to-workspace S'
+alt-shift-f = 'move-node-to-workspace F'
 alt-shift-v = 'move-node-to-workspace V'
 alt-shift-w = 'move-node-to-workspace W'
 alt-shift-x = 'move-node-to-workspace X'
@@ -181,7 +183,7 @@ run = ['move-node-to-workspace C'] # The callback itself
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.teams2'
-run = ['move-node-to-workspace C'] # The callback itself
+run = ['move-node-to-workspace F'] # The callback itself
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Outlook'

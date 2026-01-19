@@ -86,7 +86,7 @@ return {
       local wk = require 'which-key'
       wk.add {
         { '<leader>gg', '<cmd>Neogit<cr>', desc = '[N]eogit' },
-        { '<leader>gri', '<cmd>Neogit rebase<cr>', desc = '[R]ebase [I]nteractive' },
+        { '<leader>gir', '<cmd>Neogit rebase<cr>', desc = '[R]ebase [I]nteractive' },
       }
     end,
   },

@@ -5,6 +5,7 @@ return {
     { 'tpope/vim-dadbod', lazy = true },
     { 'kristijanhusak/vim-dadbod-completion', ft = sql_ft, lazy = true },
   },
+  ft = sql_ft,
   cmd = {
     'DBUI',
     'DBUIToggle',
