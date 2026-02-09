@@ -6,8 +6,8 @@ shell-integration = detect
 
 # Theme & Appearance
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
-background-opacity = 0.8
-background-blur-radius = 40
+# background-opacity = 0.8
+# background-blur-radius = 40
 macos-titlebar-style = hidden
 alpha-blending = linear-corrected
 cursor-opacity = 0.5

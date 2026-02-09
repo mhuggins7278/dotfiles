@@ -2,7 +2,6 @@
 description: Browser automation and web testing specialist for debugging, performance analysis, and end-to-end testing using Chrome DevTools
 mode: subagent
 temperature: 0.2
-model: github-copilot/claude-haiku-4.5
 tools:
   chrome-devtools_*: true
 ---

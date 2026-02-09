@@ -27,21 +27,18 @@ export GIT_TERMINAL_PROMPT=1
 
 # Cache BWS secrets and keychain lookups
 _bws_env_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/bws_env"
-_regenerate_bws_cache=false
+_bws_env_cache_dir="${_bws_env_cache:h}"
 
-# Check if we need to regenerate the cache (once per day or if missing)
-if [[ ! -f "$_bws_env_cache" ]] || [[ -n "$(find "$_bws_env_cache" -mtime +0 2>/dev/null)" ]]; then
-  _regenerate_bws_cache=true
-fi
+_rebuild_bws_cache() {
+  mkdir -p "$_bws_env_cache_dir"
 
-if [[ "$_regenerate_bws_cache" = true ]]; then
   # Fetch secrets from keychain
   _bw_password=$(security find-generic-password -s "BW_PASSWORD" -w)
   _bws_token=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w)
-  
+
   # Fetch and parse BWS secrets
   _bws_json=$(BWS_ACCESS_TOKEN="$_bws_token" bws secret list 61f9a3e0-71a7-4d86-9255-b2a7002e5690)
-  
+
   # Generate env cache file
   cat > "$_bws_env_cache" <<EOF
 export BW_PASSWORD="$_bw_password"
@@ -57,9 +54,20 @@ export CONVERSATIONS_AGENTS_DEV_KEY="$(echo $_bws_json | jq -r '.[] | select(.ke
 export AVAILABILITY_UPDATE_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
 export ZH_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')"
 export CONTEXT7_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONTEXT7_API_KEY")).value')"
+export TANSTACK_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("TANSTACK_API_KEY")).value')"
 EOF
   chmod 600 "$_bws_env_cache"
+}
+
+# Check if we need to regenerate the cache (once per day or if missing)
+if [[ ! -f "$_bws_env_cache" ]] || [[ -n "$(find "$_bws_env_cache" -mmin +1440 2>/dev/null)" ]]; then
+  _rebuild_bws_cache
 fi
+
+bws-cache-rebuild() {
+  _rebuild_bws_cache
+  source "$_bws_env_cache"
+}
 
 # Source the cached environment variables
 source "$_bws_env_cache"

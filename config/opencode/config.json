@@ -7,6 +7,16 @@
       "reasoningEffort": "high"
     }
   },
+  "permission": {
+    "external_directory": {
+      "~/github/glg/epiquery-templates/**": "allow",
+      "~/github/mhuggins7278/notes/**": "allow"
+    },
+    "skill": {
+      "*": "allow",
+      "tasknotes": "deny"
+    }
+  },
   "mcp": {
     "whoIs": {
       "type": "local",
