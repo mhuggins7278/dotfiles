@@ -1,9 +1,6 @@
 ---
 name: git-commit
 description: Stage and commit changes with conventional commit messages. Fully automated with safety checks.
-aliases: [commit]
-id: SKILL
-tags: [git, commit, version-control]
 ---
 
 # Git Commit Skill
@@ -69,8 +66,11 @@ Follow conventional commit format:
 ### 5. Execute Commit
 
 ```bash
-# Create the commit
+# Simple commit (single line)
 git commit -m "<generated message>"
+
+# Multi-line commit (e.g., breaking changes)
+git commit -m "<title>" -m "<body>"
 
 # Verify success
 git status

@@ -44,15 +44,6 @@
       ],
       "enabled": true
     },
-    "zenhub": {
-      "type": "remote",
-      "url": " https://api.zenhub.com/mcp",
-      "headers": {
-        "Authorization": "{env:ZH_API_KEY}",
-        "X-zh-workspace": "{env:CSX_ZH_WORKSPACE_ID}"
-      },
-      "enabled": true
-    },
     "figma": {
       "type": "remote",
       "url": "http://127.0.0.1:3845/mcp",

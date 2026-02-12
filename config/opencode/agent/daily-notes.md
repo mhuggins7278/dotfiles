@@ -95,6 +95,10 @@ Plan the day through conversation. Capture new tasks, carried over items, meetin
 ### Process
 
 1. Auto-carry over all unchecked items from yesterday into today's note by default (do not ask), keeping items in the same section they were in
+   - **CRITICAL**: Do NOT carry over completed tasks (tasks marked as "done" in TaskNotes)
+   - For TaskNotes backlinks, read each task's markdown file and check the `status` field in frontmatter
+   - Only carry over tasks with status "open" or "in-progress"
+   - For plain checkboxes (After Hours section only), carry over unchecked items (- [ ])
 2. **When carrying over items**, scan for person names and ensure they are backlinked (e.g., "follow up with Hayes" → "follow up with [[David Hayes]]")
 3. Summarize yesterday's open items by section (quick recap, not a line-by-line recitation)
 4. Ask for state changes on carried items (done, carry, drop, or state change); if user says "all the same," accept it
@@ -113,9 +117,69 @@ Plan the day through conversation. Capture new tasks, carried over items, meetin
 
 ### Auto-Carryover Rules
 
-- Automatically detect unchecked items from yesterday's daily note
+**CRITICAL**: Only carry over incomplete tasks. Do NOT carry over completed tasks.
+
+#### For TaskNotes Backlinks (Tasks, Waiting On, I Owe sections):
+
+1. **Read each TaskNotes markdown file** to check the `status` field in frontmatter
+2. Extract the task file path from the backlink (e.g., `[[TaskNotes/Tasks/Task Name]]` → `/Users/MHuggins/github/mhuggins7278/notes/TaskNotes/Tasks/Task Name.md`)
+3. Read the frontmatter of each task file to get the `status` field
+4. **Only carry over tasks** where status is "open" or "in-progress"
+5. **Skip tasks** where status is "done" or "completed"
+
+#### For Plain Checkboxes (After Hours section only):
+
+- Detect unchecked items: `- [ ] item`
+- Skip checked items: `- [x] item`
 - Add them to the same section they were in previously
-- Preserve the checkbox format: `- [ ] item`
+- Preserve the checkbox format
+
+#### Implementation:
+
+Before carrying over yesterday's tasks:
+1. Parse yesterday's daily note for all TaskNotes backlinks
+2. For each backlink:
+   - Extract the task file path from the link syntax
+   - Convert to absolute path: `/Users/MHuggins/github/mhuggins7278/notes/TaskNotes/Tasks/...`
+   - Read the markdown file
+   - Parse the frontmatter to get the `status` field
+   - If status is "open" or "in-progress", carry over the backlink
+   - If status is "done", skip it
+3. Carry over unchecked plain checkboxes from After Hours section
+
+#### Example:
+
+Yesterday's daily note had:
+```markdown
+## Tasks
+- [[TaskNotes/Tasks/Deploy MyGLG changes]]  
+- [[TaskNotes/Tasks/Review PR from Katie]]  
+- [[TaskNotes/Tasks/Fix bug in scheduling]]  
+
+## After Hours
+- [ ] Research new API approach
+- [x] Read documentation
+```
+
+Reading each task file's frontmatter:
+- `TaskNotes/Tasks/Deploy MyGLG changes.md` → status: done
+- `TaskNotes/Tasks/Review PR from Katie.md` → status: in-progress
+- `TaskNotes/Tasks/Fix bug in scheduling.md` → status: open
+
+After checking frontmatter, today's note should carry over:
+```markdown
+## Tasks
+- [[TaskNotes/Tasks/Review PR from Katie]]
+- [[TaskNotes/Tasks/Fix bug in scheduling]]
+
+## After Hours
+- [ ] Research new API approach
+```
+
+Note: 
+- "Deploy MyGLG changes" was NOT carried over (status: done in frontmatter)
+- "Read documentation" was NOT carried over (checkbox checked)
+- Only incomplete items were carried forward
 
 ### Gap Handling
 
@@ -272,17 +336,20 @@ Review accomplishments, update completion status, capture learnings, and update 
 
 ### Process
 
-1. Review the day's TaskNotes-linked tasks and their statuses (open/in-progress/done) by querying the TaskNotes API via the `tasknotes` skill
-2. Ask about **wins or accomplishments**
-3. Ask about **blockers or challenges**
-4. Ask about **key learnings or reflections**
-5. Ask whether to add anything to manager/team sync summaries
+1. **Read TaskNotes markdown files** to get actual task statuses from frontmatter:
+   - Parse today's daily note for TaskNotes backlinks
+   - Read each task's markdown file to check the `status` field
+2. Review the day's TaskNotes-linked tasks and their statuses (open/in-progress/done)
+3. Ask about **wins or accomplishments**
+4. Ask about **blockers or challenges**
+5. Ask about **key learnings or reflections**
+6. Ask whether to add anything to manager/team sync summaries
 
 ### Output
 
 1. Update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/index.md`:
-   - Do not infer completion from checkboxes on TaskNotes links; use TaskNotes status instead
-   - Use the `tasknotes` skill to fetch current status for each TaskNotes backlink in `Tasks`, `Waiting On`, and `I Owe` sections
+   - Do not infer completion from checkboxes on TaskNotes links
+   - Read each TaskNotes task markdown file to check the `status` field in frontmatter
    - Add reflection notes
    - Add a short summary paragraph based on exit interview details and TaskNotes status
    - Keep daily notes with backlinks unless explicitly asked to move items into project/people files

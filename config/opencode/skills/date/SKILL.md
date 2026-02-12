@@ -1,9 +1,6 @@
 ---
 name: date
 description: Get the current date using the bash `date` command. USE whenever you need the date; do not infer.
-aliases: []
-id: SKILL
-tags: []
 ---
 
 # Date Skill

@@ -1,9 +1,6 @@
 ---
 name: git-pr
 description: Create a pull request from the current branch. Fully automated with safety checks.
-aliases: [pr]
-id: SKILL
-tags: [git, github, pull-request, pr]
 ---
 
 # Git PR Skill
@@ -137,6 +134,12 @@ If no template:
 ```bash
 # Create PR with specified base branch
 gh pr create --base <target-branch> --title "<title>" --body "<body>"
+
+# Or create as draft
+gh pr create --base <target-branch> --title "<title>" --body "<body>" --draft
+
+# With reviewers
+gh pr create --base <target-branch> --title "<title>" --body "<body>" --reviewer user1,user2
 ```
 
 Use heredoc for body to preserve formatting:
@@ -146,6 +149,10 @@ gh pr create --base <target-branch> --title "<title>" --body "$(cat <<'EOF'
 EOF
 )"
 ```
+
+Ask the user if they want:
+- Draft PR vs. ready for review
+- Specific reviewers to assign
 
 ### 8. Report Results
 
