@@ -983,9 +983,6 @@
                       "name": "symbols_layer",
                       "value": 1
                     }
-                  },
-                  {
-                    "key_code": "vk_none"
                   }
                 ],
                 "to_after_key_up": [

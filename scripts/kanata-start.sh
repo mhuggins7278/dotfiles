@@ -1,10 +1,15 @@
 #!/bin/bash
 # Start Kanata with the Moonlander config in the background
 
-# First, make sure Karabiner is stopped
+# Acquire sudo credentials upfront (needed to stop Karabiner daemons and start Kanata)
+sudo -v || exit 1
+
+# First, make sure Karabiner's remapping engine is stopped (but keep VirtualHIDDevice - Kanata needs it)
 killall -9 Karabiner-Menu 2>/dev/null
 killall -9 Karabiner-NotificationWindow 2>/dev/null
 launchctl bootout gui/$(id -u)/org.pqrs.karabiner.karabiner_console_user_server 2>/dev/null
+sudo killall -9 Karabiner-Core-Service 2>/dev/null
+sleep 1
 
 # Check if Kanata is already running
 if pgrep -x kanata > /dev/null; then

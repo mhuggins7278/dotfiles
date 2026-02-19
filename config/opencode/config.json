@@ -3,7 +3,11 @@
   "theme": "tokyonight",
   "agent": {
     "plan": {
-      "model": "github-copilot/gpt-5.2-codex",
+      "model": "github-copilot/claude-opus-4.6",
+      "reasoningEffort": "hig"
+    },
+    "build": {
+      "model": "github-copilot/claude-sonnet-4.6",
       "reasoningEffort": "high"
     }
   },
@@ -13,9 +17,15 @@
       "~/github/mhuggins7278/notes/**": "allow"
     },
     "skill": {
-      "*": "allow",
-      "tasknotes": "deny"
+      "*": "allow"
     }
+  },
+  "provider": {
+    "github-copilot": {
+      "models": {
+        "gpt-5.3-codex": {},
+      },
+    },
   },
   "mcp": {
     "whoIs": {

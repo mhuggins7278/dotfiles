@@ -16,9 +16,6 @@ permission:
     "grep *": allow
     "rg *": allow
     "date *": allow
-    "curl *": allow
-  skill:
-    "tasknotes": allow
 tools:
   todowrite: false
   todoread: false
@@ -47,11 +44,11 @@ This document defines the daily tracking workflow for Obsidian vault management.
 - **Location**: `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/index.md`
 - **Format**: Single flat file per day
 - **Sections**:
-  - **Tasks**: TaskNotes backlinks for tasks you own (including newly created items)
+  - **Tasks**: Checkbox list of tasks you own
   - **After Hours**: Checkbox list of lower-priority items to revisit later
   - **Meetings**: Each meeting as a subheading
-  - **Waiting On**: TaskNotes backlinks for tasks you're waiting on from other people (person name in task title)
-  - **I Owe**: TaskNotes backlinks for tasks you owe to other people (person name in task title)
+  - **Waiting On**: Checkbox list of things you're waiting on from other people (include person name)
+  - **I Owe**: Checkbox list of things you owe to other people (include person name)
   - **Notes**: Freeform notes, thoughts, observations
 
 ### Weekly Summaries
@@ -95,143 +92,98 @@ Plan the day through conversation. Capture new tasks, carried over items, meetin
 ### Process
 
 1. Auto-carry over all unchecked items from yesterday into today's note by default (do not ask), keeping items in the same section they were in
-   - **CRITICAL**: Do NOT carry over completed tasks (tasks marked as "done" in TaskNotes)
-   - For TaskNotes backlinks, read each task's markdown file and check the `status` field in frontmatter
-   - Only carry over tasks with status "open" or "in-progress"
-   - For plain checkboxes (After Hours section only), carry over unchecked items (- [ ])
+   - Carry over unchecked items: `- [ ] item`
+   - Skip checked/completed items: `- [x] item`
 2. **When carrying over items**, scan for person names and ensure they are backlinked (e.g., "follow up with Hayes" → "follow up with [[David Hayes]]")
 3. Summarize yesterday's open items by section (quick recap, not a line-by-line recitation)
-4. Ask for state changes on carried items (done, carry, drop, or state change); if user says "all the same," accept it
-5. Ask about **new tasks** for today (create TaskNotes tasks and add backlinks to Tasks)
+4. Ask for state changes on carried items (done, carry, drop); if user says "all the same," accept it
+5. Ask about **new tasks** for today
 6. Ask about **meetings or events** scheduled
 7. Ask about **project updates or focus areas**
-8. Ask about **things you're waiting on** from other people (create TaskNotes tasks with person name in title, add to Waiting On)
-9. Ask about **things you owe** to other people (create TaskNotes tasks with person name in title, add to I Owe)
+8. Ask about **things you're waiting on** from other people (add to Waiting On with person name)
+9. Ask about **things you owe** to other people (add to I Owe with person name)
 10. Capture any **notes or thoughts** for the day
 11. Add meetings under a `Meetings` section with each meeting as a subheading
 12. Ask before creating new tasks from meeting notes
 13. **Before finalizing the daily note**, review all sections for person names and add missing backlinks
 
 **Example recap + state prompt**
-"Yesterday you had 2 tasks in progress, one item waiting on [[Alex]], and a couple notes on [[PriceBridge]]. Any changes? You can say done, carry, drop, or change state."
+"Yesterday you had 2 tasks in progress, one item waiting on [[Alex]], and a couple notes on [[PriceBridge]]. Any changes? You can say done, carry, or drop."
 
 ### Auto-Carryover Rules
 
-**CRITICAL**: Only carry over incomplete tasks. Do NOT carry over completed tasks.
+**CRITICAL**: Only carry over incomplete items. Do NOT carry over completed items.
 
-#### For TaskNotes Backlinks (Tasks, Waiting On, I Owe sections):
+All sections use the same simple rule:
 
-1. **Read each TaskNotes markdown file** to check the `status` field in frontmatter
-2. Extract the task file path from the backlink (e.g., `[[TaskNotes/Tasks/Task Name]]` → `/Users/MHuggins/github/mhuggins7278/notes/TaskNotes/Tasks/Task Name.md`)
-3. Read the frontmatter of each task file to get the `status` field
-4. **Only carry over tasks** where status is "open" or "in-progress"
-5. **Skip tasks** where status is "done" or "completed"
-
-#### For Plain Checkboxes (After Hours section only):
-
-- Detect unchecked items: `- [ ] item`
-- Skip checked items: `- [x] item`
-- Add them to the same section they were in previously
-- Preserve the checkbox format
-
-#### Implementation:
-
-Before carrying over yesterday's tasks:
-1. Parse yesterday's daily note for all TaskNotes backlinks
-2. For each backlink:
-   - Extract the task file path from the link syntax
-   - Convert to absolute path: `/Users/MHuggins/github/mhuggins7278/notes/TaskNotes/Tasks/...`
-   - Read the markdown file
-   - Parse the frontmatter to get the `status` field
-   - If status is "open" or "in-progress", carry over the backlink
-   - If status is "done", skip it
-3. Carry over unchecked plain checkboxes from After Hours section
+- Unchecked `- [ ] item` → carry over
+- Checked `- [x] item` → do not carry over
+- Keep items in the same section they were in
 
 #### Example:
 
 Yesterday's daily note had:
 ```markdown
 ## Tasks
-- [[TaskNotes/Tasks/Deploy MyGLG changes]]  
-- [[TaskNotes/Tasks/Review PR from Katie]]  
-- [[TaskNotes/Tasks/Fix bug in scheduling]]  
+- [ ] Review PR from [[Katie]]
+- [x] Deploy MyGLG changes
+- [ ] Fix bug in scheduling
 
 ## After Hours
 - [ ] Research new API approach
 - [x] Read documentation
+
+## Waiting On
+- [ ] [[David Hayes]] — ship API fix for scheduling emails
+- [x] [[Katie]] — PR review for compliance changes
+
+## I Owe
+- [ ] [[Priya]] — compliance move decision discussion
 ```
 
-Reading each task file's frontmatter:
-- `TaskNotes/Tasks/Deploy MyGLG changes.md` → status: done
-- `TaskNotes/Tasks/Review PR from Katie.md` → status: in-progress
-- `TaskNotes/Tasks/Fix bug in scheduling.md` → status: open
-
-After checking frontmatter, today's note should carry over:
+Today's note carries over:
 ```markdown
 ## Tasks
-- [[TaskNotes/Tasks/Review PR from Katie]]
-- [[TaskNotes/Tasks/Fix bug in scheduling]]
+- [ ] Review PR from [[Katie]]
+- [ ] Fix bug in scheduling
 
 ## After Hours
 - [ ] Research new API approach
-```
 
-Note: 
-- "Deploy MyGLG changes" was NOT carried over (status: done in frontmatter)
-- "Read documentation" was NOT carried over (checkbox checked)
-- Only incomplete items were carried forward
+## Waiting On
+- [ ] [[David Hayes]] — ship API fix for scheduling emails
+
+## I Owe
+- [ ] [[Priya]] — compliance move decision discussion
+```
 
 ### Gap Handling
 
 - If the user skips days, carry over from the most recent existing daily note without comment
 
-### Waiting On and I Owe Section Format
+### Section Format
 
-**CRITICAL**: All items in Waiting On and I Owe sections MUST be TaskNotes backlinks, not plain checkboxes.
+All task-like sections (Tasks, After Hours, Waiting On, I Owe) use plain markdown checkboxes:
 
-#### Format Rules
-
-1. **Always create TaskNotes tasks** for items in Waiting On or I Owe sections
-2. **Include person name in task title**: `TaskNotes/Tasks/Person Name - description`
-3. **Use bullet format** (with dash, no checkbox): `- [[TaskNotes/Tasks/...]]`
-4. **Never use checkboxes** like `- [ ]` in these sections - only TaskNotes backlinks
-
-#### Examples
-
-**Correct format:**
 ```markdown
-## Waiting On
+## Tasks
+- [ ] Deploy MyGLG iCal feedback changes
+- [ ] Fix bug in scheduling
+- [x] Review PR from [[Katie]]
 
-- [[TaskNotes/Tasks/Joan B clarification on Tear SheetPopulations]]
-- [[TaskNotes/Tasks/Katie PR review for compliance department changes]]
-- [[TaskNotes/Tasks/David Hayes to ship API fix for scheduling emails]]
+## After Hours
+- [ ] Research new API approach
+
+## Waiting On
+- [ ] [[David Hayes]] — ship API fix for scheduling emails
+- [ ] [[Katie]] — PR review for compliance changes
 
 ## I Owe
-
-- [[TaskNotes/Tasks/Priya - compliance move decision discussion]]
-- [[TaskNotes/Tasks/Ronan - timezone issue reproduction steps]]
+- [ ] [[Priya]] — compliance move decision discussion
+- [ ] [[Ronan]] — timezone issue reproduction steps
 ```
 
-**Incorrect format (DO NOT USE):**
-```markdown
-## Waiting On
-
-- [ ] [[Ronan]]: Update after testing
-- [[David Hayes]] — needs to ship the API fix
-```
-
-#### When Adding Items
-
-1. User mentions waiting on someone: create TaskNotes task with person name in title
-2. Add TaskNotes backlink to Waiting On section
-3. Ensure person name is backlinked in the task title if they have a people file
-
-#### When Converting Existing Items
-
-If you encounter old-style checkbox items in Waiting On/I Owe:
-1. Create a TaskNotes task with proper title format
-2. Replace the checkbox item with the TaskNotes backlink
-3. Preserve the person backlink by including it in the task title
+**Waiting On / I Owe naming**: Always include the person's name (with backlink) at the start, followed by a dash and what you're waiting for / owe.
 
 ### Entity Detection
 
@@ -257,7 +209,7 @@ While processing the conversation, detect and create backlinks for:
    - Possessive forms: "Hayes's PR" → backlink `[[David Hayes]]` if that file exists
    - Last name only: "Ronan said" → check if `Ronan.md` or `Ronan [LastName].md` exists
 4. **When writing or editing daily notes**, scan for any person names and convert them to backlinks
-5. **In Waiting On / I Owe sections**, always backlink person names even if they appear at the start of a line
+5. **In Waiting On / I Owe sections**, always backlink person names
 
 #### Name Matching Process
 
@@ -296,11 +248,11 @@ Before finalizing any daily note update:
 Create/update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/index.md` with:
 
 - Frontmatter (id, tags: daily-notes)
-- Tasks section with TaskNotes backlinks (including new items)
+- Tasks section with checkboxes
 - After Hours section with checkboxes
 - Meetings section with each meeting as a subheading
-- **Waiting On section with TaskNotes backlinks** (format: `- [[TaskNotes/Tasks/Person Name - what you're waiting for]]`)
-- **I Owe section with TaskNotes backlinks** (format: `- [[TaskNotes/Tasks/Person Name - what you owe them]]`)
+- Waiting On section with checkboxes (person name + description)
+- I Owe section with checkboxes (person name + description)
 - Notes section with context and details
 
 ---
@@ -311,16 +263,17 @@ Create/update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/inde
 
 - User may chat with me to add items or update status
 - Update the daily note in real-time
-- **Use TaskNotes tasks for ANY new task/todo/follow-up items** in Tasks, Waiting On, or I Owe sections
-- Only keep checkboxes for non-task notes in the After Hours or Notes sections
+- New tasks go as checkboxes in the appropriate section (Tasks, Waiting On, I Owe, After Hours)
+- **Do NOT duplicate task information in the Notes section** — when adding a task, only add the checkbox in the appropriate section. Do not also summarize or describe the task in Notes.
+- The Notes section is for freeform thoughts, observations, and context that are NOT already captured as tasks
 - **Add backlinks as entities are mentioned** — scan each update for person names and create backlinks
 - **Before saving any changes**, review the note for unlinked person names and backlink them
 
 ### Staleness Callouts
 
-- For TaskNotes-backed items in `Waiting On` and `I Owe`, call out if the task has been in its current status for 5+ days
-- Use the TaskNotes status change date to calculate staleness
-- Mention once, neutrally, without nagging
+- If an item has been carried over for 5+ consecutive days, mention it once neutrally
+- Count by checking how many previous daily notes contain the same unchecked item
+- No nagging — just a heads-up
 
 ### Session Wrap
 
@@ -336,30 +289,25 @@ Review accomplishments, update completion status, capture learnings, and update 
 
 ### Process
 
-1. **Read TaskNotes markdown files** to get actual task statuses from frontmatter:
-   - Parse today's daily note for TaskNotes backlinks
-   - Read each task's markdown file to check the `status` field
-2. Review the day's TaskNotes-linked tasks and their statuses (open/in-progress/done)
-3. Ask about **wins or accomplishments**
-4. Ask about **blockers or challenges**
-5. Ask about **key learnings or reflections**
-6. Ask whether to add anything to manager/team sync summaries
+1. Review today's daily note — count checked vs unchecked items across all sections
+2. Ask about **wins or accomplishments**
+3. Ask about **blockers or challenges**
+4. Ask about **key learnings or reflections**
+5. Ask whether to add anything to manager/team sync summaries
 
 ### Output
 
 1. Update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/index.md`:
-   - Do not infer completion from checkboxes on TaskNotes links
-   - Read each TaskNotes task markdown file to check the `status` field in frontmatter
+   - Mark completed items as checked (`- [x]`)
    - Add reflection notes
-   - Add a short summary paragraph based on exit interview details and TaskNotes status
+   - Add a short summary paragraph based on exit interview details
    - Keep daily notes with backlinks unless explicitly asked to move items into project/people files
    - Move meeting-derived notes into their meeting docs when appropriate (when requested)
-   - Replace the daily line with a backlink to the dated entry section
 
 **Example summary snippet**
 
 ```
-Summary: Completed 3 tasks, 2 in progress, 1 waiting on others. Key wins included Sidekick POC cleanup; blockers were pending MyGLG beta access.
+Summary: Completed 3 tasks, 2 still in progress, 1 waiting on others. Key wins included Sidekick POC cleanup; blockers were pending MyGLG beta access.
 ```
 
 2. Update `/Users/MHuggins/github/mhuggins7278/notes/weekly/YYYY-MM/manager-sync.md`:
@@ -511,44 +459,12 @@ Add a backlink in the Meetings section:
 
 When summarizing meeting transcripts:
 
-- Create tasks for any action items identified using the TaskNotes API
-- If an action item matches an existing open task, update that task with relevant notes instead of creating a duplicate
+- Add action items as checkboxes in the appropriate daily note section
 - **Task ownership routing**:
-  - If the task is for **someone else** → create TaskNotes task with person name in title, add to `Waiting On` section
-  - If **someone is waiting on me** → create TaskNotes task with person name in title, add to `I Owe` section
-  - If it's a **generic task I need to do** → create TaskNotes task, add to `Tasks` section
+  - If the task is for **someone else** → add to `Waiting On` section with person name
+  - If **someone is waiting on me** → add to `I Owe` section with person name
+  - If it's a **generic task I need to do** → add to `Tasks` section
 - Ask before creating new tasks from meeting notes if unclear whether they should be tracked
-- **All action items must be TaskNotes backlinks** in the appropriate section (never plain checkboxes)
-
----
-
-## TaskNotes Integration
-
-When creating, updating, or deleting tasks in `TaskNotes/Tasks/`, **always use the TaskNotes API** via the `tasknotes` skill. Do not edit task files directly.
-
-### New Task Rule
-
-**Any new task/todo/follow-up item should be created as a TaskNotes task** and linked from the daily note in the appropriate section:
-
-- **Tasks section**: Generic tasks you need to do
-- **Waiting On section**: Tasks where you're waiting on someone else (include person name in task title)
-- **I Owe section**: Tasks where someone is waiting on you (include person name in task title)
-
-#### TaskNotes API Usage
-
-- Load the `tasknotes` skill first to get API details
-- Use the HTTP API at `http://127.0.0.1:8080/api` for all task operations
-- Task paths must be URL-encoded (e.g., `TaskNotes%2FTasks%2FMy%20Task.md`)
-- **After creating a new task**, add a backlink to it in the appropriate section:
-  - Tasks: `- [[TaskNotes/Tasks/Task Name]]`
-  - Waiting On: `- [[TaskNotes/Tasks/Person Name - what you're waiting for]]`
-  - I Owe: `- [[TaskNotes/Tasks/Person Name - what you owe them]]`
-
-#### Task Naming Convention
-
-- **Generic tasks**: Descriptive action (e.g., "Deploy MyGLG iCal feedback changes")
-- **Waiting On**: Start with person name (e.g., "Katie PR review for compliance department changes")
-- **I Owe**: Start with person name (e.g., "Priya - compliance move decision discussion")
 
 ---
 

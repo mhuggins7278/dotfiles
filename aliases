@@ -80,6 +80,9 @@ alias smod='stat -c "%a %n"'
 
 alias assume=". assume"
 
+# Connect to a sesh session from a worktree picker
+alias wt-pick='sesh connect $(find . -maxdepth 1 -type d -not -path "./.git" | fzf --no-sort --prompt "🌲 ") && exit'
+
 # fnm - Node version management
 # Use specific version (e.g., nv 20, nv 18.16.0)
 alias nv="fnm use"

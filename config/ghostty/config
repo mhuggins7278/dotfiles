@@ -10,7 +10,7 @@ theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 # background-blur-radius = 40
 macos-titlebar-style = hidden
 alpha-blending = linear-corrected
-cursor-opacity = 0.5
+cursor-opacity = 0.7
 
 # Font Configuration
 font-family = "Maple Mono NF"

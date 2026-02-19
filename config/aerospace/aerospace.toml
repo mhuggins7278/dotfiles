@@ -10,7 +10,7 @@ after-login-command = []
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
-  'exec-and-forget sketchybar --trigger aerospace_workspace_change'
+	'exec-and-forget sketchybar --trigger aerospace_workspace_change',
 ]
 
 # Start AeroSpace at login
@@ -47,9 +47,9 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # Trigger SketchyBar updates on workspace change
 exec-on-workspace-change = [
-  '/bin/bash',
-  '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+	'/bin/bash',
+	'-c',
+	'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
 
@@ -63,10 +63,10 @@ exec-on-workspace-change = [
 [gaps]
 inner.horizontal = 30
 inner.vertical = 30
-outer.left = 20
-outer.bottom = 20
-outer.top = 40
-outer.right = 20
+outer.left = 10
+outer.bottom = 10
+outer.top = 10
+outer.right = 10
 
 
 # 'main' binding mode declaration

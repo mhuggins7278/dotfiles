@@ -56,8 +56,8 @@
   ;; Caps word toggle
   cpw (caps-word 2000)
   
-  ;; Raycast launcher (Alt+Space)
-  ray (multi lalt spc)
+  ;; Raycast launcher (Cmd+Space)
+  ray (multi lmet spc)
   
   ;; Tmux-style macros (Ctrl+A prefix)
   cat (macro C-a S-t)  ;; Ctrl+A then Shift+T
