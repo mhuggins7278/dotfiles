@@ -100,10 +100,12 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'git', 'avante', 'copilot', 'dadbod', 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+        default = { 'avante', 'copilot', 'dadbod', 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
         per_filetype = {
           sql = { 'snippets', 'dadbod', 'buffer' },
           codecompanion = { 'codecompanion' },
+          gitcommit = { 'git', 'snippets', 'buffer' },
+          NeogitCommitMessage = { 'git', 'snippets', 'buffer' },
         },
         providers = {
           lazydev = {

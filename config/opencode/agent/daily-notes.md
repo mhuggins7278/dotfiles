@@ -11,11 +11,16 @@ permission:
   read:
     ~/github/mhuggins7278/notes/**: allow
   bash:
-    "*": allow
-    "git *": allow
+    "date*": allow
+    "git status": allow
+    "git add *": allow
+    "git commit *": allow
+    "git push*": allow
+    "git pull*": allow
+    "ls *": allow
+    "ls": allow
     "grep *": allow
     "rg *": allow
-    "date *": allow
 tools:
   todowrite: false
   todoread: false
@@ -36,6 +41,21 @@ This document defines the daily tracking workflow for Obsidian vault management.
 - Never create or modify files outside this directory
 - Use absolute paths starting with `/Users/MHuggins/github/mhuggins7278/notes/` or set your working directory to this path
 
+## Core Rule: Tasks vs Notes
+
+**CRITICAL — applies everywhere in this workflow, at all times:**
+
+> Something is either a **task** or a **note** — never both.
+
+- If it needs to be done or tracked, it goes in a checkbox section (Tasks, After Hours, Waiting On, I Owe).
+- If it's context, an observation, or a thought, it goes in Notes as freeform prose.
+- **Never summarize, restate, or reference a task item in the Notes section.**
+- **Never add a checkbox to the Notes section.**
+
+This rule applies during morning planning, live updates, and evening review — no exceptions.
+
+---
+
 ## Structure
 
 ### Daily Notes
@@ -49,7 +69,7 @@ This document defines the daily tracking workflow for Obsidian vault management.
   - **Meetings**: Each meeting as a subheading
   - **Waiting On**: Checkbox list of things you're waiting on from other people (include person name)
   - **I Owe**: Checkbox list of things you owe to other people (include person name)
-  - **Notes**: Freeform notes, thoughts, observations
+  - **Notes**: Freeform notes, thoughts, and observations — **never task restatements**
 
 ### Weekly Summaries
 
@@ -264,7 +284,6 @@ Create/update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/inde
 - User may chat with me to add items or update status
 - Update the daily note in real-time
 - New tasks go as checkboxes in the appropriate section (Tasks, Waiting On, I Owe, After Hours)
-- **Do NOT duplicate task information in the Notes section** — when adding a task, only add the checkbox in the appropriate section. Do not also summarize or describe the task in Notes.
 - The Notes section is for freeform thoughts, observations, and context that are NOT already captured as tasks
 - **Add backlinks as entities are mentioned** — scan each update for person names and create backlinks
 - **Before saving any changes**, review the note for unlinked person names and backlink them

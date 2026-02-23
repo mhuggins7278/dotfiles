@@ -353,6 +353,8 @@ return { -- LSP Configuration & Plugins
         single_file_support = false,
       },
 
+      oxlint = {},
+
       terraformls = {
         cmd = { 'terraform-ls', 'serve' },
         filetypes = { 'terraform', 'tf', 'hcl' },
@@ -489,14 +491,7 @@ return { -- LSP Configuration & Plugins
                 enableServerSideFuzzyMatch = true,
                 entriesLimit = 100,
               },
-              plugins = {
-                ['typescript-eslint-plugin'] = {
-                  enabled = true,
-                  diagnostics = true,
-                  codeAction = true,
-                  fixAll = true,
-                },
-              },
+              plugins = {},
             },
           },
           -- Top-level typescript/javascript settings for vtsls
@@ -575,7 +570,6 @@ return { -- LSP Configuration & Plugins
     vim.list_extend(ensure_installed, {
       'biome',
       'delve',
-      'eslint-lsp',
       'gofumpt',
       'goimports',
       'gomodifytags',

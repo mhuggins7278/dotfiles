@@ -4,7 +4,7 @@
   "agent": {
     "plan": {
       "model": "github-copilot/claude-opus-4.6",
-      "reasoningEffort": "hig"
+      "reasoningEffort": "high"
     },
     "build": {
       "model": "github-copilot/claude-sonnet-4.6",
@@ -18,7 +18,7 @@
     },
     "skill": {
       "*": "allow"
-    }
+   }
   },
   "provider": {
     "github-copilot": {

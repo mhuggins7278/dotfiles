@@ -30,6 +30,7 @@
         dest: "~/.config/terminator/config",
       }
     - { src: "~/.dotfiles/curlrc", dest: "~/.curlrc" }
+    - { src: "~/.dotfiles/oxfmtrc.json", dest: "~/.oxfmtrc.json" }
     - { src: "~/.dotfiles/gtkrc-2.0", dest: "~/.gtkrc-2.0" }
     - { src: "~/.dotfiles/wgetrc", dest: "~/.wgetrc" }
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }

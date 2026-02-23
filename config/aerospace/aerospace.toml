@@ -65,7 +65,7 @@ inner.horizontal = 30
 inner.vertical = 30
 outer.left = 10
 outer.bottom = 10
-outer.top = 10
+outer.top = 25
 outer.right = 10
 
 
