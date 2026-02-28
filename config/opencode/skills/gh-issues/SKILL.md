@@ -53,6 +53,7 @@ Check the `type` field on any issue. Determines which API to use:
 
 - **Workspace**: Client Solutions Experience (`5d7a5516d7fbc600019bc8ae`)
 - **Zenhub Repo ID**: `Z2lkOi8vcmFwdG9yL1JlcG9zaXRvcnkvMTMzNzc3MjQw` (for Zenhub-only issue creation)
+- **Default GitHub Repo**: `glg/client-solutions-experience` — use this repo for all `gh issue create` commands unless the user specifies a different repo
 
 ## Team Members
 

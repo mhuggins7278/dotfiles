@@ -1,0 +1,7 @@
+
+> build · claude-sonnet-4.6
+
+→ Read agents/counselors/1772245080-review-my-opencode-config/prompt.md
+! permission requested: external_directory (/Users/MHuggins/.config/opencode/*); auto-rejecting
+✗ glob failed
+Error: The user rejected permission to use this specific tool call.

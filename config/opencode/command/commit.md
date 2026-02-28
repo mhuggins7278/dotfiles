@@ -1,17 +1,11 @@
 ---
-name: git-commit
-description: Stage and commit changes with conventional commit messages. Fully automated with safety checks.
+description: Stage and commit changes with conventional commit messages
+agent: build
 ---
 
-# Git Commit Skill
+# Git Commit
 
 Fully automated git commit workflow that stages changes and creates well-formatted conventional commits with safety checks.
-
-## When to Use
-
-- When you need to commit changes to the repository
-- After completing a feature, fix, or other atomic change
-- User explicitly requests a commit with phrases like "commit this", "create a commit", "commit these changes"
 
 ## Safety Checks
 
@@ -62,6 +56,8 @@ Follow conventional commit format:
 - Keep under 72 characters
 - Use imperative mood (e.g., "add feature" not "added feature")
 - Types: feat, fix, docs, style, refactor, perf, test, chore
+
+If $ARGUMENTS is provided, use it to inform the commit message (e.g. `/commit fix: handle null response` sets the type/scope/description directly).
 
 ### 5. Execute Commit
 

@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "defaults": {
+    "timeout": 540,
+    "outputDir": "./agents/counselors",
+    "readOnly": "bestEffort",
+    "maxContextKb": 50,
+    "maxParallel": 4
+  },
+  "tools": {
+    "opencode": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": ["run"]
+    },
+    "opencode-sonnet": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": ["run", "--model", "github-copilot/claude-sonnet-4.6"]
+    },
+    "opencode-sonnet-thinking": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": [
+        "run",
+        "--model",
+        "github-copilot/claude-sonnet-4.6",
+        "--variant",
+        "thinking"
+      ]
+    },
+    "opencode-opus": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": ["run", "--model", "github-copilot/claude-opus-4.6"]
+    },
+    "opencode-opus-thinking": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": [
+        "run",
+        "--model",
+        "github-copilot/claude-opus-4.6",
+        "--variant",
+        "thinking"
+      ]
+    },
+    "opencode-codex": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": ["run", "--model", "github-copilot/gpt-5.2-codex"]
+    },
+    "opencode-codex-xhigh": {
+      "binary": "/opt/homebrew/bin/opencode",
+      "adapter": "custom",
+      "readOnly": { "level": "none" },
+      "extraFlags": [
+        "run",
+        "--model",
+        "github-copilot/gpt-5.2-codex",
+        "--variant",
+        "xhigh"
+      ]
+    }
+  },
+  "groups": {
+    "smart": [
+      "opencode-opus-thinking",
+      "opencode-codex-xhigh",
+      "opencode-sonnet-thinking"
+    ],
+    "fast": ["opencode-codex", "opencode-sonnet"],
+    "opus-swarm": [
+      "opencode-opus-thinking",
+      "opencode-opus",
+      "opencode-opus-thinking"
+    ]
+  }
+}

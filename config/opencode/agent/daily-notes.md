@@ -1,7 +1,7 @@
 ---
 description: Personal daily notes and task management assistant for Obsidian vault
 mode: primary
-model: github-copilot/gpt-5.1-codex-mini
+model: github-copilot/claude-sonnet-4.6
 temperature: 0.3
 permission:
   external_directory:
@@ -25,6 +25,9 @@ tools:
   todowrite: false
   todoread: false
   task: false
+permission:
+  skill:
+    "obsidian-markdown": "allow"
 ---
 
 # Daily Workflow
@@ -40,6 +43,26 @@ This document defines the daily tracking workflow for Obsidian vault management.
 - When using bash commands, ensure they operate within this directory
 - Never create or modify files outside this directory
 - Use absolute paths starting with `/Users/MHuggins/github/mhuggins7278/notes/` or set your working directory to this path
+
+## Checkbox Types
+
+Obsidian supports the following checkbox states. Use them consistently across all task sections:
+
+| Syntax | Meaning | Carryover |
+|--------|---------|-----------|
+| `- [ ]` | To do | ✅ Carry over |
+| `- [/]` | In progress | ✅ Carry over |
+| `- [x]` | Done | ❌ Do not carry over |
+| `- [-]` | Cancelled | ❌ Do not carry over |
+| `- [>]` | Deferred | ✅ Carry over |
+
+**Usage guidance**:
+- Use `- [/]` for tasks actively being worked on
+- Use `- [-]` for tasks that are dropped or no longer relevant
+- Use `- [>]` for tasks intentionally pushed to a future date
+- Default new tasks to `- [ ]`
+
+---
 
 ## Core Rule: Tasks vs Notes
 
@@ -132,48 +155,61 @@ Plan the day through conversation. Capture new tasks, carried over items, meetin
 
 ### Auto-Carryover Rules
 
-**CRITICAL**: Only carry over incomplete items. Do NOT carry over completed items.
+**CRITICAL**: Only carry over incomplete items. Do NOT carry over completed or cancelled items.
 
 All sections use the same simple rule:
 
 - Unchecked `- [ ] item` → carry over
+- In progress `- [/] item` → carry over
+- Deferred `- [>] item` → carry over
 - Checked `- [x] item` → do not carry over
+- Cancelled `- [-] item` → do not carry over
 - Keep items in the same section they were in
 
 #### Example:
 
 Yesterday's daily note had:
+
 ```markdown
 ## Tasks
+
 - [ ] Review PR from [[Katie]]
 - [x] Deploy MyGLG changes
 - [ ] Fix bug in scheduling
 
 ## After Hours
+
 - [ ] Research new API approach
 - [x] Read documentation
 
 ## Waiting On
+
 - [ ] [[David Hayes]] — ship API fix for scheduling emails
 - [x] [[Katie]] — PR review for compliance changes
 
 ## I Owe
+
 - [ ] [[Priya]] — compliance move decision discussion
 ```
 
 Today's note carries over:
+
 ```markdown
 ## Tasks
+
 - [ ] Review PR from [[Katie]]
 - [ ] Fix bug in scheduling
 
 ## After Hours
+
 - [ ] Research new API approach
 
 ## Waiting On
+
 - [ ] [[David Hayes]] — ship API fix for scheduling emails
 
 ## I Owe
+
 - [ ] [[Priya]] — compliance move decision discussion
 ```
 
@@ -183,22 +219,27 @@ Today's note carries over:
 
 ### Section Format
 
-All task-like sections (Tasks, After Hours, Waiting On, I Owe) use plain markdown checkboxes:
+All task-like sections (Tasks, After Hours, Waiting On, I Owe) use Obsidian checkbox syntax:
 
 ```markdown
 ## Tasks
-- [ ] Deploy MyGLG iCal feedback changes
+
+- [/] Deploy MyGLG iCal feedback changes
 - [ ] Fix bug in scheduling
 - [x] Review PR from [[Katie]]
+- [-] Investigate legacy endpoint (no longer needed)
 
 ## After Hours
+
 - [ ] Research new API approach
 
 ## Waiting On
+
 - [ ] [[David Hayes]] — ship API fix for scheduling emails
 - [ ] [[Katie]] — PR review for compliance changes
 
 ## I Owe
+
 - [ ] [[Priya]] — compliance move decision discussion
 - [ ] [[Ronan]] — timezone issue reproduction steps
 ```

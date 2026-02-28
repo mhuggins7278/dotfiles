@@ -9,6 +9,10 @@
 - **ui-dev**: Frontend UI development with React/Material-UI and Figma
 - **review**: Code reviewer for catching bugs and issues before committing
 
+## Git Workflow
+
+- **Branch names must not contain `/`** — slashes break the deployment pipeline when promoting branches to the testing environment. Use hyphens as separators instead (e.g., `feature-my-thing`, not `feature/my-thing`).
+
 ## GLG Repositories
 
 When working in any repository under `~/github/glg/`:

@@ -11,7 +11,7 @@
 
 This is an Ansible-managed dotfiles repository supporting macOS and Linux. Main playbook: `ansible/dotfiles.yml`
 
-All global config files live in this repository (primarily under `config/`) and are symlinked to their correct system locations via Ansible. When adding or modifying a config file:
+All global config files live in this repository (primarily under `config/`) and are symlinked to their correct system locations via Ansible. **Always read and edit files under `~/.dotfiles/config/` directly — never under `~/.config/`, which contains only symlinks.** When adding or modifying a config file:
 
 1. Place the file under `~/.dotfiles/config/<tool>/` (or the repo root for dotfiles like `zshrc`)
 2. Add a symlink entry to `ansible/tasks/link_files.yml` following the existing pattern:

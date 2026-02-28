@@ -1,0 +1,8 @@
+
+> build · gpt-5.2-codex
+
+→ Read agents/counselors/1772245080-review-my-opencode-config/prompt.md
+✱ Glob "**/opencode/**" in . · 100 matches
+→ Read config/opencode/AGENTS.md
+→ Read config/opencode/config.json
+→ Read config/opencode/tui.json

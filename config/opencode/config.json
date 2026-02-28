@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "tokyonight",
   "agent": {
     "plan": {
       "model": "github-copilot/claude-opus-4.6",
@@ -17,41 +16,24 @@
       "~/github/mhuggins7278/notes/**": "allow"
     },
     "skill": {
-      "*": "allow"
-   }
-  },
-  "provider": {
-    "github-copilot": {
-      "models": {
-        "gpt-5.3-codex": {},
-      },
-    },
+      "*": "allow",
+      "obsidian-markdown": "deny"
+    }
   },
   "mcp": {
     "whoIs": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@glg/mcp-whois"
-      ],
+      "command": ["npx", "-y", "@glg/mcp-whois"],
       "enabled": true
     },
     "gdsData": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@glg/mcp-gds"
-      ],
+      "command": ["npx", "-y", "@glg/mcp-gds"],
       "enabled": true
     },
-    "chrome-devtools": {
+    "playwright": {
       "type": "local",
-      "command": [
-        "npx",
-        "chrome-devtools-mcp@latest"
-      ],
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
       "enabled": true
     },
     "figma": {
@@ -72,13 +54,7 @@
     "figma*": false,
     "gdsData_*": false,
     "whoIs_*": false,
-    "zenhub_*": false,
-    "chrome-devtools*": false,
+    "playwright_*": false,
     "context7_*": false
-  },
-  "keybinds": {
-    "session_child_cycle": "alt+j",
-    "session_child_cycle_reverse": "alt+l",
-    "sidebar_toggle": "<leader>b"
   }
 }

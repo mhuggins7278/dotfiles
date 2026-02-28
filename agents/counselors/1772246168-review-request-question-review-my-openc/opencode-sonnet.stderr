@@ -1,0 +1,9 @@
+
+> build · claude-sonnet-4.6
+
+→ Read agents/counselors/1772246168-review-request-question-review-my-openc/prompt.md
+→ Read config/opencode/tui.json
+→ Read config/opencode/config.json
+% WebFetch https://opencode.ai/docs
+% WebFetch https://opencode.ai/docs/keybinds/
+% WebFetch https://opencode.ai/docs/themes/

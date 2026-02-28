@@ -7,6 +7,8 @@ set -euo pipefail
 ZH_API_URL="https://api.zenhub.com/public/graphql"
 WORKSPACE_ID="5d7a5516d7fbc600019bc8ae"
 ZENHUB_REPO_ID="Z2lkOi8vcmFwdG9yL1JlcG9zaXRvcnkvMTMzNzc3MjQw"
+DEFAULT_GH_REPO="glg/client-solutions-experience"
+DEFAULT_REPO_NAME="client-solutions-experience"
 TEAM_MEMBERS=("Mark Huggins" "Jess Chadwick" "David Hayes" "Ronan O'Malley" "Priya Darshani" "John Lemberger")
 TEAM_LOGINS=("mhuggins7278" "jchadwick" "drhayes" "Ronanj7" "pdarshani" "JohnLemberger")
 
@@ -597,15 +599,13 @@ cmd_create() {
   if [ "$zenhub" = true ]; then
     repo_id="$ZENHUB_REPO_ID"
   else
-    local gh_repo_name
-    gh_repo_name=$(gh repo view --json name -q .name)
     repo_id=$(zh_graphql "query { workspace(id: \"$WORKSPACE_ID\") { repositoriesConnection { nodes { id name } } } }" | \
-      jq -r --arg name "$gh_repo_name" \
+      jq -r --arg name "$DEFAULT_REPO_NAME" \
         '.data.workspace.repositoriesConnection.nodes[] | select(.name == $name) | .id')
-    [ -z "$repo_id" ] || [ "$repo_id" = "null" ] && {
-      echo "Error: Could not find repo '$gh_repo_name' in workspace. Use --zenhub for a Zenhub-only issue." >&2
+    if [ -z "$repo_id" ] || [ "$repo_id" = "null" ]; then
+      echo "Error: Could not find repo '$DEFAULT_REPO_NAME' in workspace." >&2
       return 1
-    }
+    fi
   fi
 
   local input

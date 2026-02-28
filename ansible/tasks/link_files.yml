@@ -80,4 +80,9 @@
         dest: "~/.config/sketchybar",
         force: true,
       }
+    - {
+        src: "~/.dotfiles/config/counselors",
+        dest: "~/.config/counselors",
+        force: true,
+      }
   tags: links

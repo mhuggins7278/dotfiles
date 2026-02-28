@@ -1,17 +1,11 @@
 ---
-name: git-pr
-description: Create a pull request from the current branch. Fully automated with safety checks.
+description: Create a pull request from the current branch with safety checks
+agent: build
 ---
 
-# Git PR Skill
+# Git PR
 
 Fully automated GitHub pull request creation workflow that analyzes changes, generates PR content, and creates the PR with safety checks.
-
-## When to Use
-
-- When you need to create a pull request for the current branch
-- After completing and committing a feature or fix
-- User explicitly requests a PR with phrases like "create a PR", "open a pull request", "make a PR"
 
 ## Safety Checks
 
@@ -133,7 +127,10 @@ If no template:
 
 ```bash
 # Create PR with specified base branch
-gh pr create --base <target-branch> --title "<title>" --body "<body>"
+gh pr create --base <target-branch> --title "<title>" --body "$(cat <<'EOF'
+<body content>
+EOF
+)"
 
 # Or create as draft
 gh pr create --base <target-branch> --title "<title>" --body "<body>" --draft
@@ -142,36 +139,17 @@ gh pr create --base <target-branch> --title "<title>" --body "<body>" --draft
 gh pr create --base <target-branch> --title "<title>" --body "<body>" --reviewer user1,user2
 ```
 
-Use heredoc for body to preserve formatting:
-```bash
-gh pr create --base <target-branch> --title "<title>" --body "$(cat <<'EOF'
-<body content>
-EOF
-)"
-```
-
 Ask the user if they want:
 - Draft PR vs. ready for review
 - Specific reviewers to assign
+
+If $ARGUMENTS is provided, use it to inform PR options (e.g. `/pr --draft` or `/pr staging` to set target branch directly).
 
 ### 8. Report Results
 
 - Display PR URL
 - Encourage user to review online
 - Confirm successful creation
-
-## PR Template Handling
-
-Common template sections:
-- Description/Summary
-- Type of change (feature, bugfix, etc.)
-- How has this been tested?
-- Checklist (breaking changes, tests added, docs updated)
-- Related issues/tickets
-- Screenshots (for UI changes)
-- Breaking changes
-
-Fill each section thoughtfully based on the actual changes.
 
 ## Error Handling
 
@@ -191,52 +169,4 @@ Title: <PR title>
 Base: <target-branch> ← <current-branch>
 
 Review your PR online at the link above.
-```
-
-## Examples
-
-### PR with template
-
-If `.github/pull_request_template.md` contains:
-```markdown
-## Description
-
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-
-## Testing
-```
-
-Fill it out:
-```markdown
-## Description
-Add user authentication system with JWT tokens
-
-## Type of Change
-- [ ] Bug fix
-- [x] New feature
-- [ ] Breaking change
-
-## Testing
-- Unit tests for JWT utilities
-- Integration tests for login/logout
-- Manual testing with Postman
-```
-
-### PR without template
-
-```markdown
-## Summary
-Refactor database connection pooling to improve performance under high load
-
-## Changes
-- Increase connection pool size from 10 to 50
-- Add connection timeout configuration
-- Implement retry logic with exponential backoff
-- Add pool utilization monitoring
-
-## Testing
-Load tested with 1000 concurrent users showing 40% improvement in response time
 ```

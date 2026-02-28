@@ -153,6 +153,14 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- Use jq to format JSON buffers with gq (also used by rest.nvim's format hook)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'json',
+  callback = function()
+    vim.opt_local.formatprg = 'jq .'
+  end,
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
