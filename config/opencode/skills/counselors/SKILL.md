@@ -29,9 +29,10 @@ Check `$ARGUMENTS` for these keywords **before entering Phase 1**. If matched, s
 
 **Matching rules**:
 - Match is case-insensitive (`bughunt`, `Bughunt`, `BUGHUNT` all trigger)
-- `<focus>` is everything in `$ARGUMENTS` after the keyword (trimmed)
-- If the keyword is present but `<focus>` is empty, use the current working directory description as the focus (e.g. `"entire codebase"`)
-- Any explicit `--group` or `--tools` flags in `$ARGUMENTS` override the shortcut's default group
+- `<focus>` is everything in `$ARGUMENTS` after the keyword (trimmed) — **passed through verbatim, word-for-word**
+- **Do NOT generate, summarize, rewrite, or infer the focus string from context.** Use only the exact text the user typed after the keyword.
+- If the keyword is present but `<focus>` is empty, prompt the user: "What area should I focus the bughunt on?" — do not invent a focus.
+- Any explicit `--group` or `--tools` flags in `$ARGUMENTS` override the shortcut's default group; strip those flags from `<focus>` before passing
 
 **After dispatch**, skip directly to Phase 6 (Read Results).
 
