@@ -19,6 +19,24 @@ Arguments: $ARGUMENTS
 
 ---
 
+## Keyword Shortcuts
+
+Check `$ARGUMENTS` for these keywords **before entering Phase 1**. If matched, skip directly to dispatch (Phase 5) using the exact command shown — do not prompt for agents, mode, or confirmation.
+
+| Keyword | Dispatch command |
+|---------|-----------------|
+| `bughunt <focus>` | `counselors loop --preset bughunt "<focus>" --group fast --read-only off --json` |
+
+**Matching rules**:
+- Match is case-insensitive (`bughunt`, `Bughunt`, `BUGHUNT` all trigger)
+- `<focus>` is everything in `$ARGUMENTS` after the keyword (trimmed)
+- If the keyword is present but `<focus>` is empty, use the current working directory description as the focus (e.g. `"entire codebase"`)
+- Any explicit `--group` or `--tools` flags in `$ARGUMENTS` override the shortcut's default group
+
+**After dispatch**, skip directly to Phase 6 (Read Results).
+
+---
+
 ## Phase 1: Context Gathering
 
 Parse `$ARGUMENTS` to understand what the user wants reviewed. Then identify relevant context:
