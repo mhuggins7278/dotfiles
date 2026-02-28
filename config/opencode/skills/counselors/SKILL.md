@@ -52,38 +52,42 @@ Print the output and have them pick a preset.
 
 ## Phase 3: Agent Selection
 
+### When `$ARGUMENTS` is provided (non-interactive)
+
+**Do not prompt.** Parse `$ARGUMENTS` for explicit agent flags:
+
+- If `--group <name>` is present in `$ARGUMENTS`, use `--group <name>`
+- If `--tools <ids>` is present in `$ARGUMENTS`, use `--tools <ids>`
+- Otherwise, **default to `--group fast`** and proceed immediately to Phase 4
+
+Strip any `--group` / `--tools` flags from `$ARGUMENTS` before assembling the prompt content — they are dispatch flags, not part of the review question.
+
+### When no `$ARGUMENTS` (interactive)
+
 1. **Discover available agents and groups** by running via Bash:
    ```bash
    counselors ls
    counselors groups ls
    ```
-   The first command lists all configured agents with their IDs and binaries. The second lists any configured **groups** (predefined sets of tool IDs).
 
-2. **MANDATORY: Print the full agent list and group list, then ask the user which to use.**
-
-   **Always print the full `counselors ls` output and `counselors groups ls` output as inline text** (not inside AskUserQuestion). Just show the raw output so the user sees every tool/group. Do NOT reformat or abbreviate it.
-
-   Then ask the user to pick:
+2. **Print the full agent list and group list as inline text**, then ask the user which to use.
 
    **If 4 or fewer agents**: Use AskUserQuestion with `multiSelect: true`, one option per agent.
 
    **If more than 4 agents**: AskUserQuestion only supports 4 options. Use these fixed options:
    - Option 1: "All [N] agents" — sends to every configured agent
-	   - Option 2-4: The first 3 individual agents by ID
-	   - The user can always select "Other" to type a comma-separated list of agent IDs from the printed list above
+   - Option 2-4: The first 3 individual agents by ID
+   - The user can always type a comma-separated list of agent IDs
 
-	   If groups exist, you MAY offer group options (e.g. "Group: smart"), but you MUST expand them to the underlying tool IDs and confirm that expanded list with the user before dispatch. This avoids silently omitting or adding agents.
-	   If the user says something like "use the smart group", you MUST look up that group in the configured groups list (`counselors groups ls`). If it exists, use it (via `--group smart` or by expanding to tool IDs) and confirm the expanded tool list before dispatch. If it does not exist, tell the user and ask them to choose again — do not guess.
+   If groups exist, you MAY offer group options, but expand them to the underlying tool IDs and confirm with the user before dispatch.
 
-	3. Wait for the user's selection before proceeding.
+3. Wait for the user's selection before proceeding.
 
-4. **MANDATORY: Confirm the selection before continuing.** After the user picks agents, echo back the exact list you will dispatch to:
+4. **Confirm the selection before continuing.** Echo back the exact list you will dispatch to, then ask the user to confirm before proceeding to Phase 4.
 
-   > Dispatching to: **claude-opus**, **codex-5.3-high**, **gemini-pro**
+### Discovery tool (loop only)
 
-   Then ask the user to confirm (e.g. "Look good?") before proceeding to Phase 4. This prevents silent tool omissions. If the user corrects the list, update your selection accordingly.
-
-5. **Discovery tool (loop only)**: By default, the first tool in your selection runs the discovery and prompt-writing prep phases. To use a different agent for these phases, pass `--discovery-tool <id>`.
+By default, the first tool in your selection runs the discovery and prompt-writing prep phases. To use a different agent, pass `--discovery-tool <id>`.
 
 ---
 
