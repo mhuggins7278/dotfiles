@@ -1,5 +1,14 @@
 # Global Agent Guidelines
 
+## Dotfiles Path Rules
+
+When working inside `~/.dotfiles`, treat home config paths as symlinked targets.
+
+- Never edit files under `~/.config/` directly.
+- Always edit the source file in this repo under `~/.dotfiles/config/`.
+- If a user references `~/.config/<tool>/...`, translate it to `~/.dotfiles/config/<tool>/...`.
+- Prefer repo-relative paths in tool calls (for example, `config/opencode/...`) to avoid unnecessary permission prompts.
+
 ## Available Subagents
 
 - **docs**: Documentation specialist for fetching library docs using Context7
@@ -35,3 +44,4 @@ When creating new daily notes:
 - **Do not** auto-copy yesterday's Notes section into today's file
 - Keep each day's Tasks and Notes focused on current/in-progress work only
 - Leave summaries and completed items in their respective daily files
+- Prefer structured edits for daily note updates: place items in the correct section rather than appending to the end

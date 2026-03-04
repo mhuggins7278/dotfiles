@@ -1,0 +1,26 @@
+
+> build · claude-sonnet-4.6
+
+→ Read agents/counselors/1772250292-bughunt/round-2/prompt.md
+→ Read agents/counselors/1772250292-bughunt/round-1/opencode-codex.md
+→ Read agents/counselors/1772250292-bughunt/round-1/opencode-sonnet.md
+→ Read .
+→ Read ansible
+→ Read config
+→ Read scripts
+→ Read ansible/dotfiles.yml
+→ Read ansible/tasks
+→ Read zshrc
+→ Read ansible/tasks/link_files.yml
+→ Read shellrc
+→ Read aliases
+→ Read ansible/tasks/packages.yml
+→ Read ansible/tasks/shells.yml
+→ Read ansible/vars.yml
+→ Read scripts/kanata-start.sh
+→ Read scripts/kanata-stop.sh
+→ Read scripts/browser-tools.sh
+→ Read scripts/cleanup-fnm-multishells.sh
+→ Read zprofile
+→ Read extra.shell
+→ Read ansible/vars

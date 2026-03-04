@@ -72,5 +72,7 @@ bws-cache-rebuild() {
 # Source the cached environment variables
 source "$_bws_env_cache"
 export CSX_ZH_WORKSPACE_ID=5d7a5516d7fbc600019bc8ae
+export OPENCODE_EXPERIMENTAL_OXFMT=true
+export OPENCODE_EXPERIMENTAL_MARKDOWN=true
 
 

@@ -1,0 +1,1 @@
+The prompt file only contains general guidelines for a bug hunt — it doesn't specify a target codebase or feature area. The other agent that ran this same prompt (`opencode-codex.md`) also noted this and asked for clarification.

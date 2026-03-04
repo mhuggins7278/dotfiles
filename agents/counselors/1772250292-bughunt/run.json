@@ -1,0 +1,142 @@
+{
+  "timestamp": "2026-02-28T04:04:23.549Z",
+  "slug": "1772250292-bughunt",
+  "prompt": "the counselors skill — bughunt keyword handling, focus string logic, and dispatch flow in config/opencode/skills/counselors/SKILL.md and config/opencode/command/counselors.md",
+  "promptSource": "inline",
+  "readOnlyPolicy": "none",
+  "tools": [
+    {
+      "toolId": "opencode-codex",
+      "status": "success",
+      "exitCode": 0,
+      "durationMs": 6060,
+      "wordCount": 35,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-codex.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-codex.stderr"
+    },
+    {
+      "toolId": "opencode-sonnet",
+      "status": "timeout",
+      "exitCode": 1,
+      "durationMs": 540041,
+      "wordCount": 37,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-sonnet.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-sonnet.stderr",
+      "error": "\n> build · claude-sonnet-4.6\n\n→ Read agents/counselors/1772250292-bughunt/round-1/prompt.md\n→ Read agents/counselors/1772250292-bughunt/round-1\n→ Read agents/counselors/1772250292-bughunt/round-1/opencode-codex.md\n→ Read agents/counselors/1772250292-bughunt\n→ Read agents/counselors/1772250292-bughunt/prompt.md\n"
+    },
+    {
+      "toolId": "opencode-codex",
+      "status": "success",
+      "exitCode": 0,
+      "durationMs": 9340,
+      "wordCount": 44,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-codex.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-codex.stderr"
+    },
+    {
+      "toolId": "opencode-sonnet",
+      "status": "success",
+      "exitCode": 0,
+      "durationMs": 212669,
+      "wordCount": 1468,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-sonnet.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-sonnet.stderr"
+    },
+    {
+      "toolId": "opencode-codex",
+      "status": "success",
+      "exitCode": 0,
+      "durationMs": 28221,
+      "wordCount": 0,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-codex.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-codex.stderr"
+    },
+    {
+      "toolId": "opencode-sonnet",
+      "status": "success",
+      "exitCode": 0,
+      "durationMs": 407496,
+      "wordCount": 405,
+      "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-sonnet.md",
+      "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-sonnet.stderr"
+    }
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "timestamp": "2026-02-28T03:54:03.370Z",
+      "tools": [
+        {
+          "toolId": "opencode-codex",
+          "status": "success",
+          "exitCode": 0,
+          "durationMs": 6060,
+          "wordCount": 35,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-codex.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-codex.stderr"
+        },
+        {
+          "toolId": "opencode-sonnet",
+          "status": "timeout",
+          "exitCode": 1,
+          "durationMs": 540041,
+          "wordCount": 37,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-sonnet.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-1/opencode-sonnet.stderr",
+          "error": "\n> build · claude-sonnet-4.6\n\n→ Read agents/counselors/1772250292-bughunt/round-1/prompt.md\n→ Read agents/counselors/1772250292-bughunt/round-1\n→ Read agents/counselors/1772250292-bughunt/round-1/opencode-codex.md\n→ Read agents/counselors/1772250292-bughunt\n→ Read agents/counselors/1772250292-bughunt/prompt.md\n"
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "timestamp": "2026-02-28T03:57:36.046Z",
+      "tools": [
+        {
+          "toolId": "opencode-codex",
+          "status": "success",
+          "exitCode": 0,
+          "durationMs": 9340,
+          "wordCount": 44,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-codex.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-codex.stderr"
+        },
+        {
+          "toolId": "opencode-sonnet",
+          "status": "success",
+          "exitCode": 0,
+          "durationMs": 212669,
+          "wordCount": 1468,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-sonnet.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-2/opencode-sonnet.stderr"
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "timestamp": "2026-02-28T04:04:23.546Z",
+      "tools": [
+        {
+          "toolId": "opencode-codex",
+          "status": "success",
+          "exitCode": 0,
+          "durationMs": 28221,
+          "wordCount": 0,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-codex.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-codex.stderr"
+        },
+        {
+          "toolId": "opencode-sonnet",
+          "status": "success",
+          "exitCode": 0,
+          "durationMs": 407496,
+          "wordCount": 405,
+          "outputFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-sonnet.md",
+          "stderrFile": "/Users/MHuggins/.dotfiles/agents/counselors/1772250292-bughunt/round-3/opencode-sonnet.stderr"
+        }
+      ]
+    }
+  ],
+  "totalRounds": 3,
+  "durationMs": 1160225,
+  "preset": "bughunt"
+}

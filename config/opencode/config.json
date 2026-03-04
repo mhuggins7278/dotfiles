@@ -20,6 +20,13 @@
       "obsidian-markdown": "deny"
     }
   },
+  "provider": {
+    "github-copilot": {
+      "models": {
+        "gpt-5.3-codex": {}
+      }
+    }
+  },
   "mcp": {
     "whoIs": {
       "type": "local",

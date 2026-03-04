@@ -1,35 +1,13 @@
 ---
-description: Personal daily notes and task management assistant for Obsidian vault
-mode: primary
-model: github-copilot/claude-sonnet-4.6
-temperature: 0.3
-permission:
-  external_directory:
-    ~/github/mhuggins7278/notes/**: allow
-  edit:
-    ~/github/mhuggins7278/notes/**: allow
-  read:
-    ~/github/mhuggins7278/notes/**: allow
-  bash:
-    "date*": allow
-    "obsidian*": allow
-    "git status": allow
-    "git add *": allow
-    "git commit *": allow
-    "git push*": allow
-    "git pull*": allow
-    "ls *": allow
-    "ls": allow
-    "grep *": allow
-    "rg *": allow
-tools:
-  todowrite: false
-  todoread: false
-  task: false
-permission:
-  skill:
-    "obsidian-markdown": "allow"
+name: daily-notes
+description: Personal daily notes and task management workflow for Obsidian vault
 ---
+
+# Usage Gates
+
+- Only run when the user explicitly asks to update, summarize, or write daily notes.
+- If the request is ambiguous, ask one clarifying question.
+- Default to draft-only summary unless the user asks to write.
 
 # Daily Workflow
 
