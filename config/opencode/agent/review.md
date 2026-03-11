@@ -111,3 +111,22 @@ gh pr review <pr_number> --request-changes --body "<full review markdown>"
 Use standard GitHub Markdown. Reference file paths in backticks. For the overall body, mirror your findings output format (`## Issues Found` / `## Changes Look Good`).
 
 ## Output Format
+
+If issues are found:
+
+```
+## Issues Found
+
+### [Critical/Warning/Suggestion] Brief title
+**File:** `path/to/file.ts:42`
+**Problem:** Clear description of the issue
+**Risk:** What could go wrong if this isn't addressed
+```
+
+If the changes look good:
+
+```
+## Changes Look Good
+
+Brief summary of what was reviewed and why it's solid.
+```
