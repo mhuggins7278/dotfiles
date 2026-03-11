@@ -20,6 +20,7 @@ Fully automated git commit workflow that stages changes and creates well-formatt
 - Do not commit files that likely contain secrets (.env, credentials.json, etc.) - warn user if detected
 - NEVER push commits - user will push manually when ready
 - NEVER create pull requests - user will create PRs when ready
+- In repos under `~/github/glg/`, require an associated GitHub issue before committing. If missing, prompt to create one first and add it to `glg` project `85`.
 
 ## Workflow
 

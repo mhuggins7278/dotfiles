@@ -1,0 +1,275 @@
+{
+  "metadata": {
+    "skill_name": "review-subagent",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-03-11T01:58:28Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 2,
+      "eval_name": "Missing await",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 1150,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies the missing await on db.orders.update()",
+          "passed": true,
+          "evidence": "Line 11: 'The call to db.orders.update(orderId, ...) is missing an await keyword'"
+        },
+        {
+          "text": "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+          "passed": true,
+          "evidence": "Line 12: 'The function proceeds to send the email and returns { success: true } before the database update actually completes... may result in an unhandled promise rejection'"
+        },
+        {
+          "text": "The review suggests adding await to db.orders.update()",
+          "passed": true,
+          "evidence": "Line 13: 'Add await to the call: await db.orders.update(orderId, ...);'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Pagination off-by-one",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 1250,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies Math.floor as incorrect for computing total pages",
+          "passed": true,
+          "evidence": "Line 11: 'totalPages is calculated using Math.floor(total / pageSize) instead of Math.ceil(total / pageSize)'"
+        },
+        {
+          "text": "The review explains the consequence (wrong page count or inaccessible last page items)",
+          "passed": true,
+          "evidence": "Line 12: 'if total = 11 and pageSize = 10, totalPages will be evaluated as 1, making the 11th item inaccessible since hasNextPage will return false on page 1'"
+        },
+        {
+          "text": "The review suggests using Math.ceil instead",
+          "passed": true,
+          "evidence": "Line 13: 'Change Math.floor to Math.ceil(total / pageSize)'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Swallowed exception",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 1100,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies that the catch block sends no HTTP response to the client",
+          "passed": true,
+          "evidence": "Lines 11-12: 'the catch block catches errors from processPayment and logs them using console.error, but it never sends an HTTP response back to the client'"
+        },
+        {
+          "text": "The review explains the consequence (client request hangs or times out)",
+          "passed": true,
+          "evidence": "Line 12: 'The client's connection will hang indefinitely until it times out'"
+        },
+        {
+          "text": "The review suggests adding a res.status(500) error response in the catch block",
+          "passed": true,
+          "evidence": "Lines 14-19: code example showing res.status(500).json({ success: false, error: 'Payment processing failed.' })"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "Missing await",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 3100,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies the missing await on db.orders.update()",
+          "passed": true,
+          "evidence": "Lines 16-17: 'db.orders.update(orderId, ...) is never awaited'"
+        },
+        {
+          "text": "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+          "passed": true,
+          "evidence": "Lines 20-22: 'Fire-and-forget race condition: The email is sent immediately while the DB write may still be in flight... Unhandled promise rejection'"
+        },
+        {
+          "text": "The review suggests adding await to db.orders.update()",
+          "passed": true,
+          "evidence": "Lines 24-27: 'await db.orders.update(orderId, { status: \"processing\", updatedAt: new Date() });'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "Pagination off-by-one",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 4200,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies Math.floor as incorrect for computing total pages",
+          "passed": true,
+          "evidence": "Lines 11-19: 'Math.floor should be Math.ceil. With Math.floor, any dataset where total % pageSize !== 0 produces an undercount'"
+        },
+        {
+          "text": "The review explains the consequence (wrong page count or inaccessible last page items)",
+          "passed": true,
+          "evidence": "Lines 22-23: 'total = 31, pageSize = 10 \u2192 Math.floor(31 / 10) = 3 (wrong \u2014 there are 4 pages; items 31 is on page 4 and is unreachable)'"
+        },
+        {
+          "text": "The review suggests using Math.ceil instead",
+          "passed": true,
+          "evidence": "Line 27: 'const totalPages = Math.ceil(total / pageSize);'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "Swallowed exception",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 0.0,
+        "tokens": 4600,
+        "tool_calls": 3,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "The review identifies that the catch block sends no HTTP response to the client",
+          "passed": true,
+          "evidence": "Lines 11-19: 'catch block logs the error but never calls res.json(...) or res.status(...).send(...). Express does not send any automatic response in this case'"
+        },
+        {
+          "text": "The review explains the consequence (client request hangs or times out)",
+          "passed": true,
+          "evidence": "Lines 21-22: 'The client's HTTP connection hangs open until it times out... requests that appear to \"freeze\" for 30\u201360 seconds'"
+        },
+        {
+          "text": "The review suggests adding a res.status(500) error response in the catch block",
+          "passed": true,
+          "evidence": "Lines 24-28: code example showing res.status(500).json({ success: false, message: 'Payment processing failed' })"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 1166.6667,
+        "stddev": 76.3763,
+        "min": 1100,
+        "max": 1250
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 3966.6667,
+        "stddev": 776.7453,
+        "min": 3100,
+        "max": 4600
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.00",
+      "time_seconds": "+0.0",
+      "tokens": "-2800"
+    }
+  },
+  "notes": [
+    "Both configurations scored 100% pass rate — all 3 planted bugs were caught by both review subagent and general agent",
+    "Assertions are non-discriminating at the binary pass/fail level: they only check bug detection, not review depth or quality",
+    "Qualitative difference is significant: general agent reviews are 3-5x longer with corrected implementations, more secondary issues (idempotency, PCI logging, req.body null guard), and concrete code examples; review subagent is accurate but more concise",
+    "Token proxy (output_chars) shows general agent produces ~3400 chars more output on average — confirms depth gap",
+    "Consider adding depth-testing assertions: e.g. 'The review provides a corrected code example', 'The review identifies at least 2 issues beyond the primary bug'"
+  ]
+}

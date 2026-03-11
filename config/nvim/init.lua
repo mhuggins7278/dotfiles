@@ -24,8 +24,8 @@ vim.opt.conceallevel = 2
 
 -- Use separate ShaDa file per tmux session to prevent jump list crossing projects
 -- This fixes Ctrl-O jumping to files in other projects when using multiple tmux sessions
-local tmux_session = vim.env.TMUX and vim.fn.system("tmux display-message -p '#S'"):gsub("\n", "") or "default"
-vim.opt.shadafile = vim.fn.stdpath("state") .. "/shada/" .. tmux_session .. ".shada"
+local tmux_session = vim.env.TMUX and vim.fn.system("tmux display-message -p '#S'"):gsub('\n', '') or 'default'
+vim.opt.shadafile = vim.fn.stdpath 'state' .. '/shada/' .. tmux_session .. '.shada'
 
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
@@ -267,7 +267,6 @@ require('lazy').setup {
   spec = {
     -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-    { 'augmentcode/augment.vim', cmd = 'Augment' },
 
     -- NOTE: Plugins can also be added by using a table,
     -- with the first argument being the link and the following

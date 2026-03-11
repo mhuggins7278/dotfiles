@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "pagination-offbyone",
+  "prompt": "I just added a pagination utility to our API layer. Can you review the changes for any bugs or edge cases before I commit?",
+  "assertions": [
+    "The review identifies Math.floor as incorrect for computing total pages",
+    "The review explains the consequence (wrong page count or inaccessible last page items)",
+    "The review suggests using Math.ceil instead"
+  ]
+}

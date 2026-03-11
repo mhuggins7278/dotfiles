@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.zoom-transcript.watcher</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-l</string>
+    <string>/Users/MHuggins/.dotfiles/scripts/process-zoom-transcript.sh</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>/Users/MHuggins/Downloads/zoom-transcripts</string>
+  </array>
+  <key>StandardOutPath</key>
+  <string>/tmp/zoom-transcript-watcher.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/zoom-transcript-watcher.err.log</string>
+</dict>
+</plist>

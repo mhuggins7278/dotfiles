@@ -22,13 +22,12 @@ permission:
     "ls": allow
     "grep *": allow
     "rg *": allow
+  skill:
+    "obsidian-markdown": "allow"
 tools:
   todowrite: false
   todoread: false
   task: false
-permission:
-  skill:
-    "obsidian-markdown": "allow"
 ---
 
 # Daily Workflow

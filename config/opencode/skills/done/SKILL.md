@@ -16,16 +16,17 @@ Synthesizes everything from the current OpenCode session into a note in the Obsi
 
 ### 1. Gather Context (Run in Parallel)
 
-```bash
-# Current date and time
-date "+%Y-%m-%d %H:%M"
+Run all of the following at once:
 
-# Git context from the working directory
+```bash
+date "+%Y-%m-%d %H:%M"
 git rev-parse --show-toplevel 2>/dev/null || echo "not a git repo"
 git remote get-url origin 2>/dev/null || echo "no remote"
 git branch --show-current 2>/dev/null || echo "unknown"
 git log --oneline -5 2>/dev/null || echo "no commits"
 ```
+
+Run git commands from the repo root identified by `git rev-parse --show-toplevel`. If the shell's working directory differs, use the `workdir` parameter of the Bash tool.
 
 Capture:
 - `date`: `YYYY-MM-DD`
@@ -34,7 +35,9 @@ Capture:
 - `branch`: current git branch
 - `working_dir`: absolute path of repo root (or `$PWD` if not a git repo)
 - `project`: repo short name, or directory basename if not a git repo
-- `session_id`: `session-YYYY-MM-DD-HHmm` (e.g., `session-2026-02-18-1430`)
+- `model`: the model name from the current session context (visible in the system prompt)
+
+**Multi-repo sessions**: If the session touched multiple repos, use the repo where the most significant work happened for the frontmatter. List all repos touched in the `## Context` section.
 
 ### 2. Synthesize the Session
 
@@ -43,7 +46,7 @@ Review the entire conversation and extract:
 **Summary** — 2-4 sentences describing what the session accomplished overall.
 
 **Changes Made** — concrete file-level or system-level changes. For each:
-- What file/thing was changed
+- What file/thing was changed (verify the exact path using the Glob or Read tool — do not guess)
 - What was done (created, edited, deleted, configured)
 - One-line reason
 
@@ -53,7 +56,7 @@ Review the entire conversation and extract:
 
 **Follow-ups** — unresolved items, next steps, things to revisit. These become actionable todos.
 
-**Context** — any technical context useful for picking up where this left off: relevant commands, config paths, APIs touched, constraints discovered.
+**Context** — technical context useful for picking up where this left off.
 
 ### 3. Determine Output Path
 
@@ -62,8 +65,6 @@ Review the entire conversation and extract:
 ```
 
 Example: `ai-sessions/2026/02/2026-02-18-1430.md`
-
-If there are multiple sessions on the same day, append a counter: `2026-02-18-1430-2.md`
 
 Create parent directories if they don't exist.
 
@@ -83,7 +84,7 @@ project: <repo-short-name>
 repo: <owner/repo>
 branch: <branch>
 working_dir: <absolute-path>
-model: claude-sonnet-4.6
+model: <model-name-from-session-context>
 ---
 
 # Session: [[work/projects/<ProjectName>|<project>]] — YYYY-MM-DD HH:MM
@@ -114,7 +115,10 @@ model: claude-sonnet-4.6
 
 ## Context
 
-<Any technical context needed to pick up where this left off: commands, paths, constraints, gotchas>
+- **Repos touched**: <list if multi-repo session>
+- **Key paths**: <config dirs, notable file locations>
+- **Commands to know**: <any non-obvious commands used or needed>
+- **Constraints / gotchas**: <anything that would trip you up picking this up later>
 ```
 
 ### 5. Update Today's Daily Note
@@ -142,7 +146,12 @@ If the daily note does **not** exist yet, skip this step silently — do not cre
 
 ### 6. Backlink the Project
 
-If `project` maps to an existing file in `/Users/MHuggins/github/mhuggins7278/notes/work/projects/`, use an Obsidian backlink in the heading:
+Use the Glob tool to check if a project file exists at:
+```
+/Users/MHuggins/github/mhuggins7278/notes/work/projects/*.md
+```
+
+If a file matching the project name exists, use an Obsidian backlink in the heading:
 ```
 [[work/projects/ProjectName|project]]
 ```
@@ -161,6 +170,8 @@ After writing the file, report:
 ## Common Pitfalls
 
 - Do not infer the date — always run `date` first
+- Do not guess file paths in Changes Made — verify with Glob or Read before writing
 - Do not truncate the Changes Made list — include every file touched
 - Follow-ups should be specific and actionable, not vague ("look into X" is bad; "investigate why X fails when Y is null" is good)
 - Keep Key Decisions focused on non-obvious choices — don't list things that had only one option
+- Do not hardcode the model name — read it from the session context

@@ -1,0 +1,44 @@
+{
+  "expectations": [
+    {
+      "text": "The review identifies the missing await on db.orders.update()",
+      "passed": true,
+      "evidence": "Line 11: 'The call to db.orders.update(orderId, ...) is missing an await keyword'"
+    },
+    {
+      "text": "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+      "passed": true,
+      "evidence": "Line 12: 'The function proceeds to send the email and returns { success: true } before the database update actually completes... may result in an unhandled promise rejection'"
+    },
+    {
+      "text": "The review suggests adding await to db.orders.update()",
+      "passed": true,
+      "evidence": "Line 13: 'Add await to the call: await db.orders.update(orderId, ...);'"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "total_tool_calls": 3,
+    "total_steps": 2,
+    "errors_encountered": 0,
+    "output_chars": 1150
+  },
+  "claims": [
+    {
+      "claim": "The review also identified missing email error handling and unsafe type assertion",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Lines 15-25 cover email error handling warning and type assertion suggestion"
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  }
+}

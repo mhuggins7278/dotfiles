@@ -95,6 +95,26 @@
   ignore_errors: yes
   tags: kanata
 
+- name: Install Zoom Transcript Watcher LaunchAgent
+  file:
+    src: "{{ item.src | expanduser }}"
+    dest: "{{ item.dest | expanduser }}"
+    state: link
+    force: yes
+  loop:
+    - {
+        src: "~/.dotfiles/config/zoom-transcript/com.zoom-transcript.watcher.plist",
+        dest: "~/Library/LaunchAgents/com.zoom-transcript.watcher.plist",
+      }
+  when: ansible_os_family == "Darwin"
+  tags: zoom-transcript
+
+- name: Load Zoom Transcript Watcher LaunchAgent
+  shell: launchctl load ~/Library/LaunchAgents/com.zoom-transcript.watcher.plist
+  when: ansible_os_family == "Darwin"
+  ignore_errors: yes
+  tags: zoom-transcript
+
 - name: Set Terminal settings
   osx_defaults: domain=com.apple.Terminal key={{ item.key }} type={{ item.type }} value={{ item.value }}
   with_items:

@@ -1,0 +1,10 @@
+{
+  "eval_id": 3,
+  "eval_name": "swallowed-exception",
+  "prompt": "I added a payment route to our Express app. Can you review the error handling and overall quality before this goes to code review.",
+  "assertions": [
+    "The review identifies that the catch block sends no HTTP response to the client",
+    "The review explains the consequence (client request hangs or times out)",
+    "The review suggests adding a res.status(500) error response in the catch block"
+  ]
+}

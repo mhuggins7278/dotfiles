@@ -15,6 +15,7 @@ Fully automated GitHub pull request creation workflow that analyzes changes, gen
 - Do not proceed if there are uncommitted changes - inform user to commit first
 - Always verify branch has upstream tracking or auto-push with -u flag
 - Always specify --base flag with user's chosen target branch
+- In repos under `~/github/glg/`, require an associated issue before creating a PR; if none exists, prompt to create one and add it to `glg` project `85`.
 
 ## Workflow
 
@@ -100,11 +101,19 @@ git diff origin/<target-branch>...HEAD
 
 **Body**:
 
+Before finalizing the body, ensure there is an associated GitHub issue:
+
+- Look for an issue number in branch name, commit messages, or user context
+- Validate with `gh issue view <number>`
+- If none exists, ask the user whether to create one now
+- If created, include it in PR body with `Fixes <owner>/<repo>#<number>`
+
 If template exists:
 - Read template structure
 - Fill in each section based on changes
 - Preserve template formatting
 - Note "N/A" for non-applicable sections
+- Add a related issue line in the most relevant section (for example, `Fixes glg/streamliner#5232`)
 
 If no template:
 ```markdown
@@ -120,7 +129,7 @@ If no template:
 <How changes were tested>
 
 ## Related Issues
-<Link issues/tickets if applicable>
+Fixes <owner>/<repo>#<number>
 ```
 
 ### 7. Create PR

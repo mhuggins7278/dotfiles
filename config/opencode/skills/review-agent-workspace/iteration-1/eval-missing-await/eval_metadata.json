@@ -1,0 +1,10 @@
+{
+  "eval_id": 2,
+  "eval_name": "missing-await",
+  "prompt": "I wrote a function to handle order processing — it marks the order as processing and sends a confirmation email. Please review it for bugs and quality issues.",
+  "assertions": [
+    "The review identifies the missing await on db.orders.update()",
+    "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+    "The review suggests adding await to db.orders.update()"
+  ]
+}

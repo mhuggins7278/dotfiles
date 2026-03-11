@@ -9,42 +9,107 @@ Use the native `gh` CLI directly for all issue operations.
 
 ## Prerequisites
 
-- `gh` CLI installed and authenticated
+- `gh` CLI installed and authenticated (`gh auth status`)
 - `jq` installed
-- For project operations: `gh auth refresh -s project`
+- Project operations require `project` scope — if you get a scope error, run `gh auth refresh -s project`
+
+## Repo Variable
+
+Many commands reference the active repo. Set it once and reuse:
+
+```bash
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+```
+
+The active repo is whatever `gh repo view` resolves in your current git context.
 
 ## Commands
 
-- `viewer`: `gh api user | jq '{login, name, id, html_url}'`
-- `active repo`: `gh repo view --json nameWithOwner -q .nameWithOwner`
-- `list mine`: `gh issue list --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)" --assignee "$(gh api user --jq .login)" --state open`
-- `show`: `gh issue view <issue-number> --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"`
-- `search`: `gh issue list --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)" --state <open|closed|all> [--assignee <login>] [--label <label>]`
-- `create in project`: `gh issue create --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)" --title "<title>" [--body "<body>"] [--assignee "<login>"] --project "Client Solutions Experience"`
-- `add to project`: `gh issue edit <issue-number> --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)" --add-project "Client Solutions Experience"`
-- `close/reopen`: `gh issue close <issue-number> --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"` / `gh issue reopen <issue-number> --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"`
-- `assign/unassign`: `gh issue edit <issue-number> --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)" --add-assignee "<login>"` / `--remove-assignee "<login>"`
+**Current user**
+```bash
+gh api user | jq '{login, name, id, html_url}'
+```
+
+**List open issues assigned to me**
+```bash
+gh issue list --repo "$REPO" --assignee "$(gh api user --jq .login)" --state open
+```
+
+**View an issue**
+```bash
+gh issue view <issue-number> --repo "$REPO"
+```
+
+**Search / filter issues**
+```bash
+# Filter by state, assignee, label (combine freely)
+gh issue list --repo "$REPO" --state <open|closed|all> [--assignee <login>] [--label <label>] [--limit <n>]
+
+# Keyword / GitHub search syntax
+gh issue list --repo "$REPO" --search "<query>" --state open
+```
+
+`gh issue list` defaults to 30 results — use `--limit 100` (or higher) when you need more.
+
+**Create an issue (and add to project)**
+```bash
+gh issue create --repo "$REPO" \
+  --title "<title>" \
+  --body "<body>" \
+  --assignee "<login>" \
+  --project "Client Solutions Experience"
+```
+
+If `--project` fails (scope error or name mismatch), create without it and add to the project separately (see below).
+
+**Add an existing issue to the project**
+```bash
+# Preferred — works reliably across gh versions
+gh project item-add 85 --owner glg --url "$(gh issue view <issue-number> --repo "$REPO" --json url -q .url)"
+```
+
+**Comment on an issue**
+```bash
+gh issue comment <issue-number> --repo "$REPO" --body "<text>"
+```
+
+**Close / reopen**
+```bash
+gh issue close <issue-number> --repo "$REPO"
+gh issue reopen <issue-number> --repo "$REPO"
+```
+
+**Assign / unassign**
+```bash
+gh issue edit <issue-number> --repo "$REPO" --add-assignee "<login>"
+gh issue edit <issue-number> --repo "$REPO" --remove-assignee "<login>"
+```
 
 ## Default Configuration
 
 - **Default GitHub Project**: `glg` project `85` (`Client Solutions Experience`)
+- **IMPORTANT**: Always use the project **name** (`"Client Solutions Experience"`) with `--project`/`--add-project`, never the numeric ID (`85`). The `gh` CLI will error with `'85' not found` if you use the ID.
+- When using `gh project item-add`, use the numeric ID (`85`) and `--owner glg`.
 
 ## Team Members
 
-Mark Huggins, Jess Chadwick, David Hayes, Ronan O'Malley, Priya Darshani, John Lemberger
+Use these logins for `--assignee`:
 
-## Tips
-
-- `create` and `--add-project` require `project` scope in `gh` auth
-- `active repo` is whatever `gh repo view` resolves in your current git context
-- For simple edits, `gh issue edit` may still be the fastest direct command
+| Name | Login |
+|---|---|
+| Mark Huggins | `mhuggins7278` |
+| Jess Chadwick | `jchadwick` |
+| David Hayes | `drhayes` |
+| Ronan O'Malley | `Ronanj7` |
+| Priya Darshani | `pdarshani` |
+| John Lemberger | `JohnLemberger` |
 
 ## Copilot Assignee
 
-Use GitHub login `Copilot` (capital `C`) when assigning the Copilot SWE agent.
+Use `Copilot` (capital `C`) when assigning the Copilot SWE agent — lowercase fails.
 
-- Correct: `gh issue edit <number> --repo <owner>/<repo> --add-assignee "Copilot"`
-- Correct at creation: `gh issue create --assignee "Copilot" ...`
-- Incorrect: lowercase `copilot` (this fails)
-
-When assigning Copilot, use `Copilot` (capital `C`).
+```bash
+gh issue edit <number> --repo "$REPO" --add-assignee "Copilot"
+# or at creation:
+gh issue create --assignee "Copilot" ...
+```

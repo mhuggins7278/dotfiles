@@ -1,0 +1,38 @@
+{
+  "skill_name": "review-subagent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just added a pagination utility to our API layer. Can you review the changes for any bugs or edge cases before I commit?",
+      "expected_output": "The reviewer identifies the Math.floor bug, explains that pages will be undercounted when total is not evenly divisible by pageSize, and suggests Math.ceil as the fix.",
+      "files": ["test-code/pagination.ts"],
+      "expectations": [
+        "The review identifies Math.floor as incorrect for computing total pages",
+        "The review explains the consequence (wrong page count or inaccessible last page items)",
+        "The review suggests using Math.ceil instead"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I wrote a function to handle order processing — it marks the order as processing and sends a confirmation email. Please review it for bugs and quality issues.",
+      "expected_output": "The reviewer catches the missing await on db.orders.update(), explains the race condition it creates, and suggests adding await.",
+      "files": ["test-code/order-service.ts"],
+      "expectations": [
+        "The review identifies the missing await on db.orders.update()",
+        "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+        "The review suggests adding await to db.orders.update()"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I added a payment route to our Express app. Can you review the error handling and overall quality before this goes to code review?",
+      "expected_output": "The reviewer catches that the catch block sends no response to the client, explains the client will hang, and suggests adding a res.status(500) error response.",
+      "files": ["test-code/payment-route.ts"],
+      "expectations": [
+        "The review identifies that the catch block sends no HTTP response to the client",
+        "The review explains the consequence (client request hangs or times out)",
+        "The review suggests adding a res.status(500) error response in the catch block"
+      ]
+    }
+  ]
+}

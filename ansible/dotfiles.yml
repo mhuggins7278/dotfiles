@@ -78,6 +78,7 @@
         - "~/github/glg/"
         - "~/github/mhuggins7278/"
         - "~/github/LearnBuildTeach/"
+        - "~/Downloads/zoom-transcripts/"
 
     - include_tasks: tasks/packages.yml
       tags:

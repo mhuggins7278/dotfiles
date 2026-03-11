@@ -1,0 +1,44 @@
+{
+  "expectations": [
+    {
+      "text": "The review identifies the missing await on db.orders.update()",
+      "passed": true,
+      "evidence": "Lines 16-17: 'db.orders.update(orderId, ...) is never awaited'"
+    },
+    {
+      "text": "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
+      "passed": true,
+      "evidence": "Lines 20-22: 'Fire-and-forget race condition: The email is sent immediately while the DB write may still be in flight... Unhandled promise rejection'"
+    },
+    {
+      "text": "The review suggests adding await to db.orders.update()",
+      "passed": true,
+      "evidence": "Lines 24-27: 'await db.orders.update(orderId, { status: \"processing\", updatedAt: new Date() });'"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "total_tool_calls": 3,
+    "total_steps": 2,
+    "errors_encountered": 0,
+    "output_chars": 3100
+  },
+  "claims": [
+    {
+      "claim": "The review additionally caught no email error handling, unsafe type assertion, and a missing idempotency/status guard",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Issues 2-4 on lines 31-91 cover email handling, type assertion, and idempotency"
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  }
+}

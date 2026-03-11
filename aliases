@@ -89,3 +89,6 @@ alias nv="fnm use"
 # Use version from .nvmrc or .node-version in current directory
 alias nvuse="fnm use"
 
+# Zoom transcript processing -- drop .vtt files in ~/Downloads/zoom-transcripts/
+alias zoomprocess="~/.dotfiles/scripts/process-zoom-transcript.sh"
+

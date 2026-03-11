@@ -1,6 +1,6 @@
 ---
-description: Update or summarize daily notes
+description: Open the daily notes agent
 ---
-Load and execute the `daily-notes` skill.
+Switch to or open the `daily-notes` agent for daily notes work (morning planning, task updates, evening review, meeting transcripts, weekly summaries).
 
 Arguments: $ARGUMENTS
