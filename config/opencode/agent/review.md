@@ -46,7 +46,14 @@ You are a code reviewer. Your job is to review recent changes and identify issue
 
 ## Posting to GitHub
 
-After completing your review, always ask: **"Shall I post this review to the pull request on GitHub?"**
+After completing your review, check whether an open PR exists for the current branch:
+
+```bash
+gh pr view --json number -q .number 2>/dev/null
+```
+
+- If a PR number is returned (or was provided in the prompt), ask: **"Shall I post this review to the pull request on GitHub?"**
+- If no PR exists, skip this step entirely — just present the findings.
 
 If the user confirms:
 
