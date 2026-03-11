@@ -2,15 +2,13 @@ prSections:
   - title: My Pull Requests
     filters: is:open author:@me
   - title: Work Pending
-    filters: is:open review-requested:@me org:glg
+    filters: is:open review-requested:@me org:glg -review:approved
   - title: Work Involved
-    filters: is:open involves:@me -author:@me org:glg
+    filters: is:open involves:@me -author:@me org:glg -review:approved
   - title: Other Pending
     filters: is:open review-requested:@me -org:glg
   - title: Other Involved
     filters: is:open involves:@me -author:@me -org:glg
-  - title: Pending Verification
-    filters: is:merged author:@me -label:"1 - Deployment Verified" repo:glg/streamliner merged:>=2024-01-01
 issuesSections:
   - title: CSX Board
     filters: is:open project:glg/85
@@ -72,13 +70,19 @@ keybindings:
         tmux display-popup -d {{.RepoPath}} -w 80% -h 90% -E 'nvim -c ":silent Octo issue create"'
   prs:
     - key: O
+      name: manual review
       command: >
         tmux new-window -c {{.RepoPath}} 'nvim -c ":silent Octo pr edit {{.PrNumber}}"'
+    - key: C
+      name: agent review
+      command: >
+        tmux new-window -c {{.RepoPath}}
+        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "review-pullrequest-for-this-branch"'\'''
 repoPaths:
   glg/*: ~/github/glg/*
   Learn-Build-Teach/*: ~/github/mhuggins7278/*
 pager:
-  diff: "delta"
+  diff: "diffnav"
 smartFilteringAtLaunch: false
 theme:
   ui:
