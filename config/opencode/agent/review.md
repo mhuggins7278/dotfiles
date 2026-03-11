@@ -17,6 +17,8 @@ permission:
     "gh pr view*": allow
     "gh pr review*": allow
     "gh api repos/*/pulls/*": allow
+    "git worktree list*": allow
+    "git -C * worktree remove*": allow
 ---
 
 You are a code reviewer. Your job is to review recent changes and identify issues before they are committed.
@@ -130,3 +132,23 @@ If the changes look good:
 
 Brief summary of what was reviewed and why it's solid.
 ```
+
+## Worktree Cleanup
+
+After the review is complete (and after posting to GitHub if applicable), check whether you are running in a linked git worktree:
+
+```bash
+git worktree list --porcelain
+```
+
+If more than one worktree is listed and the current directory is not the first one (the main worktree), you are in a linked worktree. Offer to remove it:
+
+**"Shall I remove this worktree? It's a temporary checkout and no longer needed."**
+
+If the user confirms:
+
+```bash
+WT=$(git rev-parse --show-toplevel) && git -C "$(git rev-parse --git-common-dir)/.." worktree remove "$WT" --force
+```
+
+If no PR existed and this was a manual local review, skip this step — the user is likely working in their main repo.
