@@ -77,7 +77,7 @@ keybindings:
       name: agent review
       command: >
         tmux new-window -c {{.RepoPath}}
-        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "Review PR #{{.PrNumber}} on this branch."'\'''
+        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "Review PR #{{.PrNumber}} on this branch." ; wt remove --no-delete-branch --force -y'\'''
 repoPaths:
   glg/*: ~/github/glg/*
   Learn-Build-Teach/*: ~/github/mhuggins7278/*
