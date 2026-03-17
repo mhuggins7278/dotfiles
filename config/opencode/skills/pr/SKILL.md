@@ -1,20 +1,23 @@
 ---
 name: pr
-description: Use this skill when the user asks you to create a pull request, open a PR, or push and create a PR. Provides the full PR creation workflow including branch push and gh CLI usage.
+description: >
+  Use this skill when the user asks you to create a pull request, open a PR, or push and create a PR.
+  Trigger on "create a PR", "open a pull request", "push this up", "submit for review", "ready to merge",
+  "share this with the team", or any request to submit work for review. Provides the full PR creation
+  workflow including branch push, PR template detection, issue-first enforcement, and gh CLI usage.
 ---
 
 # Pull Request Skill
 
 Create a pull request using the `gh` CLI.
 
-## CRITICAL: Branch Naming — Read Before Anything Else
+## CRITICAL: GLG Workflow Rules
 
-**NEVER use a slash (`/`) in a branch name. This is a hard stop, not a preference.**
-
-Slashes break the deployment pipeline. There are no exceptions.
-
-- WRONG: `feature/foo`, `fix/bar`, `chore/anything`
-- RIGHT: `feature-foo`, `fix-bar`, `chore-anything`
+For any repo under `~/github/glg/`, read `~/.dotfiles/config/opencode/references/glg-workflow.md` for:
+- **Branch naming rules** (no slashes — hyphens only, always)
+- **Issue-first workflow** (require an open issue before creating a PR)
+- **PR issue references** (`Fixes <owner>/<repo>#<number>` format)
+- **Project 85 tagging** when creating issues
 
 If the current branch contains a `/`, warn the user immediately and do not push or create the PR until the branch is renamed.
 
@@ -61,13 +64,7 @@ Review ALL commits that will be in the PR — not just the latest. Use the templ
 
 ### 4. Ensure an Associated Issue Exists (GLG repos only)
 
-For repos under `~/github/glg/`, confirm there is a GitHub issue to associate before creating the PR:
-
-- Check for an existing issue reference in branch context (commit messages, branch name, user-provided issue number)
-- Validate candidate issue numbers with `gh issue view <number>` — if the issue is closed or unrelated, treat it as missing
-- If no valid open issue is found, prompt the user to create one before continuing
-- If the user agrees, create the issue in the active repo and add it to `glg` project `85`, then use that new issue number
-- Include the issue in the PR body using `Fixes <owner>/<repo>#<number>` (for example, `Fixes glg/streamliner#5232`)
+For repos under `~/github/glg/`, confirm there is a GitHub issue before creating the PR. See GLG Workflow Rules above for the full issue-first workflow and `Fixes` reference format.
 
 ### 5. Push and Create PR (run sequentially)
 
@@ -110,6 +107,7 @@ Always return the PR URL to the user after creation.
 - Default base branch: `main`
 - Default repo: `glg/client-solutions-experience` (unless user specifies otherwise)
 - Do NOT force-push to `main` or `master` — warn the user if they request it
+- See `~/.dotfiles/config/opencode/references/glg-workflow.md` for branch naming, issue-first workflow, and team member logins
 
 ## Common Pitfalls
 

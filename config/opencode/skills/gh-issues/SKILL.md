@@ -90,19 +90,7 @@ gh issue edit <issue-number> --repo "$REPO" --remove-assignee "<login>"
 - **Default GitHub Project**: `glg` project `85` (`Client Solutions Experience`)
 - **IMPORTANT**: Always use the project **name** (`"Client Solutions Experience"`) with `--project`/`--add-project`, never the numeric ID (`85`). The `gh` CLI will error with `'85' not found` if you use the ID.
 - When using `gh project item-add`, use the numeric ID (`85`) and `--owner glg`.
-
-## Team Members
-
-Use these logins for `--assignee`:
-
-| Name | Login |
-|---|---|
-| Mark Huggins | `mhuggins7278` |
-| Jess Chadwick | `jchadwick` |
-| David Hayes | `drhayes` |
-| Ronan O'Malley | `Ronanj7` |
-| Priya Darshani | `pdarshani` |
-| John Lemberger | `JohnLemberger` |
+- **Team members and full GLG workflow rules**: read `~/.dotfiles/config/opencode/references/glg-workflow.md`
 
 ## Linking Issues to an Epic (Sub-issues)
 

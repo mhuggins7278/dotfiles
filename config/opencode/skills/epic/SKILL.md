@@ -7,6 +7,14 @@ description: Multi-repo epic orchestration with dependency tracking and parallel
 
 Coordinate work across multiple repositories for a GitHub epic with linked sub-issues. Tracks dependencies, displays cross-repo status, and creates worktrees for parallel work sessions.
 
+## GLG Workflow Rules
+
+Read `~/.dotfiles/config/opencode/references/glg-workflow.md` before executing. It covers:
+- **Branch naming** (no slashes — hyphens only — and the `<issue-number>-<slug>` format)
+- **Issue-first workflow** for commits and PRs
+- **Project 85 tagging** and `Fixes` PR reference format
+- **Team member logins**
+
 ## When to Use
 
 - User runs `/epic <issue-reference>` to see status or pick up work
@@ -270,7 +278,7 @@ This skill coordinates but does not replace the existing workflow:
 
 ## Common Pitfalls
 
-- **No slashes in branch names** — the deployment pipeline breaks. Slugify with hyphens only.
+- **No slashes in branch names** — the deployment pipeline breaks. See GLG Workflow Rules above.
 - **Always verify repo paths** before running `wt` or `sesh connect`. Never assume `~/github/glg/<name>` exists.
 - **Always re-fetch from GitHub** — do not cache or remember status between invocations. Other sessions may have merged PRs or closed issues.
 - **Cross-repo `#N` references** resolve to the same repo as the issue they appear in, not the epic's repo.

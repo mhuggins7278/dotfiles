@@ -30,8 +30,7 @@
       "~/github/mhuggins7278/notes/**": "allow"
     },
     "skill": {
-      "*": "allow",
-      "obsidian-markdown": "deny"
+      "*": "allow"
     }
   },
   "mcp": {

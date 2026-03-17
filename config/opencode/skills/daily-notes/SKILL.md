@@ -106,3 +106,5 @@ Tell the user to switch to the `daily-notes` agent for:
 - Meeting transcript processing
 - Weekly summary generation
 - Any workflow requiring extended back-and-forth conversation
+
+For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`.

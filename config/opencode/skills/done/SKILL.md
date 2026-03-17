@@ -1,6 +1,10 @@
 ---
 name: done
-description: End-of-session skill. Synthesizes the full conversation into a structured Obsidian note capturing decisions, changes, questions, and follow-ups.
+description: >
+  End-of-session skill. Synthesizes the full conversation into a structured Obsidian note capturing
+  decisions, changes, questions, and follow-ups. Trigger on "/done", "wrap up", "we're done", "save
+  this session", "end of day", "I'm logging off", "capture this session", or any indication the user
+  is finishing a coding session and wants a record of what happened.
 ---
 
 # Done Skill — Session Wrap-Up
@@ -60,13 +64,22 @@ Review the entire conversation and extract:
 
 ### 3. Determine Output Path
 
+The session notes vault base is:
+
 ```
-/Users/MHuggins/github/mhuggins7278/notes/ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm.md
+NOTES_BASE=~/github/mhuggins7278/notes
+SESSION_DIR=$NOTES_BASE/ai-sessions
 ```
+
+Output path: `$SESSION_DIR/YYYY/MM/YYYY-MM-DD-HHmm.md`
 
 Example: `ai-sessions/2026/02/2026-02-18-1430.md`
 
-Create parent directories if they don't exist.
+Create parent directories if they don't exist:
+
+```bash
+mkdir -p "$SESSION_DIR/YYYY/MM"
+```
 
 ### 4. Write the Note
 
@@ -160,7 +173,7 @@ targeted edits — do not rewrite the full file.
 
 Use the Glob tool to check if a project file exists at:
 ```
-/Users/MHuggins/github/mhuggins7278/notes/work/projects/*.md
+$NOTES_BASE/work/projects/*.md
 ```
 
 If a file matching the project name exists, use an Obsidian backlink in the heading:
@@ -187,3 +200,4 @@ After writing the file, report:
 - Follow-ups should be specific and actionable, not vague ("look into X" is bad; "investigate why X fails when Y is null" is good)
 - Keep Key Decisions focused on non-obvious choices — don't list things that had only one option
 - Do not hardcode the model name — read it from the session context
+- For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`

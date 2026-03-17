@@ -7,8 +7,6 @@ description: Get parallel second opinions from multiple AI coding agents. Use wh
 
 > **⏱ Long-running command.** Counselors dispatches to multiple external AI agents in parallel, each of which may take several minutes. Total wall time is commonly **10–20+ minutes**. Consider running the dispatch command (Phase 5) in the background and monitoring progress rather than blocking your main context. You can check on results periodically and proceed to Phase 6 once the process completes. Counselors is a well-behaved long-running process: it emits periodic heartbeat lines to stdout and prints each child process PID alongside the agent name, so you can verify agents are still running.
 
-> **Note:** This is a reference skill template. Your agent system may use a different skill/command format. Adapt the structure and frontmatter below to match your system's conventions — the workflow and phases are what matter.
-
 Fan out a prompt to multiple AI coding agents in parallel and synthesize their responses.
 
 Use `run` for single-shot parallel review, or `loop` for iterative multi-round analysis.

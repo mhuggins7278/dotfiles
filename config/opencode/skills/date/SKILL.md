@@ -1,6 +1,9 @@
 ---
 name: date
-description: Get the current date using the bash `date` command. USE whenever you need the date; do not infer.
+description: >
+  Get the current date using the bash `date` command. USE whenever you need the current date or time —
+  never infer, guess, or use dates from context. Trigger any time a date is needed for file names, notes,
+  frontmatter, log entries, commit messages, or any date-sensitive output.
 ---
 
 # Date Skill

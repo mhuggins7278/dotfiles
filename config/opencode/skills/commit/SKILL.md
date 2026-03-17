@@ -1,6 +1,10 @@
 ---
 name: commit
-description: Use this skill when the user asks you to commit changes, stage files, or create a git commit. Provides the safe commit workflow with pre-commit hook awareness.
+description: >
+  Use this skill when the user asks you to commit changes, stage files, or create a git commit.
+  Trigger on "commit this", "commit the changes", "save my work", "make a commit", "I'm done with
+  this change", "stage these files", or any request to persist changes to git. Provides the safe
+  commit workflow with pre-commit hook awareness and GLG issue-first enforcement.
 ---
 
 # Commit Skill
@@ -12,16 +16,14 @@ Commit staged and unstaged changes safely.
 - User says "commit this", "commit the changes", "make a commit"
 - User asks you to save work to git
 
-## CRITICAL: Branch Naming — Read Before Anything Else
+## CRITICAL: GLG Workflow Rules
 
-**NEVER use a slash (`/`) in a branch name. This is a hard stop, not a preference.**
+For any repo under `~/github/glg/`, read `~/.dotfiles/config/opencode/references/glg-workflow.md` for:
+- **Branch naming rules** (no slashes — hyphens only, always)
+- **Issue-first workflow** (require an open issue before committing)
+- **Project 85 tagging** when creating issues
 
-Slashes break the deployment pipeline. There are no exceptions.
-
-- WRONG: `feature/foo`, `fix/bar`, `chore/anything`
-- RIGHT: `feature-foo`, `fix-bar`, `chore-anything`
-
-If you need to create a branch before committing, use hyphens only. If the current branch contains a `/`, warn the user and stop until it is renamed.
+If the current branch contains a `/`, warn the user and stop until it is renamed.
 
 ## Safety Rules
 
@@ -31,7 +33,7 @@ If you need to create a branch before committing, use hyphens only. If the curre
 - NEVER commit files that may contain secrets (`.env`, credentials, tokens) — warn the user
 - Amend is allowed ONLY when ALL three conditions are met: (1) user explicitly requested it OR the commit succeeded but a pre-commit hook auto-modified files that need including, AND (2) HEAD commit was created by you in this conversation, AND (3) commit has NOT been pushed to remote
 - If a commit FAILED or was REJECTED by a hook, NEVER amend — fix the issue and create a NEW commit
-- In repos under `~/github/glg/`, require an associated GitHub issue before committing. If missing, prompt to create one first and tag it to `glg` project `85`.
+  - In repos under `~/github/glg/`, require an associated GitHub issue before committing (see GLG Workflow Rules above).
 
 ## Workflow
 
