@@ -1,0 +1,6 @@
+node_modules
+package.json
+bun.lock
+**/__pycache__/
+**/*.pyc
+skills/*-workspace/
