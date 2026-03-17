@@ -32,6 +32,11 @@ tools:
 
 # Daily Workflow
 
+> **Quick inline operations** (add a task, mark done, read open items) can be
+> handled by the `daily-notes` skill from any session without switching context.
+> This agent handles the full conversational workflows: morning planning,
+> evening review, meeting transcripts, and weekly summaries.
+
 This document defines the daily tracking workflow for Obsidian vault management.
 
 ## IMPORTANT: Working Directory

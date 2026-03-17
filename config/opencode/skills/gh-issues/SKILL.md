@@ -104,6 +104,52 @@ Use these logins for `--assignee`:
 | Priya Darshani | `pdarshani` |
 | John Lemberger | `JohnLemberger` |
 
+## Linking Issues to an Epic (Sub-issues)
+
+**Always use the native GitHub sub-issue relationship** — never just mention an epic in the issue body. Use the `addSubIssue` GraphQL mutation via `gh api graphql`.
+
+```bash
+# Get the epic's node ID first
+EPIC_ID=$(gh api repos/<owner>/<repo>/issues/<epic-number> --jq .node_id)
+
+# Link a single child issue
+CHILD_ID=$(gh api repos/<owner>/<repo>/issues/<child-number> --jq .node_id)
+gh api graphql -f query='
+  mutation($parentId: ID!, $childId: ID!) {
+    addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
+      issue { number }
+      subIssue { number title }
+    }
+  }
+' -f parentId="$EPIC_ID" -f childId="$CHILD_ID" \
+  --jq '.data.addSubIssue.subIssue | "#\(.number) \(.title)"'
+```
+
+**Linking multiple child issues across repos in a loop:**
+
+```bash
+EPIC_ID="<epic-node-id>"
+for SPEC in \
+  "<owner>/<repo>/<issue-number>" \
+  "<owner>/<repo>/<issue-number>"; do
+  REPO=$(echo $SPEC | cut -d'/' -f1-2)
+  NUM=$(echo $SPEC | cut -d'/' -f3)
+  CHILD_ID=$(gh api repos/$REPO/issues/$NUM --jq .node_id)
+  echo -n "Adding $REPO#$NUM ... "
+  gh api graphql -f query='
+    mutation($parentId: ID!, $childId: ID!) {
+      addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
+        issue { number }
+        subIssue { number title }
+      }
+    }
+  ' -f parentId="$EPIC_ID" -f childId="$CHILD_ID" \
+    --jq '.data.addSubIssue.subIssue | "#\(.number) \(.title)"'
+done
+```
+
+> Note: `addSubIssue` works across repositories — the epic and child issues do not need to be in the same repo.
+
 ## Copilot Assignee
 
 Use `Copilot` (capital `C`) when assigning the Copilot SWE agent — lowercase fails.

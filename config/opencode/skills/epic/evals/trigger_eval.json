@@ -1,0 +1,82 @@
+[
+  {
+    "query": "/epic glg/streamliner#500",
+    "should_trigger": true
+  },
+  {
+    "query": "what should I work on next? we have this platform migration epic at glg/platform-services#42 spanning auth-service, api-gateway, and the consultations-api repos",
+    "should_trigger": true
+  },
+  {
+    "query": "show me the epic status for https://github.com/glg/streamliner/issues/123, specifically which sub-issues are still blocked",
+    "should_trigger": true
+  },
+  {
+    "query": "ok so our squad has this big api modernization epic (glg/consultations-api#789) and im not sure what's ready to pick up today",
+    "should_trigger": true
+  },
+  {
+    "query": "which sub-issues in the data platform epic are unblocked now that we merged the schema migration PR? epic is glg/data-platform#67",
+    "should_trigger": true
+  },
+  {
+    "query": "spin up worktrees for whichever client portal epic tickets are ready to go, epic ref is glg/client-portal#88",
+    "should_trigger": true
+  },
+  {
+    "query": "i just got pulled into this epic mid-sprint - can you pull up the status and tell me what to start on? glg/infra#99",
+    "should_trigger": true
+  },
+  {
+    "query": "my team lead wants a cross-repo status report on the auth modernization epic before standup. its issue #234 in glg/streamliner",
+    "should_trigger": true
+  },
+  {
+    "query": "the blocked tickets in our epic at glg/platform-services#55 - what are they waiting on and which repo do those blockers live in?",
+    "should_trigger": true
+  },
+  {
+    "query": "were starting sprint 3 of the mobile gateway epic, glg/api-gateway#301 - what got done in sprint 2 and what should i pick up now?",
+    "should_trigger": true
+  },
+  {
+    "query": "can you help me write up a github issue for a bug i found in the auth service? it keeps returning 401 when the JWT is expired and the refresh endpoint isn't being called",
+    "should_trigger": false
+  },
+  {
+    "query": "whats the status of PR #456 in glg/consultations-api? sarah said it needs another review before we can merge it into main",
+    "should_trigger": false
+  },
+  {
+    "query": "list all open issues in glg/streamliner that are tagged with 'bug' or 'regression' - i need to do triage",
+    "should_trigger": false
+  },
+  {
+    "query": "i want to start working on glg/streamliner#789 - the new dashboard widget feature. can you help me understand the codebase and plan the implementation?",
+    "should_trigger": false
+  },
+  {
+    "query": "help me create a PR for my branch feat-oauth in glg/platform-services. its for issue #231 and i have the changes ready",
+    "should_trigger": false
+  },
+  {
+    "query": "show me all github issues assigned to me across glg/streamliner and glg/consultations-api - want to see everything im on the hook for",
+    "should_trigger": false
+  },
+  {
+    "query": "run the unit tests in glg/data-platform and tell me if any of the migration scripts are failing - we have a deploy in 2 hours",
+    "should_trigger": false
+  },
+  {
+    "query": "write a commit message for my changes to AuthService.ts - i added token refresh logic and fixed the concurrent request race condition",
+    "should_trigger": false
+  },
+  {
+    "query": "push my current branch and open a draft pr for the work ive done so far on glg/streamliner#450, its about 60% done",
+    "should_trigger": false
+  },
+  {
+    "query": "i need to review this pull request from the new team member in glg/consultations-api, can you help me write thorough review comments on the database query changes in the migrations/ directory?",
+    "should_trigger": false
+  }
+]

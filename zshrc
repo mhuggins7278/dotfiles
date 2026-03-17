@@ -151,12 +151,6 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
 fi
 source "$_zoxide_cache"
 
-# fnm setup - cache disabled to prevent version leaking
-# Problem: fnm creates a multishell directory per shell that symlinks to ~/.local/share/fnm/aliases/default
-# When caching, old multishell paths in the cache would still point to the shared default alias,
-# causing Node versions to leak between shells
-# Solution: Evaluate fnm directly each time (small performance cost but prevents version leaking)
-eval "$(fnm env --shell zsh --resolve-engines)"
 
 source $HOME/.dotfiles/shellrc
 
@@ -187,3 +181,6 @@ export PATH="$PATH:/Users/MHuggins/.lmstudio/bin"
 
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

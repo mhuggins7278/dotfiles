@@ -123,26 +123,38 @@ model: <model-name-from-session-context>
 
 ### 5. Update Today's Daily Note
 
-Append a backlink to the session note and any follow-up items into today's daily note at:
-```
-/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY/MM/DD/index.md
+Uses the same note structure and CLI conventions as the `daily-notes` skill.
+Do not hardcode the path — always resolve it via the CLI.
+
+```bash
+obsidian daily:path   # get today's note path
+obsidian daily:read   # read the current note
 ```
 
-If the daily note exists:
+If the daily note **does not exist yet**, skip this step silently — do not
+create it (that's the daily-notes agent's job).
 
-1. **Add a backlink in the Notes section** — append this line under `## Notes`:
+If the daily note **exists**:
+
+1. **Insert follow-up items under `## Tasks`** — use the Edit tool to insert
+   each actionable follow-up as an unchecked checkbox immediately after the
+   last existing item in the `## Tasks` section:
+   ```markdown
+   - [ ] <follow-up item>
+   ```
+   Only add items that are clearly actionable by the user. Skip vague or
+   reference-only items. Use `- [ ]` state for all new items (see `daily-notes`
+   skill for the full checkbox type table).
+
+2. **Add a backlink in the Notes section** — use the Edit tool to insert this
+   line after the last existing item under `## Notes`:
    ```markdown
    - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <project> (<branch>)]]
    ```
    If no `## Notes` section exists, add one at the end of the file.
 
-2. **Port follow-up items into Tasks** — for each item in the Follow-ups list, add it as an unchecked checkbox under `## Tasks`:
-   ```markdown
-   - [ ] <follow-up item>
-   ```
-   Only add items that are clearly actionable by the user. Skip vague or reference-only items.
-
-If the daily note does **not** exist yet, skip this step silently — do not create it (that's the daily notes agent's job).
+When making these edits, read the resolved daily note path first, then apply
+targeted edits — do not rewrite the full file.
 
 ### 6. Backlink the Project
 

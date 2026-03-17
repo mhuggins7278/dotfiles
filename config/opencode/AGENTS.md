@@ -18,6 +18,10 @@ When working inside `~/.dotfiles`, treat home config paths as symlinked targets.
 - **ui-dev**: Frontend UI development with React/Material-UI and Figma
 - **review**: Code reviewer for catching bugs and issues before committing
 
+## GitHub Issues
+
+- **Do not assign issues** to the user unless explicitly asked. Create issues unassigned by default.
+
 ## Git Workflow
 
 - **Branch names must not contain `/`** — slashes break the deployment pipeline when promoting branches to the testing environment. Use hyphens as separators instead (e.g., `feature-my-thing`, not `feature/my-thing`).
@@ -43,10 +47,14 @@ When working in any repository under `~/github/glg/`:
 
 ## Daily Notes Policy
 
-When creating new daily notes:
+The `daily-notes` agent is the source of truth for the full daily notes
+workflow (morning planning, carryover rules, evening review, meeting
+transcripts, weekly summaries). For quick inline operations from any session,
+use the `daily-notes` skill.
 
-- **Do not** carry forward completed (checked) items from previous days
+Global rules that apply everywhere:
+
+- **Do not** carry forward completed (`- [x]`) or cancelled (`- [-]`) items
 - **Do not** auto-copy yesterday's Notes section into today's file
-- Keep each day's Tasks and Notes focused on current/in-progress work only
-- Leave summaries and completed items in their respective daily files
-- Prefer structured edits for daily note updates: place items in the correct section rather than appending to the end
+- Prefer structured edits — place items under the correct section heading
+  rather than appending to the end of the file

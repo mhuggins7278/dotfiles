@@ -3,7 +3,21 @@
   "agent": {
     "plan": {
       "model": "github-copilot/claude-opus-4.6",
-      "reasoningEffort": "high"
+      "reasoningEffort": "high",
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "gh repo view*": "allow",
+          "gh api user*": "allow",
+          "gh api graphql*": "allow",
+          "gh issue *": "allow",
+          "gh issue create *": "allow",
+          "gh pr list*": "allow",
+          "gh pr view*": "allow",
+          "gh project item-add *": "allow",
+          "gh auth status*": "allow"
+        }
+      }
     },
     "build": {
       "model": "github-copilot/claude-sonnet-4.6",
