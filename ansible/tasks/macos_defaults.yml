@@ -75,24 +75,22 @@
   notify:
     - Kill Dock
 
-- name: Install Kanata LaunchAgent
-  file:
-    src: "{{ item.src | expanduser }}"
-    dest: "{{ item.dest | expanduser }}"
-    state: link
-    force: yes
-  loop:
-    - {
-        src: "~/.dotfiles/config/kanata/com.kanata.service.plist",
-        dest: "~/Library/LaunchAgents/com.kanata.service.plist",
-      }
+- name: Install Kanata LaunchDaemon plist
+  copy:
+    src: "~/.dotfiles/config/kanata/com.kanata.service.plist"
+    dest: "/Library/LaunchDaemons/com.kanata.service.plist"
+    owner: root
+    group: wheel
+    mode: "0644"
   when: ansible_os_family == "Darwin"
   tags: kanata
+  become: yes
 
-- name: Load Kanata LaunchAgent
-  shell: launchctl load ~/Library/LaunchAgents/com.kanata.service.plist
+- name: Load Kanata LaunchDaemon
+  shell: launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist
   when: ansible_os_family == "Darwin"
   ignore_errors: yes
+  become: yes
   tags: kanata
 
 - name: Install Zoom Transcript Watcher LaunchAgent

@@ -6,7 +6,7 @@
   <string>com.kanata.service</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/opt/homebrew/bin/kanata</string>
+    <string>/usr/local/bin/kanata</string>
     <string>-c</string>
     <string>/Users/MHuggins/.dotfiles/config/kanata/moonlander.kbd</string>
   </array>

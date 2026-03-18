@@ -2,6 +2,9 @@
 ;; Converted from mark-s-layout
 
 (defcfg
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+  )
   process-unmapped-keys yes
   danger-enable-cmd yes
   sequence-timeout 2000
