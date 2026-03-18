@@ -151,6 +151,8 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
 fi
 source "$_zoxide_cache"
 
+# fnm (Fast Node Manager)
+eval "$(fnm env --shell zsh)"
 
 source $HOME/.dotfiles/shellrc
 
@@ -181,6 +183,3 @@ export PATH="$PATH:/Users/MHuggins/.lmstudio/bin"
 
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
-
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"

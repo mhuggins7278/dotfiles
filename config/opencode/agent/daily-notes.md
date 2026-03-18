@@ -6,6 +6,7 @@ temperature: 0.3
 permission:
   external_directory:
     ~/github/mhuggins7278/notes/**: allow
+    ~/Downloads/zoom-transcripts/**: allow
   edit:
     ~/github/mhuggins7278/notes/**: allow
   read:

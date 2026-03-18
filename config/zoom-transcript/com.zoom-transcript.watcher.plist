@@ -15,6 +15,8 @@
   <array>
     <string>/Users/MHuggins/Downloads/zoom-transcripts</string>
   </array>
+  <key>StartInterval</key>
+  <integer>300</integer>
   <key>StandardOutPath</key>
   <string>/tmp/zoom-transcript-watcher.out.log</string>
   <key>StandardErrorPath</key>

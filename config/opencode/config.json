@@ -27,7 +27,8 @@
   "permission": {
     "external_directory": {
       "~/github/glg/epiquery-templates/**": "allow",
-      "~/github/mhuggins7278/notes/**": "allow"
+      "~/github/mhuggins7278/notes/**": "allow",
+      "~/.dotfiles/config/opencode/references/": "allow"
     },
     "skill": {
       "*": "allow"

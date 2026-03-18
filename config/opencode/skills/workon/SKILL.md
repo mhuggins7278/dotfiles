@@ -1,0 +1,351 @@
+---
+name: workon
+description: GitHub issue orchestration with sub-issue tracking, worktree sessions, dep installation, and review gates. Always use this skill when the user invokes `/workon`, references a GitHub issue that has sub-issues, asks what to work on next in a feature group, wants a status board of sub-issue progress, or needs to create a worktree to start on an issue. Handles same-repo and cross-repo layouts, auto dep installation, dependency graphs, blocked/ready classification, and review gates before PR. Do NOT trigger for generic issue listing, PR creation, or single-issue work that has no sub-issues.
+---
+
+# Workon Skill
+
+Work through a GitHub issue that has sub-issues: fetch current state, show a
+status board, recommend the next ticket to pick up, create a worktree,
+install deps, and spawn a session. Provides a review gate before any PR.
+
+Works for any GitHub repo — not just GLG. When in a GLG repo, additional
+rules apply (see the GLG section below).
+
+## Prerequisites
+
+- `gh` CLI installed and authenticated (`gh auth status`)
+- `wt` (worktrunk) CLI for worktree management (`brew install worktrunk`)
+- `sesh` for session management (`brew install joshmedeski/sesh/sesh`)
+- `tmux` running
+- `jq` installed
+
+If `wt` is missing, warn the user — the status board still works but worktree
+creation won't. If `sesh` is missing, warn and skip session spawning.
+
+---
+
+## Workflow
+
+### 1. Parse the Issue Reference
+
+Accept any of these formats:
+
+- Full URL: `https://github.com/owner/repo/issues/500`
+- Short ref: `owner/repo#500`
+- Number only (current repo): `#500` or `500`
+
+Resolve owner, repo, and issue number. If `$ARGUMENTS` is empty, ask the user.
+
+---
+
+### 2. Detect GLG Context
+
+```bash
+OWNER=$(gh repo view --json owner -q .owner.login 2>/dev/null || echo "")
+```
+
+If `$OWNER == "glg"`, read `~/.dotfiles/config/opencode/references/glg-workflow.md`
+now. It governs branch naming (hyphens only, never slashes), issue-first
+workflow, project 85 tagging, and PR reference format. Apply those rules for
+the rest of this session.
+
+For non-GLG repos, use the generic branch naming convention defined in step 7.
+
+---
+
+### 3. Fetch Issue and Sub-issues
+
+```bash
+gh api graphql -f query='
+  query($owner: String!, $repo: String!, $number: Int!) {
+    repository(owner: $owner, name: $repo) {
+      issue(number: $number) {
+        title
+        state
+        url
+        body
+        subIssues(first: 50) {
+          nodes {
+            number
+            title
+            state
+            url
+            body
+            repository {
+              nameWithOwner
+              name
+              owner { login }
+            }
+          }
+        }
+      }
+    }
+  }
+' -f owner="<owner>" -f repo="<repo>" -F number=<number>
+```
+
+If the query fails with a scope error, instruct the user:
+`gh auth refresh -s project`
+
+If the issue has **no sub-issues**, treat it as a single-ticket epic
+(one item, always READY). The status board and worktree creation still apply.
+
+---
+
+### 4. Check PR Status for Open Sub-issues (run in parallel)
+
+For each `OPEN` sub-issue, run both searches in parallel:
+
+```bash
+# Search by issue reference in PR body/title
+gh pr list -R <owner>/<repo> --search "#<issue-number>" --state all --limit 100 \
+  --json number,state,url,headRefName
+
+# Search by branch naming convention
+gh pr list -R <owner>/<repo> --limit 100 --json number,state,url,headRefName \
+  --jq '[.[] | select(.headRefName | test("^(fix-issue-)?<number>(-|$)"))]'
+```
+
+A `MERGED` PR counts as done even if the GitHub issue is still open.
+A `CLOSED` PR is ignored.
+
+---
+
+### 5. Parse Dependencies from Issue Bodies
+
+Scan each sub-issue's body for dependency declarations (case-insensitive):
+
+```
+(?i)(?:depends on|blocked by|after):?\s+(?:https?://github\.com/)?([\w.-]+/[\w.-]+)?(?:#|/issues/)(\d+)
+```
+
+Matches: `depends on #123`, `blocked by owner/repo#456`,
+`after https://github.com/owner/repo/issues/789`.
+
+Bare `#N` resolves relative to the sub-issue's own repo, not the parent's.
+
+If no dependencies are found, treat all tickets as independent (all READY).
+If the dependency graph has cycles, warn and treat cycle participants as READY.
+
+---
+
+### 6. Classify Each Sub-issue
+
+| Status | Condition |
+|---|---|
+| `done` | Issue is `CLOSED`, or has a MERGED PR |
+| `in_progress` | Issue is `OPEN` and has an OPEN or DRAFT PR |
+| `ready` | Issue is `OPEN`, no active PR, all dependencies are `done` |
+| `blocked` | Issue is `OPEN`, no active PR, at least one dependency is not `done` |
+
+---
+
+### 7. Display the Status Board
+
+```
+Epic: <title> (<owner/repo>#<number>)
+Progress: <done-count>/<total> complete
+
+DONE:
+  [x] <owner/repo>#<N> - <title>
+
+IN PROGRESS:
+  [~] <owner/repo>#<N> - <title>  (PR #<pr> open)
+
+READY:
+  [ ] <owner/repo>#<N> - <title>
+
+BLOCKED:
+  [!] <owner/repo>#<N> - <title>
+      blocked by: <owner/repo>#<dep>
+```
+
+Omit groups with no tickets.
+
+---
+
+### 8. Detect Repo Layout
+
+Inspect the repos of all OPEN sub-issues:
+
+```bash
+PARENT_REPO="<owner>/<repo>"  # the epic/parent issue's repo
+
+UNIQUE_REPOS=(list of unique nameWithOwner values from open sub-issues)
+```
+
+**Same-repo layout** (all sub-issues share the parent's repo, or there are no
+sub-issues):
+
+- Create **one worktree** branched from the parent issue number.
+- All sub-issues are worked in that single worktree.
+- Branch: `<parent-issue-number>-<parent-title-slug>`
+
+**Cross-repo layout** (sub-issues span multiple repos):
+
+- Create one worktree per unique repo among the READY tickets.
+- Branch per repo: `<issue-number>-<slug>` (use the sub-issue number for that repo).
+- Recommend the most valuable repo to tackle first (see step 9).
+
+---
+
+### 9. Recommend One Ticket
+
+For **same-repo**: the recommendation is always "start / continue work on the
+parent branch." Skip the menu if a worktree already exists.
+
+For **cross-repo**: pick one READY sub-issue. Prefer the current session's
+repo; otherwise pick the ticket that unblocks the most others. Don't present
+a menu — pick one and explain why.
+
+```
+Recommended action:
+  <owner/repo>#<N> — <title>
+  branch: <branch-name>
+  worktree: <worktree-path>
+
+Proceed? (yes/no)
+```
+
+If the user declines or wants a different ticket, update and re-confirm.
+
+**Branch name format (generic):** `<issue-number>-<slug>`
+- Slugify: lowercase, replace non-alphanumeric with hyphens, collapse runs,
+  strip leading/trailing hyphens, truncate to 50 chars.
+- GLG repos: same format, but hyphens only (never slashes) as per
+  `glg-workflow.md`.
+
+---
+
+### 10. Create the Worktree
+
+Once the user confirms, execute without further prompts.
+
+**Locate the base repo:**
+
+```bash
+# Current repo root and its parent directory
+REPO_ROOT=$(git rev-parse --show-toplevel)
+REPO_PARENT=$(dirname "$REPO_ROOT")
+```
+
+For the current repo:
+
+```bash
+wt switch --create -y --no-cd <branch-name>
+```
+
+`--no-cd` suppresses the "Cannot change directory" warning in a non-interactive
+subprocess — the worktree is still created correctly.
+
+For a different repo (cross-repo sub-issue):
+
+```bash
+# Derive sibling path convention: <same-parent-dir>/<repo-name>
+OTHER_REPO_PATH="$REPO_PARENT/<repo-name>"
+
+# Check if the local clone exists
+if [ ! -d "$OTHER_REPO_PATH" ]; then
+  git clone git@github.com:<owner>/<repo-name>.git "$OTHER_REPO_PATH"
+fi
+
+wt -C "$OTHER_REPO_PATH" switch --create -y <branch-name>
+```
+
+The worktree lands at `<REPO_PARENT>/<repo-name>.<branch-name>`.
+
+**Worktree path variable:**
+
+```bash
+WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
+```
+
+---
+
+### 11. Install Dependencies
+
+After creating the worktree, auto-detect the package manager and install.
+Run the install command from `$WORKTREE_PATH`.
+
+Detection order (first match wins):
+
+| File present | Command |
+|---|---|
+| `pnpm-lock.yaml` | `pnpm install` |
+| `yarn.lock` | `yarn install` |
+| `package-lock.json` | `npm ci` |
+| `package.json` (no lock) | `npm install` |
+| `Gemfile.lock` | `bundle install` |
+| `requirements.txt` | `pip install -r requirements.txt` |
+| `pyproject.toml` | `poetry install` (if `[tool.poetry]` present) or `pip install -e .` |
+| `go.mod` | `go mod download` |
+| `Cargo.toml` | `cargo fetch` |
+
+If none of the above match, skip silently — don't guess or error.
+
+Run in the worktree directory:
+
+```bash
+cd "$WORKTREE_PATH" && <install-command>
+```
+
+Report the command that was run (or "no known package manager detected").
+
+---
+
+### 12. Spawn Session
+
+```bash
+# Strip double-quotes from title to avoid shell escaping issues
+SAFE_TITLE=$(echo "<title>" | tr -d '"')
+
+sesh connect \
+  --command "opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'" \
+  "$WORKTREE_PATH"
+```
+
+Report: branch created, worktree path, deps installed, session name.
+The new session handles implementation — this session's job is done.
+
+---
+
+### 13. Re-check (Subsequent Invocations)
+
+When `/workon` is invoked again (from any session), repeat steps 3–7.
+GitHub is the source of truth — no local state is cached.
+
+After re-fetching, explicitly call out what changed since last check:
+newly closed tickets, newly unblocked tickets, new PRs opened.
+
+---
+
+### 14. Review Gate (Before PR)
+
+When implementation on a ticket feels complete — before running `/pr` —
+invoke the review subagent:
+
+> "Before opening a PR, I'll run a code review on the current changes."
+
+Use the `review` subagent (via the Task tool) to analyse the diff. The review
+agent will check for bugs, edge cases, missing error handling, and quality
+issues.
+
+If the review surfaces issues:
+1. Address them in the current worktree.
+2. Commit the fixes (`/commit`).
+3. Re-run the review if issues were significant.
+
+Once the review passes (or only has minor/acknowledged notes), proceed with
+`/pr`. Link the PR to the sub-issue (not the parent epic), using
+`Fixes <owner>/<repo>#<number>` in the PR body.
+
+---
+
+## Integration with Other Skills
+
+| Task | Use |
+|---|---|
+| Commit changes | `/commit` skill |
+| Open a PR | `/pr` skill — after the review gate above |
+| Wrap up a session | `/done` skill |

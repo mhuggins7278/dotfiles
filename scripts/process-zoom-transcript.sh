@@ -6,9 +6,22 @@
 
 WATCH_DIR="$HOME/Downloads/zoom-transcripts"
 LOG="/tmp/zoom-transcript.log"
+DEBUG_LOG="/tmp/zoom-transcript-debug.log"
 
-# Exit early if no VTT files present
-vtt_files=("$WATCH_DIR"/*.vtt(N))
+# Ensure homebrew bins are available (launchd login shell omits /opt/homebrew/bin)
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+echo "[$(date)] script started, HOME=$HOME, PATH=$PATH" >> "$DEBUG_LOG"
+
+# Wait briefly for the file to fully land (WatchPaths fires on dir entry change,
+# which can precede the file being visible to a glob). Retry up to 5 times.
+vtt_files=()
+for attempt in {1..5}; do
+  vtt_files=("$WATCH_DIR"/*.vtt(N))
+  [[ ${#vtt_files[@]} -gt 0 ]] && break
+  sleep 2
+done
+
 if [[ ${#vtt_files[@]} -eq 0 ]]; then
   exit 0
 fi

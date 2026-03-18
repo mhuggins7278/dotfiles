@@ -60,11 +60,10 @@ defaults:
 keybindings:
   issues:
     - key: F
-      name: agent fix
+      name: workon
       command: >
         tmux new-window -c {{.RepoPath}}
-        'wt switch fix-issue-{{.IssueNumber}} -x '\''opencode --prompt "Fix issue #{{.IssueNumber}} on this branch."'\''
-        || wt switch --create -y fix-issue-{{.IssueNumber}} -x '\''opencode --prompt "Fix issue #{{.IssueNumber}} on this branch."'\'''
+        'opencode --prompt "/workon {{.RepoName}}#{{.IssueNumber}}"'
     - key: B
       command: >
         tmux display-popup -d {{.RepoPath}} -w 65 -h 10 -E 'ghprb {{.IssueNumber}}'
@@ -83,7 +82,7 @@ keybindings:
       name: agent review
       command: >
         tmux new-window -c {{.RepoPath}}
-        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "Review PR #{{.PrNumber}} on this branch." ; wt remove --no-delete-branch --force -y'\'''
+        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "Review PR #{{.PrNumber}} in {{.RepoName}}." ; wt remove --no-delete-branch --force -y'\'''
 repoPaths:
   glg/*: ~/github/glg/*
   Learn-Build-Teach/*: ~/github/mhuggins7278/*

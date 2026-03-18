@@ -17,6 +17,37 @@ return {
         default_delete_branch = false, -- whether to delete branch when merging PR
         ssh_aliases = {}, -- SSH aliases for custom domains
         users = 'assignable',
+        commands = {
+          issue = {
+            fix = function()
+              local utils = require 'octo.utils'
+              local buffer = utils.get_current_buffer()
+
+              if not (buffer and buffer:isIssue()) then
+                vim.notify('[octo] not in an issue buffer', vim.log.levels.WARN)
+                return
+              end
+
+              local issue_number = buffer:issue().number
+              local repo_path = vim.trim(vim.fn.system 'git rev-parse --show-toplevel')
+
+              if vim.v.shell_error ~= 0 then
+                vim.notify('[octo] could not determine repo path', vim.log.levels.ERROR)
+                return
+              end
+
+              local repo_name = vim.trim(vim.fn.system 'gh repo view --json nameWithOwner -q .nameWithOwner')
+
+              if vim.v.shell_error ~= 0 or repo_name == '' then
+                vim.notify('[octo] could not determine repo name', vim.log.levels.ERROR)
+                return
+              end
+
+              local cmd = string.format("opencode --prompt '/workon %s#%d'", repo_name, issue_number)
+              vim.fn.jobstart({ 'tmux', 'new-window', '-c', repo_path, cmd }, { detach = true })
+            end,
+          },
+        },
         picker_config = {
           use_emojis = false, -- use emojis in pickers (fzf-lua only)
           mappings = {

@@ -47,6 +47,12 @@ export const NotificationPlugin: Plugin = async ({
   return {
     event: async ({ event }) => {
       if (event.type === "session.idle") {
+        // Skip notifications for subagent sessions
+        const session = await client.session.get({
+          path: { id: event.properties.sessionID },
+        });
+        if (session.data?.parentID) return;
+
         const ghosttyFocused = await isGhosttyFocused();
         const sessionMatches = await tmuxSessionMatchesDirectory();
 

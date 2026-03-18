@@ -18,6 +18,7 @@ permission:
     "gh pr diff*": allow
     "gh pr review*": allow
     "gh api repos/*/*/pulls/**": allow
+    "gh api repos/*/*/contents/**": allow
 ---
 
 You are a code reviewer. Your job is to review recent changes and identify issues before they are committed.

@@ -1,6 +1,6 @@
 [
   {
-    "query": "/epic glg/streamliner#500",
+    "query": "/workon glg/streamliner#500",
     "should_trigger": true
   },
   {
@@ -8,19 +8,19 @@
     "should_trigger": true
   },
   {
-    "query": "show me the epic status for https://github.com/glg/streamliner/issues/123, specifically which sub-issues are still blocked",
+    "query": "show me the status for https://github.com/glg/streamliner/issues/123, specifically which sub-issues are still blocked",
     "should_trigger": true
   },
   {
-    "query": "ok so our squad has this big api modernization epic (glg/consultations-api#789) and im not sure what's ready to pick up today",
+    "query": "ok so our squad has this big api modernization issue (glg/consultations-api#789) and im not sure what's ready to pick up today",
     "should_trigger": true
   },
   {
-    "query": "which sub-issues in the data platform epic are unblocked now that we merged the schema migration PR? epic is glg/data-platform#67",
+    "query": "which sub-issues in the data platform epic are unblocked now that we merged the schema migration PR? issue is glg/data-platform#67",
     "should_trigger": true
   },
   {
-    "query": "spin up worktrees for whichever client portal epic tickets are ready to go, epic ref is glg/client-portal#88",
+    "query": "spin up a worktree for the client portal tickets that are ready to go, issue ref is glg/client-portal#88",
     "should_trigger": true
   },
   {
@@ -28,15 +28,27 @@
     "should_trigger": true
   },
   {
-    "query": "my team lead wants a cross-repo status report on the auth modernization epic before standup. its issue #234 in glg/streamliner",
+    "query": "my team lead wants a status report on the auth modernization work before standup. its issue #234 in glg/streamliner",
     "should_trigger": true
   },
   {
-    "query": "the blocked tickets in our epic at glg/platform-services#55 - what are they waiting on and which repo do those blockers live in?",
+    "query": "the blocked tickets in our issue at glg/platform-services#55 - what are they waiting on and which repo do those blockers live in?",
     "should_trigger": true
   },
   {
-    "query": "were starting sprint 3 of the mobile gateway epic, glg/api-gateway#301 - what got done in sprint 2 and what should i pick up now?",
+    "query": "were starting sprint 3 of the mobile gateway work, glg/api-gateway#301 - what got done in sprint 2 and what should i pick up now?",
+    "should_trigger": true
+  },
+  {
+    "query": "i want to start working on glg/streamliner#789 - the new dashboard widget feature. set up a worktree and get me going",
+    "should_trigger": true
+  },
+  {
+    "query": "/workon 42",
+    "should_trigger": true
+  },
+  {
+    "query": "set up a worktree for issue #500 in this repo",
     "should_trigger": true
   },
   {
@@ -49,10 +61,6 @@
   },
   {
     "query": "list all open issues in glg/streamliner that are tagged with 'bug' or 'regression' - i need to do triage",
-    "should_trigger": false
-  },
-  {
-    "query": "i want to start working on glg/streamliner#789 - the new dashboard widget feature. can you help me understand the codebase and plan the implementation?",
     "should_trigger": false
   },
   {
