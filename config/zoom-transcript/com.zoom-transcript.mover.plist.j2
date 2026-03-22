@@ -4,22 +4,20 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.zoom-transcript.watcher</string>
+  <string>com.zoom-transcript.mover</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/zsh</string>
     <string>-l</string>
-    <string>/Users/MHuggins/.dotfiles/scripts/process-zoom-transcript.sh</string>
+    <string>{{ ansible_env.HOME }}/.dotfiles/scripts/move-zoom-transcripts.sh</string>
   </array>
   <key>WatchPaths</key>
   <array>
-    <string>/Users/MHuggins/zoom-transcripts</string>
+    <string>{{ ansible_env.HOME }}/Downloads</string>
   </array>
-  <key>StartInterval</key>
-  <integer>300</integer>
   <key>StandardOutPath</key>
-  <string>/tmp/zoom-transcript-watcher.out.log</string>
+  <string>/tmp/zoom-mover.out.log</string>
   <key>StandardErrorPath</key>
-  <string>/tmp/zoom-transcript-watcher.err.log</string>
+  <string>/tmp/zoom-mover.err.log</string>
 </dict>
 </plist>

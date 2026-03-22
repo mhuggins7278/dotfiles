@@ -78,6 +78,7 @@
         - "~/github/mhuggins7278/"
         - "~/github/LearnBuildTeach/"
         - "~/zoom-transcripts/"
+        - "~/Library/Scripts/Folder Action Scripts/"
 
 
     - include_tasks: tasks/packages.yml

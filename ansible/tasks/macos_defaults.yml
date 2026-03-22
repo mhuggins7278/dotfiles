@@ -93,38 +93,56 @@
   become: yes
   tags: kanata
 
-- name: Install Zoom Transcript LaunchAgents
+- name: Ensure zoom-transcript scripts are executable
   file:
-    src: "{{ item.src | expanduser }}"
-    dest: "{{ item.dest | expanduser }}"
-    state: link
-    force: yes
+    path: "{{ item }}"
+    mode: "0755"
+  loop:
+    - "{{ ansible_env.HOME }}/.dotfiles/scripts/process-zoom-transcript.sh"
+    - "{{ ansible_env.HOME }}/.dotfiles/scripts/move-zoom-transcripts.sh"
+  when: ansible_os_family == "Darwin"
+  tags: zoom-transcript
+
+- name: Remove existing zoom-transcript plist symlinks (replaced by templates)
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ ansible_env.HOME }}/Library/LaunchAgents/com.zoom-transcript.watcher.plist"
+    - "{{ ansible_env.HOME }}/Library/LaunchAgents/com.zoom-transcript.mover.plist"
+  when: ansible_os_family == "Darwin"
+  tags: zoom-transcript
+
+- name: Install Zoom Transcript LaunchAgents from templates
+  template:
+    src: "{{ ansible_env.HOME }}/.dotfiles/config/zoom-transcript/{{ item.src }}"
+    dest: "{{ ansible_env.HOME }}/Library/LaunchAgents/{{ item.dest }}"
   loop:
     - {
-        src: "~/.dotfiles/config/zoom-transcript/com.zoom-transcript.watcher.plist",
-        dest: "~/Library/LaunchAgents/com.zoom-transcript.watcher.plist",
+        src: "com.zoom-transcript.watcher.plist.j2",
+        dest: "com.zoom-transcript.watcher.plist",
       }
     - {
-        src: "~/.dotfiles/config/zoom-transcript/com.zoom-transcript.mover.plist",
-        dest: "~/Library/LaunchAgents/com.zoom-transcript.mover.plist",
+        src: "com.zoom-transcript.mover.plist.j2",
+        dest: "com.zoom-transcript.mover.plist",
       }
   when: ansible_os_family == "Darwin"
   tags: zoom-transcript
 
 - name: Load Zoom Transcript LaunchAgents
-  shell: "launchctl load {{ item | expanduser }}"
+  shell: "launchctl load {{ item }}"
   loop:
-    - "~/Library/LaunchAgents/com.zoom-transcript.watcher.plist"
-    - "~/Library/LaunchAgents/com.zoom-transcript.mover.plist"
+    - "{{ ansible_env.HOME }}/Library/LaunchAgents/com.zoom-transcript.watcher.plist"
+    - "{{ ansible_env.HOME }}/Library/LaunchAgents/com.zoom-transcript.mover.plist"
   when: ansible_os_family == "Darwin"
   ignore_errors: yes
   tags: zoom-transcript
 
 - name: Compile Zoom Transcript Folder Action script
-  shell: >
-    osacompile -o
-    ~/Library/Scripts/Folder\ Action\ Scripts/move-vtt-to-zoom-transcripts.scpt
-    ~/.dotfiles/config/zoom-transcript/move-vtt-to-zoom-transcripts.applescript
+  shell: >-
+    osacompile
+    -o "{{ ansible_env.HOME }}/Library/Scripts/Folder Action Scripts/move-vtt-to-zoom-transcripts.scpt"
+    "{{ ansible_env.HOME }}/.dotfiles/config/zoom-transcript/move-vtt-to-zoom-transcripts.applescript"
   when: ansible_os_family == "Darwin"
   ignore_errors: yes
   tags: zoom-transcript
