@@ -76,8 +76,8 @@
     - Kill Dock
 
 - name: Install Kanata LaunchDaemon plist
-  copy:
-    src: "~/.dotfiles/config/kanata/com.kanata.service.plist"
+  template:
+    src: "{{ ansible_env.HOME }}/.dotfiles/config/kanata/com.kanata.service.plist.j2"
     dest: "/Library/LaunchDaemons/com.kanata.service.plist"
     owner: root
     group: wheel

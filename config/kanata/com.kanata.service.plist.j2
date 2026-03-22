@@ -6,9 +6,9 @@
   <string>com.kanata.service</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/local/bin/kanata</string>
+    <string>{% if ansible_machine == 'arm64' %}/opt/homebrew/bin/kanata{% else %}/usr/local/bin/kanata{% endif %}</string>
     <string>-c</string>
-    <string>/Users/MHuggins/.dotfiles/config/kanata/moonlander.kbd</string>
+    <string>{{ ansible_env.HOME }}/.dotfiles/config/kanata/moonlander.kbd</string>
   </array>
   <key>RunAtLoad</key>
   <true/>
