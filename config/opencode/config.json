@@ -8,13 +8,13 @@
         "bash": {
           "*": "ask",
           "gh repo view*": "allow",
-          "gh api user*": "allow",
-          "gh api graphql*": "allow",
-          "gh issue *": "allow",
-          "gh issue create *": "allow",
+          "gh api*": "allow",
+          "gh search*": "allow",
+          "gh issue*": "allow",
           "gh pr list*": "allow",
           "gh pr view*": "allow",
-          "gh project item-add *": "allow",
+          "gh pr diff*": "allow",
+          "gh project item-add*": "allow",
           "gh auth status*": "allow"
         }
       }
@@ -26,9 +26,11 @@
   },
   "permission": {
     "external_directory": {
+      "~/github/glg/**": "allow",
       "~/github/glg/epiquery-templates/**": "allow",
       "~/github/mhuggins7278/notes/**": "allow",
-      "~/.dotfiles/config/opencode/references/": "allow"
+      "~/.config/opencode/references/**": "allow",
+      "~/zoom-transcripts/**": "allow"
     },
     "skill": {
       "*": "allow"

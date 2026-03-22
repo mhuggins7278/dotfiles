@@ -18,6 +18,40 @@ return {
         ssh_aliases = {}, -- SSH aliases for custom domains
         users = 'assignable',
         commands = {
+          pr = {
+            review = function()
+              local utils = require 'octo.utils'
+              local buffer = utils.get_current_buffer()
+
+              if not (buffer and buffer:isPullRequest()) then
+                vim.notify('[octo] not in a pull request buffer', vim.log.levels.WARN)
+                return
+              end
+
+              local pr_number = buffer:pullRequest().number
+              local repo_path = vim.trim(vim.fn.system 'git rev-parse --show-toplevel')
+
+              if vim.v.shell_error ~= 0 then
+                vim.notify('[octo] could not determine repo path', vim.log.levels.ERROR)
+                return
+              end
+
+              local repo_name = vim.trim(vim.fn.system 'gh repo view --json nameWithOwner -q .nameWithOwner')
+
+              if vim.v.shell_error ~= 0 or repo_name == '' then
+                vim.notify('[octo] could not determine repo name', vim.log.levels.ERROR)
+                return
+              end
+
+              local inner_cmd = string.format(
+                'opencode --agent review --prompt "Review PR #%d in %s." ; wt remove --no-delete-branch --force -y',
+                pr_number,
+                repo_name
+              )
+              local cmd = string.format("wt switch pr:%d -x '%s'", pr_number, inner_cmd)
+              vim.fn.jobstart({ 'tmux', 'new-window', '-c', repo_path, cmd }, { detach = true })
+            end,
+          },
           issue = {
             fix = function()
               local utils = require 'octo.utils'

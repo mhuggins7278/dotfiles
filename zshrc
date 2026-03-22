@@ -1,8 +1,13 @@
 #
 zmodload zsh/zprof
-if [[ -f "/opt/homebrew/bin/brew" ]] then
-  # If you're using macOS, you'll want this enabled
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+# Inline brew shellenv — avoids subprocess + nested path_helper (~50ms savings)
+if [[ -d "/opt/homebrew" ]]; then
+  export HOMEBREW_PREFIX="/opt/homebrew"
+  export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+  export HOMEBREW_REPOSITORY="/opt/homebrew"
+  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+  [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}"
+  export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 fi
 
 
@@ -42,6 +47,7 @@ zinit light softmoth/zsh-vim-mode
 
 
 # Load completions - check cache age (rebuild daily)
+fpath=(/Users/MHuggins/.docker/completions $fpath)
 autoload -Uz compinit
 if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
   compinit -i
@@ -78,13 +84,7 @@ _go_path_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/gopath"
 if [[ ! -f "$_go_path_cache" ]] || [[ $(which go) -nt "$_go_path_cache" ]]; then
   go env GOPATH > "$_go_path_cache"
 fi
-GOPATH=$(cat "$_go_path_cache")/bin
-# Cache brew prefix
-_brew_prefix_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/brew_prefix"
-if [[ ! -f "$_brew_prefix_cache" ]]; then
-  brew --prefix > "$_brew_prefix_cache"
-fi
-_brew_prefix=$(cat "$_brew_prefix_cache")
+GOPATH=$(<"$_go_path_cache")/bin
 
 # Deduplicate PATH entries
 typeset -U path
@@ -92,29 +92,13 @@ path=(
 $path
 $GOPATH
 $PNPM_HOME
-"$_brew_prefix/opt/curl/bin"
+"$HOMEBREW_PREFIX/opt/curl/bin"
 $HOME/.local/bin
 $HOME/.local/share
 )
 # Source completion files
 # export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
-
-function launch_sesh() {
-  sesh connect "$(
-    sesh list -ti | fzf-tmux -p 55%,60% \
-      --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
-      --reverse \
-      --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
-      --bind 'tab:down,btab:up' \
-      --bind 'ctrl-a:change-prompt(⚡  )+reload(sesh list)' \
-      --bind 'ctrl-t:change-prompt(🪟  )+reload(sesh list -t)' \
-      --bind 'ctrl-g:change-prompt(⚙️  )+reload(sesh list -c)' \
-      --bind 'ctrl-x:change-prompt(📁  )+reload(sesh list -z)' \
-      --bind 'ctrl-f:change-prompt(🔎  )+reload(fd -H -d 2 -t d -E .Trash . ~/github)' \
-      --bind 'ctrl-d:execute(tmux kill-session -t {})+change-prompt(⚡  )+reload(sesh list -t)'
-  )"
-}
 
 # Cache expensive eval commands for faster startup
 _cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
@@ -167,8 +151,6 @@ fi
 [[ -s "$_glgroup_cache" ]] && source "$_glgroup_cache"
 # zprof
 
-# Docker CLI completions (remove duplicate compinit)
-fpath=(/Users/MHuggins/.docker/completions $fpath)
 # Terraform completion
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
@@ -182,4 +164,8 @@ export PATH="$PATH:/Users/MHuggins/.lmstudio/bin"
 # End of LM Studio CLI section
 
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+_wt_cache="$_cache_dir/wt.zsh"
+if [[ ! -f "$_wt_cache" ]] || [[ $(command -v wt) -nt "$_wt_cache" ]]; then
+  command wt config shell init zsh > "$_wt_cache" 2>/dev/null || touch "$_wt_cache"
+fi
+[[ -s "$_wt_cache" ]] && source "$_wt_cache"

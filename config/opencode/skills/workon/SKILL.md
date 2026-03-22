@@ -208,6 +208,10 @@ Recommended action:
 Proceed? (yes/no)
 ```
 
+**Only show the `Proceed?` prompt when there are multiple READY tickets and a
+real choice to confirm.** For single-ticket epics (no sub-issues, or only one
+READY ticket), skip the prompt and proceed automatically.
+
 If the user declines or wants a different ticket, update and re-confirm.
 
 **Branch name format (generic):** `<issue-number>-<slug>`
@@ -300,9 +304,16 @@ Report the command that was run (or "no known package manager detected").
 # Strip double-quotes from title to avoid shell escaping issues
 SAFE_TITLE=$(echo "<title>" | tr -d '"')
 
+# Derive session name the same way sesh does (basename of path)
+SESSION_NAME=$(basename "$WORKTREE_PATH")
+
 sesh connect \
   --command "opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'" \
   "$WORKTREE_PATH"
+
+# sesh connect creates the session but the switch may not propagate when
+# called from a subprocess. Explicitly switch the active tmux client.
+tmux switch-client -t "$SESSION_NAME"
 ```
 
 Report: branch created, worktree path, deps installed, session name.
@@ -322,22 +333,38 @@ newly closed tickets, newly unblocked tickets, new PRs opened.
 
 ### 14. Review Gate (Before PR)
 
-When implementation on a ticket feels complete — before running `/pr` —
-invoke the review subagent:
+When the user signals that implementation is complete — or when you judge that
+all planned work is done — trigger the review loop before opening a PR.
 
-> "Before opening a PR, I'll run a code review on the current changes."
+**Do not skip this step.** The review runs on uncommitted changes in the
+working tree (`git diff` + `git diff --staged`). The loop runs until the
+review agent returns `APPROVED` or the user intervenes.
 
-Use the `review` subagent (via the Task tool) to analyse the diff. The review
-agent will check for bugs, edge cases, missing error handling, and quality
-issues.
+#### Loop
 
-If the review surfaces issues:
-1. Address them in the current worktree.
-2. Commit the fixes (`/commit`).
-3. Re-run the review if issues were significant.
+1. Announce: *"Running code review on current changes before opening a PR."*
+2. Invoke the `review` subagent via the Task tool. Pass it the issue context
+   (owner/repo, issue number, title) so it understands what was being built.
+3. Read the `REVIEW_VERDICT` block at the end of the subagent's output:
+   - `APPROVED` → exit the loop and proceed to "After approval" below.
+   - `NEEDS_WORK` → continue below.
+4. Present the Blocker and Critical issues to the user in a brief summary.
+5. Address each Blocker and Critical issue in the worktree. Warnings and
+   Suggestions are noted but do not block the loop.
+6. Commit the fixes using `/commit`.
+7. Return to step 1.
 
-Once the review passes (or only has minor/acknowledged notes), proceed with
-`/pr`. Link the PR to the sub-issue (not the parent epic), using
+**Loop guard:** If `NEEDS_WORK` is returned 3 times in a row, stop looping
+and surface the remaining issues to the user:
+
+> "The review has flagged issues across 3 iterations. Remaining blockers:
+> [list]. How would you like to proceed — fix manually, skip, or abandon?"
+
+Wait for explicit direction before continuing.
+
+#### After approval
+
+Proceed with `/pr`. Link the PR to the sub-issue (not the parent epic), using
 `Fixes <owner>/<repo>#<number>` in the PR body.
 
 ---

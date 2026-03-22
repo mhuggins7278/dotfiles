@@ -6,7 +6,7 @@ temperature: 0.3
 permission:
   external_directory:
     ~/github/mhuggins7278/notes/**: allow
-    ~/Downloads/zoom-transcripts/**: allow
+    ~/zoom-transcripts/**: allow
   edit:
     ~/github/mhuggins7278/notes/**: allow
   read:
@@ -54,15 +54,16 @@ This document defines the daily tracking workflow for Obsidian vault management.
 
 Obsidian supports the following checkbox states. Use them consistently across all task sections:
 
-| Syntax | Meaning | Carryover |
-|--------|---------|-----------|
-| `- [ ]` | To do | ✅ Carry over |
-| `- [/]` | In progress | ✅ Carry over |
-| `- [x]` | Done | ❌ Do not carry over |
-| `- [-]` | Cancelled | ❌ Do not carry over |
-| `- [>]` | Deferred | ✅ Carry over |
+| Syntax  | Meaning     | Carryover            |
+| ------- | ----------- | -------------------- |
+| `- [ ]` | To do       | ✅ Carry over        |
+| `- [/]` | In progress | ✅ Carry over        |
+| `- [x]` | Done        | ❌ Do not carry over |
+| `- [-]` | Cancelled   | ❌ Do not carry over |
+| `- [>]` | Deferred    | ✅ Carry over        |
 
 **Usage guidance**:
+
 - Use `- [/]` for tasks actively being worked on
 - Use `- [-]` for tasks that are dropped or no longer relevant
 - Use `- [>]` for tasks intentionally pushed to a future date
@@ -537,11 +538,6 @@ attendees:
 
 - Decision 1
 
-## Action Items
-
-- [ ] Action item 1
-- [ ] Action item 2
-
 ## Next Steps
 
 - Step 1
@@ -557,9 +553,11 @@ Add a backlink in the Meetings section:
 
 ### Action Items from Meetings
 
+**CRITICAL**: Tasks and action items from meetings go to the **daily note only** — never in the meeting file. Meeting files are for reference (discussion points, decisions, next steps as prose) not for tracking work.
+
 When summarizing meeting transcripts:
 
-- Add action items as checkboxes in the appropriate daily note section
+- Add action items as checkboxes in the **daily note**, not the meeting file
 - **Task ownership routing**:
   - If the task is for **someone else** → add to `Waiting On` section with person name
   - If **someone is waiting on me** → add to `I Owe` section with person name

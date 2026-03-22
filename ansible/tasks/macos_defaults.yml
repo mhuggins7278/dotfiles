@@ -93,7 +93,7 @@
   become: yes
   tags: kanata
 
-- name: Install Zoom Transcript Watcher LaunchAgent
+- name: Install Zoom Transcript LaunchAgents
   file:
     src: "{{ item.src | expanduser }}"
     dest: "{{ item.dest | expanduser }}"
@@ -104,11 +104,27 @@
         src: "~/.dotfiles/config/zoom-transcript/com.zoom-transcript.watcher.plist",
         dest: "~/Library/LaunchAgents/com.zoom-transcript.watcher.plist",
       }
+    - {
+        src: "~/.dotfiles/config/zoom-transcript/com.zoom-transcript.mover.plist",
+        dest: "~/Library/LaunchAgents/com.zoom-transcript.mover.plist",
+      }
   when: ansible_os_family == "Darwin"
   tags: zoom-transcript
 
-- name: Load Zoom Transcript Watcher LaunchAgent
-  shell: launchctl load ~/Library/LaunchAgents/com.zoom-transcript.watcher.plist
+- name: Load Zoom Transcript LaunchAgents
+  shell: "launchctl load {{ item | expanduser }}"
+  loop:
+    - "~/Library/LaunchAgents/com.zoom-transcript.watcher.plist"
+    - "~/Library/LaunchAgents/com.zoom-transcript.mover.plist"
+  when: ansible_os_family == "Darwin"
+  ignore_errors: yes
+  tags: zoom-transcript
+
+- name: Compile Zoom Transcript Folder Action script
+  shell: >
+    osacompile -o
+    ~/Library/Scripts/Folder\ Action\ Scripts/move-vtt-to-zoom-transcripts.scpt
+    ~/.dotfiles/config/zoom-transcript/move-vtt-to-zoom-transcripts.applescript
   when: ansible_os_family == "Darwin"
   ignore_errors: yes
   tags: zoom-transcript

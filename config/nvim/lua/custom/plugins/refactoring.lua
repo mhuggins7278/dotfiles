@@ -21,8 +21,5 @@ return {
     vim.keymap.set('n', '<leader>rbf', ':Refactor extract_block_to_file', { desc = '[R]efactor extract [B]lock to [F]ile' })
 
     -- Refactor selection menu
-    vim.keymap.set({ 'n', 'x' }, '<leader>R', function()
-      require('refactoring').select_refactor()
-    end, { desc = '[R]efacto[r] select' })
   end,
 }

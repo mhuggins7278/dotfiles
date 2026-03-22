@@ -3,7 +3,6 @@ return { -- LSP Configuration & Plugins
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for neovim
     'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'saghen/blink.cmp',
     { 'j-hui/fidget.nvim', opts = {} },
@@ -11,11 +10,6 @@ return { -- LSP Configuration & Plugins
   },
   config = function()
     local signs = { Error = '󰅚 ', Warn = '󰀪 ', Hint = '󰌶 ', Info = ' ' }
-    local ok, util = pcall(require, 'lspconfig.util')
-    if not ok then
-      vim.notify 'lspconfig.util could not be loaded'
-      return
-    end
     vim.diagnostic.config {
       signs = {
         text = {
@@ -63,6 +57,7 @@ return { -- LSP Configuration & Plugins
         max_height = 20,
       },
     }
+
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
 
@@ -196,415 +191,66 @@ return { -- LSP Configuration & Plugins
       end,
     })
 
-    -- LSP servers and clients are able to communicate to each other what features they support.
-    --  By default, Neovim doesn't support everything that is in the LSP Specification.
-    --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-    --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+    -- Set global capabilities for all LSP servers.
+    -- blink.cmp extends the default capabilities with completion item support.
+    vim.lsp.config('*', {
+      capabilities = vim.tbl_deep_extend(
+        'force',
+        vim.lsp.protocol.make_client_capabilities(),
+        require('blink.cmp').get_lsp_capabilities({}, false),
+        -- Ensure snippet support is enabled for HTML/JSON
+        { textDocument = { completion = { completionItem = { snippetSupport = true } } } }
+      ),
+    })
 
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities({}, false))
-
-    -- Enable snippet support for HTML/JSON
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-    -- Enable the following language servers
-    --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-    --
-    --  Add any additional override configuration in the following tables. Available keys are:
-    --  - cmd (table): Override the default command used to start the server
-    --  - filetypes (table): Override the default list of associated filetypes for the server
-    --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-    --  - settings (table): Override the default settings passed when initializing the server.
-    --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-    local servers = {
-      -- clangd = {},
-      lua_ls = {
-        settings = {
-          Lua = {
-            runtime = { version = 'LuaJIT' },
-            workspace = {
-              checkThirdParty = false,
-              library = {
-                '${3rd}/luv/library',
-                unpack(vim.api.nvim_get_runtime_file('', true)),
-              },
-            },
-            completion = {
-              callSnippet = 'Replace',
-            },
-            hint = {
-              enable = true,
-            },
-            telemetry = { enable = false },
-          },
-        },
-      },
-      gopls = {
-        settings = {
-          gopls = {
-            gofumpt = true,
-            -- Performance optimizations
-            diagnosticsDelay = '250ms',
-            symbolMatcher = 'FastFuzzy',
-            symbolScope = 'workspace',
-            -- Completion
-            matcher = 'Fuzzy',
-            completionBudget = '100ms',
-            experimentalPostfixCompletions = true,
-            -- Documentation
-            linkTarget = 'pkg.go.dev',
-            hoverKind = 'FullDocumentation',
-            -- Code lenses
-            codelenses = {
-              gc_details = false,
-              generate = true,
-              regenerate_cgo = true,
-              run_govulncheck = true,
-              test = true,
-              tidy = true,
-              upgrade_dependency = true,
-              vendor = true,
-            },
-            -- Inlay hints
-            hints = {
-              assignVariableTypes = true,
-              compositeLiteralFields = true,
-              compositeLiteralTypes = true,
-              constantValues = true,
-              functionTypeParameters = true,
-              parameterNames = true,
-              rangeVariableTypes = true,
-            },
-            -- Analyses
-            analyses = {
-              -- fieldalignment removed in gopls v0.17.0, hover over struct fields instead
-              nilness = true,
-              shadow = true,
-              unusedparams = true,
-              unusedvariable = true,
-              unusedwrite = true,
-              useany = true,
-            },
-            usePlaceholders = true,
-            completeUnimported = true,
-            staticcheck = true,
-            directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules', '-**/node_modules' },
-            semanticTokens = true,
-          },
-        },
-      },
-      -- pyright = {},
-      -- rust_analyzer = {},
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      --
-      tailwindcss = {
-        root_dir = util.root_pattern(
-          'tailwind.config.js',
-          'tailwind.config.cjs',
-          'tailwind.config.mjs',
-          'tailwind.config.ts',
-          'postcss.config.js',
-          'postcss.config.ts'
-        ),
-        settings = {
-          tailwindCSS = {
-            includeLanguages = {
-              typescript = 'javascript',
-              typescriptreact = 'javascript',
-              ['typescript.tsx'] = 'typescriptreact',
-              ['javascript.jsx'] = 'javascriptreact',
-            },
-            experimental = {
-              classRegex = {
-                'tw`([^`]*)',
-                'tw="([^"]*)',
-                'tw={"([^"}]*)',
-                'tw\\.\\w+`([^`]*)',
-                { 'clsx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-                { 'classnames\\(([^)]*)\\)', "'([^']*)'" },
-                { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
-              },
-            },
-            lint = {
-              cssConflict = 'warning',
-              invalidApply = 'error',
-              invalidConfigPath = 'error',
-              invalidScreen = 'error',
-              invalidTailwindDirective = 'error',
-              invalidVariant = 'error',
-              recommendedVariantOrder = 'warning',
-            },
-            validate = true,
-            colorDecorators = true,
-            suggestions = true,
-            showPixelEquivalents = true,
-            rootFontSize = 16,
-          },
-        },
-      },
-
-      biome = {
-        root_dir = util.root_pattern 'biome.json',
-        single_file_support = false,
-      },
-
-      oxlint = {},
-
-      terraformls = {
-        cmd = { 'terraform-ls', 'serve' },
-        filetypes = { 'terraform', 'tf', 'hcl' },
-        root_dir = util.root_pattern('.terraform', '.git'),
-        settings = {
-          terraform = {
-            validation = {
-              enableEnhancedValidation = true,
-            },
-            experimentalFeatures = {
-              validateOnSave = true,
-              prefillRequiredFields = true,
-            },
-          },
-        },
-      },
-
-      yamlls = {
-        settings = {
-          yaml = {
-            schemaStore = {
-              enable = true,
-              url = 'https://www.schemastore.org/api/json/catalog.json',
-            },
-            schemas = require('schemastore').yaml.schemas(),
-            format = {
-              enable = true,
-              singleQuote = false,
-              bracketSpacing = true,
-            },
-            validate = true,
-            hover = true,
-            completion = true,
-            customTags = {
-              '!vault',
-              '!encrypted/pkcs1-oaep scalar',
-              '!reference sequence',
-            },
-          },
-          redhat = {
-            telemetry = {
-              enabled = false,
-            },
-          },
-        },
-      },
-
-      html = {
-        settings = {
-          html = {
-            format = {
-              enable = true,
-              wrapLineLength = 120,
-              wrapAttributes = 'auto',
-              templating = true,
-              unformatted = 'wbr',
-              contentUnformatted = 'pre,code,textarea',
-              endWithNewline = false,
-              preserveNewLines = true,
-              maxPreserveNewLines = 2,
-            },
-            validate = {
-              scripts = true,
-              styles = true,
-            },
-            autoClosingTags = true,
-            suggest = {
-              html5 = true,
-            },
-            hover = {
-              documentation = true,
-              references = true,
-            },
-          },
-        },
-      },
-
-      taplo = {
-        settings = {
-          taplo = {
-            formatter = {
-              alignEntries = false,
-              alignComments = true,
-              arrayTrailingComma = true,
-              arrayAutoExpand = true,
-              arrayAutoCollapse = true,
-              compactArrays = true,
-              compactInlineTables = false,
-              columnWidth = 80,
-              indentTables = false,
-              trailingNewline = true,
-              reorderKeys = false,
-              allowedBlankLines = 2,
-            },
-            schema = {
-              enabled = true,
-              repositoryEnabled = true,
-              repositoryUrl = 'https://taplo.tamasfe.dev/schema_index.json',
-            },
-          },
-        },
-      },
-
-      jsonls = {
-        settings = {
-          json = {
-            schemas = require('schemastore').json.schemas(),
-            validate = { enable = true },
-            format = {
-              enable = true,
-            },
-          },
-        },
-      },
-
-      vtsls = {
-        -- explicitly add default filetypes, so that we can extend
-        -- them in related extras
-        filetypes = {
-          'javascript',
-          'javascriptreact',
-          'javascript.jsx',
-          'typescript',
-          'typescriptreact',
-          'typescript.tsx',
-        },
-        settings = {
-          vtsls = {
-            enableMoveToFileCodeAction = true,
-            autoUseWorkspaceTsdk = true,
-            experimental = {
-              maxInlayHintLength = 30,
-              completion = {
-                enableServerSideFuzzyMatch = true,
-                entriesLimit = 100,
-              },
-              plugins = {},
-            },
-          },
-          -- Top-level typescript/javascript settings for vtsls
-          typescript = {
-            updateImportsOnFileMove = { enabled = 'always' },
-            suggest = {
-              completeFunctionCalls = true,
-              autoImports = true,
-              paths = true,
-              includeCompletionsForImportStatements = true,
-            },
-            preferences = {
-              includePackageJsonAutoImports = 'auto',
-              autoImportFileExcludePatterns = {
-                '**/node_modules/**',
-                '**/.git/**',
-                '**/dist/**',
-                '**/build/**',
-              },
-              preferTypeOnlyAutoImports = true,
-              renameMatchingJsxTags = true,
-              useAliasesForRenames = true,
-            },
-            inlayHints = {
-              enumMemberValues = { enabled = true },
-              functionLikeReturnTypes = { enabled = true },
-              parameterNames = { enabled = 'literals' },
-              parameterTypes = { enabled = true },
-              propertyDeclarationTypes = { enabled = true },
-              variableTypes = { enabled = false },
-            },
-          },
-          javascript = {
-            updateImportsOnFileMove = { enabled = 'always' },
-            suggest = {
-              completeFunctionCalls = true,
-              autoImports = true,
-              paths = true,
-              includeCompletionsForImportStatements = true,
-            },
-            preferences = {
-              includePackageJsonAutoImports = 'auto',
-              autoImportFileExcludePatterns = {
-                '**/node_modules/**',
-                '**/.git/**',
-                '**/dist/**',
-                '**/build/**',
-              },
-              renameMatchingJsxTags = true,
-              useAliasesForRenames = true,
-            },
-            inlayHints = {
-              enumMemberValues = { enabled = true },
-              functionLikeReturnTypes = { enabled = true },
-              parameterNames = { enabled = 'literals' },
-              parameterTypes = { enabled = true },
-              propertyDeclarationTypes = { enabled = true },
-              variableTypes = { enabled = false },
-            },
-          },
-        },
+    -- Ensure the servers and tools are installed via Mason.
+    --  To check the current status of installed tools and/or manually install
+    --  other tools, you can run :Mason (press `g?` for help in this menu).
+    require('mason').setup()
+    require('mason-tool-installer').setup {
+      ensure_installed = {
+        -- LSP servers
+        'biome',
+        'gopls',
+        'html-lsp',
+        'json-lsp',
+        'lua-language-server',
+        'oxlint',
+        'tailwindcss-language-server',
+        'taplo',
+        'terraform-ls',
+        'vtsls',
+        'yaml-language-server',
+        -- Formatters and tools
+        'delve',
+        'gofumpt',
+        'goimports',
+        'gomodifytags',
+        'impl',
+        'jq',
+        'prettierd',
+        'sql-formatter',
+        'sqlfluff',
+        'stylua',
       },
     }
 
-    -- Ensure the servers and tools above are installed
-    --  To check the current status of installed tools and/or manually install
-    --  other tools, you can run
-    --    :Mason
-    --
-    --  You can press `g?` for help in this menu
-    require('mason').setup()
-
-    -- You can add other tools here that you want Mason to install
-    -- for you, so that they are available from within Neovim.
-    local ensure_installed = vim.tbl_keys(servers or {})
-    vim.list_extend(ensure_installed, {
-      'biome',
-      'delve',
-      'gofumpt',
-      'goimports',
-      'gomodifytags',
+    -- Enable all configured LSP servers.
+    -- Each server's config lives in lsp/<server_name>.lua and is automatically
+    -- discovered from the runtimepath. nvim-lspconfig provides the default
+    -- cmd/filetypes/root_dir for servers not fully specified here.
+    vim.lsp.enable {
+      'lua_ls',
       'gopls',
-      'impl',
-      'jq',
-      'prettierd',
-      'sql-formatter',
-      'sqlfluff',
-      'stylua',
       'vtsls',
-    })
-    require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-    -- Use new vim.lsp.config API for Neovim 0.11+
-    -- Configure each server with the new API before mason sets them up
-    for server_name, server_config in pairs(servers) do
-      local config = vim.tbl_deep_extend('force', {
-        capabilities = capabilities,
-      }, server_config)
-
-      -- Use the new vim.lsp.config() API to set defaults
-      vim.lsp.config(server_name, config)
-    end
-
-    ---@diagnostic disable-next-line: missing-fields
-    require('mason-lspconfig').setup {
-      ensure_installed = vim.tbl_keys(servers),
-      handlers = {
-        function(server_name)
-          -- Enable the server with vim.lsp.enable
-          -- The config has already been set above
-          vim.lsp.enable(server_name)
-        end,
-      },
+      'tailwindcss',
+      'biome',
+      'oxlint',
+      'terraformls',
+      'yamlls',
+      'html',
+      'taplo',
+      'jsonls',
     }
   end,
 }

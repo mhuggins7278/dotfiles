@@ -4,7 +4,7 @@
 # passes each to the opencode daily-notes agent for summarization and note creation,
 # then deletes the processed file.
 
-WATCH_DIR="$HOME/Downloads/zoom-transcripts"
+WATCH_DIR="$HOME/zoom-transcripts"
 LOG="/tmp/zoom-transcript.log"
 DEBUG_LOG="/tmp/zoom-transcript-debug.log"
 
@@ -18,11 +18,13 @@ echo "[$(date)] script started, HOME=$HOME, PATH=$PATH" >> "$DEBUG_LOG"
 vtt_files=()
 for attempt in {1..5}; do
   vtt_files=("$WATCH_DIR"/*.vtt(N))
+  echo "[$(date)] attempt $attempt: found ${#vtt_files[@]} files in $WATCH_DIR" >> "$DEBUG_LOG"
   [[ ${#vtt_files[@]} -gt 0 ]] && break
   sleep 2
 done
 
 if [[ ${#vtt_files[@]} -eq 0 ]]; then
+  echo "[$(date)] exiting: no vtt files found after retries" >> "$DEBUG_LOG"
   exit 0
 fi
 

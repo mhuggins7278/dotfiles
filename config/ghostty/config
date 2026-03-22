@@ -15,6 +15,7 @@ cursor-opacity = 0.7
 # Font Configuration
 font-family = "Maple Mono NF"
 font-size = 14.0
+font-thicken = true
 
 # Clipboard (OSC 52 for tmux/vim)
 clipboard-read = allow
@@ -32,6 +33,15 @@ mouse-hide-while-typing = true
 
 # Keybindings
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+# Quick Terminal
+quick-terminal-position = bottom
+quick-terminal-screen = main
+quick-terminal-animation-duration = 0.1
+quick-terminal-autohide = true
+
+# Window State
+window-save-state = always
 
 # Performance & Compatibility
 adjust-cell-width = 0

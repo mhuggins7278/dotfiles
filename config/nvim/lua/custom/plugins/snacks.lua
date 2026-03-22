@@ -9,10 +9,22 @@ return {
     bufdelete = { enabled = 'all' },
     dashboard = {
       enabled = true,
+      preset = {
+        keys = {
+          { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
+          { icon = ' ', key = 'n', desc = 'New File', action = ':ene | startinsert' },
+          { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+          { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
+          { icon = ' ', key = 'I', desc = 'Issues', action = ':Octo issue list' },
+          { icon = ' ', key = 'R', desc = 'Pull Requests', action = ':Octo pr list' },
+          { icon = '󰒲 ', key = 'L', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
+          { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+        },
+      },
       sections = {
         { section = 'header' },
         { section = 'keys', gap = 1 },
-        { icon = ' ', title = 'Recent Files', section = 'recent_files', cwd = true, indent = 2, padding = { 2, 2 } },
+        { icon = ' ', title = 'Recent Files', section = 'recent_files', cwd = true, indent = 2, padding = { 2, 2 } },
         { section = 'startup' },
       },
     },
