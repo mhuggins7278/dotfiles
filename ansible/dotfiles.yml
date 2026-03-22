@@ -62,7 +62,6 @@
         - "~/.config/gh"
         - "~/.aws/"
         - "~/.config/karabiner/"
-        - "~/.config/planetscale/"
         - "~/.config/mssqlcli/"
         - "~/.config/terminator/"
         - "~/.config/tmux/"
@@ -73,12 +72,13 @@
         - "~/.config/kanata/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"
-        - "~/Library/Application Support/layzgit/"
+        - "~/Library/Application Support/lazygit/"
         - "~/github/"
         - "~/github/glg/"
         - "~/github/mhuggins7278/"
         - "~/github/LearnBuildTeach/"
-        - "~/Downloads/zoom-transcripts/"
+        - "~/zoom-transcripts/"
+
 
     - include_tasks: tasks/packages.yml
       tags:

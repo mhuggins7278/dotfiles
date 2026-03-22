@@ -36,7 +36,6 @@
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }
     - { src: "~/.dotfiles/zshrc", dest: "~/.zshrc" }
     - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile" }
-    - { src: "~/.dotfiles/config/kitty", dest: "~/.config/kitty", force: true }
     - {
         src: "~/.dotfiles/config/lazygit/config.yml",
         dest: "~/Library/Application Support/lazygit/config.yml",
@@ -78,6 +77,16 @@
     - {
         src: "~/.dotfiles/config/sketchybar",
         dest: "~/.config/sketchybar",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/karabiner/karabiner.json",
+        dest: "~/.config/karabiner/karabiner.json",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/mssqlcli/config",
+        dest: "~/.config/mssqlcli/config",
         force: true,
       }
     - {

@@ -1,11 +1,13 @@
 ---
 taps:
+  aarondfrancis/tap:
+  anomalyco/tap:
   arl/arl:
   cfergeau/crc:
   common-fate/granted:
+  felixkratz/formulae:
   fsouza/prettierd:
   hashicorp/tap:
-  homebrew/cask-fonts:
   homebrew/command-not-found:
   homebrew/services:
   jesseduffield/lazydocker:

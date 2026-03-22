@@ -27,6 +27,7 @@ formula:
   cffi:
   cjson:
   colima:
+  aarondfrancis/tap/counselors:
   commitizen:
   coreutils:
   cowsay:
@@ -35,6 +36,7 @@ formula:
   dav1d:
   ddrescue:
   deno:
+  diffnav:
   docker:
   docker-buildx:
   docker-completion:
@@ -47,7 +49,7 @@ formula:
   eza:
   fd:
   fnm:
-  ffmpeg@7:
+  ffmpeg:
   ffmpegthumbnailer:
   findutils:
   fish:
@@ -93,16 +95,14 @@ formula:
   imath:
   iproute2mac:
   jansson:
-  jaraco.text:
-  jasper:
   jbig2dec:
   jpeg-turbo:
   jpeg-xl:
   jq:
-  kanata:
   krb5:
   lame:
   lazydocker:
+  lazygit:
   leptonica:
   libarchive:
   libass:
@@ -120,16 +120,13 @@ formula:
   libidn2:
   libksba:
   liblinear:
-  liblqr:
   libmicrohttpd:
   libnghttp2:
   libnghttp3:
   libngtcp2:
   libogg:
-  libomp:
   libpng:
   libpq:
-  libraw:
   librist:
   libsamplerate:
   libslirp:
@@ -157,7 +154,6 @@ formula:
   libxext:
   libxrender:
   libyaml:
-  libzip:
   lima:
   little-cms2:
   llvm:
@@ -172,6 +168,7 @@ formula:
   m4:
   mbedtls:
   mercurial:
+  mole:
   moreutils:
   mpdecimal:
   mpfr:
@@ -193,7 +190,6 @@ formula:
   nvm:
   oniguruma:
   openapi-generator:
-  opencode:
   opencore-amr:
   openexr:
   openjdk:
@@ -204,8 +200,6 @@ formula:
   opentofu:
   openvpn:
   opus:
-  oxfmt:
-  oxlint:
   p11-kit:
   p7zip:
   pango:
@@ -243,7 +237,6 @@ formula:
   redis:
   rename:
   ripgrep:
-  rtmpdump:
   rubberband:
   ruby:
   rust:
@@ -253,6 +246,7 @@ formula:
   sesh:
   sevenzip:
   shared-mime-info:
+  felixkratz/formulae/sketchybar:
   shellcheck:
   silicon:
   simdjson:
@@ -290,6 +284,7 @@ formula:
   wget:
   wireguard-go:
   wireguard-tools:
+  worktrunk:
   x264:
   x265:
   xorgproto:
@@ -297,7 +292,6 @@ formula:
   xz:
   yarn:
   yazi:
-  z3:
   zellij:
   zeromq:
   zf:

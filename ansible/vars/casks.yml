@@ -3,6 +3,7 @@ casks:
   aerospace:
   azure-data-studio:
   bitwarden:
+  copilot-cli:
   discord:
   docker:
   docker-desktop:
@@ -24,8 +25,6 @@ casks:
   licecap:
   macdown:
   ngrok:
-  notion:
-  orbstack:
   postman:
   spotify:
   visual-studio-code:
