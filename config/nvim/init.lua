@@ -224,14 +224,7 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   callback = OrganizeImports,
 -- })
 
--- vim.api.nvim_create_autocmd({ 'FileType' }, {
---   desc = 'Enable completions for dadbod/sql',
---   group = vim.api.nvim_create_augroup('dadbad', {}),
---   pattern = { 'sql', 'mysql', 'plsql' },
---   callback = function()
---     vim.schedule(require('cmp').setup.buffer { sources = { { name = 'dadbod' } } })
---   end,
--- })
+
 vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = { 'aerospace.toml' },
   command = "execute 'silent !aerospace reload-config'",
@@ -341,26 +334,12 @@ require('lazy').setup {
           term_colors = false,
           default_integrations = true,
           integrations = {
-            alpha = true,
-            avante = true,
-            blink_cmp = true,
-            cmp = true,
-            copilot_vim = true,
-            dadbod_ui = true,
-            dap = true,
-            dap_ui = true,
             diffview = true,
-            fidget = true,
-            gitsigns = true,
             harpoon = true,
             lsp_trouble = true,
-            indent_blankline = true,
-            markdown = true,
-            mason = true,
-            mini = {
-              enabled = true,
-              indentscope_color = '',
-            },
+            neotest = true,
+            noice = true,
+            octo = true,
             native_lsp = {
               enabled = true,
               virtual_text = {
@@ -375,21 +354,7 @@ require('lazy').setup {
                 warnings = { 'undercurl' },
                 information = { 'undercurl' },
               },
-              -- inlay_hints = {
-              --   background = true,
-              -- },
             },
-            neogit = true,
-            neotest = true,
-            noice = true,
-            notify = true,
-            nvimtree = true,
-            octo = true,
-            telescope = true,
-            treesitter = true,
-            treesitter_context = true,
-            ts_rainbow2 = true,
-            which_key = true,
           },
           styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
             comments = { 'italic' }, -- Change the style of comments
