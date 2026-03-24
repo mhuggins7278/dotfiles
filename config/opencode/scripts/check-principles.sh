@@ -23,7 +23,9 @@ else
 fi
 
 # Principle 2: No 'console.log' in production code (JS/TS only, excluding tests)
-if git diff --cached --name-only -- "*.js" "*.ts" "*.tsx" "*.jsx" | grep -v -E "(test|spec|story)" | xargs -I {} grep -l 'console\.log' {} 2>/dev/null; then
+STAGED_SRC=$(git diff --cached --name-only -- "*.js" "*.ts" "*.tsx" "*.jsx" \
+  | grep -v -E "(test|spec|story)" || true)
+if [ -n "$STAGED_SRC" ] && echo "$STAGED_SRC" | xargs grep -q 'console\.log' 2>/dev/null; then
     echo -e "${RED}✗ console.log found in staged source files${NC}"
     ERRORS=$((ERRORS + 1))
 else
