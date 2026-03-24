@@ -30,6 +30,7 @@
       "~/github/glg/epiquery-templates/**": "allow",
       "~/github/mhuggins7278/notes/**": "allow",
       "~/.config/opencode/references/**": "allow",
+      "~/.dotfiles/config/opencode/references/**": "allow",
       "~/zoom-transcripts/**": "allow"
     },
     "skill": {

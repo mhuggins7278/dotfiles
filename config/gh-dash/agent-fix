@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# agent-fix — Spawn an opencode workon session for a GitHub issue
+# Usage: agent-fix <issue_number> <repo_name> <repo_path>
+#
+# Pre-flight (mirrors agent-review):
+#   - Creates/switches to a worktree for the issue branch
+#   - Pulls latest if the branch already has an upstream
+#   - Installs dependencies before opencode starts
+#   - Creates a dedicated named tmux session via sesh at the worktree path
+
+set -euo pipefail
+
+ISSUE_NUM="$1"
+REPO_NAME="$2"
+REPO_PATH="$3"
+
+BRANCH="issue_${ISSUE_NUM}"
+
+# Create worktree (or switch to existing) via wt
+wt -C "$REPO_PATH" switch --create -y --no-cd "$BRANCH"
+
+# Get authoritative worktree path from git
+WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
+  | awk -v branch="refs/heads/$BRANCH" '
+      /^worktree / { path = substr($0, 10) }
+      $0 == "branch " branch { print path; exit }
+    ')
+
+# Pull latest from origin (ignore error if branch has no upstream yet)
+git -C "$WT_PATH" pull origin "$BRANCH" 2>/dev/null || true
+
+# Detect and run dependency install
+INSTALL_CMD=""
+if [ -f "$WT_PATH/pnpm-lock.yaml" ]; then
+  INSTALL_CMD="pnpm install"
+elif [ -f "$WT_PATH/yarn.lock" ]; then
+  INSTALL_CMD="yarn install"
+elif [ -f "$WT_PATH/package-lock.json" ]; then
+  INSTALL_CMD="npm ci"
+elif [ -f "$WT_PATH/package.json" ]; then
+  INSTALL_CMD="npm install"
+elif [ -f "$WT_PATH/Gemfile.lock" ]; then
+  INSTALL_CMD="bundle install"
+elif [ -f "$WT_PATH/requirements.txt" ]; then
+  INSTALL_CMD="pip install -r requirements.txt"
+elif [ -f "$WT_PATH/go.mod" ]; then
+  INSTALL_CMD="go mod download"
+elif [ -f "$WT_PATH/Cargo.toml" ]; then
+  INSTALL_CMD="cargo fetch"
+fi
+
+if [ -n "$INSTALL_CMD" ]; then
+  (cd "$WT_PATH" && $INSTALL_CMD)
+fi
+
+# Session name = basename of worktree path (matches sesh naming convention)
+SESSION_NAME=$(basename "$WT_PATH")
+
+# Startup command: run workon then kill the session
+STARTUP="opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session -t '${SESSION_NAME}'"
+
+# Create/connect to named session and switch the active tmux client to it
+sesh connect --command "$STARTUP" "$WT_PATH"
+tmux switch-client -t "$SESSION_NAME"

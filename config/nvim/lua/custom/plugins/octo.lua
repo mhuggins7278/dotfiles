@@ -19,7 +19,7 @@ return {
         users = 'assignable',
         commands = {
           pr = {
-            review = function()
+            agent_review = function()
               local utils = require 'octo.utils'
               local buffer = utils.get_current_buffer()
 
@@ -43,17 +43,10 @@ return {
                 return
               end
 
-              local inner_cmd = string.format(
-                'opencode --agent review --prompt "Review PR #%d in %s." ; wt remove --no-delete-branch --force -y',
-                pr_number,
-                repo_name
-              )
-              local cmd = string.format("wt switch pr:%d -x '%s'", pr_number, inner_cmd)
-              vim.fn.jobstart({ 'tmux', 'new-window', '-c', repo_path, cmd }, { detach = true })
+              local script = vim.fn.expand '~/.config/gh-dash/agent-review'
+              vim.fn.jobstart({ script, tostring(pr_number), repo_name, repo_path }, { detach = true })
             end,
-          },
-          issue = {
-            fix = function()
+            agent_fix = function()
               local utils = require 'octo.utils'
               local buffer = utils.get_current_buffer()
 
@@ -77,8 +70,8 @@ return {
                 return
               end
 
-              local cmd = string.format("opencode --prompt '/workon %s#%d'", repo_name, issue_number)
-              vim.fn.jobstart({ 'tmux', 'new-window', '-c', repo_path, cmd }, { detach = true })
+              local script = vim.fn.expand '~/.config/gh-dash/agent-fix'
+              vim.fn.jobstart({ script, tostring(issue_number), repo_name, repo_path }, { detach = true })
             end,
           },
         },

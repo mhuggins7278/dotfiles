@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# agent-review — Spawn an opencode review session for a GitHub PR
+# Usage: agent-review <pr_number> <repo_name> <repo_path>
+#
+# Fixes vs the inline tmux new-window approach:
+#   - Creates a dedicated named tmux session via sesh (not just a new window)
+#   - Pulls latest when the worktree already exists
+
+set -euo pipefail
+
+PR_NUM="$1"
+REPO_NAME="$2"
+REPO_PATH="$3"
+
+# Resolve PR branch name
+BRANCH=$(gh pr view "$PR_NUM" -R "$REPO_NAME" --json headRefName -q '.headRefName')
+
+# Create worktree (or switch to existing) via wt
+wt -C "$REPO_PATH" switch "pr:$PR_NUM" --no-cd
+
+# Get authoritative worktree path from git
+WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
+  | awk -v branch="refs/heads/$BRANCH" '
+      /^worktree / { path = substr($0, 10) }
+      $0 == "branch " branch { print path; exit }
+    ')
+
+# Always pull latest from origin before starting the review
+git -C "$WT_PATH" pull origin
+
+# Session name = basename of worktree path (matches sesh naming convention)
+SESSION_NAME=$(basename "$WT_PATH")
+
+# Startup command: run review, clean up the worktree, then kill the session
+STARTUP="opencode --agent review --prompt 'Review PR #${PR_NUM} in ${REPO_NAME}.' ; wt remove --no-delete-branch --force -y ; tmux kill-session -t '${SESSION_NAME}'"
+
+# Create/connect to named session and switch the active tmux client to it
+sesh connect --command "$STARTUP" "$WT_PATH"
+tmux switch-client -t "$SESSION_NAME"

@@ -11,8 +11,8 @@ These rules apply when working in any repository under `~/github/glg/`.
 
 If the current branch contains a `/`, warn the user and stop until it is renamed.
 
-**Format for epic sub-issue branches:** `<issue-number>-<slug>`  
-Slugify the title: lowercase, replace non-alphanumeric with hyphens, collapse consecutive hyphens, strip trailing hyphens, truncate to 50 chars.
+**Format for issue branches:** `issue_<number>`  
+Use the parent issue number for same-repo epics; use the sub-issue number for cross-repo branches. Never use slashes.
 
 ## Issue-First Workflow
 
@@ -62,7 +62,7 @@ If the project references SQL files, epiquery templates, or database queries, al
 | Priya Darshani | `pdarshani` |
 | John Lemberger | `JohnLemberger` |
 
-Use `Copilot` (capital `C`) when assigning the Copilot SWE agent — lowercase fails.
+To request a Copilot code review, pass `--reviewer @copilot` directly to `gh pr create`, or use `gh pr edit --add-reviewer @copilot` to add it to an existing PR. Requires gh v2.88.0 or later.
 
 ## Repo Setup
 

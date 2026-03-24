@@ -4,7 +4,7 @@ prSections:
   - title: Work Pending
     filters: is:open review-requested:@me org:glg -review:approved
   - title: Work Involved
-    filters: is:open involves:@me -author:@me org:glg -review:approved
+    filters: is:open review-requested:@me -author:@me org:glg
   - title: Other Pending
     filters: is:open review-requested:@me -org:glg
   - title: Other Involved
@@ -26,7 +26,7 @@ defaults:
   prsLimit: 20
   issuesLimit: 20
   view: prs
-  refetchIntervalMinutes: 5
+  refetchIntervalMinutes: 15
   layout:
     prs:
       updatedAt:
@@ -60,10 +60,10 @@ defaults:
 keybindings:
   issues:
     - key: F
-      name: workon
+      name: agent fix
       command: >
-        tmux new-window -c {{.RepoPath}}
-        'opencode --prompt "/workon {{.RepoName}}#{{.IssueNumber}}"'
+        ~/.dotfiles/config/gh-dash/agent-fix
+        {{.IssueNumber}} '{{.RepoName}}' {{.RepoPath}}
     - key: B
       command: >
         tmux display-popup -d {{.RepoPath}} -w 65 -h 10 -E 'ghprb {{.IssueNumber}}'
@@ -81,8 +81,8 @@ keybindings:
     - key: C
       name: agent review
       command: >
-        tmux new-window -c {{.RepoPath}}
-        'wt switch pr:{{.PrNumber}} -x '\''opencode --agent review --prompt "Review PR #{{.PrNumber}} in {{.RepoName}}." ; wt remove --no-delete-branch --force -y'\'''
+        ~/.dotfiles/config/gh-dash/agent-review
+        {{.PrNumber}} '{{.RepoName}}' {{.RepoPath}}
 repoPaths:
   glg/*: ~/github/glg/*
   Learn-Build-Teach/*: ~/github/mhuggins7278/*
@@ -98,14 +98,15 @@ theme:
   colors:
     text:
       primary: "#cdd6f4"
-      secondary: "#a6adc8"
-      inverted: "#242347"
+      secondary: "#cba6f7"
+      inverted: "#11111b"
       faint: "#bac2de"
       warning: "#f9e2af"
       success: "#a6e3a1"
+      error: "#f38ba8"
     background:
       selected: "#313244"
     border:
-      primary: "#89b4fa"
-      secondary: "#b4befe"
+      primary: "#cba6f7"
+      secondary: "#45475a"
       faint: "#313244"

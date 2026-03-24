@@ -104,7 +104,7 @@ gh pr list -R <owner>/<repo> --search "#<issue-number>" --state all --limit 100 
 
 # Search by branch naming convention
 gh pr list -R <owner>/<repo> --limit 100 --json number,state,url,headRefName \
-  --jq '[.[] | select(.headRefName | test("^(fix-issue-)?<number>(-|$)"))]'
+  --jq '[.[] | select(.headRefName | test("^issue_<number>(-|$)"))]'
 ```
 
 A `MERGED` PR counts as done even if the GitHub issue is still open.
@@ -180,12 +180,12 @@ sub-issues):
 
 - Create **one worktree** branched from the parent issue number.
 - All sub-issues are worked in that single worktree.
-- Branch: `<parent-issue-number>-<parent-title-slug>`
+- Branch: `issue_<parent-issue-number>`
 
 **Cross-repo layout** (sub-issues span multiple repos):
 
 - Create one worktree per unique repo among the READY tickets.
-- Branch per repo: `<issue-number>-<slug>` (use the sub-issue number for that repo).
+- Branch per repo: `issue_<issue-number>` (use the sub-issue number for that repo).
 - Recommend the most valuable repo to tackle first (see step 9).
 
 ---
@@ -214,11 +214,9 @@ READY ticket), skip the prompt and proceed automatically.
 
 If the user declines or wants a different ticket, update and re-confirm.
 
-**Branch name format (generic):** `<issue-number>-<slug>`
-- Slugify: lowercase, replace non-alphanumeric with hyphens, collapse runs,
-  strip leading/trailing hyphens, truncate to 50 chars.
-- GLG repos: same format, but hyphens only (never slashes) as per
-  `glg-workflow.md`.
+**Branch name format (generic):** `issue_<number>`
+- Use the parent issue number for same-repo epics; use the sub-issue number for cross-repo branches.
+- GLG repos: same format, hyphens only (never slashes) as per `glg-workflow.md`.
 
 ---
 
@@ -237,7 +235,14 @@ REPO_PARENT=$(dirname "$REPO_ROOT")
 For the current repo:
 
 ```bash
-wt switch --create -y --no-cd <branch-name>
+WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
+
+if [ -d "$WORKTREE_PATH" ]; then
+  # Worktree already exists — pull latest before continuing
+  git -C "$WORKTREE_PATH" pull
+else
+  wt switch --create -y --no-cd <branch-name>
+fi
 ```
 
 `--no-cd` suppresses the "Cannot change directory" warning in a non-interactive
@@ -254,27 +259,28 @@ if [ ! -d "$OTHER_REPO_PATH" ]; then
   git clone git@github.com:<owner>/<repo-name>.git "$OTHER_REPO_PATH"
 fi
 
-wt -C "$OTHER_REPO_PATH" switch --create -y <branch-name>
+WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
+
+if [ -d "$WORKTREE_PATH" ]; then
+  # Worktree already exists — pull latest before continuing
+  git -C "$WORKTREE_PATH" pull
+else
+  wt -C "$OTHER_REPO_PATH" switch --create -y <branch-name>
+fi
 ```
 
 The worktree lands at `<REPO_PARENT>/<repo-name>.<branch-name>`.
 
-**Worktree path variable:**
-
-```bash
-WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
-```
-
 ---
 
-### 11. Install Dependencies
+### 11. Spawn Session
 
-After creating the worktree, auto-detect the package manager and install.
-Run the install command from `$WORKTREE_PATH`.
+Detect the package manager for the worktree so the startup command can install
+deps as its first step.
 
 Detection order (first match wins):
 
-| File present | Command |
+| File present | Install command |
 |---|---|
 | `pnpm-lock.yaml` | `pnpm install` |
 | `yarn.lock` | `yarn install` |
@@ -286,19 +292,7 @@ Detection order (first match wins):
 | `go.mod` | `go mod download` |
 | `Cargo.toml` | `cargo fetch` |
 
-If none of the above match, skip silently — don't guess or error.
-
-Run in the worktree directory:
-
-```bash
-cd "$WORKTREE_PATH" && <install-command>
-```
-
-Report the command that was run (or "no known package manager detected").
-
----
-
-### 12. Spawn Session
+If none of the above match, set `INSTALL_CMD=""` and skip the install step.
 
 ```bash
 # Strip double-quotes from title to avoid shell escaping issues
@@ -307,21 +301,26 @@ SAFE_TITLE=$(echo "<title>" | tr -d '"')
 # Derive session name the same way sesh does (basename of path)
 SESSION_NAME=$(basename "$WORKTREE_PATH")
 
-sesh connect \
-  --command "opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'" \
-  "$WORKTREE_PATH"
+# Prepend dep install to the startup command so the new session owns its env
+if [ -n "$INSTALL_CMD" ]; then
+  STARTUP="$INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+else
+  STARTUP="opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+fi
+
+sesh connect --command "$STARTUP" "$WORKTREE_PATH"
 
 # sesh connect creates the session but the switch may not propagate when
 # called from a subprocess. Explicitly switch the active tmux client.
 tmux switch-client -t "$SESSION_NAME"
 ```
 
-Report: branch created, worktree path, deps installed, session name.
-The new session handles implementation — this session's job is done.
+Report: branch created, worktree path, session name (dep install runs in the new session).
+The new session handles dep installation and implementation — this session's job is done.
 
 ---
 
-### 13. Re-check (Subsequent Invocations)
+### 12. Re-check (Subsequent Invocations)
 
 When `/workon` is invoked again (from any session), repeat steps 3–7.
 GitHub is the source of truth — no local state is cached.
@@ -331,7 +330,7 @@ newly closed tickets, newly unblocked tickets, new PRs opened.
 
 ---
 
-### 14. Review Gate (Before PR)
+### 13. Review Gate (Before PR)
 
 When the user signals that implementation is complete — or when you judge that
 all planned work is done — trigger the review loop before opening a PR.

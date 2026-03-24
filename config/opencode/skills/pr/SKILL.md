@@ -11,15 +11,53 @@ description: >
 
 Create a pull request using the `gh` CLI.
 
-## CRITICAL: GLG Workflow Rules
+## GLG Workflow Rules
 
-For any repo under `~/github/glg/`, read `~/.dotfiles/config/opencode/references/glg-workflow.md` for:
-- **Branch naming rules** (no slashes — hyphens only, always)
-- **Issue-first workflow** (require an open issue before creating a PR)
-- **PR issue references** (`Fixes <owner>/<repo>#<number>` format)
-- **Project 85 tagging** when creating issues
+These rules apply to any repo under `~/github/glg/`. Skip all GLG sections for non-GLG repos.
 
-If the current branch contains a `/`, warn the user immediately and do not push or create the PR until the branch is renamed.
+### Branch Naming
+
+**Never use a slash (`/`) in a branch name** — slashes break the deployment pipeline when promoting to the testing environment. Use hyphens instead:
+
+- WRONG: `feature/foo`, `fix/bar`, `chore/anything`
+- RIGHT: `feature-foo`, `fix-bar`, `chore-anything`
+
+If the current branch contains a `/`, warn the user immediately and **do not push or create the PR until the branch is renamed.**
+
+Issue branch format: `issue_<number>` — use the parent issue number for same-repo epics; the sub-issue number for cross-repo branches.
+
+### Issue-First Workflow
+
+All PRs in GLG repos require an associated open GitHub issue before creation.
+
+1. Check for an existing issue reference in the branch name, commit messages, or user-provided input
+2. Validate with `gh issue view <number>` — if closed or unrelated, treat as missing
+3. If no valid open issue is found, **stop and prompt the user to create one**
+4. If the user agrees, create the issue and add it to project 85 (see Project Tagging below)
+
+### Project Tagging
+
+When creating a new issue, add it to **project `85`** (`Client Solutions Experience`). Use the project name directly on `gh issue create`:
+
+```bash
+gh issue create --project "Client Solutions Experience" ...
+```
+
+Or add it after creation:
+
+```bash
+gh project item-add 85 --owner glg --url "<issue_url>"
+```
+
+### PR Issue References
+
+Always link the PR to its issue using the `Fixes` keyword so the issue auto-closes on merge. Place this in the **PR body**, not the title:
+
+```
+Fixes <owner>/<repo>#<number>
+```
+
+Example: `Fixes glg/streamliner#5232`
 
 ## When to Use
 
@@ -110,12 +148,12 @@ If not yet pushed:
 git push -u origin <branch>
 ```
 
-To create a draft PR, add `--draft` to the `gh pr create` command. Use draft when the user requests it or the work is not ready for review.
+Always create PRs as drafts using `--draft` and always request a Copilot review using `--reviewer @copilot`. Both flags go directly on `gh pr create` — no separate edit step needed.
 
 Then create the PR. If a template was found, populate its sections as the body and include an issue reference in the `Fixes <owner>/<repo>#<number>` format. If no template was found, use this default:
 
 ```bash
-gh pr create --title "<title>" --base <base-branch> --body "$(cat <<'EOF'
+gh pr create --draft --reviewer @copilot --title "<title>" --base <base-branch> --body "$(cat <<'EOF'
 ## Summary
 
 - <bullet 1>
@@ -147,7 +185,7 @@ Always return the PR URL to the user after creation.
 - Default base branch: detected dynamically (step 1) — do not hardcode `main`
 - Default repo: `glg/client-solutions-experience` (unless user specifies otherwise)
 - Do NOT force-push to `main` or `master` — warn the user if they request it
-- See `~/.dotfiles/config/opencode/references/glg-workflow.md` for branch naming, issue-first workflow, and team member logins
+- For team member GitHub logins, see `~/.dotfiles/config/opencode/references/glg-workflow.md`
 
 ## Common Pitfalls
 
