@@ -5,6 +5,8 @@
 # Fixes vs the inline tmux new-window approach:
 #   - Creates a dedicated named tmux session via sesh (not just a new window)
 #   - Pulls latest when the worktree already exists
+#   - Gracefully handles PRs where the source branch is the repo's default
+#     branch (e.g. test→main), where wt cannot create a separate worktree
 
 set -euo pipefail
 
@@ -15,24 +17,45 @@ REPO_PATH="$3"
 # Resolve PR branch name
 BRANCH=$(gh pr view "$PR_NUM" -R "$REPO_NAME" --json headRefName -q '.headRefName')
 
-# Create worktree (or switch to existing) via wt
-wt -C "$REPO_PATH" switch "pr:$PR_NUM" --no-cd
+# Detect the repo's default branch — wt refuses to create a secondary worktree
+# for the default branch since the primary checkout already serves that role.
+DEFAULT_BRANCH=$(git -C "$REPO_PATH" config --get worktrunk.default-branch 2>/dev/null \
+  || git -C "$REPO_PATH" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | cut -d/ -f2 \
+  || echo "main")
 
-# Get authoritative worktree path from git
-WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
-  | awk -v branch="refs/heads/$BRANCH" '
-      /^worktree / { path = substr($0, 10) }
-      $0 == "branch " branch { print path; exit }
-    ')
+if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+  # PR branch is the default branch — use the main checkout directly
+  WT_PATH="$REPO_PATH"
+  git -C "$WT_PATH" pull origin "$BRANCH"
+  IS_DEFAULT_BRANCH=true
+else
+  # Create worktree (or switch to existing) via wt
+  wt -C "$REPO_PATH" switch "pr:$PR_NUM" --no-cd
 
-# Always pull latest from origin before starting the review
-git -C "$WT_PATH" pull origin
+  # Get authoritative worktree path from git
+  WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
+    | awk -v branch="refs/heads/$BRANCH" '
+        /^worktree / { path = substr($0, 10) }
+        $0 == "branch " branch { print path; exit }
+      ')
+
+  # Always pull latest from origin before starting the review
+  git -C "$WT_PATH" pull origin
+  IS_DEFAULT_BRANCH=false
+fi
 
 # Session name = basename of worktree path (matches sesh naming convention)
 SESSION_NAME=$(basename "$WT_PATH")
 
-# Startup command: run review, clean up the worktree, then kill the session
-STARTUP="opencode --agent review --prompt 'Review PR #${PR_NUM} in ${REPO_NAME}.' ; wt remove --no-delete-branch --force -y ; tmux kill-session -t '${SESSION_NAME}'"
+# Cleanup: skip wt remove when reviewing the primary checkout
+if [ "$IS_DEFAULT_BRANCH" = "true" ]; then
+  CLEANUP="tmux kill-session -t '${SESSION_NAME}'"
+else
+  CLEANUP="wt remove --no-delete-branch --force -y 2>/dev/null ; tmux kill-session"
+fi
+
+# Startup command: run review, clean up (if needed), then kill the session
+STARTUP="opencode --agent review --prompt 'Review PR #${PR_NUM} in ${REPO_NAME}.' ; ${CLEANUP}"
 
 # Create/connect to named session and switch the active tmux client to it
 sesh connect --command "$STARTUP" "$WT_PATH"
