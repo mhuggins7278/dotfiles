@@ -26,10 +26,10 @@ WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
       $0 == "branch " branch { print path; exit }
     ')
 
-# Pull latest from origin (ignore error if branch has no upstream yet)
-git -C "$WT_PATH" pull origin "$BRANCH" 2>/dev/null || true
+# Session name = basename of worktree path (matches sesh naming convention)
+SESSION_NAME=$(basename "$WT_PATH")
 
-# Detect and run dependency install
+# Detect dependency install command (read lockfiles before entering session)
 INSTALL_CMD=""
 if [ -f "$WT_PATH/pnpm-lock.yaml" ]; then
   INSTALL_CMD="pnpm install"
@@ -49,16 +49,12 @@ elif [ -f "$WT_PATH/Cargo.toml" ]; then
   INSTALL_CMD="cargo fetch"
 fi
 
+# Build startup command: pull + install (inside session), then run workon, then kill session
+STARTUP="git -C '$WT_PATH' pull origin '$BRANCH' 2>/dev/null || true"
 if [ -n "$INSTALL_CMD" ]; then
-  (cd "$WT_PATH" && $INSTALL_CMD)
+  STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
 fi
+STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session -t '${SESSION_NAME}'"
 
-# Session name = basename of worktree path (matches sesh naming convention)
-SESSION_NAME=$(basename "$WT_PATH")
-
-# Startup command: run workon then kill the session
-STARTUP="opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session -t '${SESSION_NAME}'"
-
-# Create/connect to named session and switch the active tmux client to it
+# Create/connect to named session (sesh handles the client switch internally)
 sesh connect --command "$STARTUP" "$WT_PATH"
-tmux switch-client -t "$SESSION_NAME"

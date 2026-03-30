@@ -169,3 +169,6 @@ if [[ ! -f "$_wt_cache" ]] || [[ $(command -v wt) -nt "$_wt_cache" ]]; then
   command wt config shell init zsh > "$_wt_cache" 2>/dev/null || touch "$_wt_cache"
 fi
 [[ -s "$_wt_cache" ]] && source "$_wt_cache"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

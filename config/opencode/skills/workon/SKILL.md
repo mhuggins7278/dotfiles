@@ -224,6 +224,24 @@ If the user declines or wants a different ticket, update and re-confirm.
 
 Once the user confirms, execute without further prompts.
 
+**Pre-check — already in the target worktree:**
+
+Before doing any setup, check whether you're already on the target branch:
+
+```bash
+CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
+```
+
+If `$CURRENT_BRANCH` matches the target branch name (e.g. `issue_<number>`),
+the session was launched by an external launcher (such as `agent-fix`) that
+already created the worktree and installed deps. In that case:
+
+1. Announce: *"Already in worktree for branch `<branch>` — skipping setup."*
+2. Skip the rest of step 10 and all of step 11.
+3. Proceed directly to working on the issue.
+
+---
+
 **Locate the base repo:**
 
 ```bash

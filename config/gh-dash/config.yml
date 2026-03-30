@@ -4,7 +4,7 @@ prSections:
   - title: Work Pending
     filters: is:open review-requested:@me org:glg -review:approved
   - title: Work Involved
-    filters: is:open involves:@me -author:@me org:glg
+    filters: is:open involves:@me -author:@me org:glg review:changes_requested
   - title: Other Pending
     filters: is:open review-requested:@me -org:glg
   - title: Other Involved

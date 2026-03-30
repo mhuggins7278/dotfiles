@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Turn a task or feature description into one or more GitHub issues. Use when asked to "plan this out", "create tickets for", "break this into issues", or "make a plan for". Produces a single issue for self-contained work, or a parent epic with linked sub-issues for larger features. Interactive and iterative — researches the codebase, asks focused questions, drafts issue bodies for review, then creates them on GitHub.
+description: Turn a task or feature description into one or more GitHub issues. Use when asked to "plan this out", "create tickets for", "break this into issues", or "make a plan for". Produces a single issue for self-contained work, or a parent epic with linked sub-issues for larger features. Interactive and adversarial — researches the codebase, challenges assumptions, stress-tests the design across multiple rounds, then drafts issue bodies for review and creates them on GitHub.
 ---
 
 # Plan Skill
@@ -10,6 +10,11 @@ tasks produce one issue. Multi-phase or multi-concern work produces a parent
 epic with sub-issues linked via the native GitHub sub-issue relationship.
 
 The output is always GitHub issues — not a markdown document.
+
+This skill includes a mandatory challenge phase before drafting issues. It
+will push back on your plan, ask uncomfortable questions, and force you to
+defend your choices. That pressure is the point — it surfaces gaps before
+they become bugs or scope creep.
 
 ---
 
@@ -57,8 +62,8 @@ Wait for the user's response before continuing.
 
 ## Step 3: Research
 
-Before asking the user any questions, investigate the codebase to understand
-the current state. Use the `explore` subagent (via the Task tool):
+Before engaging with the user, investigate the codebase thoroughly. Use the
+`explore` subagent (via the Task tool):
 
 ```
 Research this task in the codebase: [TASK DESCRIPTION]
@@ -68,45 +73,150 @@ Find:
 - Existing patterns to follow (similar features, naming conventions)
 - Integration points, dependencies, and potential side effects
 - Any TODOs, feature flags, or known gaps related to this area
+- Alternative approaches that exist in the codebase or were previously attempted
+- Anything in-flight (recent commits, open PRs) that could conflict with this change
 
-Return: a summary of findings with file:line references, and flag anything
-that would affect scope or approach.
+Return: a summary of findings with file:line references, flag anything that
+would affect scope or approach, and note any places where the proposed approach
+might conflict with existing patterns.
 ```
 
 If a PR diff was retrieved in Step 2, include it as additional context in the
 research prompt so the subagent can cross-reference it against the codebase.
 
-Read the research output fully before proceeding. Do not ask the user
-questions that the codebase (or the PR diff) answers.
+Read the research output fully before proceeding. The challenge phase depends
+on this — ground your challenges in concrete evidence from the codebase.
 
 ---
 
-## Step 4: Clarification
+## Step 4: Challenge & Refine
 
-Present what you learned from research, then ask only questions the codebase
-cannot answer:
+This is the heart of the skill. Before proposing any structure or drafting any
+issue bodies, you must challenge the plan. Your job here is not to be helpful
+— it's to be rigorous. Think of yourself as a staff engineer in a design
+review who has seen too many projects fail because the planning phase was too
+agreeable.
+
+### Calibrate depth to complexity
+
+Scale the challenge depth based on what the research revealed:
+
+- **Tiny change** (config tweak, adding a package, renaming a thing): 1-2
+  targeted probes. Don't over-engineer the challenge.
+- **Single feature** (new endpoint, new component, new command): Full Round 1
+  with 3-4 challenges, Round 2 follow-up on weak spots.
+- **Multi-service or architectural change**: All three rounds. Cover all five
+  dimensions. Don't let the user coast through on vague answers.
+
+### The five dimensions
+
+Draw your challenges from these areas, weighted toward whichever the research
+flagged as risky:
+
+1. **Technical feasibility** — Is this actually buildable the way described?
+   What are the hardest parts? Does the codebase support this?
+2. **Scope** — Is this too big? What's the MVP vs. the nice-to-have? Are there
+   hidden dependencies that expand the blast radius?
+3. **Architecture/design** — Is this the right approach? What alternatives
+   exist? What are the tradeoffs the user hasn't acknowledged?
+4. **Assumptions** — What is the user taking for granted that might not be
+   true? What if the data model, volume, or usage pattern is different?
+5. **Business value** — Is this worth building right now? What's the cost of
+   not doing it? Is there a cheaper experiment to validate the idea first?
+
+### Mix challenge styles
+
+Don't just ask questions. Alternate between:
+
+- **Direct challenges**: State what's wrong or risky, then make the user
+  address it. "The codebase uses X pattern here — your approach would require
+  touching N files across 3 services. That's a bigger blast radius than you've
+  described."
+- **Socratic probes**: Ask questions that force the user to think through
+  gaps themselves. "Walk me through what happens at the boundary between the
+  new service and the existing auth middleware. What does the error path look
+  like?"
+
+Both styles work. Direct challenges are faster; Socratic probes often surface
+deeper insights. A good challenge session uses both.
+
+### Round 1: Open challenge
+
+Present your research findings, then immediately launch challenges. Don't ask
+"do you have any questions?" — make them defend their plan first.
 
 ```
-Based on my research into the codebase, I understand we need to [summary].
-
-I found:
+Here's what I found in the codebase:
 - [Key discovery with file:line reference]
 - [Relevant pattern or constraint]
-- [Potential complexity or edge case]
+- [Alternative approach that already exists]
+- [In-flight work that could conflict]
 
-Before I propose a structure, I need to know:
-- [Question requiring business judgment]
-- [Question requiring design preference]
+Before I propose a structure, here's where your plan needs work:
+
+1. [Challenge grounded in codebase evidence — direct or Socratic]
+2. [Challenge on scope or assumptions]
+3. [Challenge on value or alternatives]
+[4. Additional if warranted]
 ```
 
-Only ask questions with meaningful impact on scope or structure. Do not ask
-questions you can reasonably infer. Wait for answers before continuing.
+Wait for the user's response. Read it carefully before Round 2.
+
+### Round 2: Follow through
+
+Based on what the user said:
+
+- **Strong answer**: Acknowledge it briefly and move on. "That makes sense —
+  you've addressed the auth concern. Let's move to..."
+- **Hand-wave or vague answer**: Don't accept it. "You said 'it should be
+  fine' — that's not an answer. How specifically does X work when Y happens?"
+- **New gap revealed by their answer**: Surface it. "Your answer actually
+  raises a new concern: if you're doing it that way, then what about Z?"
+
+Keep Round 2 to 2-3 focused follow-ups on the remaining weak spots. Don't
+introduce entirely new topics unless their response revealed something
+important.
+
+### Round 3 (if warranted): Nail the coffin
+
+For complex or risky work, a third round closes out any remaining open
+threads. By this point, the challenges should be narrowing, not expanding.
+If Round 3 is still introducing new concerns at the same rate as Round 1,
+that's a signal the plan itself is not ready — say so clearly.
+
+### Exit the challenge phase
+
+When rounds are complete or the user signals they're ready to proceed, give a
+brief confidence summary:
+
+```
+Based on our discussion:
+- Strong: [what's well-reasoned — 1-2 things]
+- Resolved: [what we worked out during the challenge]
+- Remaining risk: [what's still uncertain or unresolved — be honest]
+
+Ready to scope the issues?
+```
+
+If there are unresolved risks, name them. They'll go into the issue bodies
+as open questions.
+
+### What not to do
+
+- Don't challenge for sport. Every challenge should be grounded in research
+  or logic — not "have you thought about X" without a specific reason.
+- Don't rehash resolved concerns. Once the user has addressed something
+  adequately, let it go.
+- Don't keep going forever. 2-3 rounds is the limit unless the user wants
+  more. Respect their time.
+- Don't soften challenges to spare feelings. A weak challenge is useless.
+  If there's a real problem with the plan, say so plainly.
 
 ---
 
 ## Step 5: Determine Scope — Single Issue or Epic
 
-Based on the task and research, decide:
+Based on the task, research, and what survived the challenge phase, decide:
 
 **Single issue** when:
 - The work can be reviewed in one PR
@@ -118,6 +228,10 @@ Based on the task and research, decide:
 - Phases have clear dependencies (phase 2 can't start until phase 1 merges)
 - Independent parts could be worked in parallel by different people
 - The total change would be too large to review in a single PR
+
+If the challenge phase resulted in scope changes (the user agreed to cut
+something or add something), reflect that here. The structure should match
+the plan that emerged from the challenge, not the plan the user started with.
 
 Present the proposed structure for approval before drafting bodies:
 
@@ -160,6 +274,18 @@ implementation code here.]
 [Explicit list of related things this issue does NOT cover, to prevent scope
 creep.]
 
+## Risks & open questions
+
+[Populate this from the challenge phase. For each unresolved concern or
+assumption that wasn't fully addressed, write one bullet.]
+
+- [Risk: what could go wrong and why — include mitigation if one was discussed]
+- [Assumption: what needs to be validated during implementation]
+- [Dependency risk: external factor that could change the plan]
+
+[Omit this section if nothing of substance remains from the challenge phase.
+Don't manufacture fake risks to fill the section.]
+
 ## Success criteria
 
 - [ ] [Specific, verifiable condition]
@@ -190,6 +316,13 @@ human readability and quick status checking.]
 - [ ] #N — [title]
 - [ ] #N — [title]
 - [ ] #N — [title]
+
+## Risks & open questions
+
+[Carry forward any unresolved concerns from the challenge phase that apply
+to the epic as a whole rather than a specific sub-issue.]
+
+- [Epic-level risk or open question]
 
 ## Done when
 
@@ -279,3 +412,5 @@ Use /workon <epic-url> to start working through these.
   reviewable changes, split it
 - **"Out of scope" sections are mandatory** for any issue touching a shared
   boundary (shared DB table, shared API, shared component)
+- **Challenge quality matters more than challenge quantity** — three sharp,
+  specific challenges beat ten generic ones

@@ -74,6 +74,7 @@
         - "~/Library/Application Support/Code/User/"
         - "~/Library/Application Support/lazygit/"
         - "~/github/"
+        - "~/.config/worktrunk/"
         - "~/github/glg/"
         - "~/github/mhuggins7278/"
         - "~/github/LearnBuildTeach/"

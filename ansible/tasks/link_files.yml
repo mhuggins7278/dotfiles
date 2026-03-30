@@ -94,4 +94,9 @@
         dest: "~/.config/counselors",
         force: true,
       }
+    - {
+        src: "~/.dotfiles/config/worktrunk",
+        dest: "~/.config/worktrunk",
+        force: true,
+      }
   tags: links
