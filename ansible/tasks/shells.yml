@@ -17,7 +17,7 @@
     lineinfile: dest=/etc/shells line="/usr/local/bin/zsh" state=present
     when: brew_zsh.stat.exists
 
-  when: ansible_os_family == "Darwin"
+  when: ansible_facts.os_family == "Darwin"
   become: yes
 
 - name: check if preferred login_shell is installed
@@ -25,6 +25,6 @@
   register: login_shell_installed
 
 - name: Set default shell
-  user: name={{ ansible_user_id }} shell={{ login_shell }}
+  user: name={{ ansible_facts.user_id }} shell={{ login_shell }}
   when: login_shell_installed.stat.exists
   become: yes

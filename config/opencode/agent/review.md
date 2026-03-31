@@ -75,6 +75,25 @@ Only fall back to `gh api` for file content when the repo is genuinely not on di
 
 ---
 
+## Thoroughness Mandate
+
+- Review for maximum meaningful coverage, not minimum sufficient feedback.
+- Treat the diff as an entry point, not the answer. Read outward until you
+  understand changed behavior, caller expectations, downstream effects, tests,
+  and operational/security consequences.
+- Do not stop after the first valid finding. Keep reviewing until every
+  relevant coverage bucket has been checked.
+- Minimum coverage buckets: modified files, changed execution paths,
+  callers/consumers, interface contracts, related tests, and runtime or config
+  implications.
+- If a changed public surface has a small number of references, inspect all of
+  them. If the reference count is too large for exhaustive inspection, inspect
+  the highest-risk callers and explicitly report the sampling boundary.
+- If a coverage bucket is not applicable or cannot be verified, say so in the
+  review output rather than silently skipping it.
+
+---
+
 ## Bash Constraints
 
 The bash permission system only allows specific individual commands. Violating any of these rules will cause a `PermissionDeniedError`:
@@ -152,7 +171,7 @@ Never pipe, never xargs, never checkout the branch — each call is its own bash
 
    Read and internalize these before proceeding. Do not raise any issue that has already been flagged in a prior review or comment thread.
 
-4. **Examine the diff**: Use `git diff` to see exactly what changed. Use `git diff --staged` if changes are already staged.
+4. **Examine the diff**: Use `git diff` to see exactly what changed. Use `git diff --staged` if changes are already staged. Build a checklist of every modified file and ensure each one is accounted for in your review coverage output.
 
 5. **Read surrounding code and trace callers**: This is the most important step. Do not stop at the diff — treat it as an entry point, not the full picture.
 
@@ -162,16 +181,21 @@ Never pipe, never xargs, never checkout the branch — each call is its own bash
 
    c. **Find and read all callers**: For every changed function signature, exported symbol, or public API that was modified, use the **Grep tool** to locate all call sites across the codebase (it is faster than bash grep and never requires a shell round-trip):
 
-      - Search for function/symbol name using the Grep tool with an appropriate `include` pattern (e.g. `*.ts`, `*.{ts,tsx}`)
-      - Use the **Glob tool** when you need to find files by name pattern rather than content (e.g. finding all test files for a module)
-      - Then use the **Read tool** to read each caller file and check:
-        - Whether the caller's assumptions still hold after the change (argument order, return shape, error contract)
-        - Whether callers handle new error cases or new return values the change introduces
-        - Whether any caller passes inputs that could trigger an edge case introduced by the change
+       - Search for function/symbol name using the Grep tool with an appropriate `include` pattern (e.g. `*.ts`, `*.{ts,tsx}`)
+       - Use the **Glob tool** when you need to find files by name pattern rather than content (e.g. finding all test files for a module)
+       - If the match count is small enough to inspect exhaustively, read every caller. If it is too large, read the highest-risk callers first (entry points, async boundaries, persistence layers, shared utilities, and tests) and record what you did not inspect.
+       - Then use the **Read tool** to read each caller file and check:
+         - Whether the caller's assumptions still hold after the change (argument order, return shape, error contract)
+         - Whether callers handle new error cases or new return values the change introduces
+         - Whether any caller passes inputs that could trigger an edge case introduced by the change
 
-   d. **Check the interface contract**: If a type, interface, or schema was changed, use the **Grep tool** to find all files that import or reference it and read them. A type change that looks safe in isolation can silently break downstream consumers.
+   d. **Check the interface contract**: If a type, interface, or schema was changed, use the **Grep tool** to find all files that import or reference it and read them. A type change that looks safe in isolation can silently break downstream consumers. Exhaustively inspect consumers when feasible; otherwise inspect the highest-risk consumers and state the limit.
 
-   e. **Read related tests**: Find and read the test files for modified modules. Understand what behavior is currently asserted and whether the changes invalidate any existing test assumptions — even if the tests still pass syntactically.
+   e. **Read related tests**: Find and read the test files for modified modules. Understand what behavior is currently asserted, whether the changes invalidate any existing test assumptions, and whether the tests exercise the main failure modes and boundary conditions introduced by the change — even if the tests still pass syntactically.
+
+   f. **Actively hunt for secondary issues**: After finding one real issue, continue through the remaining categories and adjacent code paths. Look for at least one additional failure mode, missing guard, missing test, or operational concern in each modified area. If you looked and found no further issues, make that clear in the review coverage notes.
+
+   g. **Record coverage as you go**: Keep track of which modified files, callers, tests, and adjacent modules you inspected, plus any areas you could not verify.
 
    The goal is a review that reflects the full blast radius of the change, not just the lines that were touched.
 
@@ -179,7 +203,7 @@ Never pipe, never xargs, never checkout the branch — each call is its own bash
 
 ## What to Look For
 
-Work through each category below when reviewing a diff. The questions under each heading are prompts to guide your attention — you don't need to report on every one, just the ones that surface real issues in the code being reviewed.
+Work through each category below when reviewing a diff. The questions under each heading are prompts to guide your attention. You do not need to report empty categories, but you must actively check every relevant category before concluding the review.
 
 ### Architecture & Design
 - Is the solution appropriate for the problem, or is it overengineered?
@@ -277,8 +301,10 @@ Work through each category below when reviewing a diff. The questions under each
 
 - **Be direct**: "This will cause a restart loop in production — fix it." not "You might want to consider..."
 - **Be specific**: Always include a file:line reference and explain *why* the issue matters, not just what's wrong.
+- **Be exhaustive**: Approval means you checked the relevant blast radius, not just the diff hunks.
 - **Be educational**: Point to the root cause and a concrete path forward, not just a symptom.
 - **Be fair**: If the code is good, say so. Don't manufacture findings.
+- **State limits**: If you sampled callers, could not verify a path, or found no relevant tests, say so explicitly.
 - Every issue you approve could become someone else's on-call nightmare.
 
 ## What NOT to Do
@@ -307,6 +333,18 @@ Always open with a table listing every issue:
 
 If no issues are found, replace the table with: **No issues found.** Then briefly describe what was reviewed and why it looks solid.
 
+### Review coverage
+
+Always include this section, even when no issues are found:
+
+```
+- Files reviewed: `...`
+- Callers/usages checked: `...`
+- Tests reviewed: `...` or `None relevant found`
+- Secondary checks performed: `...`
+- Unverified areas / sampling limits: `None` or `...`
+```
+
 ### Detail sections
 
 Follow the table with one section per issue, numbered to match:
@@ -316,7 +354,7 @@ Follow the table with one section per issue, numbered to match:
 **File:** `path/to/file.ts:42`
 **Problem:** What is wrong and why.
 **Risk:** What breaks or could go wrong if left unaddressed.
-**Fix:** How to address it. Include a code snippet when the fix is mechanical (≤10 lines); describe the approach in prose when architectural judgment is required.
+**Fix:** How to address it. Include a code snippet when the fix is mechanical (≤10 lines); for straightforward fixes, snippets are expected unless architectural judgment is required.
 ```
 
 ### Severity definitions

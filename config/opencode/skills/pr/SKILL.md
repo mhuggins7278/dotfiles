@@ -116,7 +116,7 @@ Use the Glob tool to search for a PR template at these paths:
 
 If a template exists, read it in full and use it as the structure for the PR body. Fill in every section — do not delete or collapse sections, and do not substitute your own structure. If a section genuinely does not apply, write "N/A" rather than omitting it.
 
-If no template exists, fall back to the default body format in step 5.
+If no template exists, fall back to the default body format in step 8.
 
 ### 4. Analyze Changes
 
@@ -125,11 +125,38 @@ Review ALL commits that will be in the PR — not just the latest. Use the templ
 - What changed and why (the "what" in bullets, the "why" in prose)
 - Any notable decisions or tradeoffs
 
-### 5. Ensure an Associated Issue Exists (GLG repos only)
+### 5. Prepare Node Runtime (when needed)
+
+If the repo is Node-based and you need to install packages or run Node-powered
+checks, switch to the project's configured Node version before doing anything
+with `npm`, `pnpm`, or `yarn`. Prefer `fnm` over guessing or using whatever
+global Node version happens to be active.
+
+Run from the repo root:
+
+```bash
+eval "$(fnm env --shell bash)" && fnm use --install-if-missing
+```
+
+`fnm use --install-if-missing` will use the version declared in `.node-version`,
+`.nvmrc`, or `package.json#engines.node` when available. After that, install
+dependencies with the lockfile-aware command:
+
+```bash
+pnpm install    # if pnpm-lock.yaml exists
+yarn install    # if yarn.lock exists
+npm ci          # if package-lock.json exists
+npm install     # if only package.json exists
+```
+
+Only do this when Node dependencies or Node-based validation are actually
+needed for the PR workflow.
+
+### 6. Ensure an Associated Issue Exists (GLG repos only)
 
 For repos under `~/github/glg/`, confirm there is a GitHub issue before creating the PR. See GLG Workflow Rules above for the full issue-first workflow and `Fixes` reference format.
 
-### 6. Compile Evidence Markers
+### 7. Compile Evidence Markers
 
 Gather proof that the code is ready to ship to embed in the PR description:
 1. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh` to get a clean run of the Golden Principles.
@@ -138,7 +165,7 @@ Gather proof that the code is ready to ship to embed in the PR description:
 
 Compile this into an `## Evidence` section to inject at the bottom of the PR template.
 
-### 7. Push and Create PR (run sequentially)
+### 8. Push and Create PR (run sequentially)
 
 Use the `<base-branch>` detected in step 1. For stacked PRs or a user-specified base, pass `--base <branch>` explicitly to avoid targeting the wrong branch.
 
@@ -176,7 +203,7 @@ EOF
 )"
 ```
 
-### 8. Return the PR URL
+### 9. Return the PR URL
 
 Always return the PR URL to the user after creation.
 
@@ -192,6 +219,7 @@ Always return the PR URL to the user after creation.
 - **Never hardcode `main` as the base branch** — always detect it first with `gh repo view` or `git remote show origin`
 - **Use `origin/<base-branch>` in diff/log commands** — bare branch names fail if not checked out locally
 - **Always check for a PR template before writing the PR body** — never skip this step even if you think there is no template
+- **If you need Node deps or Node-based checks, run `fnm use --install-if-missing` before any `npm`, `pnpm`, or `yarn` install**
 - **In GLG repos, do not create a PR without an associated open issue** — if none exists, prompt to create one first
 - Creating a PR requires pushing the branch — do not push unless the user has asked for a PR
 - Do not use `--force` push unless the user explicitly requests it

@@ -56,7 +56,7 @@
         - brew_cask
         - packages
 
-  when: ansible_os_family == "Darwin"
+  when: ansible_facts.os_family == "Darwin"
 
 - block:
     - name: Update/Upgrade pacman
@@ -80,7 +80,7 @@
         - pip
 
   become: true
-  when: ansible_os_family == "Archlinux"
+  when: ansible_facts.os_family == "Archlinux"
   tags: pacman
 
 - block:
@@ -105,5 +105,5 @@
         - pip
 
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts.os_family == "Debian"
   tags: apt

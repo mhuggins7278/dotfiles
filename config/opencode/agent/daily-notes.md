@@ -537,11 +537,9 @@ attendees:
 ## Decisions Made
 
 - Decision 1
-
-## Next Steps
-
-- Step 1
 ```
+
+> **Note**: There is no "Next Steps" section in the meeting file. Action items and tasks are tracked in the daily note only — see Action Items from Meetings below.
 
 ### Daily Note Integration
 
@@ -558,10 +556,12 @@ Add a backlink in the Meetings section:
 When summarizing meeting transcripts:
 
 - Add action items as checkboxes in the **daily note**, not the meeting file
+- Each task must include a backlink to the meeting file so it's traceable, e.g.:
+  `- [ ] Review proposal [[meetings/YYYY-MM-DD-Meeting Title|Meeting Title]]`
 - **Task ownership routing**:
-  - If the task is for **someone else** → add to `Waiting On` section with person name
-  - If **someone is waiting on me** → add to `I Owe` section with person name
-  - If it's a **generic task I need to do** → add to `Tasks` section
+  - If the task is for **someone else** → add to `Waiting On` section with person name and meeting backlink
+  - If **someone is waiting on me** → add to `I Owe` section with person name and meeting backlink
+  - If it's a **generic task I need to do** → add to `Tasks` section with meeting backlink
 - Ask before creating new tasks from meeting notes if unclear whether they should be tracked
 
 ---

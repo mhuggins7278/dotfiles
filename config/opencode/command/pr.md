@@ -92,7 +92,31 @@ git diff origin/<target-branch>...HEAD --stat
 git diff origin/<target-branch>...HEAD
 ```
 
-### 6. Generate PR Content
+### 6. Prepare Node Environment (If Needed)
+
+If the repo is Node-based and you need to install JavaScript dependencies for
+validation or testing, switch to the project's configured Node version with
+`fnm` before running any package manager install command.
+
+```bash
+eval "$(fnm env --shell bash)"
+fnm use --install-if-missing
+
+if [ -f pnpm-lock.yaml ]; then
+  pnpm install
+elif [ -f yarn.lock ]; then
+  yarn install
+elif [ -f package-lock.json ]; then
+  npm ci
+elif [ -f package.json ]; then
+  npm install
+fi
+```
+
+Use this only when Node dependencies are actually needed. Do not guess a Node
+version or rely on a random global install.
+
+### 7. Generate PR Content
 
 **Title**:
 - Concise, action-oriented summary
@@ -132,7 +156,7 @@ If no template:
 Fixes <owner>/<repo>#<number>
 ```
 
-### 7. Create PR
+### 8. Create PR
 
 ```bash
 # Create PR with specified base branch
@@ -154,7 +178,7 @@ Ask the user if they want:
 
 If $ARGUMENTS is provided, use it to inform PR options (e.g. `/pr --draft` or `/pr staging` to set target branch directly).
 
-### 8. Report Results
+### 9. Report Results
 
 - Display PR URL
 - Encourage user to review online
@@ -165,6 +189,7 @@ If $ARGUMENTS is provided, use it to inform PR options (e.g. `/pr --draft` or `/
 - If on main/master: Error and abort
 - If uncommitted changes: Inform user to commit first, do not proceed
 - If `gh` CLI not available: Provide installation instructions
+- If `fnm use --install-if-missing` fails: Surface the error and stop before package installation
 - If branch behind remote: Inform user to pull first
 - If push fails: Display error and suggest resolution
 

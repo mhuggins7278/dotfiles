@@ -1,0 +1,6 @@
+# Worktrunk User Configuration
+# Docs: https://worktrunk.dev/docs/configuration
+
+# Worktree path template — creates sibling directories alongside the main checkout.
+# Example: ~/github/glg/front-toolbox-plugin → ~/github/glg/front-toolbox-plugin.test
+worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}"
