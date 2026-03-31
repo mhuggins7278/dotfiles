@@ -5,8 +5,6 @@ return { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter-textobjects',
   },
   config = function()
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
     ---@diagnostic disable-next-line: missing-fields
     require('nvim-treesitter.configs').setup {
       ensure_installed = {
@@ -28,9 +26,9 @@ return { -- Highlight, edit, and navigate code
         'go',
         'typescript',
       },
-      -- Autoinstall languages that are not installed
       auto_install = true,
-      highlight = { enable = true },
+      -- Neovim 0.12 handles highlighting via vim.treesitter.start().
+      highlight = { enable = false },
       indent = { enable = true },
       incremental_selection = {
         enable = true,
@@ -57,12 +55,5 @@ return { -- Highlight, edit, and navigate code
         },
       },
     }
-
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   end,
 }

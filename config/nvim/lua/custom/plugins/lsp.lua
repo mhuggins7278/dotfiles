@@ -9,55 +9,6 @@ return { -- LSP Configuration & Plugins
     { 'b0o/schemastore.nvim', lazy = true, version = false },
   },
   config = function()
-    local signs = { Error = '󰅚 ', Warn = '󰀪 ', Hint = '󰌶 ', Info = ' ' }
-    vim.diagnostic.config {
-      signs = {
-        text = {
-          [vim.diagnostic.severity.ERROR] = signs.Error,
-          [vim.diagnostic.severity.WARN] = signs.Warn,
-          [vim.diagnostic.severity.HINT] = signs.Hint,
-          [vim.diagnostic.severity.INFO] = signs.Info,
-        },
-        numhl = {
-          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
-          [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-          [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-          [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-        },
-        texthl = {
-          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
-          [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-          [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-          [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-        },
-      },
-      underline = true,
-      update_in_insert = false,
-      virtual_text = {
-        severity = { min = vim.diagnostic.severity.WARN },
-        source = 'if_many',
-        prefix = '●',
-        spacing = 4,
-        format = function(diagnostic)
-          local message = diagnostic.message
-          if #message > 80 then
-            return message:sub(1, 77) .. '...'
-          end
-          return message
-        end,
-      },
-      severity_sort = true,
-      float = {
-        border = 'rounded',
-        source = true,
-        header = '',
-        prefix = '',
-        focusable = false,
-        max_width = 80,
-        max_height = 20,
-      },
-    }
-
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
 
@@ -155,7 +106,7 @@ return { -- LSP Configuration & Plugins
         -- Get LSP client for additional setup
         local client = vim.lsp.get_client_by_id(event.data.client_id)
 
-        -- Enable inlay hints by default for buffers that support it
+        -- Keep inlay hints disabled by default for buffers that support them
         if client and client.server_capabilities.inlayHintProvider then
           vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
         end

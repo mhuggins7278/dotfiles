@@ -161,6 +161,17 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('kickstart-treesitter-highlight', { clear = true }),
+  callback = function(event)
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(event.buf) then
+        pcall(vim.treesitter.start, event.buf)
+      end
+    end)
+  end,
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -382,15 +393,6 @@ require('lazy').setup {
     --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
     --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
     { import = 'custom.plugins' },
-
-    {
-      'rachartier/tiny-inline-diagnostic.nvim',
-      event = 'VeryLazy', -- Or `LspAttach`
-      priority = 1000, -- needs to be loaded in first
-      config = function()
-        require('tiny-inline-diagnostic').setup()
-      end,
-    },
   },
   checker = { enabled = true, notify = true, frequency = 3600 },
 }
