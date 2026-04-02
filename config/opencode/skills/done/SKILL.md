@@ -241,15 +241,19 @@ create it (that's the daily-notes agent's job).
 
 If the daily note **exists**:
 
-1. **Insert follow-up items under `## Tasks`** — use the Edit tool to insert
-   each actionable follow-up as an unchecked checkbox immediately after the
-   last existing item in the `## Tasks` section:
+1. **Insert follow-up items and pending tasks under `## Tasks`** — use the Edit
+   tool to insert each actionable follow-up or unresolved pending task as an
+   unchecked checkbox immediately after the last existing item in the
+   `## Tasks` section. Append a backlink to the session note so the task points
+   back to its source:
    ```markdown
-   - [ ] <follow-up item>
+   - [ ] <follow-up item> [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|session note]]
    ```
-   Only add items that are clearly actionable by the user. Skip vague or
-   reference-only items. Use `- [ ]` state for all new items (see `daily-notes`
-   skill for the full checkbox type table).
+   Only add items that are clearly actionable by the user. Skip vague,
+   reference-only, or non-user-owned items. Use `- [ ]` state for all new items
+   (see `daily-notes` skill for the full checkbox type table). Prefer adding
+   the backlink at the end of the task so the action stays readable while still
+   making it easy to jump to the full session summary.
 
 2. **Add a backlink with TL;DR in the Notes section** — use the Edit tool to insert this
    line after the last existing item under `## Notes`:
@@ -294,7 +298,8 @@ After writing the file, report:
 - Do not infer the date — always run `date` first
 - Do not guess file paths in Changes Made — verify with Glob or Read before writing
 - Do not truncate the Changes Made list — include every file touched
-- Follow-ups should be specific and actionable, not vague ("look into X" is bad; "investigate why X fails when Y is null" is good)
+- Follow-ups and pending tasks copied into the daily note should be specific and actionable, not vague ("look into X" is bad; "investigate why X fails when Y is null" is good)
+- Every task copied into the daily note should include a backlink to the session note so the source context is easy to recover later
 - Keep Key Decisions focused on non-obvious choices — don't list things that had only one option
 - Do not hardcode the model name — read it from the session context
 - For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`
