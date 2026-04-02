@@ -217,9 +217,7 @@ formula:
   prettierd:
   pwgen:
   python-argcomplete:
-  python-markupsafe:
   python@3.13:
-  pyyaml:
   qemu:
   rav1e:
   readline:
