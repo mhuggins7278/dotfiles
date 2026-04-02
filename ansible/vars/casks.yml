@@ -1,12 +1,10 @@
 ---
 casks:
   aerospace:
-  azure-data-studio:
   bitwarden:
   copilot-cli:
   discord:
   docker:
-  docker-desktop:
   figma:
   font-caskaydia-cove-nerd-font:
   font-fira-code-nerd-font:
