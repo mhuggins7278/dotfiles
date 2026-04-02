@@ -167,6 +167,8 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.schedule(function()
       if vim.api.nvim_buf_is_valid(event.buf) then
         pcall(vim.treesitter.start, event.buf)
+        -- nvim-treesitter main branch: set indentexpr per buffer
+        vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
       end
     end)
   end,

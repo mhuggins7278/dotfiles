@@ -271,6 +271,7 @@ formula:
   tmux:
   tree:
   tree-sitter:
+  tree-sitter-cli:
   unbound:
   unibilium:
   unixodbc:

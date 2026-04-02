@@ -54,7 +54,7 @@ STARTUP="git -C '$WT_PATH' pull origin '$BRANCH' 2>/dev/null || true"
 if [ -n "$INSTALL_CMD" ]; then
   STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
 fi
-STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session -t '${SESSION_NAME}'"
+STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session"
 
 # Create/connect to named session (sesh handles the client switch internally)
 sesh connect --command "$STARTUP" "$WT_PATH"
