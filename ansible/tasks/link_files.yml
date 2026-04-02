@@ -15,6 +15,7 @@
     - {
         src: "~/.dotfiles/config/gh/config.yml",
         dest: "~/.config/gh/config.yml",
+	force: true
       }
     - {
         src: "~/.dotfiles/config/starship.toml",
@@ -35,7 +36,7 @@
     - { src: "~/.dotfiles/wgetrc", dest: "~/.wgetrc" }
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }
     - { src: "~/.dotfiles/zshrc", dest: "~/.zshrc" }
-    - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile" }
+    - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile", force: true }
     - {
         src: "~/.dotfiles/config/lazygit/config.yml",
         dest: "~/Library/Application Support/lazygit/config.yml",
