@@ -6,7 +6,6 @@
     "Apple Internal Keyboard / Trackpad"
   )
   process-unmapped-keys yes
-  danger-enable-cmd yes
   sequence-timeout 2000
   sequence-input-mode visible-backspaced
   sequence-backtrack-modcancel yes
@@ -31,18 +30,18 @@
 ;; - Space stays as Space
 
 ;; Aliases for home row mods (matching Moonlander timing)
+;; Homebrew's Kanata build doesn't support cmd outputs, so the GUI home-row
+;; mods stay as plain keys here.
 (defalias
-  ;; Left hand home row mods (increased timing for reliability)
-  a (tap-hold 200 250 a lmet)
-  s (tap-hold 200 250 s lalt)
-  d (tap-hold 200 250 d lctl)
-  f (tap-hold 200 250 f lsft)
+  ;; Use a longer hold timeout so normal typing resolves to taps more reliably.
+  s (tap-hold 200 375 s lalt)
+  d (tap-hold 200 375 d lctl)
+  f (tap-hold 200 375 f lsft)
   
   ;; Right hand home row mods
-  j (tap-hold 200 250 j rsft)
-  k (tap-hold 200 250 k rctl)
-  l (tap-hold 200 250 l ralt)
-  sem (tap-hold 200 250 ; rmet)
+  j (tap-hold 200 375 j rsft)
+  k (tap-hold 200 375 k rctl)
+  l (tap-hold 200 375 l ralt)
   
   ;; Meh key (Ctrl+Shift+Alt)
   mbk (tap-hold 200 250 bspc (multi lctl lsft lalt))
@@ -59,8 +58,8 @@
   ;; Caps word toggle
   cpw (caps-word 2000)
   
-  ;; Raycast launcher (Cmd+Space)
-  ray (multi lmet spc)
+  ;; Raycast launcher (Alt+Space)
+  ray (multi lalt spc)
   
   ;; Tmux-style macros (Ctrl+A prefix)
   cat (macro C-a S-t)  ;; Ctrl+A then Shift+T
@@ -70,7 +69,7 @@
 (deflayer base
   _    1    2    3    4    5    6    7    8    9    0    _    _    _
   esc  q    w    e    r    t    y    u    i    o    p    _    _    \
-  @cap @a   @s   @d   @f   g    h    @j   @k   @l   @sem @mqt ret
+  @cap a    @s   @d   @f   g    h    @j   @k   @l   ;    @mqt ret
   tab  z    x    c    v    b    n    m    ,    .    /    grv
   @num @win lalt           spc            @ray @sym
 )
@@ -95,11 +94,11 @@
 
 ;; Layer 3 - Window Management & Navigation
 (deflayer wm
+  _    M-1  M-2  M-3  M-4  _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    C-A-S-q C-A-S-w C-A-S-e C-A-S-r @cat _    C-A-u C-A-up C-A-i _    _    _    _
-  _    C-A-S-a C-A-S-s C-A-S-d C-A-S-f C-A-S-g M-S-[ C-A-lft C-A-S-k C-A-rght _    _    _
-  _    C-A-S-z C-A-S-x C-A-S-c M-S-v M-[  M-S-] C-A-S-m C-A-down C-A-k _    _
-  _    _    C-lft          C-rght         M-=  M--
+  _    M-S-h M-S-j M-S-k M-S-l _    C-S-h C-S-j C-S-k C-S-l M-S-; _    _
+  _    M-S-- M-S-= _    M-tab M-S-tab _    C-S-m M-,  _    M-/ _
+  _    _    _              _              _    _
 )
 
 ;; Layer 4 - Navigation (Arrow keys)

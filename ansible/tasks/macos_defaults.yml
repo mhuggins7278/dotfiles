@@ -147,6 +147,26 @@
   ignore_errors: yes
   tags: zoom-transcript
 
+- name: Remove existing sketchybar plist (replaced by template)
+  file:
+    path: "{{ ansible_facts.env.HOME }}/Library/LaunchAgents/com.sketchybar.plist"
+    state: absent
+  when: ansible_facts.os_family == "Darwin"
+  tags: sketchybar
+
+- name: Install Sketchybar LaunchAgent from template
+  template:
+    src: "{{ ansible_facts.env.HOME }}/.dotfiles/config/sketchybar/com.sketchybar.plist.j2"
+    dest: "{{ ansible_facts.env.HOME }}/Library/LaunchAgents/com.sketchybar.plist"
+  when: ansible_facts.os_family == "Darwin"
+  tags: sketchybar
+
+- name: Load Sketchybar LaunchAgent
+  shell: "launchctl load {{ ansible_facts.env.HOME }}/Library/LaunchAgents/com.sketchybar.plist"
+  when: ansible_facts.os_family == "Darwin"
+  ignore_errors: yes
+  tags: sketchybar
+
 - name: Set Terminal settings
   osx_defaults: domain=com.apple.Terminal key={{ item.key }} type={{ item.type }} value={{ item.value }}
   with_items:

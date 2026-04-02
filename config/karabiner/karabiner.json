@@ -7,7 +7,7 @@
   "profiles": [
     {
       "name": "Moonlander Layout",
-      "selected": true,
+      "selected": false,
       "complex_modifications": {
         "parameters": {
           "basic.simultaneous_threshold_milliseconds": 50,
@@ -1923,6 +1923,25 @@
             ]
           }
         ]
+      },
+      "devices": [],
+      "fn_function_keys": [],
+      "simple_modifications": [],
+      "virtual_hid_keyboard": {
+        "country_code": 0
+      }
+    },
+    {
+      "name": "Kanata Driver Only",
+      "selected": true,
+      "complex_modifications": {
+        "parameters": {
+          "basic.simultaneous_threshold_milliseconds": 50,
+          "basic.to_delayed_action_delay_milliseconds": 500,
+          "basic.to_if_alone_timeout_milliseconds": 190,
+          "basic.to_if_held_down_threshold_milliseconds": 190
+        },
+        "rules": []
       },
       "devices": [],
       "fn_function_keys": [],
