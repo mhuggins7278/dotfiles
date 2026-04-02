@@ -196,7 +196,6 @@ formula:
   openjdk:
   openjpeg:
   openjph:
-  openssl@1.1:
   openssl@3:
   opentofu:
   openvpn:
@@ -215,21 +214,11 @@ formula:
   pngpaste:
   pnpm:
   poppler:
-  postgresql@13:
   prettierd:
   pwgen:
-  pycparser:
   python-argcomplete:
-  python-certifi:
-  python-cryptography:
   python-markupsafe:
-  python-packaging:
-  python-typing-extensions:
-  python@3.10:
-  python@3.11:
-  python@3.12:
   python@3.13:
-  python@3.14:
   pyyaml:
   qemu:
   rav1e:
@@ -255,7 +244,6 @@ formula:
   snappy:
   speex:
   sqlite:
-  sqls:
   srt:
   ssh-copy-id:
   starship:
