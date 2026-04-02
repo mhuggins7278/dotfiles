@@ -12,14 +12,17 @@ case "$(uname -s)" in
           xcode-select --install
         fi
 
-        # install homwbrew
-        if [[ ! -x /usr/local/bin/brew ]]; then
+        # install homebrew
+        if [[ ! -x /opt/homebrew/bin/brew ]]; then
           echo "[i] Install Homebrew"
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi
 
+        # configure homebrew in PATH for this session
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+
         # install ansible
-        if [[ ! -x /usr/local/bin/ansible ]]; then
+        if ! command -v ansible &>/dev/null; then
             echo "[i] Install Ansible"
             brew install ansible
         fi
