@@ -2,9 +2,11 @@
 name: done
 description: >
   End-of-session skill. Synthesizes the full conversation into a structured Obsidian note capturing
-  decisions, changes, questions, and follow-ups. Trigger on "/done", "wrap up", "we're done", "save
-  this session", "end of day", "I'm logging off", "capture this session", or any indication the user
-  is finishing a coding session and wants a record of what happened.
+  decisions, changes, questions, and follow-ups. Trigger on "/done", "/wrap", "wrap up", "we're
+  done", "save this session", "end of day", "I'm logging off", "capture this session", "that's
+  enough for now", "good stopping point", "let's call it", "closing up", "taking a break",
+  "I'm done here", "save my work", "note this session", or any indication the user is finishing or
+  pausing a session and wants a record of what happened.
 ---
 
 # Done Skill — Session Wrap-Up
@@ -13,8 +15,25 @@ Synthesizes everything from the current OpenCode session into a note in the Obsi
 
 ## When to Use
 
-- User runs `/done` at the end of a coding session
-- User says "wrap up this session", "we're done", "save this session"
+- User runs `/done` or `/wrap` at the end of any session
+- User says "wrap up this session", "we're done", "save this session", "that's enough for now",
+  "good stopping point", "closing up", "I'm done here", or any similar phrase
+
+## Session Type
+
+Before writing the note, classify the session as one of:
+
+- **coding** — the session made concrete code or file changes, ran commands, modified configs, etc.
+- **exploration** — the session was primarily discussion, planning, research, or brainstorming with
+  no (or incidental) file changes
+
+Use these signals to decide:
+- Any files written, edited, or deleted → **coding**
+- Git commits or diffs referenced → **coding**
+- Primarily conversation, questions, ideation → **exploration**
+
+Use the appropriate template from the sections below. When in doubt, prefer **exploration** — a
+leaner note is better than one full of empty sections.
 
 ## Workflow
 
@@ -45,7 +64,9 @@ Capture:
 
 ### 2. Synthesize the Session
 
-Review the entire conversation and extract:
+Review the entire conversation and extract the fields appropriate to the session type:
+
+#### Coding session fields
 
 **Summary** — 2-4 sentences describing what the session accomplished overall.
 
@@ -54,13 +75,34 @@ Review the entire conversation and extract:
 - What was done (created, edited, deleted, configured)
 - One-line reason
 
-**Key Decisions** — architectural, design, or direction choices made during the session. Focus on *why*, not just *what*.
+**Key Decisions** — architectural, design, or direction choices made. Focus on *why*, not just *what*.
 
-**Questions Raised** — questions that came up during the session (answered or unanswered). Include the resolution if there was one.
+**Questions Raised** — questions that came up (answered or unanswered). Include resolution if there was one.
 
-**Follow-ups** — unresolved items, next steps, things to revisit. These become actionable todos.
+**Follow-ups** — unresolved items, next steps, things to revisit.
 
 **Context** — technical context useful for picking up where this left off.
+
+#### Exploration session fields
+
+**Summary** — 2-4 sentences describing the purpose and outcome of the session.
+
+**Key Insights** — the most important things learned, realized, or discovered. What changed in
+understanding? What was confirmed or refuted?
+
+**Ideas Generated** — specific ideas, proposals, or options that emerged.
+
+**Decisions** — anything that was decided or agreed upon, even provisionally.
+
+**Open Questions** — things that came up but weren't resolved; threads worth following.
+
+**Follow-ups** — concrete next actions, even if small.
+
+#### TL;DR (all sessions)
+
+After synthesizing, write a single sentence (≤ 20 words) capturing the essence of the session.
+This is used in the daily note. Example: "explored note capture friction, identified three
+improvements to the done skill."
 
 ### 3. Determine Output Path
 
@@ -83,13 +125,16 @@ mkdir -p "$SESSION_DIR/YYYY/MM"
 
 ### 4. Write the Note
 
-Use this exact template:
+Use the template matching the session type.
+
+#### Coding session template
 
 ```markdown
 ---
 id: session-YYYY-MM-DD-HHmm
 date: YYYY-MM-DD
 time: "HH:MM"
+type: coding
 tags:
   - ai-session
   - opencode
@@ -134,6 +179,53 @@ model: <model-name-from-session-context>
 - **Constraints / gotchas**: <anything that would trip you up picking this up later>
 ```
 
+#### Exploration session template
+
+```markdown
+---
+id: session-YYYY-MM-DD-HHmm
+date: YYYY-MM-DD
+time: "HH:MM"
+type: exploration
+tags:
+  - ai-session
+  - opencode
+project: <topic or repo if relevant, else omit>
+model: <model-name-from-session-context>
+---
+
+# Session: <Topic> — YYYY-MM-DD HH:MM
+
+## Summary
+
+<2-4 sentence overview of what was explored and what came of it>
+
+## Key Insights
+
+- <most important thing learned or realized>
+- ...
+
+## Ideas Generated
+
+- <specific idea or proposal>
+- ...
+
+## Decisions
+
+- **<decision>**: <what was settled and why>
+- ...
+
+## Open Questions
+
+- <unresolved question worth following up on>
+- ...
+
+## Follow-ups
+
+- [ ] <concrete next action>
+- [ ] ...
+```
+
 ### 5. Update Today's Daily Note
 
 Uses the same note structure and CLI conventions as the `daily-notes` skill.
@@ -159,10 +251,15 @@ If the daily note **exists**:
    reference-only items. Use `- [ ]` state for all new items (see `daily-notes`
    skill for the full checkbox type table).
 
-2. **Add a backlink in the Notes section** — use the Edit tool to insert this
+2. **Add a backlink with TL;DR in the Notes section** — use the Edit tool to insert this
    line after the last existing item under `## Notes`:
    ```markdown
-   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <project> (<branch>)]]
+   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <project> (<branch>)]] — <TL;DR>
+   ```
+   The TL;DR is the single sentence synthesized in Step 2 (≤ 20 words, lowercase, no trailing
+   period). For exploration sessions without a branch, use just the topic:
+   ```markdown
+   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <topic>]] — <TL;DR>
    ```
    If no `## Notes` section exists, add one at the end of the file.
 

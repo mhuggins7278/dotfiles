@@ -1,23 +1,24 @@
 ---
 name: daily-notes
 description: >
-  Inline daily notes operations — add tasks, mark items done, check open items,
-  read or update the daily note, and make targeted edits to any section. Use
-  this skill whenever the user wants to add a task, update status, check what's
-  open, add something to Waiting On or I Owe, insert a note, or make any quick
-  change to their daily note — even mid-session, without switching context.
-  Trigger on phrases like "add a task," "mark that done," "what's still open,"
-  "add to waiting on," "log a note," or any request to read or modify today's
-  note. For full morning planning, evening review, meeting transcript processing,
-  or weekly summaries, direct the user to the `daily-notes` agent instead.
+  Inline daily notes capture and lightweight review — quickly track what the
+  user needs to do, what they did, what they're waiting on, what they owe, and
+  what they want to remember in today's note without switching context. Use
+  this skill whenever the user says things like "track this," "note this,"
+  "I just shipped...," "I'm waiting on...," "I owe...," "what's open?,"
+  "what did I get done?," or otherwise wants daily-note updates to happen in
+  the flow of work. For full morning planning, end-of-day review, meeting
+  transcript processing, weekly summaries, or larger cleanup passes, direct the
+  user to the `daily-notes` agent instead.
 ---
 
-# Daily Notes — Inline Operations
+# Daily Notes — Inline Capture
 
-Handles quick reads and targeted writes to the Obsidian daily note from any
-session. For full conversational workflows (morning planning, evening review,
-meeting transcripts, weekly summaries), tell the user to switch to the
-`daily-notes` agent via `ctrl+p` → Agents.
+Handles low-friction daily-note updates from any session. Default to capturing
+the user's natural-language updates directly into today's note with minimal
+ceremony. For full conversational workflows (morning startup, end-of-day
+review, meeting transcripts, weekly summaries, broad cleanup), tell the user to
+switch to the `daily-notes` agent via `ctrl+p` → Agents.
 
 ## Note Location
 
@@ -28,6 +29,15 @@ meeting transcripts, weekly summaries), tell the user to switch to the
 Use `obsidian daily:path` to get today's path. Use `obsidian daily:read` to
 read the current note. Never hardcode the date — always resolve it via CLI or
 `date`.
+
+## Default Behavior
+
+- Capture first, clean up second.
+- Classify the user's update into the right section without making them speak in
+  a rigid format.
+- Make the write, then reply with a brief confirmation.
+- Ask a follow-up only when ambiguity materially changes where the item belongs
+  or whether a new linked note should be created.
 
 ## CLI Quick Operations
 
@@ -44,6 +54,9 @@ Prefer these for single-item changes:
 | Set in-progress | `obsidian task daily line=<n> "status=/"` |
 | Search vault | `obsidian search query="<text>"` |
 
+For anything that needs insertion under a specific heading such as `Activity`,
+`Waiting On`, or `Notes`, read the note and make a targeted edit.
+
 ## File Edits
 
 When a CLI command isn't sufficient (inserting under a specific heading,
@@ -56,6 +69,9 @@ edit. Prefer surgical edits over full rewrites.
 ```markdown
 ## Tasks
 - [ ] Things you own and need to do
+
+## Activity
+- Shipped thing, met with person, made decision, sent update
 
 ## After Hours
 - [ ] Lower-priority items to revisit
@@ -71,11 +87,32 @@ Notes or link to meeting file
 - [ ] [[Person Name]] — what you owe them
 
 ## Notes
-Freeform thoughts, context, observations — never task restatements
+Freeform thoughts, context, observations, rationale, and reminders
 ```
 
-**Rule**: Something is either a task (checkbox) or a note (prose) — never both.
-Never add checkboxes to the Notes section.
+Use `Activity` for what happened during the day. Use `Notes` for context worth
+remembering. Keep tasks in checkbox sections. Do not add checkboxes to
+`Notes` or `Activity`.
+
+## Natural Capture Model
+
+Translate natural language into note updates using this mental model:
+
+- `I need to...` -> `Tasks`
+- `later / not urgent / revisit...` -> `After Hours`
+- `I did / shipped / met / decided / sent...` -> `Activity`
+- `waiting on...` -> `Waiting On`
+- `I owe / need to send them / promised...` -> `I Owe`
+- `remember / context / observation / rationale...` -> `Notes`
+
+One user message can create multiple entries when that matches reality.
+
+Example:
+
+- User: `I sent Priya the draft and now I'm waiting on feedback`
+- Result:
+  - `Activity`: sent draft to `[[Priya]]`
+  - `Waiting On`: `[[Priya]]` — feedback on draft
 
 ## Checkbox States
 
@@ -85,7 +122,7 @@ Never add checkboxes to the Notes section.
 | `- [/]` | In progress | Yes |
 | `- [x]` | Done | No |
 | `- [-]` | Cancelled | No |
-| `- [>]` | Deferred | No |
+| `- [>]` | Deferred | Yes |
 
 ## Backlinks
 
@@ -95,16 +132,36 @@ Use Obsidian wikilinks for people, projects, and ideas:
 - **Projects**: `[[Project Name]]` → file lives at `work/projects/ProjectName.md`
 - **Waiting On / I Owe**: always backlink the person name at the start
 
-Before creating a new person backlink, check for existing people files:
-`obsidian files folder=work/people`
+Prefer best-effort backlinking for obvious matches. Do not block capture on
+name uncertainty.
+
+- If an exact or clearly intended person file already exists, link it.
+- If multiple plausible matches exist, ask.
+- If no existing file is obvious, keep the plain-text name for now unless the
+  user specifically wants a people note created.
+- Before creating a new person note, check existing people files with
+  `obsidian files folder=work/people`.
+
+## Lightweight Review
+
+This skill can also handle quick review prompts such as:
+
+- `what's still open?`
+- `what did I get done today?`
+- `what am I waiting on?`
+- `mark that done`
+- `move that to after hours`
+
+For these, read the current note, make targeted updates if needed, and return a
+short recap.
 
 ## Escalation Boundary
 
 Tell the user to switch to the `daily-notes` agent for:
-- Morning planning (carry-over, state changes, new tasks via conversation)
-- Evening exit interview (review, reflections, weekly summaries)
+- Morning startup and carry-over review across days
+- End-of-day closeout and reflection
 - Meeting transcript processing
 - Weekly summary generation
-- Any workflow requiring extended back-and-forth conversation
+- Large cleanup or restructuring passes across the note
 
 For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`.
