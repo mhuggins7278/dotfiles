@@ -8,7 +8,6 @@ taps:
   felixkratz/formulae:
   fsouza/prettierd:
   hashicorp/tap:
-  homebrew/services:
   jesseduffield/lazydocker:
   joshmedeski/sesh:
   julien-cpsn/atac:
