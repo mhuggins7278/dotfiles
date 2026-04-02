@@ -8,7 +8,6 @@ taps:
   felixkratz/formulae:
   fsouza/prettierd:
   hashicorp/tap:
-  homebrew/command-not-found:
   homebrew/services:
   jesseduffield/lazydocker:
   joshmedeski/sesh:
