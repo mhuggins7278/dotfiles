@@ -74,6 +74,15 @@ $ cd ~/.dotfiles/init
 $ .init/setup.sh
 ```
 
+## Manual steps after install
+
+Some casks require elevated privileges during installation and will hang Ansible. Install these manually after the playbook completes:
+
+```bash
+brew install --cask docker-desktop
+brew install --cask karabiner-elements
+```
+
 ## What is missing
 
 * `gitconfig`
