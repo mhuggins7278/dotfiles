@@ -4,7 +4,6 @@ casks:
   bitwarden:
   copilot-cli:
   discord:
-  docker:
   figma:
   font-caskaydia-cove-nerd-font:
   font-fira-code-nerd-font:
@@ -23,6 +22,3 @@ casks:
   ngrok:
   postman:
   spotify:
-  visual-studio-code:
-  wireshark:
-  wireshark-app:
