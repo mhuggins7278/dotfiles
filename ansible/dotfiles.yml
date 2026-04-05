@@ -112,3 +112,11 @@
     - name: Kill Terminal
       command: killall Terminal
       ignore_errors: yes
+
+    - name: Restart Kanata LaunchDaemon
+      shell: |
+        launchctl bootout system/com.kanata.service 2>/dev/null || true
+        sleep 1
+        launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist
+      become: yes
+      ignore_errors: yes

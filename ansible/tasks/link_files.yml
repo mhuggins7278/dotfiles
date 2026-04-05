@@ -35,6 +35,7 @@
     - { src: "~/.dotfiles/gtkrc-2.0", dest: "~/.gtkrc-2.0" }
     - { src: "~/.dotfiles/wgetrc", dest: "~/.wgetrc" }
     - { src: "~/.dotfiles/xinitrc", dest: "~/.xinitrc" }
+    - { src: "~/.dotfiles/npmrc", dest: "~/.npmrc" }
     - { src: "~/.dotfiles/zshrc", dest: "~/.zshrc" }
     - { src: "~/.dotfiles/zprofile", dest: "~/.zprofile", force: true }
     - {

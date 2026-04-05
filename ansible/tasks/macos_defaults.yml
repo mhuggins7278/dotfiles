@@ -75,6 +75,57 @@
   notify:
     - Kill Dock
 
+- name: Check installed Karabiner-DriverKit-VirtualHIDDevice version
+  shell: pkgutil --pkg-info org.pqrs.Karabiner-DriverKit-VirtualHIDDevice 2>/dev/null | awk '/^version:/{print $2}'
+  register: vhid_installed_version
+  changed_when: false
+  failed_when: false
+  when: ansible_facts.os_family == "Darwin"
+  tags: kanata
+
+- name: Download Karabiner-DriverKit-VirtualHIDDevice standalone pkg
+  get_url:
+    url: "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v6.12.0/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg"
+    dest: "/tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg"
+    checksum: "sha256:27b4221328c2f39abdb3f9d999a1af2235a70dc81d2ff4af99f44dc91873f5ad"
+  when:
+    - ansible_facts.os_family == "Darwin"
+    - vhid_installed_version.stdout | default('') != "6.12.0"
+  tags: kanata
+
+- name: Install Karabiner-DriverKit-VirtualHIDDevice standalone pkg
+  shell: installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg -target /
+  become: yes
+  when:
+    - ansible_facts.os_family == "Darwin"
+    - vhid_installed_version.stdout | default('') != "6.12.0"
+  tags: kanata
+
+- name: Disable Karabiner-Core-Service system daemon (keep VirtualHIDDevice-Daemon)
+  shell: |
+    launchctl disable system/org.pqrs.service.daemon.Karabiner-Core-Service
+    launchctl bootout system/org.pqrs.service.daemon.Karabiner-Core-Service
+  when: ansible_facts.os_family == "Darwin"
+  ignore_errors: yes
+  become: yes
+  tags: kanata
+
+- name: Disable Karabiner user-level agents
+  shell: |
+    uid=$(id -u {{ ansible_facts.env.USER }})
+    for label in \
+      org.pqrs.service.agent.Karabiner-Core-Service \
+      org.pqrs.service.agent.karabiner_console_user_server \
+      org.pqrs.service.agent.Karabiner-NotificationWindow \
+      org.pqrs.service.agent.Karabiner-Menu \
+      org.pqrs.service.agent.karabiner_session_monitor; do
+      launchctl disable "gui/${uid}/${label}"
+      launchctl bootout "gui/${uid}/${label}"
+    done
+  when: ansible_facts.os_family == "Darwin"
+  ignore_errors: yes
+  tags: kanata
+
 - name: Install Kanata LaunchDaemon plist
   template:
     src: "{{ ansible_facts.env.HOME }}/.dotfiles/config/kanata/com.kanata.service.plist.j2"
@@ -85,8 +136,9 @@
   when: ansible_facts.os_family == "Darwin"
   tags: kanata
   become: yes
+  notify: Restart Kanata LaunchDaemon
 
-- name: Load Kanata LaunchDaemon
+- name: Bootstrap Kanata LaunchDaemon (if not already running)
   shell: launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist
   when: ansible_facts.os_family == "Darwin"
   ignore_errors: yes

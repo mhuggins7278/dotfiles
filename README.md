@@ -31,7 +31,7 @@ These are my dotfiles, they can be used under macOS and Linux (mainly Arch Linux
 * Vim
 * Visual Studio Code
 * Wget
-* Karabiner-Elements
+* Kanata (keyboard remapping, replaces Karabiner-Elements)
 
 ## Install (for me)
 
@@ -76,12 +76,36 @@ $ .init/setup.sh
 
 ## Manual steps after install
 
-Some casks require elevated privileges during installation and will hang Ansible. Install these manually after the playbook completes:
+### Allow Karabiner-DriverKit-VirtualHIDDevice system extension (macOS, one-time)
+
+The Ansible playbook automatically downloads and installs the standalone `Karabiner-DriverKit-VirtualHIDDevice` driver pkg (no full Karabiner-Elements app needed). This driver provides the virtual HID device that kanata uses for keyboard output.
+
+On first install (or after a macOS upgrade), the DriverKit system extension must be approved manually:
+
+1. Open **System Settings → Privacy & Security → Security**
+2. Approve the blocked system extension from `pqrs.org`
+3. Reboot when prompted
+
+If you previously had `karabiner-elements` installed via brew, uninstall it after running the playbook to avoid conflicts — the standalone driver pkg replaces it:
 
 ```bash
-brew install --cask docker-desktop
-brew install --cask karabiner-elements
+brew uninstall --cask karabiner-elements
+sudo installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg -target /
 ```
+
+> **Note:** `brew uninstall --cask karabiner-elements` deletes the driver files. Re-run the Ansible playbook (`dotfiles`) or the second `installer` line above to restore them.
+
+### Grant kanata Input Monitoring permission (macOS)
+
+kanata requires Input Monitoring (Privacy & Security) permission to read from the keyboard. After running `dotfiles`, grant it manually:
+
+1. Open **System Settings → Privacy & Security → Input Monitoring**
+2. Click **+**
+3. In the file picker, press **Cmd+Shift+G** and enter `/opt/homebrew/bin/`
+4. Select **kanata** and click Open
+5. Restart kanata: `sudo launchctl bootout system/com.kanata.service && sudo launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist`
+
+> **Note:** macOS 26 (Tahoe) doesn't allow browsing to non-app-bundle binaries directly in the file picker — the Cmd+Shift+G path trick is required.
 
 ## What is missing
 
