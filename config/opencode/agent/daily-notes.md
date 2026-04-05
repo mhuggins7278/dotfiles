@@ -1,7 +1,7 @@
 ---
 description: Personal daily notes and task management assistant for Obsidian vault
 mode: primary
-model: github-copilot/gpt-5.4
+model: github-copilot/gpt-5.4-mini
 temperature: 0.3
 permission:
   external_directory:
