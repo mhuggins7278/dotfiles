@@ -159,18 +159,24 @@ planning pass.
 ### Process
 
 1. Get today's daily note path using `obsidian daily:path`
-2. Read today's existing note (if any) using `obsidian daily:read`
-3. Auto-carry over all unchecked items from yesterday into today's note by default (do not ask), keeping items in the same section they were in
+2. Get yesterday's date: `date -v-1d +%Y-%m-%d`
+3. **Carryover check**: run `obsidian tasks file=<yesterday-date> todo verbose`
+   to see if there are any incomplete items. If the output is empty, skip
+   carryover entirely — do not load the previous note.
+4. If incomplete tasks exist: read yesterday's note to get section placement for
+   each item (use the Read tool on the resolved path)
+5. Read today's existing note (if any) using `obsidian daily:read`
+6. Auto-carry over all unchecked items from yesterday into today's note by default (do not ask), keeping items in the same section they were in
    - Carry over unchecked items: `- [ ] item`
    - Skip checked/completed items: `- [x] item`
-4. Summarize carried-over open items by section in a compact recap
-5. Mention any stale items neutrally if they have carried for 5+ days
-6. Ask one broad question such as: `What's changed since yesterday, and what matters today?`
-7. From the user's answer, capture tasks, meetings, waiting-on items, owed items, activity, and notes without forcing a questionnaire
-8. Ask follow-ups only for missing information that changes classification or meaning
-9. Add meetings under a `Meetings` section with each meeting as a subheading when the user mentions them
-10. Ask before creating new tasks from meeting notes if ownership is unclear
-11. Before finalizing, do a best-effort backlink pass for obvious people/project matches without blocking the flow on uncertain names
+7. Summarize carried-over open items by section in a compact recap
+8. Mention any stale items neutrally if they have carried for 5+ days
+9. Ask one broad question such as: `What's changed since yesterday, and what matters today?`
+10. From the user's answer, capture tasks, meetings, waiting-on items, owed items, activity, and notes without forcing a questionnaire
+11. Ask follow-ups only for missing information that changes classification or meaning
+12. Add meetings under a `Meetings` section with each meeting as a subheading when the user mentions them
+13. Ask before creating new tasks from meeting notes if ownership is unclear
+14. Before finalizing, do a best-effort backlink pass for obvious people/project matches without blocking the flow on uncertain names
 
 **Example recap + prompt**
 "You have 2 open tasks, 1 waiting-on item, and 1 thing you owe. One task has been hanging around for a week. What's changed since yesterday, and what matters today?"
@@ -368,13 +374,20 @@ Create/update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` 
 
 Prefer Obsidian CLI for quick, targeted updates during the day:
 
+- **List open tasks with line numbers**: `obsidian tasks daily todo verbose`
+  — always start here for task review or updates; returns `path:line: text`
+  so you can act on tasks without loading the full note into context
 - **Appending a new task**: `obsidian daily:append content="- [ ] Task description"`
-- **Reading the current daily note**: `obsidian daily:read`
-- **Marking a task done** (when you know the line number): `obsidian task daily line=<n> done`
+- **Marking a task done**: `obsidian task daily line=<n> done`
 - **Toggling a task**: `obsidian task daily line=<n> toggle`
 - **Setting custom status** (e.g. in-progress): `obsidian task daily line=<n> "status=/"`
-- **Listing open tasks**: `obsidian tasks daily todo`
+- **Searching with line context**: `obsidian search:context query="<text>" path=dailies`
 - **Searching the vault**: `obsidian search query="<text>"`
+- **Reading the full note** (only when freeform sections are needed): `obsidian daily:read`
+
+**Pattern for task updates**: run `tasks daily todo verbose` first to get line
+numbers, then use `task daily line=<n> done|toggle|status=<x>`. Do not read the
+full note just to find a line number.
 
 Use the file Edit tool when you need to update multiple sections, insert under
 `Activity`, or restructure content that is not a simple append.
@@ -382,7 +395,10 @@ Use the file Edit tool when you need to update multiple sections, insert under
 ### Staleness Callouts
 
 - If an item has been carried over for 5+ consecutive days, mention it once neutrally
-- Count by checking how many previous daily notes contain the same unchecked item
+- To check staleness without loading multiple notes: use
+  `obsidian search:context query="<exact task text>" path=dailies` and count
+  the number of matching file paths in the output — each match is one day the
+  item appeared unchecked
 - No nagging — just a heads-up
 
 ### Session Wrap
@@ -401,12 +417,13 @@ interview.
 
 ### Process
 
-1. Read today's daily note using `obsidian daily:read`
-2. Review open vs. completed tasks using `obsidian tasks daily` (for all) or `obsidian tasks daily todo` (open only)
-3. Summarize the current state briefly: open tasks, waiting-on items, owed items, and today's activity if present
+1. Get open tasks with line numbers: `obsidian tasks daily todo verbose`
+2. Get completed tasks: `obsidian tasks daily done`
+3. Summarize the current state briefly from the task output: open tasks, waiting-on items, owed items, and today's completed work
 4. Ask one broad prompt such as: `What got done, what slipped, and what should we remember?`
-5. Mark completed items, capture notable work in `Activity`, and add any reflections or context to `Notes`
-6. Ask whether to add anything to manager/team sync summaries
+5. Mark completed items using `obsidian task daily line=<n> done` (line numbers come from the `verbose` output above)
+6. For `Activity` entries or `Notes` additions, read the note first then edit targeted sections
+7. Ask whether to add anything to manager/team sync summaries
 
 ### Output
 

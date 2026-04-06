@@ -45,14 +45,21 @@ Prefer these for single-item changes:
 
 | Goal | Command |
 |------|---------|
-| Read today's note | `obsidian daily:read` |
-| Get today's path | `obsidian daily:path` |
-| Append a new task | `obsidian daily:append content="- [ ] Task description"` |
-| List open tasks | `obsidian tasks daily todo` |
+| List open tasks with line numbers | `obsidian tasks daily todo verbose` |
 | Mark a task done | `obsidian task daily line=<n> done` |
 | Toggle a task | `obsidian task daily line=<n> toggle` |
 | Set in-progress | `obsidian task daily line=<n> "status=/"` |
+| Append a new task | `obsidian daily:append content="- [ ] Task description"` |
+| Get today's path | `obsidian daily:path` |
+| Read today's full note | `obsidian daily:read` |
 | Search vault | `obsidian search query="<text>"` |
+| Search with line context | `obsidian search:context query="<text>" path=dailies` |
+
+**Use `tasks daily todo verbose` as the default starting point for any task
+review or update.** It returns `path:line: task text` output — you get line
+numbers directly and can mark items done without loading the full note into
+context. Only use `daily:read` when you need the full note contents (freeform
+sections like `Activity` or `Notes`).
 
 For anything that needs insertion under a specific heading such as `Activity`,
 `Waiting On`, or `Notes`, read the note and make a targeted edit.
@@ -152,8 +159,20 @@ This skill can also handle quick review prompts such as:
 - `mark that done`
 - `move that to after hours`
 
-For these, read the current note, make targeted updates if needed, and return a
-short recap.
+**Prefer targeted CLI commands over reading the full note:**
+
+- `what's still open?` → `obsidian tasks daily todo verbose` (returns tasks +
+  line numbers; no full note load)
+- `what did I get done today?` → `obsidian tasks daily done`
+- `what am I waiting on?` → `obsidian tasks daily todo verbose`, then filter
+  lines that start with `[[`
+- `mark that done` → `obsidian tasks daily todo verbose` to identify the line,
+  then `obsidian task daily line=<n> done`
+- `move that to after hours` → line number from `verbose` output, then edit the
+  note at that line
+
+Only use `obsidian daily:read` when freeform content (`Activity`, `Notes`,
+`Meetings`) is needed.
 
 ## Escalation Boundary
 
