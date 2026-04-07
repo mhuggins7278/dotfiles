@@ -5,7 +5,6 @@
     "ollama": {
       "models": {
         "gemma4": {
-          "_launch": true,
           "name": "gemma4"
         }
       },

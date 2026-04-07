@@ -319,9 +319,15 @@ SAFE_TITLE=$(echo "<title>" | tr -d '"')
 # Derive session name the same way sesh does (basename of path)
 SESSION_NAME=$(basename "$WORKTREE_PATH")
 
-# Prepend dep install to the startup command so the new session owns its env
+# Always set up fnm first, then install deps, then launch opencode
+FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
+
 if [ -n "$INSTALL_CMD" ]; then
-  STARTUP="$INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+  if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm) ]]; then
+    STARTUP="$FNM_SETUP && $INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+  else
+    STARTUP="$INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+  fi
 else
   STARTUP="opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
 fi

@@ -72,9 +72,15 @@ fi
 
 # Build startup: git sync + install (if needed) + opencode + cleanup
 # Use fetch + reset instead of pull to handle diverged branches gracefully.
+FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
+
 STARTUP="git -C '$WT_PATH' fetch origin '$BRANCH' && git -C '$WT_PATH' reset --hard 'origin/$BRANCH'"
 if [ -n "$INSTALL_CMD" ]; then
-  STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
+  if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm) ]]; then
+    STARTUP="$STARTUP && (cd '$WT_PATH' && $FNM_SETUP && $INSTALL_CMD)"
+  else
+    STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
+  fi
 fi
 STARTUP="$STARTUP && opencode --agent review --prompt 'Review PR #${PR_NUM} in ${REPO_NAME}.' ; ${CLEANUP}"
 

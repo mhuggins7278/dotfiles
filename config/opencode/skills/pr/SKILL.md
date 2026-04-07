@@ -41,11 +41,10 @@ Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
 
 ### 4. Compile evidence
 
-1. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh`
-2. Note testing performed (unit tests, Playwright, manual) from session context
-3. Note whether the `review` subagent returned `APPROVED`
-
-If the repo is Node-based and checks require it: `eval "$(fnm env --shell bash)" && fnm use --install-if-missing`, then install deps with the appropriate lockfile command (`pnpm install` / `yarn install` / `npm ci`).
+1. If the repo has `package.json`, `pnpm-lock.yaml`, `yarn.lock`, or `package-lock.json`: run `eval "$(fnm env --shell bash)" && fnm use --install-if-missing`, then install deps with the appropriate lockfile command (`pnpm install` / `yarn install` / `npm ci`).
+2. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh`
+3. Note testing performed (unit tests, Playwright, manual) from session context
+4. Note whether the `review` subagent returned `APPROVED`
 
 ### 5. Push and create PR
 
