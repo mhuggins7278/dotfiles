@@ -42,13 +42,13 @@ This document defines the daily tracking workflow for Obsidian vault management.
 
 ## IMPORTANT: Working Directory
 
-**ALL file operations must happen within `/Users/MHuggins/github/mhuggins7278/notes/`**
+**ALL file operations must happen within `/Users/mhuggins/github/mhuggins7278/notes/`**
 
 - This is your base directory for all reads, writes, edits, and file operations
 - All relative paths mentioned in this document are relative to this base directory
 - When using bash commands, ensure they operate within this directory
 - Never create or modify files outside this directory
-- Use absolute paths starting with `/Users/MHuggins/github/mhuggins7278/notes/` or set your working directory to this path
+- Use absolute paths starting with `/Users/mhuggins/github/mhuggins7278/notes/` or set your working directory to this path
 
 ## Checkbox Types
 
@@ -93,8 +93,8 @@ This rule applies during morning planning, live updates, and evening review.
 
 ### Daily Notes
 
-- **Base Directory**: `/Users/MHuggins/github/mhuggins7278/notes/`
-- **Location**: `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`
+- **Base Directory**: `/Users/mhuggins/github/mhuggins7278/notes/`
+- **Location**: `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`
 - **Format**: Single flat file per day (Obsidian Daily Notes plugin: folder=`dailies`, format=`YYYY-MM-DD`)
 - **Sections**:
   - **Tasks**: Checkbox list of tasks you own
@@ -107,14 +107,14 @@ This rule applies during morning planning, live updates, and evening review.
 
 ### Weekly Summaries
 
-- **Location**: `/Users/MHuggins/github/mhuggins7278/notes/weekly/YYYY-MM/`
+- **Location**: `/Users/mhuggins/github/mhuggins7278/notes/weekly/YYYY-MM/`
 - **Files**:
   - `manager-sync.md`: Summary for 1x1 with manager
   - `team-sync.md`: Summary for team standup/sync
 
 ### Meeting Files
 
-- **Location**: `/Users/MHuggins/github/mhuggins7278/notes/meetings/YYYY-MM-DD-Meeting Title.md`
+- **Location**: `/Users/mhuggins/github/mhuggins7278/notes/meetings/YYYY-MM-DD-Meeting Title.md`
 - **Naming**: Prefix the date, then the meeting title (e.g., `meetings/2026-02-28-Design Review.md`)
 - Link from the daily note's Meetings section as: `[[meetings/YYYY-MM-DD-Title|Title]]`
 
@@ -123,9 +123,9 @@ This rule applies during morning planning, live updates, and evening review.
 When projects, people, or ideas are mentioned, add backlinks when the match is
 obvious and useful:
 
-- **Projects**: `/Users/MHuggins/github/mhuggins7278/notes/work/projects/ProjectName.md`
-- **People**: `/Users/MHuggins/github/mhuggins7278/notes/work/people/PersonName.md`
-- **Ideas**: `/Users/MHuggins/github/mhuggins7278/notes/work/ideas/IdeaName.md`
+- **Projects**: `/Users/mhuggins/github/mhuggins7278/notes/work/projects/ProjectName.md`
+- **People**: `/Users/mhuggins/github/mhuggins7278/notes/work/people/PersonName.md`
+- **Ideas**: `/Users/mhuggins/github/mhuggins7278/notes/work/ideas/IdeaName.md`
 
 Before creating a new **People** note:
 
@@ -295,7 +295,7 @@ Use best effort. Do not let person-resolution work block capture.
 
 When you detect a person name:
 
-1. Check for existing people files in `/Users/MHuggins/github/mhuggins7278/notes/work/people/` when a link would clearly help
+1. Check for existing people files in `/Users/mhuggins/github/mhuggins7278/notes/work/people/` when a link would clearly help
 2. **Match partial names** to existing files:
    - If user says "Hayes" and `David Hayes.md` exists → use `[[David Hayes]]`
    - If user says "Ryan" and `Ryan R.md` exists → use `[[Ryan R]]`
@@ -344,7 +344,7 @@ Before finalizing any daily note update:
 
 ### Output
 
-Create/update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` with:
+Create/update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` with:
 
 - Frontmatter (id, tags: daily-notes)
 - Tasks section with checkboxes
@@ -427,7 +427,7 @@ interview.
 
 ### Output
 
-1. Update `/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`:
+1. Update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`:
    - Mark completed items as checked (`- [x]`)
    - Add or refine `Activity` bullets for meaningful work completed, decisions, meetings, and sent updates
    - Add reflection notes
@@ -441,12 +441,12 @@ interview.
 Summary: Completed 3 tasks, 2 still in progress, 1 waiting on others. Key wins included Sidekick POC cleanup; blockers were pending MyGLG beta access.
 ```
 
-2. Update `/Users/MHuggins/github/mhuggins7278/notes/weekly/YYYY-MM/manager-sync.md`:
+2. Update `/Users/mhuggins/github/mhuggins7278/notes/weekly/YYYY-MM/manager-sync.md`:
    - **Wins**: Key accomplishments
    - **Status/Progress**: Project updates
    - **Blockers/Risks**: Challenges encountered
    - **Asks**: Support needed from manager
-3. Update `/Users/MHuggins/github/mhuggins7278/notes/weekly/YYYY-MM/team-sync.md`:
+3. Update `/Users/mhuggins/github/mhuggins7278/notes/weekly/YYYY-MM/team-sync.md`:
    - **Done**: Completed today
    - **Today**: What was worked on
    - **Blockers**: Issues affecting progress
@@ -457,7 +457,7 @@ Summary: Completed 3 tasks, 2 still in progress, 1 waiting on others. Key wins i
 
 ### On-Demand
 
-When user requests a weekly summary, aggregate all daily summaries from the current week's `/Users/MHuggins/github/mhuggins7278/notes/weekly/YYYY-MM/` folder.
+When user requests a weekly summary, aggregate all daily summaries from the current week's `/Users/mhuggins/github/mhuggins7278/notes/weekly/YYYY-MM/` folder.
 
 ### Format
 
@@ -547,11 +547,11 @@ Created: YYYY-MM-DD
 
 When summarizing a WebVTT or other meeting transcript:
 
-- **Location**: `/Users/MHuggins/github/mhuggins7278/notes/meetings/YYYY-MM-DD-Meeting Title.md`
+- **Location**: `/Users/mhuggins/github/mhuggins7278/notes/meetings/YYYY-MM-DD-Meeting Title.md`
 - **Default**: Create or update a separate meeting file and keep the detailed summary there
 - **Daily note spillover**: Only add a meeting backlink plus concrete `Tasks`, `Waiting On`, or `I Owe` items
 - **Inline-only handling**: Use only when the user explicitly wants a tiny note and no separate meeting record
-- **Service Leads**: Add notes to `/Users/MHuggins/github/mhuggins7278/notes/work/meetings/Service Leads.md` under the current week section (no separate meeting file)
+- **Service Leads**: Add notes to `/Users/mhuggins/github/mhuggins7278/notes/work/meetings/Service Leads.md` under the current week section (no separate meeting file)
 
 ### Meeting File Template
 

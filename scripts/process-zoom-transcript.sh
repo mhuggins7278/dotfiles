@@ -5,11 +5,14 @@
 # then deletes the processed file.
 
 WATCH_DIR="$HOME/zoom-transcripts"
+PROCESSED_DIR="$HOME/zoom-transcripts/processed"
 LOG="/tmp/zoom-transcript.log"
 DEBUG_LOG="/tmp/zoom-transcript-debug.log"
 
 # Ensure homebrew bins are available (launchd login shell omits /opt/homebrew/bin)
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+mkdir -p "$PROCESSED_DIR"
 
 echo "[$(date)] script started, HOME=$HOME, PATH=$PATH" >> "$DEBUG_LOG"
 
@@ -38,7 +41,7 @@ for vtt in "${vtt_files[@]}"; do
     >> "$LOG" 2>&1
 
   if [[ $? -eq 0 ]]; then
-    rm "$vtt"
+    mv "$vtt" "$PROCESSED_DIR/"
     osascript -e 'display notification "Meeting notes created" with title "Zoom Transcript"'
     echo "[$(date)] Done: $(basename "$vtt")" >> "$LOG"
   else
