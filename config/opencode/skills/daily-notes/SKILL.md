@@ -45,24 +45,24 @@ Prefer these for single-item changes:
 
 | Goal | Command |
 |------|---------|
-| List open tasks with line numbers | `obsidian tasks daily todo verbose` |
-| Mark a task done | `obsidian task daily line=<n> done` |
-| Toggle a task | `obsidian task daily line=<n> toggle` |
-| Set in-progress | `obsidian task daily line=<n> "status=/"` |
-| Append a new task | `obsidian daily:append content="- [ ] Task description"` |
+| List all open tasks | `rg "^status: (todo\|in-progress\|waiting)" work/tasks/ -l` |
+| List today's focus tasks | `rg "^focus_date: YYYY-MM-DD" work/tasks/ -l` |
+| Mark a task done | Edit task file: set `status: done` + `completed: YYYY-MM-DD` |
+| Mark a task waiting | Edit task file: set `status: waiting` + `waiting_for: [[Person]]` |
+| Snooze a task | Edit task file: update `focus_date: YYYY-MM-DD` |
+| Create a task | `obsidian create path=work/tasks/<slug> template=task`, then edit fields + add link to daily note |
+| Create a meeting note | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off` |
+| Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence` |
+| Create a person note | `obsidian create path=work/people/Name template=person` |
+| Create a project note | `obsidian create path=work/projects/Name template=project` |
 | Get today's path | `obsidian daily:path` |
 | Read today's full note | `obsidian daily:read` |
 | Search vault | `obsidian search query="<text>"` |
 | Search with line context | `obsidian search:context query="<text>" path=dailies` |
 
-**Use `tasks daily todo verbose` as the default starting point for any task
-review or update.** It returns `path:line: task text` output — you get line
-numbers directly and can mark items done without loading the full note into
-context. Only use `daily:read` when you need the full note contents (freeform
-sections like `Activity` or `Notes`).
-
-For anything that needs insertion under a specific heading such as `Activity`,
-`Waiting On`, or `Notes`, read the note and make a targeted edit.
+**After `obsidian create ... template=<name>`**: the note is created with the
+template structure. Use an Edit to fill in specific frontmatter fields the
+template leaves blank (e.g., `focus_date`, `source`, `project`, `role`).
 
 ## File Edits
 
@@ -75,42 +75,44 @@ edit. Prefer surgical edits over full rewrites.
 
 ```markdown
 ## Tasks
-- [ ] Things you own and need to do
+- [[work/tasks/slug|Display text]]
 
 ## Activity
 - Shipped thing, met with person, made decision, sent update
 
 ## After Hours
-- [ ] Lower-priority items to revisit
+- [[work/tasks/slug|Display text]]
 
 ## Meetings
-### Meeting Title
-Notes or link to meeting file
+### [[meetings/YYYY-MM-DD-Title|Meeting Title]]
 
 ## Waiting On
-- [ ] [[Person Name]] — what you're waiting for
+- [[work/tasks/waiting-person-thing|Person — what you're waiting for]]
 
 ## I Owe
-- [ ] [[Person Name]] — what you owe them
+- [[work/tasks/owe-person-thing|Person — what you owe them]]
 
 ## Notes
 Freeform thoughts, context, observations, rationale, and reminders
 ```
 
-Use `Activity` for what happened during the day. Use `Notes` for context worth
-remembering. Keep tasks in checkbox sections. Do not add checkboxes to
-`Notes` or `Activity`.
+Task sections (Tasks, After Hours, Waiting On, I Owe) hold **wikilinks to task
+files** in `work/tasks/` — not raw checkboxes. The task file's `status` field
+is canonical. The daily note is the planning view for the day.
+
+Use `Activity` for what happened. Use `Notes` for context worth remembering.
+Do not add checkboxes or task links to `Notes` or `Activity`.
 
 ## Natural Capture Model
 
 Translate natural language into note updates using this mental model:
 
-- `I need to...` -> `Tasks`
-- `later / not urgent / revisit...` -> `After Hours`
-- `I did / shipped / met / decided / sent...` -> `Activity`
-- `waiting on...` -> `Waiting On`
-- `I owe / need to send them / promised...` -> `I Owe`
-- `remember / context / observation / rationale...` -> `Notes`
+- `I need to...` → Create task file (`obsidian create path=work/tasks/<slug> template=task`) + add link to `Tasks`
+- `later / not urgent / revisit...` → Create task file + add link to `After Hours`
+- `I did / shipped / met / decided / sent...` → `Activity` (plain bullet, no task file needed)
+- `waiting on...` → Create task file with `status: waiting` + `waiting_for:` + add link to `Waiting On`
+- `I owe / need to send them / promised...` → Create task file + add link to `I Owe`
+- `remember / context / observation / rationale...` → `Notes` (plain prose)
 
 One user message can create multiple entries when that matches reality.
 
@@ -119,7 +121,13 @@ Example:
 - User: `I sent Priya the draft and now I'm waiting on feedback`
 - Result:
   - `Activity`: sent draft to `[[Priya]]`
-  - `Waiting On`: `[[Priya]]` — feedback on draft
+  - Create `work/tasks/waiting-priya-draft-feedback.md` with `status: waiting`, `waiting_for: "[[Priya]]"`
+  - `Waiting On`: `[[work/tasks/waiting-priya-draft-feedback|Priya — feedback on draft]]`
+
+**Task creation steps**:
+1. `obsidian create path=work/tasks/<slug> template=task`
+2. Edit the task file to fill in: `focus_date`, `priority`, `source` (if from a meeting), `project` (if applicable), `waiting_for` or `delegated_to` if relevant
+3. Add the wikilink to the correct daily note section
 
 ## Checkbox States
 
@@ -137,17 +145,18 @@ Use Obsidian wikilinks for people, projects, and ideas:
 
 - **People**: `[[Person Name]]` → file lives at `work/people/Person Name.md`
 - **Projects**: `[[Project Name]]` → file lives at `work/projects/ProjectName.md`
-- **Waiting On / I Owe**: always backlink the person name at the start
+- **Task notes**: `[[work/tasks/slug|Display text]]` — used in task sections
+- **Meeting notes**: `[[meetings/YYYY-MM-DD-Title|Title]]` — used in Meetings section
 
 Prefer best-effort backlinking for obvious matches. Do not block capture on
 name uncertainty.
 
 - If an exact or clearly intended person file already exists, link it.
 - If multiple plausible matches exist, ask.
-- If no existing file is obvious, keep the plain-text name for now unless the
-  user specifically wants a people note created.
+- If no existing file is obvious, keep plain-text name for now.
 - Before creating a new person note, check existing people files with
   `obsidian files folder=work/people`.
+- To create a person note: `obsidian create path=work/people/Name template=person`
 
 ## Lightweight Review
 
@@ -159,17 +168,13 @@ This skill can also handle quick review prompts such as:
 - `mark that done`
 - `move that to after hours`
 
-**Prefer targeted CLI commands over reading the full note:**
+**Prefer targeted operations over reading the full note:**
 
-- `what's still open?` → `obsidian tasks daily todo verbose` (returns tasks +
-  line numbers; no full note load)
-- `what did I get done today?` → `obsidian tasks daily done`
-- `what am I waiting on?` → `obsidian tasks daily todo verbose`, then filter
-  lines that start with `[[`
-- `mark that done` → `obsidian tasks daily todo verbose` to identify the line,
-  then `obsidian task daily line=<n> done`
-- `move that to after hours` → line number from `verbose` output, then edit the
-  note at that line
+- `what's still open?` → `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` to find open task files; or `obsidian daily:read` and collect task links from the sections
+- `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`
+- `what am I waiting on?` → `rg "^status: waiting" work/tasks/ -l`
+- `mark that done` → identify the task file from context, edit it: `status: done` + `completed: YYYY-MM-DD`
+- `move that to after hours` → read the daily note, move the task link from `Tasks` to `After Hours`
 
 Only use `obsidian daily:read` when freeform content (`Activity`, `Notes`,
 `Meetings`) is needed.

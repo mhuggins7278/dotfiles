@@ -55,3 +55,42 @@ Global rules that apply everywhere:
 - **Do not** auto-copy yesterday's Notes section into today's file
 - Prefer structured edits — place items under the correct section heading
   rather than appending to the end of the file
+
+## Notes Vault (`~/github/mhuggins7278/notes`)
+
+Rules that apply when working in the notes vault:
+
+### Daily Note Location
+
+Daily notes are flat files at `dailies/YYYY-MM-DD.md`. The Obsidian Daily
+Notes plugin is configured with `folder=dailies` and `format=YYYY-MM-DD`.
+
+### Task Notes
+
+Standalone task records live at `work/tasks/<slug>.md`. Daily note task
+sections (Tasks, Waiting On, I Owe, After Hours) contain wikilinks to task
+files — not raw checkboxes. The task file's `status` field is canonical.
+
+Create task notes with: `obsidian create path=work/tasks/<slug> template=task`
+
+### Meeting Files
+
+- **One-off meetings**: `meetings/YYYY-MM-DD-Meeting Title.md`
+  — create with `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off`
+- **Recurring occurrences**: `meetings/YYYY-MM-DD-Series Title.md`
+  — create with `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence`
+- **Series files** (metadata only): `work/meetings/<Series Name>.md`
+- Backlink from the daily note as `[[meetings/YYYY-MM-DD-Title|Title]]`
+
+### Recurring Meeting Series
+
+| File | Description |
+| --- | --- |
+| `work/meetings/JB 1x1.md` | Bi-weekly 1x1 with manager |
+| `work/meetings/Service Leads.md` | Service Dev Leads sync |
+| `work/meetings/Eng Managers.md` | Engineering Managers sync |
+| `work/meetings/CSX Team Sync.md` | CSX team standup |
+| `work/meetings/Priya 1x1.md` | 1x1 with Priya |
+
+For recurring meetings, create an occurrence file (going forward; no backfill).
+Do not add session notes directly to the series file.

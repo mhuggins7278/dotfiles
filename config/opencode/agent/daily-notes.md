@@ -96,13 +96,14 @@ This rule applies during morning planning, live updates, and evening review.
 - **Base Directory**: `/Users/mhuggins/github/mhuggins7278/notes/`
 - **Location**: `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`
 - **Format**: Single flat file per day (Obsidian Daily Notes plugin: folder=`dailies`, format=`YYYY-MM-DD`)
+- **Frontmatter**: `id`, `type: daily-note`, `date`, `tags: [daily-notes]`
 - **Sections**:
-  - **Tasks**: Checkbox list of tasks you own
+  - **Tasks**: Wikilinks to task notes (`work/tasks/`) for work you own
   - **Activity**: Bullet list of meaningful work completed, meetings, decisions, and updates sent
-  - **After Hours**: Checkbox list of lower-priority items to revisit later
-  - **Meetings**: Each meeting as a subheading
-  - **Waiting On**: Checkbox list of things you're waiting on from other people (include person name)
-  - **I Owe**: Checkbox list of things you owe to other people (include person name)
+  - **After Hours**: Wikilinks to task notes for lower-priority items to revisit later
+  - **Meetings**: Each meeting as a subheading linking to the meeting file
+  - **Waiting On**: Wikilinks to task notes with `status: waiting` (blocked on another person)
+  - **I Owe**: Wikilinks to task notes for commitments you owe to others
   - **Notes**: Freeform notes, thoughts, rationale, and observations
 
 ### Weekly Summaries
@@ -140,6 +141,50 @@ If the referenced file doesn't exist and no similar match is found, keep the
 plain-text name unless the user wants a new note created or the new note is
 clearly useful to the workflow.
 
+### Task Notes
+
+Standalone task records live at `work/tasks/<slug>.md`. Each file is the
+canonical source of truth for that task's status and metadata.
+
+**Schema:**
+
+```yaml
+---
+id: <task-slug>
+type: task
+status: todo
+created: YYYY-MM-DD
+focus_date: YYYY-MM-DD
+due:
+completed:
+project:
+source: []
+priority: medium
+waiting_for:
+delegated_to:
+tags:
+  - task
+---
+```
+
+**Status values**: `todo`, `in-progress`, `waiting`, `done`, `cancelled`
+
+**Field guidance**:
+- `focus_date`: The next date this task should appear in daily planning
+- `due`: Only for hard external/committed deadlines
+- `waiting_for`: Wikilink to person when `status: waiting`
+- `source`: List of wikilinks to meeting files or notes where the task originated
+- `delegated_to`: Wikilink to person if task was handed off
+- `project`: Wikilink to project note if applicable
+
+**Slug format**: kebab-case summary. Prefix `waiting-` for blocked tasks,
+`owe-` for commitments you owe. Examples: `fix-scheduling-bug`,
+`waiting-david-hayes-api-fix`, `owe-priya-compliance-decision`.
+
+**Daily note sections** (Tasks, After Hours, Waiting On, I Owe) hold wikilinks
+to task notes — not raw checkboxes. The task file's `status` is the canonical
+state; the daily note is a planning view for that day.
+
 ### Date and Path Lookup
 
 - When you need the current date, use the bash `date` command instead of inference.
@@ -160,15 +205,12 @@ planning pass.
 
 1. Get today's daily note path using `obsidian daily:path`
 2. Get yesterday's date: `date -v-1d +%Y-%m-%d`
-3. **Carryover check**: run `obsidian tasks file=<yesterday-date> todo verbose`
-   to see if there are any incomplete items. If the output is empty, skip
-   carryover entirely — do not load the previous note.
-4. If incomplete tasks exist: read yesterday's note to get section placement for
-   each item (use the Read tool on the resolved path)
+3. **Carryover check**: read yesterday's daily note to see if there are task links in Tasks, After Hours, Waiting On, or I Owe sections. If those sections are empty, skip carryover entirely.
+4. If task links exist: for each linked task file, read its `status` field. Collect the links where status is `todo`, `in-progress`, or `waiting`.
 5. Read today's existing note (if any) using `obsidian daily:read`
-6. Auto-carry over all unchecked items from yesterday into today's note by default (do not ask), keeping items in the same section they were in
-   - Carry over unchecked items: `- [ ] item`
-   - Skip checked/completed items: `- [x] item`
+6. Auto-carry over all open task links from yesterday into today's note by default (do not ask), keeping links in the same section they were in
+   - Carry forward: task links where `status` is `todo`, `in-progress`, or `waiting`
+   - Drop: task links where `status` is `done` or `cancelled`
 7. Summarize carried-over open items by section in a compact recap
 8. Mention any stale items neutrally if they have carried for 5+ days
 9. Ask one broad question such as: `What's changed since yesterday, and what matters today?`
@@ -183,16 +225,18 @@ planning pass.
 
 ### Auto-Carryover Rules
 
-**CRITICAL**: Only carry over incomplete items. Do NOT carry over completed or cancelled items.
+**CRITICAL**: Only carry forward links to tasks that are still open. Do NOT
+carry forward tasks that are done or cancelled.
 
-All sections use the same simple rule:
+For each task link in yesterday's Tasks, After Hours, Waiting On, and I Owe
+sections:
 
-- Unchecked `- [ ] item` → carry over
-- In progress `- [/] item` → carry over
-- Deferred `- [>] item` → carry over
-- Checked `- [x] item` → do not carry over
-- Cancelled `- [-] item` → do not carry over
-- Keep items in the same section they were in
+1. Read the linked task file (e.g., `work/tasks/fix-scheduling-bug.md`)
+2. Check the `status` field in its frontmatter
+3. If `status` is `todo`, `in-progress`, or `waiting` → carry the link to today's note in the same section
+4. If `status` is `done` or `cancelled` → do not carry forward
+
+If a task file cannot be read (broken link), carry the link forward and note it.
 
 #### Example:
 
@@ -201,44 +245,52 @@ Yesterday's daily note had:
 ```markdown
 ## Tasks
 
-- [ ] Review PR from [[Katie]]
-- [x] Deploy MyGLG changes
-- [ ] Fix bug in scheduling
+- [[work/tasks/review-pr-katie|Review PR from Katie]]
+- [[work/tasks/deploy-myglg-changes|Deploy MyGLG changes]]
+- [[work/tasks/fix-scheduling-bug|Fix bug in scheduling]]
 
 ## After Hours
 
-- [ ] Research new API approach
-- [x] Read documentation
+- [[work/tasks/research-new-api-approach|Research new API approach]]
 
 ## Waiting On
 
-- [ ] [[David Hayes]] — ship API fix for scheduling emails
-- [x] [[Katie]] — PR review for compliance changes
+- [[work/tasks/waiting-david-hayes-api-fix|David Hayes — ship API fix for scheduling emails]]
+- [[work/tasks/waiting-katie-pr-review|Katie — PR review for compliance changes]]
 
 ## I Owe
 
-- [ ] [[Priya]] — compliance move decision discussion
+- [[work/tasks/owe-priya-compliance-decision|Priya — compliance move decision discussion]]
 ```
+
+Task file statuses:
+- `review-pr-katie` → `status: todo` → **carry forward**
+- `deploy-myglg-changes` → `status: done` → **drop**
+- `fix-scheduling-bug` → `status: todo` → **carry forward**
+- `research-new-api-approach` → `status: todo` → **carry forward**
+- `waiting-david-hayes-api-fix` → `status: waiting` → **carry forward**
+- `waiting-katie-pr-review` → `status: done` → **drop**
+- `owe-priya-compliance-decision` → `status: todo` → **carry forward**
 
 Today's note carries over:
 
 ```markdown
 ## Tasks
 
-- [ ] Review PR from [[Katie]]
-- [ ] Fix bug in scheduling
+- [[work/tasks/review-pr-katie|Review PR from Katie]]
+- [[work/tasks/fix-scheduling-bug|Fix bug in scheduling]]
 
 ## After Hours
 
-- [ ] Research new API approach
+- [[work/tasks/research-new-api-approach|Research new API approach]]
 
 ## Waiting On
 
-- [ ] [[David Hayes]] — ship API fix for scheduling emails
+- [[work/tasks/waiting-david-hayes-api-fix|David Hayes — ship API fix for scheduling emails]]
 
 ## I Owe
 
-- [ ] [[Priya]] — compliance move decision discussion
+- [[work/tasks/owe-priya-compliance-decision|Priya — compliance move decision discussion]]
 ```
 
 ### Gap Handling
@@ -247,16 +299,15 @@ Today's note carries over:
 
 ### Section Format
 
-Task-like sections (Tasks, After Hours, Waiting On, I Owe) use Obsidian
-checkbox syntax. `Activity` uses plain bullets.
+Task sections (Tasks, After Hours, Waiting On, I Owe) contain wikilinks to
+task notes in `work/tasks/`. `Activity` uses plain bullets. `Notes` is
+freeform prose.
 
 ```markdown
 ## Tasks
 
-- [/] Deploy MyGLG iCal feedback changes
-- [ ] Fix bug in scheduling
-- [x] Review PR from [[Katie]]
-- [-] Investigate legacy endpoint (no longer needed)
+- [[work/tasks/deploy-myglg-ical-changes|Deploy MyGLG iCal feedback changes]]
+- [[work/tasks/fix-scheduling-bug|Fix bug in scheduling]]
 
 ## Activity
 
@@ -266,20 +317,22 @@ checkbox syntax. `Activity` uses plain bullets.
 
 ## After Hours
 
-- [ ] Research new API approach
+- [[work/tasks/research-new-api-approach|Research new API approach]]
 
 ## Waiting On
 
-- [ ] [[David Hayes]] — ship API fix for scheduling emails
-- [ ] [[Katie]] — PR review for compliance changes
+- [[work/tasks/waiting-david-hayes-api-fix|David Hayes — ship API fix for scheduling emails]]
+- [[work/tasks/waiting-katie-pr-review|Katie — PR review for compliance changes]]
 
 ## I Owe
 
-- [ ] [[Priya]] — compliance move decision discussion
-- [ ] [[Ronan]] — timezone issue reproduction steps
+- [[work/tasks/owe-priya-compliance-decision|Priya — compliance move decision discussion]]
+- [[work/tasks/owe-ronan-timezone-steps|Ronan — timezone issue reproduction steps]]
 ```
 
-**Waiting On / I Owe naming**: Always include the person's name (with backlink) at the start, followed by a dash and what you're waiting for / owe.
+**Waiting On / I Owe display text**: Always start with the person's name, then
+a dash and what you're waiting for / owe. Person name should be plain text in
+the display label (the wikilink is to the task file, not the person).
 
 ### Entity Detection
 
@@ -346,13 +399,13 @@ Before finalizing any daily note update:
 
 Create/update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` with:
 
-- Frontmatter (id, tags: daily-notes)
-- Tasks section with checkboxes
+- Frontmatter (`id`, `type: daily-note`, `date`, `tags: [daily-notes]`)
+- Tasks section with wikilinks to task notes in `work/tasks/`
 - Activity section with plain bullets for completed work, decisions, meetings, and updates
-- After Hours section with checkboxes
-- Meetings section with each meeting as a subheading
-- Waiting On section with checkboxes (person name + description)
-- I Owe section with checkboxes (person name + description)
+- After Hours section with wikilinks to task notes
+- Meetings section with each meeting as a subheading linking to the meeting file
+- Waiting On section with wikilinks to waiting task notes
+- I Owe section with wikilinks to owed task notes
 - Notes section with context and details
 
 ---
@@ -370,27 +423,27 @@ Create/update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` 
 - One user message can create multiple entries when that best reflects what happened
 - Add backlinks for obvious entities, but do not interrupt capture for uncertain names
 
-### CLI-First Operations
+### Task File Operations
 
-Prefer Obsidian CLI for quick, targeted updates during the day:
+Prefer these targeted operations for task work during the day:
 
-- **List open tasks with line numbers**: `obsidian tasks daily todo verbose`
-  — always start here for task review or updates; returns `path:line: text`
-  so you can act on tasks without loading the full note into context
-- **Appending a new task**: `obsidian daily:append content="- [ ] Task description"`
-- **Marking a task done**: `obsidian task daily line=<n> done`
-- **Toggling a task**: `obsidian task daily line=<n> toggle`
-- **Setting custom status** (e.g. in-progress): `obsidian task daily line=<n> "status=/"`
-- **Searching with line context**: `obsidian search:context query="<text>" path=dailies`
-- **Searching the vault**: `obsidian search query="<text>"`
-- **Reading the full note** (only when freeform sections are needed): `obsidian daily:read`
+- **List all open tasks**: `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l`
+- **List today's focus tasks**: `rg "^focus_date: YYYY-MM-DD" work/tasks/ -l`
+- **Mark a task done**: Edit the task file — set `status: done` and `completed: YYYY-MM-DD`
+- **Mark a task waiting**: Edit the task file — set `status: waiting` and `waiting_for: [[Person]]`
+- **Snooze a task** (push focus date): Edit the task file — update `focus_date: YYYY-MM-DD`
+- **Create a task**: `obsidian create path=work/tasks/<slug> template=task`, then fill in the specific frontmatter fields (focus_date, source, project, etc.) with an Edit, then add `- [[work/tasks/<slug>|Display text]]` to the appropriate section in today's daily note
+- **Read today's full note**: `obsidian daily:read`
+- **Search vault**: `obsidian search query="<text>"`
+- **Search with line context**: `obsidian search:context query="<text>" path=dailies`
+- **Get today's path**: `obsidian daily:path`
 
-**Pattern for task updates**: run `tasks daily todo verbose` first to get line
-numbers, then use `task daily line=<n> done|toggle|status=<x>`. Do not read the
-full note just to find a line number.
+**Task slug format**: kebab-case summary. For waiting tasks, prefix `waiting-`.
+For owed tasks, prefix `owe-`. Examples: `fix-scheduling-bug`,
+`waiting-david-hayes-api-fix`, `owe-priya-compliance-decision`.
 
-Use the file Edit tool when you need to update multiple sections, insert under
-`Activity`, or restructure content that is not a simple append.
+Use the file Edit tool when you need to update multiple sections of the daily
+note, insert under `Activity`, or restructure content.
 
 ### Staleness Callouts
 
@@ -417,11 +470,11 @@ interview.
 
 ### Process
 
-1. Get open tasks with line numbers: `obsidian tasks daily todo verbose`
-2. Get completed tasks: `obsidian tasks daily done`
-3. Summarize the current state briefly from the task output: open tasks, waiting-on items, owed items, and today's completed work
+1. List open task links from today's note: read `obsidian daily:read` and collect links in Tasks, Waiting On, After Hours, and I Owe sections
+2. For each linked task file, read its `status` to build a picture of: open tasks, done tasks, and waiting items
+3. Summarize the current state briefly: open tasks, waiting-on items, owed items, and today's completed work
 4. Ask one broad prompt such as: `What got done, what slipped, and what should we remember?`
-5. Mark completed items using `obsidian task daily line=<n> done` (line numbers come from the `verbose` output above)
+5. Mark completed tasks by editing each task file — set `status: done` and `completed: YYYY-MM-DD`
 6. For `Activity` entries or `Notes` additions, read the note first then edit targeted sections
 7. Ask whether to add anything to manager/team sync summaries
 
@@ -470,35 +523,36 @@ Synthesize information from:
 
 ## Backlink File Creation
 
-When creating a new file for a backlink, use the Obsidian CLI:
+When creating a new file for a backlink, use the Obsidian CLI with a template:
 
 ```shell
-obsidian create path=work/people/PersonName.md content="<frontmatter and content>"
-obsidian create path=work/projects/ProjectName.md content="<frontmatter and content>"
-obsidian create path=work/ideas/IdeaName.md content="<frontmatter and content>"
-obsidian create path=meetings/YYYY-MM-DD-Title.md content="<frontmatter and content>"
+obsidian create path=work/people/PersonName template=person
+obsidian create path=work/projects/ProjectName template=project
+obsidian create path=work/ideas/IdeaName template=ideas
+obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off
+obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence
+obsidian create path=work/tasks/<slug> template=task
 ```
 
-Use `\n` for newlines and `\t` for tabs in the `content` argument. If the content is complex, fall back to the Write tool.
+After creation, use an Edit to fill in any fields the template leaves blank
+(e.g., `role`, `relationship`, `project`, `focus_date`, `source`).
+
+If `obsidian create` with a template is not available or fails, fall back to
+the Write tool with the full schema.
 
 ### Project File Template
 
 ```markdown
 ---
 id: project-name
+type: project
+status: active
 tags:
   - project
+aliases: []
 ---
 
 # Project Name
-
-Created: YYYY-MM-DD
-
-## Overview
-
-## Status
-
-## Activity
 ```
 
 ### People File Template
@@ -506,19 +560,16 @@ Created: YYYY-MM-DD
 ```markdown
 ---
 id: person-name
+type: person
+role:
+team:
+relationship:
 tags:
   - person
+aliases: []
 ---
 
 # Person Name
-
-## Role
-
-## Interactions
-
-### YYYY-MM-DD
-
-- Detail of the interaction
 ```
 
 ### Ideas File Template
@@ -551,18 +602,23 @@ When summarizing a WebVTT or other meeting transcript:
 - **Default**: Create or update a separate meeting file and keep the detailed summary there
 - **Daily note spillover**: Only add a meeting backlink plus concrete `Tasks`, `Waiting On`, or `I Owe` items
 - **Inline-only handling**: Use only when the user explicitly wants a tiny note and no separate meeting record
-- **Service Leads**: Add notes to `/Users/mhuggins/github/mhuggins7278/notes/work/meetings/Service Leads.md` under the current week section (no separate meeting file)
-
 ### Meeting File Template
+
+Use this template for **one-off meetings**. For recurring meeting occurrences,
+see the Recurring Meeting Occurrences section below.
 
 ```markdown
 ---
 id: YYYY-MM-DD-meeting-title
+type: meeting
+meeting_kind: one-off
+date: YYYY-MM-DD
+attendees: []
+project:
+series:
 tags:
   - meeting
-date: YYYY-MM-DD
-attendees:
-  - "[[Person Name]]"
+aliases: []
 ---
 
 # Meeting Title
@@ -590,6 +646,45 @@ attendees:
 > **Note**: Keep meeting details in the meeting file. Do not add a `Next Steps`
 > section here. Concrete follow-ups belong in the daily note with a backlink to
 > the meeting file — see Action Items from Meetings below.
+
+### Recurring Meeting Occurrences
+
+For **recurring meetings** (series that happen on a regular cadence), create an
+occurrence file in `meetings/` — same location as one-off meetings:
+
+- **Path**: `meetings/YYYY-MM-DD-Series Title.md`
+- **`meeting_kind`**: `recurring-occurrence`
+- **`series`**: Wikilink to the series file in `work/meetings/`
+
+```markdown
+---
+id: YYYY-MM-DD-series-title
+type: meeting
+meeting_kind: recurring-occurrence
+date: YYYY-MM-DD
+series: "[[work/meetings/Series Name]]"
+attendees: []
+project:
+tags:
+  - meeting
+aliases: []
+---
+```
+
+**Known recurring meeting series** (files in `work/meetings/`):
+
+| Series file | Description |
+| --- | --- |
+| `work/meetings/JB 1x1.md` | Bi-weekly 1x1 with manager |
+| `work/meetings/Service Leads.md` | Service Dev Leads sync |
+| `work/meetings/Eng Managers.md` | Engineering Managers sync |
+| `work/meetings/CSX Team Sync.md` | CSX team standup |
+| `work/meetings/Priya 1x1.md` | 1x1 with Priya |
+
+- Create an occurrence file for each session (going forward; no backfill required)
+- Do not add meeting notes directly to the series file
+- Link the occurrence from the daily note the same way as a one-off meeting:
+  `[[meetings/YYYY-MM-DD-Title|Title]]`
 
 ### Daily Note Integration
 
