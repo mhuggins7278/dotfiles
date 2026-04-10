@@ -10,6 +10,8 @@ prSections:
   - title: Other Involved
     filters: is:open involves:@me -author:@me -org:glg
 issuesSections:
+  - title: EI Board
+    filters: is:open project:glg/92
   - title: CSX Board
     filters: is:open project:glg/85
   - title: My Issues

@@ -15,7 +15,7 @@ Fully automated GitHub pull request creation workflow that analyzes changes, gen
 - Do not proceed if there are uncommitted changes - inform user to commit first
 - Always verify branch has upstream tracking or auto-push with -u flag
 - Always specify --base flag with user's chosen target branch
-- In repos under `~/github/glg/`, require an associated issue before creating a PR; if none exists, prompt to create one and add it to `glg` project `85`.
+- In repos under `~/github/glg/`, require an associated issue before creating a PR; if none exists, prompt to create one and add it to `glg` project `92`.
 
 ## Workflow
 

@@ -21,7 +21,7 @@ Commit staged and unstaged changes safely.
 For any repo under `~/github/glg/`, read `~/.dotfiles/config/opencode/references/glg-workflow.md` for:
 - **Branch naming rules** (no slashes — hyphens only, always)
 - **Issue-first workflow** (require an open issue before committing)
-- **Project 85 tagging** when creating issues
+- **Project 92 tagging** when creating issues
 
 If the current branch contains a `/`, warn the user and stop until it is renamed.
 

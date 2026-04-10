@@ -50,24 +50,26 @@ This document defines the daily tracking workflow for Obsidian vault management.
 - Never create or modify files outside this directory
 - Use absolute paths starting with `/Users/mhuggins/github/mhuggins7278/notes/` or set your working directory to this path
 
-## Checkbox Types
+## Task Status Values
 
-Obsidian supports the following checkbox states. Use them consistently across all task sections:
+Task notes use a `status` field in their frontmatter. This drives carryover —
+the daily note holds only wikilinks to task files, never raw checkboxes.
 
-| Syntax  | Meaning     | Carryover            |
-| ------- | ----------- | -------------------- |
-| `- [ ]` | To do       | ✅ Carry over        |
-| `- [/]` | In progress | ✅ Carry over        |
-| `- [x]` | Done        | ❌ Do not carry over |
-| `- [-]` | Cancelled   | ❌ Do not carry over |
-| `- [>]` | Deferred    | ✅ Carry over        |
+| Status        | Meaning                       | Carries over? |
+| ------------- | ----------------------------- | ------------- |
+| `todo`        | Not started                   | ✅ Yes        |
+| `in-progress` | Actively being worked on      | ✅ Yes        |
+| `waiting`     | Blocked on another person     | ✅ Yes        |
+| `done`        | Completed                     | ❌ No         |
+| `cancelled`   | Dropped or no longer relevant | ❌ No         |
 
 **Usage guidance**:
 
-- Use `- [/]` for tasks actively being worked on
-- Use `- [-]` for tasks that are dropped or no longer relevant
-- Use `- [>]` for tasks intentionally pushed to a future date
-- Default new tasks to `- [ ]`
+- Default new tasks to `status: todo`
+- Set `status: in-progress` for tasks actively being worked on
+- Set `status: waiting` and `waiting_for: [[Person]]` for blocked tasks
+- Set `status: cancelled` for tasks that are dropped or no longer relevant
+- Set `status: done` and `completed: YYYY-MM-DD` when a task is finished
 
 ---
 
@@ -76,8 +78,9 @@ Obsidian supports the following checkbox states. Use them consistently across al
 The goal is to keep capture natural while preserving enough structure to make
 review useful later.
 
-- If the user is talking about work they need to do, track it as a checkbox in
-  `Tasks`, `After Hours`, `Waiting On`, or `I Owe`.
+- If the user is talking about work they need to do, create a task file in
+  `work/tasks/` and add a wikilink to the appropriate section (`Tasks`,
+  `After Hours`, `Waiting On`, or `I Owe`).
 - If the user is talking about work they already did, a decision they made, a
   meeting they had, or an update they sent, track it in `Activity`.
 - If the user is sharing context, rationale, observations, or something to
@@ -154,7 +157,7 @@ id: <task-slug>
 type: task
 status: todo
 created: YYYY-MM-DD
-focus_date: YYYY-MM-DD
+scheduled: YYYY-MM-DD
 due:
 completed:
 project:
@@ -170,7 +173,7 @@ tags:
 **Status values**: `todo`, `in-progress`, `waiting`, `done`, `cancelled`
 
 **Field guidance**:
-- `focus_date`: The next date this task should appear in daily planning
+- `scheduled`: The next date this task should appear in daily planning
 - `due`: Only for hard external/committed deadlines
 - `waiting_for`: Wikilink to person when `status: waiting`
 - `source`: List of wikilinks to meeting files or notes where the task originated
@@ -417,7 +420,7 @@ Create/update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` 
 - User may chat with me to add items or update status
 - Update the daily note in real-time
 - Classify natural-language updates into the appropriate section without forcing command-like phrasing
-- New tasks go as checkboxes in the appropriate section (`Tasks`, `Waiting On`, `I Owe`, `After Hours`)
+- New tasks: create a task file in `work/tasks/` and add a wikilink to the appropriate section (`Tasks`, `Waiting On`, `I Owe`, `After Hours`)
 - Completed work, decisions, sent updates, and meetings belong in `Activity`
 - `Notes` is for freeform thoughts, observations, and context
 - One user message can create multiple entries when that best reflects what happened
@@ -428,11 +431,11 @@ Create/update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md` 
 Prefer these targeted operations for task work during the day:
 
 - **List all open tasks**: `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l`
-- **List today's focus tasks**: `rg "^focus_date: YYYY-MM-DD" work/tasks/ -l`
+- **List today's focus tasks**: `rg "^scheduled: YYYY-MM-DD" work/tasks/ -l`
 - **Mark a task done**: Edit the task file — set `status: done` and `completed: YYYY-MM-DD`
 - **Mark a task waiting**: Edit the task file — set `status: waiting` and `waiting_for: [[Person]]`
-- **Snooze a task** (push focus date): Edit the task file — update `focus_date: YYYY-MM-DD`
-- **Create a task**: `obsidian create path=work/tasks/<slug> template=task`, then fill in the specific frontmatter fields (focus_date, source, project, etc.) with an Edit, then add `- [[work/tasks/<slug>|Display text]]` to the appropriate section in today's daily note
+- **Snooze a task** (push scheduled date): Edit the task file — update `scheduled: YYYY-MM-DD`
+- **Create a task**: `obsidian create path=work/tasks/<slug> template=task`, then fill in the specific frontmatter fields (`scheduled`, `source`, `project`, etc.) with an Edit, then add `- [[work/tasks/<slug>|Display text]]` to the appropriate section in today's daily note
 - **Read today's full note**: `obsidian daily:read`
 - **Search vault**: `obsidian search query="<text>"`
 - **Search with line context**: `obsidian search:context query="<text>" path=dailies`
@@ -481,7 +484,7 @@ interview.
 ### Output
 
 1. Update `/Users/mhuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md`:
-   - Mark completed items as checked (`- [x]`)
+   - For completed tasks: ensure each task file has `status: done` and `completed: YYYY-MM-DD` (already done in step 5 above)
    - Add or refine `Activity` bullets for meaningful work completed, decisions, meetings, and sent updates
    - Add reflection notes
    - Add a short summary paragraph based on exit interview details
@@ -535,7 +538,7 @@ obsidian create path=work/tasks/<slug> template=task
 ```
 
 After creation, use an Edit to fill in any fields the template leaves blank
-(e.g., `role`, `relationship`, `project`, `focus_date`, `source`).
+(e.g., `role`, `relationship`, `project`, `scheduled`, `source`).
 
 If `obsidian create` with a template is not available or fails, fall back to
 the Write tool with the full schema.
@@ -705,9 +708,9 @@ of truth for meeting content.
 
 When summarizing meeting transcripts:
 
-- Add only explicit, concrete action items as checkboxes in the **daily note**
-- Each task must include a backlink to the meeting file so it's traceable, e.g.:
-  `- [ ] Review proposal [[meetings/YYYY-MM-DD-Meeting Title|Meeting Title]]`
+- Add only explicit, concrete action items as wikilinks to task files in the **daily note**
+  - For each action item, create a task file (`obsidian create path=work/tasks/<slug> template=task`), set the `source` field to the meeting wikilink, and add the wikilink to the appropriate daily note section. Example:
+    `- [[work/tasks/review-proposal|Review proposal]]` with task file having `source: ["[[meetings/YYYY-MM-DD-Meeting Title]]"]`
 - If there are no concrete action items, waiting-on items, or owed items, the
   daily note should contain only the meeting backlink
 - Keep these in the **meeting file**, not the daily note:
@@ -734,4 +737,4 @@ When summarizing meeting transcripts:
 - Only 2026 daily notes are migrated to this new structure
 - Preserve existing frontmatter
 - Normalize content into Carryover, New Stuff, Notes sections
-- Convert list items to checkbox format
+- Convert raw checkbox list items to task file wikilinks where applicable

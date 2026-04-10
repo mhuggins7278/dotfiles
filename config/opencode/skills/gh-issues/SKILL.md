@@ -34,13 +34,13 @@ gh issue list --repo "$REPO" --search "<query>" --state open
 gh issue create --repo "$REPO" \
   --title "<title>" \
   --body "<body>" \
-  --project "Client Solutions Experience"
+  --project "Enterprise Integration"
 ```
 
-Use the project **name** (`"Client Solutions Experience"`), never the numeric ID `85` — `gh issue create --project` will error with the ID. If `--project` fails, create without it then add separately:
+Use the project **name** (`"Enterprise Integration"`), never the numeric ID `92` — `gh issue create --project` will error with the ID. If `--project` fails, create without it then add separately:
 
 ```bash
-gh project item-add 85 --owner glg --url "$(gh issue view <number> --repo "$REPO" --json url -q .url)"
+gh project item-add 92 --owner glg --url "$(gh issue view <number> --repo "$REPO" --json url -q .url)"
 ```
 
 **Comment / Close / Reopen**

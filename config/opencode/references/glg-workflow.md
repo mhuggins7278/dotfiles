@@ -21,18 +21,18 @@ All implementation work in GLG repos requires an associated GitHub issue **befor
 1. Check for an existing issue reference in branch context, commit messages, or user-provided input
 2. Validate candidate issue numbers with `gh issue view <number>` — if closed or unrelated, treat as missing
 3. If no valid open issue is found, **pause and prompt the user to create one** before proceeding
-4. If the user agrees, create the issue and add it to `glg` project `85`
+4. If the user agrees, create the issue and add it to `glg` project `92`
 
 ## Project Tagging
 
-Default GitHub Project: **`glg` project `85` (`Client Solutions Experience`)**
+Default GitHub Project: **`glg` project `92` (`Enterprise Integration`)**
 
-- When using `gh issue create --project`, use the name `"Client Solutions Experience"` (not the numeric ID)
-- When using `gh project item-add`, use `85` and `--owner glg`
+- When using `gh issue create --project`, use the name `"Enterprise Integration"` (not the numeric ID)
+- When using `gh project item-add`, use `92` and `--owner glg`
 
 ```bash
 # Add issue to project after creation
-gh project item-add 85 --owner glg --url "$(gh issue view <number> --repo "$REPO" --json url -q .url)"
+gh project item-add 92 --owner glg --url "$(gh issue view <number> --repo "$REPO" --json url -q .url)"
 ```
 
 ## PR Issue References

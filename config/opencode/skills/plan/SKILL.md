@@ -25,7 +25,7 @@ gh repo view --json owner,nameWithOwner -q '{owner: .owner.login, repo: .nameWit
 ```
 
 Record `OWNER` and `REPO`. If `OWNER == "glg"`, GLG mode is active:
-- Issues will be added to project `85` (`Client Solutions Experience`)
+- Issues will be added to project `92` (`Enterprise Integration`)
 - Branch naming uses hyphens only (no slashes)
 - Read `~/.dotfiles/config/opencode/references/glg-workflow.md` for full rules
 
@@ -356,10 +356,10 @@ EOF
 Capture the issue number from the output of each `gh issue create` call.
 Hard-code the real numbers into the epic body before creating it.
 
-**GLG repos — add each issue to project 85:**
+**GLG repos — add each issue to project 92:**
 
 ```bash
-gh project item-add 85 --owner glg \
+gh project item-add 92 --owner glg \
   --url "$(gh issue view <number> --repo "<REPO>" --json url -q .url)"
 ```
 

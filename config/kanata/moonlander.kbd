@@ -14,6 +14,7 @@
 
 ;; Source layer - Mac laptop keyboard (no right control)
 (defsrc
+	esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
@@ -67,6 +68,7 @@
 
 ;; Layer 0 - Base Layer (QWERTY with home row mods)
 (deflayer base
+	esc  🔅   🔆    ✗    ✗    ✗    ✗    ◀◀   ▶⏸   ▶▶   🔇   🔉   🔊
   _    1    2    3    4    5    6    7    8    9    0    _    _    _
   esc  q    w    e    r    t    y    u    i    o    p    _    _    \
   @cap @a   @s   @d   @f   g    h    @j   @k   @l   @sem @mqt ret
@@ -76,6 +78,7 @@
 
 ;; Layer 1 - Symbols Layer
 (deflayer symbols
+  _    _    _    _    _    _    _    _    _    _    _    _    _    
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  _    _
   _    S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  _    _    f12
   _    S-;  S-9  [    S-[  -    S--  S-]  ]    S-0  ;    grv  _
@@ -85,6 +88,7 @@
 
 ;; Layer 2 - Number Pad & Media
 (deflayer numpad
+  _    _    _    _    _    _    _    _    _    _    _    _    _    
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    -    7    8    9    /    _    _    _
   _    _    prev pp   next _    S-=  4    5    6    S-8  _    _
@@ -94,6 +98,7 @@
 
 ;; Layer 3 - Window Management & Navigation
 (deflayer wm
+  _    _    _    _    _    _    _    _    _    _    _    _    _    
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    C-A-S-q C-A-S-w C-A-S-e C-A-S-r @cat _    C-A-u C-A-up C-A-i _    _    _    _
   _    C-A-S-a C-A-S-s C-A-S-d C-A-S-f C-A-S-g M-S-[ C-A-lft C-A-S-k C-A-rght _    _    _
@@ -103,6 +108,7 @@
 
 ;; Layer 4 - Navigation (Arrow keys)
 (deflayer nav
+  _    _    _    _    _    _    _    _    _    _    _    _    _    
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    lft  down up   rght _    _    _

@@ -12,7 +12,7 @@ description: >
 ## GLG Rules (repos under `~/github/glg/` only)
 
 - **No slashes in branch names** — use hyphens (`feature-foo`, not `feature/foo`). If current branch has a `/`, warn and stop.
-- **Issue-first**: Every PR needs an open GitHub issue. Check branch name, commits, or user input for an issue number. Validate with `gh issue view <n>`. If missing, stop and prompt the user to create one (add it to project 85: `gh issue create --project "Client Solutions Experience" ...`).
+- **Issue-first**: Every PR needs an open GitHub issue. Check branch name, commits, or user input for an issue number. Validate with `gh issue view <n>`. If missing, stop and prompt the user to create one (add it to project 92: `gh issue create --project "Enterprise Integration" ...`).
 - **Link the PR to its issue** with `Fixes <owner>/<repo>#<n>` in the PR body.
 
 ## Workflow

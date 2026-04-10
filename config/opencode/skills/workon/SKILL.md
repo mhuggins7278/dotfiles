@@ -47,7 +47,7 @@ OWNER=$(gh repo view --json owner -q .owner.login 2>/dev/null || echo "")
 
 If `$OWNER == "glg"`, read `~/.dotfiles/config/opencode/references/glg-workflow.md`
 now. It governs branch naming (hyphens only, never slashes), issue-first
-workflow, project 85 tagging, and PR reference format. Apply those rules for
+workflow, project 92 tagging, and PR reference format. Apply those rules for
 the rest of this session.
 
 For non-GLG repos, use the generic branch naming convention defined in step 7.

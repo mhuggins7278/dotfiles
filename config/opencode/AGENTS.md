@@ -32,7 +32,7 @@ When working in any repository under `~/github/glg/`:
 
 - **SQL Templates & DB Queries**: If the project references SQL files, epiquery templates, or database queries, always search `~/github/glg/epiquery-templates/` for the relevant templates. This central repository is the source of truth for database queries across all GLG projects.
 - **Issue-First Workflow**: Require an associated GitHub issue for all implementation work. Accept either (1) a user-provided issue at session start, or (2) creating a new issue after planning but before the first code edit, commit, or PR. If no valid open issue is found, pause and prompt the user to create one before proceeding.
-- **Project Tagging**: When creating the issue, add it to `glg` project `85` (`Client Solutions Experience`).
+- **Project Tagging**: When creating the issue, add it to `glg` project `92` (`Enterprise Integration`).
 
 ## Code Style
 
@@ -51,7 +51,7 @@ use the `daily-notes` skill.
 
 Global rules that apply everywhere:
 
-- **Do not** carry forward completed (`- [x]`) or cancelled (`- [-]`) items
+- **Do not** carry forward tasks whose task file has `status: done` or `status: cancelled`
 - **Do not** auto-copy yesterday's Notes section into today's file
 - Prefer structured edits — place items under the correct section heading
   rather than appending to the end of the file

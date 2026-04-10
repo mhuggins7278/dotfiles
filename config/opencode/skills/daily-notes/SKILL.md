@@ -46,11 +46,12 @@ Prefer these for single-item changes:
 | Goal | Command |
 |------|---------|
 | List all open tasks | `rg "^status: (todo\|in-progress\|waiting)" work/tasks/ -l` |
-| List today's focus tasks | `rg "^focus_date: YYYY-MM-DD" work/tasks/ -l` |
+| List today's focus tasks | `rg "^scheduled: YYYY-MM-DD" work/tasks/ -l` |
 | Mark a task done | Edit task file: set `status: done` + `completed: YYYY-MM-DD` |
 | Mark a task waiting | Edit task file: set `status: waiting` + `waiting_for: [[Person]]` |
-| Snooze a task | Edit task file: update `focus_date: YYYY-MM-DD` |
-| Create a task | `obsidian create path=work/tasks/<slug> template=task`, then edit fields + add link to daily note |
+| Snooze a task | Edit task file: update `scheduled: YYYY-MM-DD` |
+| Capture a task (NLP) | `obsidian tasknotes:capture vault=notes text="<description>"` |
+| Create a task (structured) | `obsidian create path=work/tasks/<slug> template=task`, then edit fields + add link to daily note |
 | Create a meeting note | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off` |
 | Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence` |
 | Create a person note | `obsidian create path=work/people/Name template=person` |
@@ -59,10 +60,99 @@ Prefer these for single-item changes:
 | Read today's full note | `obsidian daily:read` |
 | Search vault | `obsidian search query="<text>"` |
 | Search with line context | `obsidian search:context query="<text>" path=dailies` |
+| Start time tracking | `obsidian tasknotes:start-time vault=notes query="<task>"` |
+| Stop time tracking | `obsidian tasknotes:stop-time vault=notes` |
+| Time tracking status | `obsidian tasknotes:time-status vault=notes` |
 
 **After `obsidian create ... template=<name>`**: the note is created with the
 template structure. Use an Edit to fill in specific frontmatter fields the
-template leaves blank (e.g., `focus_date`, `source`, `project`, `role`).
+template leaves blank (e.g., `scheduled`, `source`, `project`, `role`).
+
+## TaskNotes CLI
+
+TaskNotes registers commands with the Obsidian desktop CLI (`obsidian
+tasknotes:*`). Obsidian must be running. Vault name for this vault is `notes`
+— verify with `obsidian help | rg 'tasknotes:'` after installation.
+
+### Task Capture
+
+Use `tasknotes:capture` for quick NLP-driven creation when custom fields
+(`waiting_for`, `source`, `delegated_to`) are not needed. Use the structured
+`obsidian create` + Edit flow when those fields matter.
+
+```bash
+# NLP — parses dates, priority, tags, contexts automatically
+obsidian tasknotes:capture vault=notes text="Review Katie's PR tomorrow high priority #work"
+
+# Explicit fields — bypass NLP parsing
+obsidian tasknotes:capture vault=notes \
+  text="Fix scheduling bug" \
+  scheduled=YYYY-MM-DD \
+  priority=high \
+  status=in-progress
+
+# Literal title — no NLP parsing at all
+obsidian tasknotes:capture vault=notes text="Exact title as written" literal
+```
+
+**NLP trigger characters** (in `text=` value):
+- `@` — context (e.g. `@desk`)
+- `#` — tag (e.g. `#work`)
+- `+` — project link (e.g. `+[[BCG Invite Templates]]`)
+- `*` — status (e.g. `*in-progress`)
+
+**Supported explicit flags**: `title`, `details`, `status`, `priority`, `due`,
+`scheduled`, `tags`, `contexts`, `projects`, `recurrence`,
+`recurrence-anchor`, `reminders`, `estimate`
+
+**Note**: `tasknotes:capture` does not set `waiting_for`, `source`, or
+`delegated_to`. For tasks requiring those fields, use `obsidian create
+path=work/tasks/<slug> template=task` then Edit the file.
+
+**After capture**: add the wikilink manually to today's daily note since
+`tasknotes:capture` does not update daily notes.
+
+### Time Tracking
+
+```bash
+# Start tracking — target by fuzzy query, exact title, or path
+obsidian tasknotes:start-time vault=notes query="scheduling bug"
+obsidian tasknotes:start-time vault=notes title="Fix scheduling bug"
+obsidian tasknotes:start-time vault=notes path="work/tasks/fix-scheduling-bug.md"
+
+# With a session description
+obsidian tasknotes:start-time vault=notes query="scheduling bug" description="Investigating root cause"
+
+# Stop tracking (stops unambiguous active session)
+obsidian tasknotes:stop-time vault=notes
+
+# Stop specific task
+obsidian tasknotes:stop-time vault=notes query="scheduling bug"
+
+# Show active sessions / time summary for a task
+obsidian tasknotes:time-status vault=notes
+obsidian tasknotes:time-status vault=notes query="scheduling bug"
+```
+
+### Pomodoro
+
+```bash
+# Start a 25-minute session (with or without a linked task)
+obsidian tasknotes:pomodoro vault=notes action=start duration=25
+obsidian tasknotes:pomodoro vault=notes action=start query="scheduling bug" duration=25
+
+# Control session
+obsidian tasknotes:pomodoro vault=notes action=pause
+obsidian tasknotes:pomodoro vault=notes action=resume
+obsidian tasknotes:pomodoro vault=notes action=stop
+
+# Breaks
+obsidian tasknotes:pomodoro vault=notes action=short-break
+obsidian tasknotes:pomodoro vault=notes action=long-break
+
+# Check state
+obsidian tasknotes:pomodoro vault=notes action=status
+```
 
 ## File Edits
 
@@ -126,18 +216,22 @@ Example:
 
 **Task creation steps**:
 1. `obsidian create path=work/tasks/<slug> template=task`
-2. Edit the task file to fill in: `focus_date`, `priority`, `source` (if from a meeting), `project` (if applicable), `waiting_for` or `delegated_to` if relevant
+2. Edit the task file to fill in: `scheduled`, `priority`, `source` (if from a meeting), `project` (if applicable), `waiting_for` or `delegated_to` if relevant
 3. Add the wikilink to the correct daily note section
 
-## Checkbox States
+## Task Status Values
 
-| Syntax | Meaning | Carries over? |
-|--------|---------|---------------|
-| `- [ ]` | To do | Yes |
-| `- [/]` | In progress | Yes |
-| `- [x]` | Done | No |
-| `- [-]` | Cancelled | No |
-| `- [>]` | Deferred | Yes |
+Task files use a `status` frontmatter field as the canonical state. This drives
+carryover during morning planning — the daily note holds only wikilinks, never
+raw checkboxes.
+
+| Status        | Meaning                       | Carries over? |
+|---------------|-------------------------------|---------------|
+| `todo`        | Not started                   | Yes           |
+| `in-progress` | Actively being worked on      | Yes           |
+| `waiting`     | Blocked on another person     | Yes           |
+| `done`        | Completed                     | No            |
+| `cancelled`   | Dropped or no longer relevant | No            |
 
 ## Backlinks
 

@@ -79,6 +79,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 
+source $HOME/.dotfiles/shellrc
+
 # Cache GOPATH to avoid expensive go env call
 _go_path_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/gopath"
 if [[ ! -f "$_go_path_cache" ]] || [[ $(which go) -nt "$_go_path_cache" ]]; then
@@ -137,8 +139,6 @@ source "$_zoxide_cache"
 
 # fnm (Fast Node Manager)
 eval "$(fnm env --shell zsh)"
-
-source $HOME/.dotfiles/shellrc
 
 # Ensure Ctrl+R uses fzf for history search (after all plugins loaded)
 bindkey '^R' fzf-history-widget
