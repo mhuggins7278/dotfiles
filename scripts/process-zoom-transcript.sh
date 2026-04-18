@@ -1,8 +1,8 @@
 #!/bin/zsh
 # process-zoom-transcript.sh
-# Watches ~/Downloads/zoom-transcripts/ for .vtt files dropped from Zoom,
-# passes each to the opencode daily-notes agent for summarization and note creation,
-# then deletes the processed file.
+# Watches ~/zoom-transcripts/ for .vtt files dropped from Zoom,
+# passes each to opencode (running in the notes vault) for summarization and
+# note creation using the vault's CLAUDE.md workflow, then archives the file.
 
 WATCH_DIR="$HOME/zoom-transcripts"
 PROCESSED_DIR="$HOME/zoom-transcripts/processed"
@@ -35,7 +35,7 @@ for vtt in "${vtt_files[@]}"; do
   echo "[$(date)] Processing: $(basename "$vtt")" >> "$LOG"
 
   opencode run \
-    --agent daily-notes \
+    --dir "$HOME/github/mhuggins7278/notes" \
     "Process the attached Zoom meeting transcript. Infer the meeting title from the content. Create a meeting note following the Meeting Transcripts workflow, add a backlink in today's daily note, and route any action items to the correct sections." \
     -f "$vtt" \
     >> "$LOG" 2>&1

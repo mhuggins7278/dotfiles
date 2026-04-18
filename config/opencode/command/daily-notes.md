@@ -1,9 +1,12 @@
 ---
-description: Open the daily notes agent
+description: Start a daily notes workflow
 ---
-Switch to or open the `daily-notes` agent for full daily-notes workflows
-(morning startup, end-of-day review, meeting transcripts, weekly summaries,
-larger cleanup passes). Quick inline capture should stay in the current session
-via the `daily-notes` skill.
+For quick inline capture, status changes, or lightweight review, use the
+`daily-notes` skill directly in the current session.
+
+For longer workflows — morning startup, carryover, end-of-day review, meeting
+transcripts, weekly summaries, or cleanup passes — open a session in the notes
+vault. The vault's `CLAUDE.md` defines the full orchestration for these
+workflows.
 
 Arguments: $ARGUMENTS

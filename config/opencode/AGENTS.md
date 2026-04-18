@@ -44,10 +44,14 @@ When working in any repository under `~/github/glg/`:
 
 ## Daily Notes Policy
 
-The `daily-notes` agent is the source of truth for the full daily notes
-workflow (morning planning, carryover rules, evening review, meeting
-transcripts, weekly summaries). For quick inline operations from any session,
-use the `daily-notes` skill.
+The `daily-notes` skill is the source of truth for the shared daily-note
+capture model: section structure, task-note conventions, status values,
+backlinking, and quick inline operations.
+
+Longer workflows (morning planning, carryover, end-of-day review, meeting
+transcripts, weekly summaries, and larger cleanup passes) are defined in the
+notes vault's `CLAUDE.md` at `~/github/mhuggins7278/notes/CLAUDE.md`. Open a
+session there for those workflows.
 
 Global rules that apply everywhere:
 

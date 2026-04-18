@@ -52,6 +52,11 @@
         force: true,
       }
     - {
+        src: "~/.dotfiles/config/opencode/skills/daily-notes",
+        dest: "~/.claude/skills/daily-notes",
+        force: true,
+      }
+    - {
         src: "~/.dotfiles/config/ghostty",
         dest: "~/.config/ghostty",
         force: true,

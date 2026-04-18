@@ -237,7 +237,6 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   callback = OrganizeImports,
 -- })
 
-
 vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = { 'aerospace.toml' },
   command = "execute 'silent !aerospace reload-config'",
@@ -336,6 +335,7 @@ require('lazy').setup {
       'catppuccin/nvim',
       name = 'catppuccin',
       priority = 1000,
+      auto_integrations = true,
       config = function()
         require('catppuccin').setup {
           flavour = 'auto',
@@ -349,6 +349,7 @@ require('lazy').setup {
           integrations = {
             diffview = true,
             harpoon = true,
+            which_key = true,
             lsp_trouble = true,
             neotest = true,
             noice = true,

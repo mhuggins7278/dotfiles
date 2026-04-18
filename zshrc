@@ -97,6 +97,7 @@ $PNPM_HOME
 "$HOMEBREW_PREFIX/opt/curl/bin"
 $HOME/.local/bin
 $HOME/.local/share
+$HOME/.cargo/bin
 )
 # Source completion files
 # export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
@@ -177,3 +178,9 @@ fpath=(/Users/mhuggins/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+eval "$(tv init zsh)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/mhuggins/.lmstudio/bin"
+# End of LM Studio CLI section
+

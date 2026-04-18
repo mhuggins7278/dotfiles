@@ -8,17 +8,30 @@ description: >
   "I just shipped...," "I'm waiting on...," "I owe...," "what's open?,"
   "what did I get done?," or otherwise wants daily-note updates to happen in
   the flow of work. For full morning planning, end-of-day review, meeting
-  transcript processing, weekly summaries, or larger cleanup passes, direct the
-  user to the `daily-notes` agent instead.
+  transcript processing, weekly summaries, or larger cleanup passes, open a
+  session in the notes vault where the full workflow is defined.
 ---
 
 # Daily Notes — Inline Capture
 
-Handles low-friction daily-note updates from any session. Default to capturing
-the user's natural-language updates directly into today's note with minimal
-ceremony. For full conversational workflows (morning startup, end-of-day
-review, meeting transcripts, weekly summaries, broad cleanup), tell the user to
-switch to the `daily-notes` agent via `ctrl+p` → Agents.
+Handles low-friction daily-note updates from any session and serves as the
+canonical shared contract for daily-note structure, task-note conventions,
+status values, backlinking, and one-off Obsidian CLI operations.
+
+Default to capturing the user's natural-language updates directly into today's
+note with minimal ceremony. For full conversational workflows (morning
+startup, end-of-day review, meeting transcripts, weekly summaries, broad
+cleanup), tell the user to open a session in the notes vault
+(`~/github/mhuggins7278/notes`) where `CLAUDE.md` defines those workflows.
+
+## Ownership
+
+- This skill owns the shared note model used across daily-note workflows.
+- Long-form orchestration (morning planning, evening review, weekly summaries,
+  meeting transcripts, cleanup passes) is defined in the notes vault's
+  `CLAUDE.md` at `~/github/mhuggins7278/notes/CLAUDE.md`.
+- When a shared rule changes, update this skill first and keep the vault's
+  `CLAUDE.md` aligned to it.
 
 ## Note Location
 
@@ -275,7 +288,8 @@ Only use `obsidian daily:read` when freeform content (`Activity`, `Notes`,
 
 ## Escalation Boundary
 
-Tell the user to switch to the `daily-notes` agent for:
+Tell the user to open a session in the notes vault
+(`~/github/mhuggins7278/notes`) for:
 - Morning startup and carry-over review across days
 - End-of-day closeout and reflection
 - Meeting transcript processing

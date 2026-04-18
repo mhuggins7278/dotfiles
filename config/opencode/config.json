@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "ollama/gemma4",
+  "model": "lmstudio/gemma4",
   "provider": {
     "ollama": {
       "models": {
@@ -8,10 +8,10 @@
           "name": "gemma4"
         }
       },
-      "name": "Ollama",
+      "name": "LM Studio",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "baseURL": "http://127.0.0.1:11434/v1"
+        "baseURL": "http://127.0.0.1:1234/v1"
       }
     }
   },

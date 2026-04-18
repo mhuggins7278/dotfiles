@@ -237,7 +237,7 @@ obsidian daily:read   # read the current note
 ```
 
 If the daily note **does not exist yet**, skip this step silently — do not
-create it (that's the daily-notes agent's job).
+create it (daily note creation is handled by the notes vault workflows).
 
 If the daily note **exists**:
 

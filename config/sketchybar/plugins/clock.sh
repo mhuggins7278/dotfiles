@@ -4,7 +4,7 @@
 # the item invoking this script:
 # https://felixkratz.github.io/SketchyBar/config/events#events-and-scripting
 
-LOCAL_TIME=$(date '+%m-%d %H:%M')
-UTC_TIME=$(TZ=UTC date '+%H:%M')
-sketchybar --set "$NAME" label="$LOCAL_TIME [$UTC_TIME UTC]"
+LOCAL_TIME=$(date '+%m-%d %I:%M%p')
+IRELAND_TIME=$(TZ=Europe/Dublin date '+%H:%M')
+sketchybar --set "$NAME" label="$LOCAL_TIME [$IRELAND_TIME IST]"
 

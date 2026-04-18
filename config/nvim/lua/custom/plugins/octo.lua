@@ -46,6 +46,8 @@ return {
               local script = vim.fn.expand '~/.config/gh-dash/agent-review'
               vim.fn.jobstart({ script, tostring(pr_number), repo_name, repo_path }, { detach = true })
             end,
+          },
+          issue = {
             agent_fix = function()
               local utils = require 'octo.utils'
               local buffer = utils.get_current_buffer()
