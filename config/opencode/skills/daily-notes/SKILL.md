@@ -22,7 +22,8 @@ Default to capturing the user's natural-language updates directly into today's
 note with minimal ceremony. For full conversational workflows (morning
 startup, end-of-day review, meeting transcripts, weekly summaries, broad
 cleanup), tell the user to open a session in the notes vault
-(`~/github/mhuggins7278/notes`) where `CLAUDE.md` defines those workflows.
+(`~/github/mhuggins7278/notes`) where `CLAUDE.md` at
+`~/github/mhuggins7278/notes/CLAUDE.md` defines those workflows.
 
 ## Ownership
 
@@ -36,7 +37,7 @@ cleanup), tell the user to open a session in the notes vault
 ## Note Location
 
 ```
-/Users/MHuggins/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md
+~/github/mhuggins7278/notes/dailies/YYYY-MM-DD.md
 ```
 
 Use `obsidian daily:path` to get today's path. Use `obsidian daily:read` to
@@ -64,7 +65,7 @@ Prefer these for single-item changes:
 | Mark a task waiting | Edit task file: set `status: waiting` + `waiting_for: [[Person]]` |
 | Snooze a task | Edit task file: update `scheduled: YYYY-MM-DD` |
 | Capture a task (NLP) | `obsidian tasknotes:capture vault=notes text="<description>"` |
-| Create a task (structured) | `obsidian create path=work/tasks/<slug> template=task`, then edit fields + add link to daily note |
+| Create a task (structured) | `obsidian create path=work/tasks/<slug> template=task`, then **immediately set `status`** (template default is `done`), fill fields + add link to daily note |
 | Create a meeting note | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off` |
 | Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence` |
 | Create a person note | `obsidian create path=work/people/Name template=person` |
@@ -86,6 +87,20 @@ template leaves blank (e.g., `scheduled`, `source`, `project`, `role`).
 TaskNotes registers commands with the Obsidian desktop CLI (`obsidian
 tasknotes:*`). Obsidian must be running. Vault name for this vault is `notes`
 — verify with `obsidian help | rg 'tasknotes:'` after installation.
+
+**Verify availability before use.** The `tasknotes:*` subcommands are only
+registered once TaskNotes 4.x is installed and Obsidian is running. Check
+first:
+
+```bash
+obsidian vault=notes help | rg 'tasknotes:'
+```
+
+If the commands are listed, use them as documented below. If they are absent
+(e.g. TaskNotes not yet upgraded), fall back to:
+- `obsidian command id=tasknotes:create-new-task` for task creation (opens UI)
+- `obsidian create path=work/tasks/<slug> template=task` + Edit for structured creation
+- File edits via the Edit tool for status/frontmatter changes
 
 ### Task Capture
 
@@ -229,8 +244,14 @@ Example:
 
 **Task creation steps**:
 1. `obsidian create path=work/tasks/<slug> template=task`
-2. Edit the task file to fill in: `scheduled`, `priority`, `source` (if from a meeting), `project` (if applicable), `waiting_for` or `delegated_to` if relevant
-3. Add the wikilink to the correct daily note section
+2. **Immediately** edit the task file to set `status` to the correct value
+   (`todo`, `in-progress`, or `waiting`). The template default is `status: done`
+   — never leave it as-is. A task with `status: done` will not carry forward and
+   will be invisible in the planning view.
+3. Fill in remaining fields: `scheduled`, `priority`, `source` (if from a
+   meeting), `project` (if applicable), `waiting_for` or `delegated_to` if
+   relevant, `completed` must be blank unless actually done.
+4. Add the wikilink to the correct daily note section.
 
 ## Task Status Values
 
@@ -250,9 +271,13 @@ raw checkboxes.
 
 Use Obsidian wikilinks for people, projects, and ideas:
 
-- **People**: `[[Person Name]]` → file lives at `work/people/Person Name.md`
+- **People**: `[[Person Name]]` — resolves to `work/people/Person Name.md`.
+  Bare wikilinks are preferred when the name is unambiguous. Use the full path
+  form `[[work/people/Person Name|Person Name]]` only when disambiguation is
+  needed (e.g. two people with similar names).
 - **Projects**: `[[Project Name]]` → file lives at `work/projects/ProjectName.md`
-- **Task notes**: `[[work/tasks/slug|Display text]]` — used in task sections
+- **Task notes**: `[[work/tasks/slug|Display text]]` — always use the path-qualified
+  form in task sections so links are unambiguous regardless of note title.
 - **Meeting notes**: `[[meetings/YYYY-MM-DD-Title|Title]]` — used in Meetings section
 
 Prefer best-effort backlinking for obvious matches. Do not block capture on
@@ -277,9 +302,15 @@ This skill can also handle quick review prompts such as:
 
 **Prefer targeted operations over reading the full note:**
 
-- `what's still open?` → `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` to find open task files; or `obsidian daily:read` and collect task links from the sections
+- `what's still open?` → Read today's daily note, collect all wikilinks from
+  `Tasks`, `After Hours`, `Waiting On`, and `I Owe` sections, read each linked
+  task file, and filter to those with `status: todo`, `in-progress`, or
+  `waiting`. This gives today's open items — not a vault-wide list.
+  Use `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` only when the
+  user explicitly asks for all open tasks vault-wide (not just today's).
 - `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`
-- `what am I waiting on?` → `rg "^status: waiting" work/tasks/ -l`
+- `what am I waiting on?` → Read today's note, collect links from `Waiting On`,
+  read each task file. For vault-wide waiting tasks: `rg "^status: waiting" work/tasks/ -l`
 - `mark that done` → identify the task file from context, edit it: `status: done` + `completed: YYYY-MM-DD`
 - `move that to after hours` → read the daily note, move the task link from `Tasks` to `After Hours`
 
