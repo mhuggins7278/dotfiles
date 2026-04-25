@@ -1,5 +1,22 @@
 # Global Agent Guidelines
 
+## Dual-Tool AI Setup
+
+This dotfiles repo manages config for both OpenCode and Claude Code. They share
+canonical workflow methodology via shared playbooks.
+
+| Component | Source path |
+|-----------|-------------|
+| OpenCode global instructions | `config/opencode/AGENTS.md` (this file) |
+| OpenCode agents | `config/opencode/agent/*.md` |
+| Claude Code global instructions | `config/claude/CLAUDE.md` |
+| Claude Code agents | `config/claude/agents/*.md` |
+| Shared skills | `config/opencode/skills/` (symlinked into both tools) |
+| Shared playbooks | `config/ai/playbooks/` |
+
+Agents in both tools reference their canonical methodology in `config/ai/playbooks/`.
+When updating agent behavior, update the playbook first, then sync both agent files.
+
 ## Dotfiles Path Rules
 
 When working inside `~/.dotfiles`, treat home config paths as symlinked targets.

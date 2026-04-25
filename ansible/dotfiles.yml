@@ -81,6 +81,7 @@
         - "~/zoom-transcripts/"
         - "~/.claude/"
         - "~/.claude/skills/"
+        - "~/.claude/agents/"
         - "~/Library/Scripts/Folder Action Scripts/"
 
 

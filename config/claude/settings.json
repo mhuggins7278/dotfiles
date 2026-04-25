@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "whoIs": {
+      "command": "npx",
+      "args": ["-y", "@glg/mcp-whois"]
+    },
+    "gdsData": {
+      "command": "npx",
+      "args": ["-y", "@glg/mcp-gds"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "figma": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3845/sse"
+    },
+    "context7": {
+      "type": "sse",
+      "url": "https://mcp.context7.com/sse"
+    }
+  }
+}

@@ -51,9 +51,81 @@
         dest: "~/.config/opencode",
         force: true,
       }
+    # Claude Code — config, agents, settings
+    - {
+        src: "~/.dotfiles/config/claude/CLAUDE.md",
+        dest: "~/.claude/CLAUDE.md",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/claude/settings.json",
+        dest: "~/.claude/settings.json",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/claude/agents",
+        dest: "~/.claude/agents",
+        force: true,
+      }
+    # Claude Code — skills (sourced from opencode skills)
     - {
         src: "~/.dotfiles/config/opencode/skills/daily-notes",
         dest: "~/.claude/skills/daily-notes",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/observe-glg",
+        dest: "~/.claude/skills/observe-glg",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/dotfiles",
+        dest: "~/.claude/skills/dotfiles",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/git-context",
+        dest: "~/.claude/skills/git-context",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/gh-issues",
+        dest: "~/.claude/skills/gh-issues",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/plan",
+        dest: "~/.claude/skills/plan",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/commit",
+        dest: "~/.claude/skills/commit",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/pr",
+        dest: "~/.claude/skills/pr",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/done",
+        dest: "~/.claude/skills/done",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/retro",
+        dest: "~/.claude/skills/retro",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/workon",
+        dest: "~/.claude/skills/workon",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/playwright-cli",
+        dest: "~/.claude/skills/playwright-cli",
         force: true,
       }
     - {

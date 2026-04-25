@@ -1,32 +1,49 @@
 # Dotfiles Repository Guidelines
 
-## Commands
+## Repository Overview
 
-### Testing
+Ansible-managed dotfiles for macOS and Linux. Config files live in this repo
+under `config/` and are symlinked to their correct locations via Ansible.
 
-- Run nearest test: `<leader>tr`
-- Run last test: `<leader>tl`
-- Debug last test: `<leader>tL`
-- Run test in watch mode: `<leader>tw`
-- Toggle test summary: `<leader>ts`
-- Toggle output panel: `<leader>to`
-- Clear output panel: `<leader>tc`
+**Never edit `~/.config/`, `~/.claude/`, or other symlink destinations directly.**
+Always edit the source under `~/.dotfiles/config/`.
 
-### Formatting
+## Key Commands
 
-- Format file: Uses conform.nvim with autoformat on save
-- Disable autoformat: `FormatDisable`
-- Re-enable autoformat: `FormatEnable`
+- `update` — pull latest dotfiles + brew update
+- `dotfiles` — apply full Ansible playbook (all tasks)
+- `brewsync` — sync Homebrew packages only
 
-## Coding Style
+## Ansible Workflow
 
-### Formatting
+- Preview changes: `ansible-playbook --check --diff ansible/dotfiles.yml`
+- Apply changes: `dotfiles`
+- Main playbook: `ansible/dotfiles.yml`
+- Symlinks: `ansible/tasks/link_files.yml`
 
-- Indent: 2 spaces
-- Line length: 80 characters max (see colorcolumn)
-- No trailing whitespace
+## Dual-Tool AI Setup
 
-### Language-specific Formatters
+This repo manages config for two AI coding tools that share canonical methodology:
+
+| Tool | User config source | Agents/skills source |
+|------|--------------------|----------------------|
+| OpenCode | `config/opencode/AGENTS.md` | `config/opencode/agent/*.md`, `config/opencode/skills/` |
+| Claude Code | `config/claude/CLAUDE.md` | `config/claude/agents/*.md`, `config/opencode/skills/` (linked) |
+
+Shared playbooks (canonical methodology for all agents) live in `config/ai/playbooks/`.
+Skills are the source of truth at `config/opencode/skills/` — symlinked into both tools.
+
+## Path Translation
+
+| Reference | Actual source |
+|-----------|---------------|
+| `~/.config/<tool>/` | `~/.dotfiles/config/<tool>/` |
+| `~/.claude/` | `~/.dotfiles/config/claude/` |
+| `~/.config/opencode/` | `~/.dotfiles/config/opencode/` |
+
+## Code Style
+
+### Formatters
 
 - JavaScript/TypeScript: prettierd
 - HTML/CSS/Vue: prettierd
@@ -36,17 +53,12 @@
 - Lua: stylua
 - Go: goimports, gofumpt
 
-### Code Conventions
+### Conventions
 
-- Use TypeScript with proper types
-- Prefer const over let
-- Modern ES syntax (arrow functions, destructuring)
-- Descriptive variable names
+- 2-space indentation, 80-char line length max
+- No trailing whitespace
+- TypeScript with proper types when applicable
+- Prefer `const` over `let`, modern ES syntax
+- Descriptive variable names, async/await over promises
 - Comments for complex logic only
 - Always include error handling
-- Prefer async/await over promises
-
-### AI Coding Assistance
-
-- Use avant.nvim
-

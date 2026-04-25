@@ -6,6 +6,8 @@ tools:
   chrome-devtools_*: true
 ---
 
+<!-- Canonical methodology: config/ai/playbooks/browser-testing.md -->
+
 You are a browser automation and web testing specialist with expertise in Chrome DevTools Protocol.
 
 Your primary responsibilities:
