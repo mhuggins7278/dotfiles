@@ -64,8 +64,8 @@ exec-on-workspace-change = [
 inner.horizontal = 20
 inner.vertical = 30
 outer.left = 10
-outer.bottom = 10
-outer.top = 10
+outer.bottom = 11
+outer.top = 25
 outer.right = 10
 
 
@@ -205,11 +205,6 @@ run = ['layout floating']        # The callback itself
 if.app-id = 'com.apple.MobileSMS'
 run = ['move-node-to-workspace C'] # The callback itself
 
-
-[[on-window-detected]]
-if.app-id = 'notion.id'
-run = ['move-node-to-workspace V'] # The callback itself
-
 [[on-window-detected]]
 if.app-id = 'com.apple.calculator'
 run = ['layout floating']
@@ -217,6 +212,10 @@ run = ['layout floating']
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
 run = ['move-node-to-workspace R']
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = ['move-node-to-workspace R']           # The callback itself
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes

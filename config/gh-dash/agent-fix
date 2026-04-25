@@ -14,6 +14,27 @@ ISSUE_NUM="$1"
 REPO_NAME="$2"
 REPO_PATH="$3"
 
+# Ensure the repo is cloned locally under ~/github/{org}/{repo}
+OWNER="${REPO_NAME%%/*}"
+REPO="${REPO_NAME##*/}"
+CANONICAL_REPO_PATH="$HOME/github/$OWNER/$REPO"
+
+if git -C "$REPO_PATH" rev-parse --show-toplevel >/dev/null 2>&1; then
+  REPO_PATH="$REPO_PATH"
+else
+  REPO_PATH="$CANONICAL_REPO_PATH"
+
+  if ! git -C "$REPO_PATH" rev-parse --show-toplevel >/dev/null 2>&1; then
+    if [ -e "$REPO_PATH" ]; then
+      echo "[agent-fix] path exists but is not a git repo: $REPO_PATH" >&2
+      exit 1
+    fi
+
+    mkdir -p "$HOME/github/$OWNER"
+    gh repo clone "$REPO_NAME" "$REPO_PATH"
+  fi
+fi
+
 BRANCH="issue_${ISSUE_NUM}"
 
 # Create worktree (or switch to existing) via wt
