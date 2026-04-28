@@ -1,0 +1,65 @@
+{
+  "skill_name": "exec-assistant",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "what should I focus on today?",
+      "expected_output": "A prioritized Focus Brief: top 3 items with short reasons, biggest blocker, one deferral, and a clear next action. Should NOT be a plain list of all open tasks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I've only got 90 minutes before my Priya 1:1 — what should I do?",
+      "expected_output": "A time-boxed plan adapted to the 90-minute window. Should connect tasks to the upcoming meeting, name what to skip, and flag risk if something is left undone. Should not give a generic task list.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "what's at risk if I stop working at 4 today?",
+      "expected_output": "Identifies 1-3 at-risk commitments, distinguishes real risk from nice-to-have work, and suggests 1-2 mitigation steps. Should not treat all unfinished work as equally risky.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "what follow-ups am I neglecting?",
+      "expected_output": "Surfaces stale or high-consequence items; separates waiting-on-others from you-owe; recommends who to nudge and why now. Should not just repeat the Waiting On section.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "who do I need to nudge this week?",
+      "expected_output": "Identifies the 1-3 people most worth nudging, explains why each matters now, and optionally drafts short nudge messages. Should not name everyone with an open waiting item.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "what do I owe people right now?",
+      "expected_output": "Focuses on interpersonal promises, deliverables owed to others, and decisions that unblock people. Each item should have a recommended action (send / decide / close). Should not give a generic task dump.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "prep me for Service Leads",
+      "expected_output": "A concise Meeting Brief: objective, 1-3 context bullets, open loops, decisions/asks, and talking points. Should feel decision-oriented, not like a context dump. Should not exceed what fits in a natural pre-meeting read.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "what should I bring to my next Priya 1:1?",
+      "expected_output": "A 1:1 Brief personalized to Priya: what matters most, updates, open questions, asks/decisions, and a recommended agenda. Should use context from tasks, prior meetings, or waiting items tied to Priya.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "give me talking points for my manager sync",
+      "expected_output": "3-5 concise, high-signal bullets covering progress, blockers, asks, and any risks worth flagging. Should feel meeting-ready and emphasis asks or decisions, not be a status dump.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "I'm juggling too many threads right now. Help me decide what matters.",
+      "expected_output": "A Triage Brief: do-first, do-second, stop-worrying-about, one person to update, one stabilizing next step. Should feel calming and decisive. Should not mirror the stress or give more options instead of fewer.",
+      "files": []
+    }
+  ]
+}

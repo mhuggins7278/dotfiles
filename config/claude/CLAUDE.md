@@ -67,10 +67,15 @@ When working in any repository under `~/github/glg/`:
 - Comments for complex logic only
 - Format with language-specific tools (prettierd, stylua, etc.)
 
-## Daily Notes Policy
+## Notes Skills Policy
 
 The `daily-notes` skill is the source of truth for the shared daily-note capture model: section
 structure, task-note conventions, status values, backlinking, and quick inline operations.
+
+The `exec-assistant` skill is the chief-of-staff layer on top of that system. Use it for
+prioritization, follow-up triage, and meeting preparation — whenever the user asks what to focus on,
+what they're waiting on, what they owe, who needs a nudge, or wants a meeting brief. Do NOT use
+`daily-notes` for these judgment-and-recommendation tasks; that is `exec-assistant`'s job.
 
 Longer workflows (morning planning, carryover, end-of-day review, meeting transcripts, weekly
 summaries, and larger cleanup passes) are defined in the notes vault's `CLAUDE.md` at

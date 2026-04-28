@@ -221,6 +221,31 @@ is canonical. The daily note is the planning view for the day.
 Use `Activity` for what happened. Use `Notes` for context worth remembering.
 Do not add checkboxes or task links to `Notes` or `Activity`.
 
+## Meeting Prep Context
+
+When setting up the day's note from calendar events, enrich each meeting with
+brief prep context when sources are available. The goal is to help the user walk
+into the meeting oriented, not to dump all related history into the daily note.
+
+- Create or update the meeting note as the source of truth for prep details,
+  discussion notes, decisions, and follow-ups.
+- For each calendar meeting, derive search terms from the meeting title,
+  organizer, required attendees, recurring series name, projects, and obvious
+  acronyms.
+- Search recent daily notes, prior meeting notes, recurring meeting metadata,
+  linked project notes, and linked person notes for relevant context.
+- If Teams, email, SharePoint, calendar, or other O365 connectors are available,
+  also check recent messages and threads involving the meeting title, attendees,
+  project names, and active follow-ups.
+- Prefer context since the last occurrence for recurring meetings; otherwise use
+  the last 7-14 days unless the meeting clearly references older work.
+- Add 1-3 concise prep bullets or questions to the meeting note, with source
+  hints such as `Daily note`, `Teams`, `Email`, or `Prior meeting` when useful.
+- In the daily note's `Meetings` section, keep the summary compact: the meeting
+  backlink plus one short prep cue when there is useful context.
+- Do not invent context. If nothing useful is found, leave the meeting summary
+  plain or note `no obvious prep context found` only when that is helpful.
+
 ## Natural Capture Model
 
 Translate natural language into note updates using this mental model:
