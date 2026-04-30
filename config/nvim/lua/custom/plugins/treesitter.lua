@@ -25,35 +25,27 @@ return { -- Highlight, edit, and navigate code
       'jsdoc',
       'go',
       'typescript',
+      'tsx',
     }
 
-    -- Incremental node selection (replaces nvim-treesitter.configs incremental_selection)
+    -- Incremental node selection via Neovim 0.12's built-in vim.treesitter._select.
+    -- Calls select_parent directly to bypass mini.ai which overrides the 'n' text object.
+    -- select_parent from a single-char visual selection returns the smallest containing
+    -- named node; subsequent calls expand outward to each parent node.
+    local ts_select = require 'vim.treesitter._select'
+
     vim.keymap.set('n', '<CR>', function()
-      local node = vim.treesitter.get_node()
-      if not node then
-        return
-      end
-      local sr, sc, er, ec = node:range()
-      vim.api.nvim_win_set_cursor(0, { er + 1, math.max(0, ec - 1) })
       vim.cmd 'normal! v'
-      vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
+      ts_select.select_parent(vim.v.count1)
     end, { desc = 'Select treesitter node' })
 
     vim.keymap.set('x', '<CR>', function()
-      local pos = vim.api.nvim_win_get_cursor(0)
-      local node = vim.treesitter.get_node { pos = { pos[1] - 1, pos[2] } }
-      if not node then
-        return
-      end
-      local parent = node:parent()
-      if not parent then
-        return
-      end
-      local sr, sc, er, ec = parent:range()
-      vim.api.nvim_win_set_cursor(0, { er + 1, math.max(0, ec - 1) })
-      vim.cmd 'normal! o'
-      vim.api.nvim_win_set_cursor(0, { sr + 1, sc })
+      ts_select.select_parent(vim.v.count1)
     end, { desc = 'Expand selection to parent node' })
+
+    vim.keymap.set('x', '<BS>', function()
+      ts_select.select_child(vim.v.count1)
+    end, { desc = 'Shrink selection to child node' })
 
     -- Textobject swap keymaps (nvim-treesitter-textobjects main API)
     local swap = require 'nvim-treesitter-textobjects.swap'

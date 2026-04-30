@@ -45,8 +45,8 @@ return { -- Collection of various small independent plugins/modules
           a = '@call.outer',
           i = '@call.inner',
         },
-        -- Numbers
-        n = require('mini.ai').gen_spec.treesitter {
+        -- Numbers (use N to avoid shadowing Neovim 0.12's built-in 'n' treesitter node text object)
+        N = require('mini.ai').gen_spec.treesitter {
           a = '@number.inner',
           i = '@number.inner',
         },
