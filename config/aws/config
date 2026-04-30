@@ -7,113 +7,121 @@ sso_role_name  = personal
 region         = us-east-2
 output         = json
 
-[profile glg/conference-platform/CLIOnlySecretsAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 048313327362
-granted_sso_role_name      = CLIOnlySecretsAccess
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/conference-platform/CLIOnlySecretsAccess
-
-[profile glg/insights/CLIOnlySecretsAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 677895703113
-granted_sso_role_name      = CLIOnlySecretsAccess
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/insights/CLIOnlySecretsAccess
-
-[profile glg/insights/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 677895703113
-granted_sso_role_name      = EngineeringReadOnly
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/insights/EngineeringReadOnly
+[profile localstack]
+region                = us-east-1
+output                = json
+endpoint_url          = http://localhost:4566
+aws_access_key_id     = test
+aws_secret_access_key = test
 
 [profile glg/GLG-Marketing/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 381745268764
-granted_sso_role_name      = EngineeringReadOnly
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 381745268764
 common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/GLG-Marketing/EngineeringReadOnly
-
-[profile glg/search/CLIOnlySecretsAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 160069906927
-granted_sso_role_name      = CLIOnlySecretsAccess
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/search/CLIOnlySecretsAccess
-
-[profile glg/search/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 160069906927
-granted_sso_role_name      = EngineeringReadOnly
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/search/EngineeringReadOnly
-
-[profile glg/glgapp/CustomAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 868468680417
-granted_sso_role_name      = CustomAccess
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/glgapp/CustomAccess
-
-[profile glg/glgapp/CLIOnlySecretsAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 868468680417
-granted_sso_role_name      = CLIOnlySecretsAccess
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/glgapp/CLIOnlySecretsAccess
-
-[profile glg/glgapp/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 868468680417
-granted_sso_role_name      = EngineeringReadOnly
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/glgapp/EngineeringReadOnly
-
-[profile glg/Prototype/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 988857891049
-granted_sso_role_name      = EngineeringReadOnly
-common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/Prototype/EngineeringReadOnly
+sso_role_name              = EngineeringReadOnly
 
 [profile glg/Prototype/CLIOnlySecretsAccess]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 988857891049
-granted_sso_role_name      = CLIOnlySecretsAccess
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 988857891049
 common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/Prototype/CLIOnlySecretsAccess
+sso_role_name              = CLIOnlySecretsAccess
 
 [profile glg/Prototype/EngineeringPowerUser]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 988857891049
-granted_sso_role_name      = EngineeringPowerUser
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 988857891049
 common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/Prototype/EngineeringPowerUser
+sso_role_name              = EngineeringPowerUser
 
-[profile glg/glgdev/EngineeringReadOnly]
-granted_sso_start_url      = https://glgresearch.awsapps.com/start
-granted_sso_region         = us-east-1
-granted_sso_account_id     = 054501475751
-granted_sso_role_name      = EngineeringReadOnly
+[profile glg/Prototype/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 988857891049
 common_fate_generated_from = aws-sso
-credential_process         = granted credential-process --profile glg/glgdev/EngineeringReadOnly
+sso_role_name              = EngineeringReadOnly
 
-[profile localstack]
-region=us-east-1
-output=json
-endpoint_url = http://localhost:4566
-aws_access_key_id = test
-aws_secret_access_key = test
+[profile glg/ai-experiments/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 368307259700
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/conference-platform/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 048313327362
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/conference-platform/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 048313327362
+common_fate_generated_from = aws-sso
+sso_role_name              = EngineeringReadOnly
+
+[profile glg/development/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 604371740780
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/development/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 604371740780
+common_fate_generated_from = aws-sso
+sso_role_name              = EngineeringReadOnly
+
+[profile glg/glgapp/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 868468680417
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/glgapp/CustomAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 868468680417
+common_fate_generated_from = aws-sso
+sso_role_name              = CustomAccess
+
+[profile glg/glgapp/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 868468680417
+common_fate_generated_from = aws-sso
+sso_role_name              = EngineeringReadOnly
+
+[profile glg/insights/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 677895703113
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/insights/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 677895703113
+common_fate_generated_from = aws-sso
+sso_role_name              = EngineeringReadOnly
+
+[profile glg/search/CLIOnlySecretsAccess]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 160069906927
+common_fate_generated_from = aws-sso
+sso_role_name              = CLIOnlySecretsAccess
+
+[profile glg/search/EngineeringReadOnly]
+sso_start_url              = https://glgresearch.awsapps.com/start
+sso_region                 = us-east-1
+sso_account_id             = 160069906927
+common_fate_generated_from = aws-sso
+sso_role_name              = EngineeringReadOnly

@@ -31,14 +31,19 @@ return {
         includeCompletionsForImportStatements = true,
       },
       preferences = {
-        includePackageJsonAutoImports = 'auto',
+        includePackageJsonAutoImports = 'on',
+        importModuleSpecifier = 'non-relative',
+        importModuleSpecifierEnding = 'minimal',
+        quoteStyle = 'single',
         autoImportFileExcludePatterns = {
-          '**/node_modules/**',
           '**/.git/**',
           '**/dist/**',
           '**/build/**',
         },
-        preferTypeOnlyAutoImports = true,
+        autoImportSpecifierExcludeRegexes = {
+          '^node_modules/',
+        },
+        preferTypeOnlyAutoImports = false,
         renameMatchingJsxTags = true,
         useAliasesForRenames = true,
       },
@@ -60,12 +65,17 @@ return {
         includeCompletionsForImportStatements = true,
       },
       preferences = {
-        includePackageJsonAutoImports = 'auto',
+        includePackageJsonAutoImports = 'on',
+        importModuleSpecifier = 'non-relative',
+        importModuleSpecifierEnding = 'minimal',
+        quoteStyle = 'single',
         autoImportFileExcludePatterns = {
-          '**/node_modules/**',
           '**/.git/**',
           '**/dist/**',
           '**/build/**',
+        },
+        autoImportSpecifierExcludeRegexes = {
+          '^node_modules/',
         },
         renameMatchingJsxTags = true,
         useAliasesForRenames = true,

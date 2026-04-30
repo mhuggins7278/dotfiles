@@ -69,8 +69,45 @@ return { -- LSP Configuration & Plugins
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
-        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-        mapx('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        local code_action = function()
+          vim.lsp.buf.code_action {
+            context = {
+              only = { 'quickfix', 'refactor', 'source' },
+            },
+            filter = function(action)
+              if action.kind == 'source.addMissingImports.ts' or action.title == 'Add all missing imports' then
+                return false
+              end
+
+              if action.title and string.match(action.title, '^Add import from "node_modules/') then
+                return false
+              end
+
+              return true
+            end,
+          }
+        end
+
+        map('<leader>ca', code_action, '[C]ode [A]ction')
+        mapx('<leader>ca', code_action, '[C]ode [A]ction')
+
+        -- Add missing imports
+        map('<leader>ci', function()
+          vim.lsp.buf.code_action {
+            apply = true,
+            context = {
+              only = { 'quickfix' },
+            },
+            filter = function(action)
+              if not action.title then
+                return false
+              end
+
+              return string.match(action.title, '^Add import from ') ~= nil
+                and string.match(action.title, '^Add import from "node_modules/') == nil
+            end,
+          }
+        end, '[C]ode Add Missing [I]mports')
 
         -- Organize imports
         map('<leader>co', function()
@@ -148,7 +185,7 @@ return { -- LSP Configuration & Plugins
       capabilities = vim.tbl_deep_extend(
         'force',
         vim.lsp.protocol.make_client_capabilities(),
-        require('blink.cmp').get_lsp_capabilities({}, false),
+        require('blink.cmp').get_lsp_capabilities({}, true),
         -- Ensure snippet support is enabled for HTML/JSON
         { textDocument = { completion = { completionItem = { snippetSupport = true } } } }
       ),
