@@ -56,11 +56,12 @@ If the project references SQL files, epiquery templates, or database queries, al
 | Name | GitHub Login |
 |------|-------------|
 | Mark Huggins | `mhuggins7278` |
-| Jess Chadwick | `jchadwick` |
 | David Hayes | `drhayes` |
 | Ronan O'Malley | `Ronanj7` |
-| Priya Darshani | `pdarshani` |
-| John Lemberger | `JohnLemberger` |
+| Eva LeBreux | `LeBeva` |
+| Matt Keeble | `beldougie` |
+| Raul Reynoso | `rulio` |
+| Vamsi Krishna Budati | `vbudati-glg` |
 
 To request a Copilot code review, pass `--reviewer @copilot` directly to `gh pr create`, or use `gh pr edit --add-reviewer @copilot` to add it to an existing PR. Requires gh v2.88.0 or later.
 

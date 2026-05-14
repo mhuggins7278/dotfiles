@@ -64,11 +64,6 @@
       "command": ["npx", "-y", "@glg/mcp-gds"],
       "enabled": true
     },
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp@latest"],
-      "enabled": true
-    },
     "figma": {
       "type": "remote",
       "url": "http://127.0.0.1:3845/mcp",

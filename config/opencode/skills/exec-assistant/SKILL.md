@@ -2,24 +2,14 @@
 name: exec-assistant
 description: >
   Executive-assistant / chief-of-staff support for prioritization, follow-up
-  management, and meeting preparation using the user's existing notes and task
-  system. Use this skill whenever the user asks what to focus on, what matters
-  most today, what is at risk, what they are waiting on, what they owe, who
-  needs a follow-up, how to prep for a meeting or 1:1, or wants help turning a
-  messy set of commitments into a short action plan. Also trigger when the user
-  sounds overloaded, scattered, behind, or unsure what to do next — even if they
-  do not explicitly ask for "executive assistant" support. Trigger on phrases
-  like "what should I work on", "what should I prioritize", "help me prioritize",
-  "what am I waiting on", "what's still waiting on the team", "what do I owe",
-  "who needs a nudge", "who do I still need to follow up with", "prep me for",
-  "give me talking points", "I'm juggling too many things", "I'm all over the
-  place", "I feel scattered", "I feel like I'm dropping balls", "I've got
-  back-to-back meetings and only [time] to spare", "I owe [person] X and
-  [person] Y — where do I start", "what should I do before eod",
-  "what should I do with the next N hours", "what's at risk", "what can't wait",
-  "what matters most", or "where do I even start". Do NOT trigger for requests
-  to capture a task, update a note, mark something done, or move items between
-  sections — those belong to the daily-notes skill.
+  management, and meeting preparation. Use whenever the user asks what to focus
+  on, what matters most, what's at risk, what they're waiting on, what they owe,
+  who needs a nudge, or how to prep for a meeting. Also trigger when the user
+  sounds overloaded, scattered, or unsure what to do next — even without explicit
+  "exec assistant" framing. Phrases like "help me prioritize", "where do I
+  start", "I'm juggling too much", "what should I do before eod", or "give me
+  talking points" should all trigger this skill. Do NOT trigger for capturing a
+  task, updating a note, or marking something done — those belong to daily-notes.
 ---
 
 # Exec Assistant — Chief of Staff Layer
@@ -336,6 +326,12 @@ Prefer targeted reads over broad exploration.
 - project notes tied to active work
 - prior meeting occurrence notes
 - related waiting / owed task files
+
+**Sub-tasks**: task notes may contain a `## Sub-tasks` section with inline
+checkboxes (`- [ ] / - [x]`). When reviewing a parent task note for open work,
+check this section — unchecked boxes are open sub-tasks that don't appear in
+frontmatter or Bases queries. If the parent's status is `in-progress`, the
+`## Sub-tasks` section shows what's actually left to do.
 
 Do not explore the vault exhaustively. Decision support does not require
 perfect archaeology.

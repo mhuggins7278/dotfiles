@@ -53,6 +53,81 @@ read the current note. Never hardcode the date — always resolve it via CLI or
 - Ask a follow-up only when ambiguity materially changes where the item belongs
   or whether a new linked note should be created.
 
+---
+
+## Tiered Task Model
+
+Not every action item deserves its own file. Use this decision tree before
+creating a task note:
+
+**Create a task note** (`work/tasks/<slug>.md`) when the task:
+- Involves investigation, research, or findings you'll need to reference later
+- Has meaningful context that won't fit in a single line (background,
+  depends-on, open questions, findings)
+- Is a top-level commitment — something that shows up in your planning view
+  on its own merits
+
+**Use an inline checkbox** (`- [ ] action item`) when the task:
+- Is a discrete sub-step of an existing task note
+- Has no context beyond what the parent note already contains
+- Would only ever be looked at through the parent note anyway
+
+**Where inline sub-tasks live**: inside the parent task note under a
+`## Sub-tasks` section:
+
+```markdown
+## Sub-tasks
+
+- [ ] **Short label** — detail (scheduled YYYY-MM-DD)
+- [ ] **Another step** — detail
+```
+
+The daily note links only to the parent task note. Sub-tasks are checked off
+inside the parent note itself.
+
+**Simple standalone tasks** that need carry-over but have no context: still
+create a task note. The tiered model targets sub-tasks, not lightweight
+top-level items.
+
+---
+
+## Bases — Review View
+
+Obsidian Bases provides a live table/kanban view over your task notes without
+plugins. Set it up once; use it as your primary review surface.
+
+### Setup
+
+1. In Obsidian, run **"Create new base"** from the command palette (or
+   right-click `work/tasks/` in the file explorer → New Base).
+2. Name it `Open Tasks` and save it at `work/tasks/Open Tasks.base`.
+3. Configure via the Base UI:
+   - Source: `work/tasks` folder
+   - Filters: `status` is not `done` **and** `status` is not `cancelled`
+   - Sort: `scheduled` ascending
+   - Group by: `status` (separates `todo` / `in-progress` / `waiting`)
+   - Columns: `status`, `priority`, `scheduled`, `tags`
+
+The Base file lives in your vault at `work/tasks/Open Tasks.base` and
+refreshes automatically as frontmatter changes. Obsidian must be running.
+
+### Daily use
+
+- **Morning review**: open `Open Tasks.base` — all active task notes in one
+  view, no wikilink hopping
+- **Mark done**: click the `status` cell and change it directly in the Base,
+  or open the task note
+- **Snooze**: update `scheduled` in the Base cell to push a task out of view
+- **Sub-tasks**: Bases reads frontmatter only, not note body — open the
+  parent task note directly to check off inline sub-tasks
+
+### Promoting a sub-task
+
+If a sub-task grows large enough to need its own context, promote it: create a
+task note and replace the checkbox line in the parent with a wikilink.
+
+---
+
 ## CLI Quick Operations
 
 Prefer these for single-item changes:
@@ -64,7 +139,7 @@ Prefer these for single-item changes:
 | Mark a task done | Edit task file: set `status: done` + `completed: YYYY-MM-DD` |
 | Mark a task waiting | Edit task file: set `status: waiting` + `waiting_for: [[Person]]` |
 | Snooze a task | Edit task file: update `scheduled: YYYY-MM-DD` |
-| Capture a task (NLP) | `obsidian tasknotes:capture vault=notes text="<description>"` |
+| Check sub-tasks on a parent | Read the task file; check `## Sub-tasks` section |
 | Create a task (structured) | `obsidian create path=work/tasks/<slug> template=task`, then **immediately set `status`** (template default is `done`), fill fields + add link to daily note |
 | Create a meeting note | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off` |
 | Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence` |
@@ -74,113 +149,10 @@ Prefer these for single-item changes:
 | Read today's full note | `obsidian daily:read` |
 | Search vault | `obsidian search query="<text>"` |
 | Search with line context | `obsidian search:context query="<text>" path=dailies` |
-| Start time tracking | `obsidian tasknotes:start-time vault=notes query="<task>"` |
-| Stop time tracking | `obsidian tasknotes:stop-time vault=notes` |
-| Time tracking status | `obsidian tasknotes:time-status vault=notes` |
 
 **After `obsidian create ... template=<name>`**: the note is created with the
 template structure. Use an Edit to fill in specific frontmatter fields the
 template leaves blank (e.g., `scheduled`, `source`, `project`, `role`).
-
-## TaskNotes CLI
-
-TaskNotes registers commands with the Obsidian desktop CLI (`obsidian
-tasknotes:*`). Obsidian must be running. Vault name for this vault is `notes`
-— verify with `obsidian help | rg 'tasknotes:'` after installation.
-
-**Verify availability before use.** The `tasknotes:*` subcommands are only
-registered once TaskNotes 4.x is installed and Obsidian is running. Check
-first:
-
-```bash
-obsidian vault=notes help | rg 'tasknotes:'
-```
-
-If the commands are listed, use them as documented below. If they are absent
-(e.g. TaskNotes not yet upgraded), fall back to:
-- `obsidian command id=tasknotes:create-new-task` for task creation (opens UI)
-- `obsidian create path=work/tasks/<slug> template=task` + Edit for structured creation
-- File edits via the Edit tool for status/frontmatter changes
-
-### Task Capture
-
-Use `tasknotes:capture` for quick NLP-driven creation when custom fields
-(`waiting_for`, `source`, `delegated_to`) are not needed. Use the structured
-`obsidian create` + Edit flow when those fields matter.
-
-```bash
-# NLP — parses dates, priority, tags, contexts automatically
-obsidian tasknotes:capture vault=notes text="Review Katie's PR tomorrow high priority #work"
-
-# Explicit fields — bypass NLP parsing
-obsidian tasknotes:capture vault=notes \
-  text="Fix scheduling bug" \
-  scheduled=YYYY-MM-DD \
-  priority=high \
-  status=in-progress
-
-# Literal title — no NLP parsing at all
-obsidian tasknotes:capture vault=notes text="Exact title as written" literal
-```
-
-**NLP trigger characters** (in `text=` value):
-- `@` — context (e.g. `@desk`)
-- `#` — tag (e.g. `#work`)
-- `+` — project link (e.g. `+[[BCG Invite Templates]]`)
-- `*` — status (e.g. `*in-progress`)
-
-**Supported explicit flags**: `title`, `details`, `status`, `priority`, `due`,
-`scheduled`, `tags`, `contexts`, `projects`, `recurrence`,
-`recurrence-anchor`, `reminders`, `estimate`
-
-**Note**: `tasknotes:capture` does not set `waiting_for`, `source`, or
-`delegated_to`. For tasks requiring those fields, use `obsidian create
-path=work/tasks/<slug> template=task` then Edit the file.
-
-**After capture**: add the wikilink manually to today's daily note since
-`tasknotes:capture` does not update daily notes.
-
-### Time Tracking
-
-```bash
-# Start tracking — target by fuzzy query, exact title, or path
-obsidian tasknotes:start-time vault=notes query="scheduling bug"
-obsidian tasknotes:start-time vault=notes title="Fix scheduling bug"
-obsidian tasknotes:start-time vault=notes path="work/tasks/fix-scheduling-bug.md"
-
-# With a session description
-obsidian tasknotes:start-time vault=notes query="scheduling bug" description="Investigating root cause"
-
-# Stop tracking (stops unambiguous active session)
-obsidian tasknotes:stop-time vault=notes
-
-# Stop specific task
-obsidian tasknotes:stop-time vault=notes query="scheduling bug"
-
-# Show active sessions / time summary for a task
-obsidian tasknotes:time-status vault=notes
-obsidian tasknotes:time-status vault=notes query="scheduling bug"
-```
-
-### Pomodoro
-
-```bash
-# Start a 25-minute session (with or without a linked task)
-obsidian tasknotes:pomodoro vault=notes action=start duration=25
-obsidian tasknotes:pomodoro vault=notes action=start query="scheduling bug" duration=25
-
-# Control session
-obsidian tasknotes:pomodoro vault=notes action=pause
-obsidian tasknotes:pomodoro vault=notes action=resume
-obsidian tasknotes:pomodoro vault=notes action=stop
-
-# Breaks
-obsidian tasknotes:pomodoro vault=notes action=short-break
-obsidian tasknotes:pomodoro vault=notes action=long-break
-
-# Check state
-obsidian tasknotes:pomodoro vault=notes action=status
-```
 
 ## File Edits
 
@@ -250,7 +222,9 @@ into the meeting oriented, not to dump all related history into the daily note.
 
 Translate natural language into note updates using this mental model:
 
-- `I need to...` → Create task file (`obsidian create path=work/tasks/<slug> template=task`) + add link to `Tasks`
+- `I need to...` → **First ask**: is this a sub-step of an existing task note?
+  If yes → add `- [ ] **label** — detail` to that task note's `## Sub-tasks`
+  section. If no → create task file + add link to `Tasks`.
 - `later / not urgent / revisit...` → Create task file + add link to `After Hours`
 - `I did / shipped / met / decided / sent...` → `Activity` (plain bullet, no task file needed)
 - `waiting on...` → Create task file with `status: waiting` + `waiting_for:` + add link to `Waiting On`
@@ -268,6 +242,10 @@ Example:
   - `Waiting On`: `[[work/tasks/waiting-priya-draft-feedback|Priya — feedback on draft]]`
 
 **Task creation steps**:
+
+0. **Decide tier first**: is this a sub-task of an existing task note? If so,
+   add `- [ ] **Short label** — detail (scheduled YYYY-MM-DD)` to that note's
+   `## Sub-tasks` section and stop — do not create a new file.
 1. `obsidian create path=work/tasks/<slug> template=task`
 2. **Immediately** edit the task file to set `status` to the correct value
    (`todo`, `in-progress`, or `waiting`). The template default is `status: done`
@@ -330,7 +308,8 @@ This skill can also handle quick review prompts such as:
 - `what's still open?` → Read today's daily note, collect all wikilinks from
   `Tasks`, `After Hours`, `Waiting On`, and `I Owe` sections, read each linked
   task file, and filter to those with `status: todo`, `in-progress`, or
-  `waiting`. This gives today's open items — not a vault-wide list.
+  `waiting`. Also check `## Sub-tasks` sections in each task file for unchecked
+  boxes. This gives today's open items — not a vault-wide list.
   Use `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` only when the
   user explicitly asks for all open tasks vault-wide (not just today's).
 - `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`

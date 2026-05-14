@@ -129,6 +129,16 @@
         force: true,
       }
     - {
+        src: "~/.dotfiles/config/opencode/skills/date",
+        dest: "~/.claude/skills/date",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/exec-assistant",
+        dest: "~/.claude/skills/exec-assistant",
+        force: true,
+      }
+    - {
         src: "~/.dotfiles/config/ghostty",
         dest: "~/.config/ghostty",
         force: true,

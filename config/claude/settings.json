@@ -1,25 +1,16 @@
 {
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "skipAutoPermissionPrompt": true,
   "mcpServers": {
     "whoIs": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@glg/mcp-whois"
-      ]
+      "args": ["-y", "@glg/mcp-whois"]
     },
     "gdsData": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@glg/mcp-gds"
-      ]
-    },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp@latest"
-      ]
+      "args": ["-y", "@glg/mcp-gds"]
     },
     "figma": {
       "type": "sse",
@@ -29,9 +20,5 @@
       "type": "sse",
       "url": "https://mcp.context7.com/sse"
     }
-  },
-  "skipAutoPermissionPrompt": true,
-  "permissions": {
-    "defaultMode": "auto"
   }
 }
