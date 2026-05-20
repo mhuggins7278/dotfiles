@@ -7,6 +7,9 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     cmd = 'Octo',
+    init = function()
+      vim.treesitter.language.register('markdown', 'octo')
+    end,
     config = function()
       require('octo').setup {
         use_local_fs = true, -- use local files on right side of reviews
@@ -230,8 +233,5 @@ return {
         },
       }
     end,
-  },
-  {
-    vim.treesitter.language.register('markdown', 'octo'),
   },
 }

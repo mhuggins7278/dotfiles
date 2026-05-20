@@ -31,8 +31,8 @@ return {
     gitbrowse = { enabled = true },
     git = { enabled = true },
     indent = { enabled = true },
-    image = { enable = true },
-    lazygit = { enable = false },
+    image = { enabled = true },
+    lazygit = { enabled = false },
     -- Notifications handled by noice.nvim
     notifier = { enabled = false },
     notify = { enabled = false },
@@ -120,6 +120,20 @@ return {
       desc = 'Recent',
     },
     -- git
+    {
+      '<leader>gy',
+      function()
+        Snacks.gitbrowse {
+          what = 'permalink',
+          open = function(url)
+            vim.fn.setreg('+', url)
+            vim.notify('Copied: ' .. url, vim.log.levels.INFO)
+          end,
+        }
+      end,
+      desc = 'Git Browse (copy permalink)',
+      mode = { 'n', 'v' },
+    },
     {
       '<leader>gB',
       function()

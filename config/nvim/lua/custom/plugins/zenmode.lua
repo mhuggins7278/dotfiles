@@ -1,6 +1,5 @@
 return {
   'folke/zen-mode.nvim',
-  event = 'BufRead',
   opts = {
     window = {
       width = 0.60,

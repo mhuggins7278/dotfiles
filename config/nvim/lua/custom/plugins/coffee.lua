@@ -1,4 +1,4 @@
 return {
-  "kchmck/vim-coffee-script",
+  'kchmck/vim-coffee-script',
+  ft = 'coffee',
 }
-

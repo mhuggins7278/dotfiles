@@ -25,6 +25,7 @@ vim.opt.conceallevel = 2
 -- Use separate ShaDa file per tmux session to prevent jump list crossing projects
 -- This fixes Ctrl-O jumping to files in other projects when using multiple tmux sessions
 local tmux_session = vim.env.TMUX and vim.fn.system("tmux display-message -p '#S'"):gsub('\n', '') or 'default'
+vim.fn.mkdir(vim.fn.stdpath 'state' .. '/shada', 'p')
 vim.opt.shadafile = vim.fn.stdpath 'state' .. '/shada/' .. tmux_session .. '.shada'
 
 -- You can also add relative line numbers, for help with jumping.
@@ -181,7 +182,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
 })
 local octo_group = vim.api.nvim_create_augroup('octo_mappings', { clear = true })
@@ -249,7 +250,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
 end ---@diagnostic disable-next-line: undefined-field

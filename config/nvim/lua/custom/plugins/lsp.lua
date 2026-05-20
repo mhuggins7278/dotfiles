@@ -5,7 +5,6 @@ return { -- LSP Configuration & Plugins
     'williamboman/mason.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     'saghen/blink.cmp',
-    { 'j-hui/fidget.nvim', opts = {} },
     { 'b0o/schemastore.nvim', lazy = true, version = false },
   },
   config = function()
@@ -21,10 +20,10 @@ return { -- LSP Configuration & Plugins
         -- for LSP related items. It sets the mode, buffer and description for us each time.
         local map = function(keys, func, desc, mode)
           mode = mode or 'n'
-          vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+          vim.keymap.set(mode, keys, func, { buf = event.buf, desc = 'LSP: ' .. desc })
         end
         local mapx = function(keys, func, desc)
-          vim.keymap.set('x', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+          vim.keymap.set('x', keys, func, { buf = event.buf, desc = 'LSP: ' .. desc })
         end
 
         -- Jump to the definition of the word under your cursor.
@@ -34,10 +33,15 @@ return { -- LSP Configuration & Plugins
           Snacks.picker.lsp_definitions()
         end, '[G]oto [D]efinition')
 
-        -- Find references for the word under your cursor.
-        map('gr', function()
-          Snacks.picker.lsp_references()
-        end, '[G]oto [R]eferences')
+        -- gr* family: mirrors Neovim 0.12 default gr* scheme but routes through
+        -- Snacks picker (for references/implementations/type definitions) and
+        -- our custom code_action handler. Defined buffer-local here to shadow
+        -- the global 0.12 defaults cleanly.
+        map('grr', function() Snacks.picker.lsp_references() end, '[G]oto [R]eferences')
+        map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('gri', function() Snacks.picker.lsp_implementations() end, '[G]oto [I]mplementation')
+        map('grt', function() Snacks.picker.lsp_type_definitions() end, '[G]oto [T]ype Definition')
+        map('grx', vim.lsp.codelens.run, 'Codelens Run')
 
         -- Jump to the implementation of the word under your cursor.
         --  Useful when your language has ways of declaring types without an actual implementation.
@@ -89,7 +93,9 @@ return { -- LSP Configuration & Plugins
         end
 
         map('<leader>ca', code_action, '[C]ode [A]ction')
+        map('gra', code_action, '[C]ode [A]ction')
         mapx('<leader>ca', code_action, '[C]ode [A]ction')
+        mapx('gra', code_action, '[C]ode [A]ction')
 
         -- Add missing imports
         map('<leader>ci', function()
@@ -135,8 +141,8 @@ return { -- LSP Configuration & Plugins
         end, 'Type [D]efinition')
 
         -- Diagnostic navigation
-        map('[d', vim.diagnostic.goto_prev, 'Previous [D]iagnostic')
-        map(']d', vim.diagnostic.goto_next, 'Next [D]iagnostic')
+        map('[d', function() vim.diagnostic.jump { count = -1 } end, 'Previous [D]iagnostic')
+        map(']d', function() vim.diagnostic.jump { count = 1 } end, 'Next [D]iagnostic')
         map('<leader>e', vim.diagnostic.open_float, 'Show diagnostic [E]rror')
         map('<leader>q', vim.diagnostic.setloclist, 'Diagnostic [Q]uickfix list')
 

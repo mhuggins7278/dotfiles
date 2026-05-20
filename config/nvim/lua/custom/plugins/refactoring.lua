@@ -5,6 +5,15 @@ return {
     'nvim-treesitter/nvim-treesitter',
     'lewis6991/async.nvim',
   },
+  keys = {
+    { '<leader>re', mode = 'x', desc = '[R]efactor [E]xtract function' },
+    { '<leader>rf', mode = 'x', desc = '[R]efactor extract to [F]ile' },
+    { '<leader>rv', mode = 'x', desc = '[R]efactor extract [V]ariable' },
+    { '<leader>ri', mode = { 'n', 'x' }, desc = '[R]efactor [I]nline variable' },
+    { '<leader>rI', desc = '[R]efactor [I]nline function' },
+    { '<leader>rb', desc = '[R]efactor extract [B]lock' },
+    { '<leader>rbf', desc = '[R]efactor extract [B]lock to [F]ile' },
+  },
   config = function()
     require('refactoring').setup {}
 

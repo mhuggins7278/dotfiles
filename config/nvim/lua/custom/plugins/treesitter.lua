@@ -28,10 +28,12 @@ return { -- Highlight, edit, and navigate code
       'tsx',
     }
 
-    -- Incremental node selection via Neovim 0.12's built-in vim.treesitter._select.
+    -- Incremental node selection via Neovim's built-in vim.treesitter._select.
     -- Calls select_parent directly to bypass mini.ai which overrides the 'n' text object.
     -- select_parent from a single-char visual selection returns the smallest containing
     -- named node; subsequent calls expand outward to each parent node.
+    -- NOTE: _select is private API but has been stable across 0.10-0.12 and has
+    -- no public equivalent yet.
     local ts_select = require 'vim.treesitter._select'
 
     vim.keymap.set('n', '<CR>', function()
