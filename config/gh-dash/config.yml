@@ -2,7 +2,7 @@ prSections:
   - title: My Pull Requests
     filters: is:open author:@me
   - title: Work Pending
-    filters: is:open review-requested:@me org:glg -review:approved
+    filters: is:open review-requested:@me org:glg -review:approved -is:draft
   - title: Work Involved
     filters: is:open involves:@me -author:@me org:glg review:changes_requested
   - title: Other Pending

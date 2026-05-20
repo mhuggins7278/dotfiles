@@ -6,11 +6,17 @@
   "mcpServers": {
     "whoIs": {
       "command": "npx",
-      "args": ["-y", "@glg/mcp-whois"]
+      "args": [
+        "-y",
+        "@glg/mcp-whois"
+      ]
     },
     "gdsData": {
       "command": "npx",
-      "args": ["-y", "@glg/mcp-gds"]
+      "args": [
+        "-y",
+        "@glg/mcp-gds"
+      ]
     },
     "figma": {
       "type": "sse",

@@ -7,6 +7,8 @@
   "keybinds": {
     "session_child_cycle": "alt+j",
     "session_child_cycle_reverse": "alt+k",
+    "session_child_first": "<leader>j",
+    "session_parent": "<leader>k",
     "sidebar_toggle": "<leader>b"
   }
 }
