@@ -64,7 +64,10 @@ Default stance:
 - "what should I do next?" support
 
 If the user wants to capture a task, update a section, mark something done, or
-create a task/meeting note, defer to the `daily-notes` skill's conventions.
+create a task/meeting note, load the `daily-notes` skill (skill tool with
+`name=daily-notes`) and follow its conventions. Do not attempt note mutations
+without loading the skill first — the task-creation steps and status rules are
+defined there.
 
 For larger workflows — full morning planning, carryover across days, end-of-day
 review, weekly review, transcript processing, or broad note cleanup — tell the
@@ -373,12 +376,16 @@ from available context.
 
 ## Escalation Rules
 
-### Hand off to `daily-notes` when the user wants to:
+### Load the `daily-notes` skill when the user wants to:
 - capture a task or note
 - update a note section
 - mark something done or waiting
 - move work between sections
 - create task or meeting files
+
+Use the skill tool with `name=daily-notes` before performing any of the above.
+The skill contains the required task-creation steps, status rules, and CLI
+commands — do not attempt note mutations from memory.
 
 ### Tell the user to open the notes-vault workflow when they want:
 - full morning startup

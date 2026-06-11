@@ -109,7 +109,7 @@ return {
         },
         file_panel = {
           size = 10, -- changed files panel rows
-          use_icons = true, -- use web-devicons in file panel
+          icons = true, -- use web-devicons in file panel
         },
         mappings = {
           issue = {

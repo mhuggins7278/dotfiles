@@ -312,7 +312,7 @@ This skill can also handle quick review prompts such as:
   boxes. This gives today's open items — not a vault-wide list.
   Use `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` only when the
   user explicitly asks for all open tasks vault-wide (not just today's).
-- `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`
+- `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`. Also check GitHub for additional completed work: `gh issue list --state closed --limit 20 --json number,title,closedAt,url` and `gh pr list --state merged --limit 20 --json number,title,mergedAt,url` — filter to items closed/merged today and surface them alongside task-note completions.
 - `what am I waiting on?` → Read today's note, collect links from `Waiting On`,
   read each task file. For vault-wide waiting tasks: `rg "^status: waiting" work/tasks/ -l`
 - `mark that done` → identify the task file from context, edit it: `status: done` + `completed: YYYY-MM-DD`

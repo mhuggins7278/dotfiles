@@ -163,13 +163,13 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('kickstart-treesitter-highlight', { clear = true }),
+  group = vim.api.nvim_create_augroup('kickstart-treesitter-indent', { clear = true }),
   callback = function(event)
     vim.schedule(function()
       if vim.api.nvim_buf_is_valid(event.buf) then
-        pcall(vim.treesitter.start, event.buf)
-        -- nvim-treesitter main branch: set indentexpr per buffer
-        vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        -- Highlighting is managed by tree-sitter-manager.nvim.
+        -- Set indentexpr to use Neovim's built-in Tree-sitter indent.
+        vim.bo[event.buf].indentexpr = 'v:lua.vim.treesitter.indentexpr()'
       end
     end)
   end,

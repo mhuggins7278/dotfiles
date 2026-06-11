@@ -211,7 +211,7 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = ['move-node-to-workspace R']
+run = ['move-node-to-workspace E']
 
 [[on-window-detected]]
 if.app-id = 'com.anthropic.claudefordesktop'

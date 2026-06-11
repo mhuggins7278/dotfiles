@@ -1,24 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "lmstudio/gemma4",
-  "provider": {
-    "ollama": {
-      "models": {
-        "gemma4": {
-          "name": "gemma4"
-        }
-      },
-      "name": "LM Studio",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://127.0.0.1:1234/v1"
-      }
-    }
-  },
   "agent": {
     "plan": {
       "model": "github-copilot/gpt-5.5",
-      "reasoningEffort": "high",
+      "reasoningEffort": "xhigh",
       "prompt": "You are in plan mode. You may NOT edit or write files in the codebase. However, you ARE allowed and expected to run GitHub CLI commands (gh issue create, gh issue edit, gh api, gh project item-add, etc.) to create and manage GitHub issues as part of planning workflows.",
       "permission": {
         "bash": {

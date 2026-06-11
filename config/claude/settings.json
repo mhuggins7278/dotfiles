@@ -2,6 +2,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "mcpServers": {
     "whoIs": {

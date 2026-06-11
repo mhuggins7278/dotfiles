@@ -132,12 +132,6 @@ fzf-history-widget() {
 }
 zle -N fzf-history-widget
 
-_zoxide_cache="$_cache_dir/zoxide.zsh"
-if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cache" ]]; then
-  zoxide init zsh > "$_zoxide_cache"
-fi
-source "$_zoxide_cache"
-
 # fnm (Fast Node Manager)
 eval "$(fnm env --shell zsh)"
 
@@ -183,4 +177,10 @@ eval "$(tv init zsh)"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/mhuggins/.lmstudio/bin"
 # End of LM Studio CLI section
+
+_zoxide_cache="$_cache_dir/zoxide.zsh"
+if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cache" ]]; then
+  zoxide init zsh > "$_zoxide_cache"
+fi
+source "$_zoxide_cache"
 

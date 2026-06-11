@@ -72,8 +72,9 @@ sketchybar --add event aerospace_workspace_change \
            icon.padding_right=7 \
            icon.color=$BASE \
            background.color=$MAUVE \
+           background.drawing=on \
            background.corner_radius=5 \
-           background.height=25 \
+           background.height=18 \
            label.drawing=off \
            script="$PLUGIN_DIR/aerospace.sh" \
            --subscribe aerospace aerospace_workspace_change

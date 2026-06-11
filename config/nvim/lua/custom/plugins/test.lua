@@ -8,7 +8,6 @@ return {
       'nvim-neotest/nvim-nio', -- Still required for async operations
       'nvim-lua/plenary.nvim',
       -- FixCursorHold.nvim removed - not needed in nvim 0.11+
-      'nvim-treesitter/nvim-treesitter',
       'nvim-neotest/neotest-jest',
       'nvim-neotest/neotest-go',
       'marilari88/neotest-vitest',
