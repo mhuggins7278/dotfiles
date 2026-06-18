@@ -61,19 +61,18 @@ Not every action item deserves its own file. Use this decision tree before
 creating a task note:
 
 **Create a task note** (`work/tasks/<slug>.md`) when the task:
+
 - Involves investigation, research, or findings you'll need to reference later
 - Has meaningful context that won't fit in a single line (background,
   depends-on, open questions, findings)
 - Is a top-level commitment — something that shows up in your planning view
   on its own merits
-
-**Use an inline checkbox** (`- [ ] action item`) when the task:
+  **Use an inline checkbox** (`- [ ] action item`) when the task:
 - Is a discrete sub-step of an existing task note
 - Has no context beyond what the parent note already contains
 - Would only ever be looked at through the parent note anyway
-
-**Where inline sub-tasks live**: inside the parent task note under a
-`## Sub-tasks` section:
+  **Where inline sub-tasks live**: inside the parent task note under a
+  `## Sub-tasks` section:
 
 ```markdown
 ## Sub-tasks
@@ -107,9 +106,8 @@ plugins. Set it up once; use it as your primary review surface.
    - Sort: `scheduled` ascending
    - Group by: `status` (separates `todo` / `in-progress` / `waiting`)
    - Columns: `status`, `priority`, `scheduled`, `tags`
-
-The Base file lives in your vault at `work/tasks/Open Tasks.base` and
-refreshes automatically as frontmatter changes. Obsidian must be running.
+     The Base file lives in your vault at `work/tasks/Open Tasks.base` and
+     refreshes automatically as frontmatter changes. Obsidian must be running.
 
 ### Daily use
 
@@ -132,23 +130,23 @@ task note and replace the checkbox line in the parent with a wikilink.
 
 Prefer these for single-item changes:
 
-| Goal | Command |
-|------|---------|
-| List all open tasks | `rg "^status: (todo\|in-progress\|waiting)" work/tasks/ -l` |
-| List today's focus tasks | `rg "^scheduled: YYYY-MM-DD" work/tasks/ -l` |
-| Mark a task done | Edit task file: set `status: done` + `completed: YYYY-MM-DD` |
-| Mark a task waiting | Edit task file: set `status: waiting` + `waiting_for: [[Person]]` |
-| Snooze a task | Edit task file: update `scheduled: YYYY-MM-DD` |
-| Check sub-tasks on a parent | Read the task file; check `## Sub-tasks` section |
-| Create a task (structured) | `obsidian create path=work/tasks/<slug> template=task`, then **immediately set `status`** (template default is `done`), fill fields + add link to daily note |
-| Create a meeting note | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off` |
-| Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence` |
-| Create a person note | `obsidian create path=work/people/Name template=person` |
-| Create a project note | `obsidian create path=work/projects/Name template=project` |
-| Get today's path | `obsidian daily:path` |
-| Read today's full note | `obsidian daily:read` |
-| Search vault | `obsidian search query="<text>"` |
-| Search with line context | `obsidian search:context query="<text>" path=dailies` |
+| Goal                          | Command                                                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| List all open tasks           | `rg "^status: (todo\|in-progress\|waiting)" work/tasks/ -l`                                                                                                  |
+| List today's focus tasks      | `rg "^scheduled: YYYY-MM-DD" work/tasks/ -l`                                                                                                                 |
+| Mark a task done              | Edit task file: set `status: done` + `completed: YYYY-MM-DD`                                                                                                 |
+| Mark a task waiting           | Edit task file: set `status: waiting` + `waiting_for: [[Person]]`                                                                                            |
+| Snooze a task                 | Edit task file: update `scheduled: YYYY-MM-DD`                                                                                                               |
+| Check sub-tasks on a parent   | Read the task file; check `## Sub-tasks` section                                                                                                             |
+| Create a task (structured)    | `obsidian create path=work/tasks/<slug> template=task`, then **immediately set `status`** (template default is `done`), fill fields + add link to daily note |
+| Create a meeting note         | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-one-off`                                                                                    |
+| Create a recurring occurrence | `obsidian create path=meetings/YYYY-MM-DD-Title template=meeting-occurrence`                                                                                 |
+| Create a person note          | `obsidian create path=work/people/Name template=person`                                                                                                      |
+| Create a project note         | `obsidian create path=work/projects/Name template=project`                                                                                                   |
+| Get today's path              | `obsidian daily:path`                                                                                                                                        |
+| Read today's full note        | `obsidian daily:read`                                                                                                                                        |
+| Search vault                  | `obsidian search query="<text>"`                                                                                                                             |
+| Search with line context      | `obsidian search:context query="<text>" path=dailies`                                                                                                        |
 
 **After `obsidian create ... template=<name>`**: the note is created with the
 template structure. Use an Edit to fill in specific frontmatter fields the
@@ -165,24 +163,31 @@ edit. Prefer surgical edits over full rewrites.
 
 ```markdown
 ## Tasks
+
 - [[work/tasks/slug|Display text]]
 
 ## Activity
+
 - Shipped thing, met with person, made decision, sent update
 
 ## After Hours
+
 - [[work/tasks/slug|Display text]]
 
 ## Meetings
+
 ### [[meetings/YYYY-MM-DD-Title|Meeting Title]]
 
 ## Waiting On
+
 - [[work/tasks/waiting-person-thing|Person — what you're waiting for]]
 
 ## I Owe
+
 - [[work/tasks/owe-person-thing|Person — what you owe them]]
 
 ## Notes
+
 Freeform thoughts, context, observations, rationale, and reminders
 ```
 
@@ -226,12 +231,18 @@ Translate natural language into note updates using this mental model:
   If yes → add `- [ ] **label** — detail` to that task note's `## Sub-tasks`
   section. If no → create task file + add link to `Tasks`.
 - `later / not urgent / revisit...` → Create task file + add link to `After Hours`
-- `I did / shipped / met / decided / sent...` → `Activity` (plain bullet, no task file needed)
+- `I did / shipped / met / decided / sent...` → `Activity` (plain bullet). **Also**: if the
+  activity corresponds to a task already linked in today's note (`Tasks`, `Waiting On`,
+  `I Owe`, `After Hours`), update that task file: set `status: done` and
+  `completed: YYYY-MM-DD`. Do this even if the user doesn't explicitly say "mark it done"
+  — resolving the thing IS completing the task. This applies equally when the completion
+  came via email or Teams: "I replied to Joan", "sent Mike the report", "responded to the
+  GPI thread" — if there's a matching task, close it. Check today's note sections for a
+  matching wikilink; if found, update the task file.
 - `waiting on...` → Create task file with `status: waiting` + `waiting_for:` + add link to `Waiting On`
 - `I owe / need to send them / promised...` → Create task file + add link to `I Owe`
 - `remember / context / observation / rationale...` → `Notes` (plain prose)
-
-One user message can create multiple entries when that matches reality.
+  One user message can create multiple entries when that matches reality.
 
 Example:
 
@@ -240,8 +251,7 @@ Example:
   - `Activity`: sent draft to `[[Priya]]`
   - Create `work/tasks/waiting-priya-draft-feedback.md` with `status: waiting`, `waiting_for: "[[Priya]]"`
   - `Waiting On`: `[[work/tasks/waiting-priya-draft-feedback|Priya — feedback on draft]]`
-
-**Task creation steps**:
+    **Task creation steps**:
 
 0. **Decide tier first**: is this a sub-task of an existing task note? If so,
    add `- [ ] **Short label** — detail (scheduled YYYY-MM-DD)` to that note's
@@ -263,12 +273,16 @@ carryover during morning planning — the daily note holds only wikilinks, never
 raw checkboxes.
 
 | Status        | Meaning                       | Carries over? |
-|---------------|-------------------------------|---------------|
+| ------------- | ----------------------------- | ------------- |
 | `todo`        | Not started                   | Yes           |
 | `in-progress` | Actively being worked on      | Yes           |
 | `waiting`     | Blocked on another person     | Yes           |
 | `done`        | Completed                     | No            |
 | `cancelled`   | Dropped or no longer relevant | No            |
+
+**When marking `done`**: always set `completed: YYYY-MM-DD` in the same edit.
+Never leave `completed:` blank on a done task — it's the only way to know when
+something was resolved, and blank completed dates are a persistent audit gap.
 
 ## Backlinks
 
@@ -282,9 +296,8 @@ Use Obsidian wikilinks for people, projects, and ideas:
 - **Task notes**: `[[work/tasks/slug|Display text]]` — always use the path-qualified
   form in task sections so links are unambiguous regardless of note title.
 - **Meeting notes**: `[[meetings/YYYY-MM-DD-Title|Title]]` — used in Meetings section
-
-Prefer best-effort backlinking for obvious matches. Do not block capture on
-name uncertainty.
+  Prefer best-effort backlinking for obvious matches. Do not block capture on
+  name uncertainty.
 
 - If an exact or clearly intended person file already exists, link it.
 - If multiple plausible matches exist, ask.
@@ -302,8 +315,7 @@ This skill can also handle quick review prompts such as:
 - `what am I waiting on?`
 - `mark that done`
 - `move that to after hours`
-
-**Prefer targeted operations over reading the full note:**
+  **Prefer targeted operations over reading the full note:**
 
 - `what's still open?` → Read today's daily note, collect all wikilinks from
   `Tasks`, `After Hours`, `Waiting On`, and `I Owe` sections, read each linked
@@ -312,23 +324,22 @@ This skill can also handle quick review prompts such as:
   boxes. This gives today's open items — not a vault-wide list.
   Use `rg "^status: (todo|in-progress|waiting)" work/tasks/ -l` only when the
   user explicitly asks for all open tasks vault-wide (not just today's).
-- `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`. Also check GitHub for additional completed work: `gh issue list --state closed --limit 20 --json number,title,closedAt,url` and `gh pr list --state merged --limit 20 --json number,title,mergedAt,url` — filter to items closed/merged today and surface them alongside task-note completions.
+- `what did I get done today?` → `obsidian daily:read`, then filter for tasks in today's sections whose files have `status: done`
 - `what am I waiting on?` → Read today's note, collect links from `Waiting On`,
   read each task file. For vault-wide waiting tasks: `rg "^status: waiting" work/tasks/ -l`
 - `mark that done` → identify the task file from context, edit it: `status: done` + `completed: YYYY-MM-DD`
 - `move that to after hours` → read the daily note, move the task link from `Tasks` to `After Hours`
-
-Only use `obsidian daily:read` when freeform content (`Activity`, `Notes`,
-`Meetings`) is needed.
+  Only use `obsidian daily:read` when freeform content (`Activity`, `Notes`,
+  `Meetings`) is needed.
 
 ## Escalation Boundary
 
 Tell the user to open a session in the notes vault
 (`~/github/mhuggins7278/notes`) for:
+
 - Morning startup and carry-over review across days
 - End-of-day closeout and reflection
 - Meeting transcript processing
 - Weekly summary generation
 - Large cleanup or restructuring passes across the note
-
-For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`.
+  For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`.

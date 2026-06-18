@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Turn a task or feature description into one or more GitHub issues. Use when asked to "plan this out", "create tickets for", "break this into issues", or "make a plan for". Produces a single issue for self-contained work, or a parent epic with linked sub-issues for larger features. Interactive and adversarial — researches the codebase, challenges assumptions, stress-tests the design across multiple rounds, then drafts issue bodies for review and creates them on GitHub.
+description: Turn a task or feature description into one or more GitHub issues. Use when asked to "plan this out", "create tickets for", "break this into issues", or "make a plan for". Produces a single issue for self-contained work, or a parent epic with linked sub-issues for larger features. Researches the codebase, then uses the grill-me skill to stress-test the plan before drafting issue bodies for review and creating them on GitHub.
 ---
 
 # Plan Skill
@@ -91,103 +91,23 @@ on this — ground your challenges in concrete evidence from the codebase.
 
 ## Step 4: Challenge & Refine
 
-This is the heart of the skill. Before proposing any structure or drafting any
-issue bodies, you must challenge the plan. Your job here is not to be helpful
-— it's to be rigorous. Think of yourself as a staff engineer in a design
-review who has seen too many projects fail because the planning phase was too
-agreeable.
+Use the `grill-me` skill to run the challenge phase. Follow its instructions
+exactly — interview the user relentlessly, one question at a time, resolving
+each branch of the decision tree before moving on.
 
-### Calibrate depth to complexity
+Ground every question in the codebase research from Step 3. When a question
+can be answered by exploring the codebase, explore it instead of asking.
+Calibrate depth to complexity:
 
-Scale the challenge depth based on what the research revealed:
+- **Tiny change**: 1-2 targeted probes.
+- **Single feature**: Full interview covering technical feasibility, scope,
+  and assumptions.
+- **Multi-service or architectural change**: Full interview across all
+  dimensions — feasibility, scope, architecture, assumptions, and business
+  value.
 
-- **Tiny change** (config tweak, adding a package, renaming a thing): 1-2
-  targeted probes. Don't over-engineer the challenge.
-- **Single feature** (new endpoint, new component, new command): Full Round 1
-  with 3-4 challenges, Round 2 follow-up on weak spots.
-- **Multi-service or architectural change**: All three rounds. Cover all five
-  dimensions. Don't let the user coast through on vague answers.
-
-### The five dimensions
-
-Draw your challenges from these areas, weighted toward whichever the research
-flagged as risky:
-
-1. **Technical feasibility** — Is this actually buildable the way described?
-   What are the hardest parts? Does the codebase support this?
-2. **Scope** — Is this too big? What's the MVP vs. the nice-to-have? Are there
-   hidden dependencies that expand the blast radius?
-3. **Architecture/design** — Is this the right approach? What alternatives
-   exist? What are the tradeoffs the user hasn't acknowledged?
-4. **Assumptions** — What is the user taking for granted that might not be
-   true? What if the data model, volume, or usage pattern is different?
-5. **Business value** — Is this worth building right now? What's the cost of
-   not doing it? Is there a cheaper experiment to validate the idea first?
-
-### Mix challenge styles
-
-Don't just ask questions. Alternate between:
-
-- **Direct challenges**: State what's wrong or risky, then make the user
-  address it. "The codebase uses X pattern here — your approach would require
-  touching N files across 3 services. That's a bigger blast radius than you've
-  described."
-- **Socratic probes**: Ask questions that force the user to think through
-  gaps themselves. "Walk me through what happens at the boundary between the
-  new service and the existing auth middleware. What does the error path look
-  like?"
-
-Both styles work. Direct challenges are faster; Socratic probes often surface
-deeper insights. A good challenge session uses both.
-
-### Round 1: Open challenge
-
-Present your research findings, then immediately launch challenges. Don't ask
-"do you have any questions?" — make them defend their plan first.
-
-```
-Here's what I found in the codebase:
-- [Key discovery with file:line reference]
-- [Relevant pattern or constraint]
-- [Alternative approach that already exists]
-- [In-flight work that could conflict]
-
-Before I propose a structure, here's where your plan needs work:
-
-1. [Challenge grounded in codebase evidence — direct or Socratic]
-2. [Challenge on scope or assumptions]
-3. [Challenge on value or alternatives]
-[4. Additional if warranted]
-```
-
-Wait for the user's response. Read it carefully before Round 2.
-
-### Round 2: Follow through
-
-Based on what the user said:
-
-- **Strong answer**: Acknowledge it briefly and move on. "That makes sense —
-  you've addressed the auth concern. Let's move to..."
-- **Hand-wave or vague answer**: Don't accept it. "You said 'it should be
-  fine' — that's not an answer. How specifically does X work when Y happens?"
-- **New gap revealed by their answer**: Surface it. "Your answer actually
-  raises a new concern: if you're doing it that way, then what about Z?"
-
-Keep Round 2 to 2-3 focused follow-ups on the remaining weak spots. Don't
-introduce entirely new topics unless their response revealed something
-important.
-
-### Round 3 (if warranted): Nail the coffin
-
-For complex or risky work, a third round closes out any remaining open
-threads. By this point, the challenges should be narrowing, not expanding.
-If Round 3 is still introducing new concerns at the same rate as Round 1,
-that's a signal the plan itself is not ready — say so clearly.
-
-### Exit the challenge phase
-
-When rounds are complete or the user signals they're ready to proceed, give a
-brief confidence summary:
+When the interview is complete, give a brief confidence summary before
+proceeding:
 
 ```
 Based on our discussion:
@@ -198,19 +118,7 @@ Based on our discussion:
 Ready to scope the issues?
 ```
 
-If there are unresolved risks, name them. They'll go into the issue bodies
-as open questions.
-
-### What not to do
-
-- Don't challenge for sport. Every challenge should be grounded in research
-  or logic — not "have you thought about X" without a specific reason.
-- Don't rehash resolved concerns. Once the user has addressed something
-  adequately, let it go.
-- Don't keep going forever. 2-3 rounds is the limit unless the user wants
-  more. Respect their time.
-- Don't soften challenges to spare feelings. A weak challenge is useless.
-  If there's a real problem with the plan, say so plainly.
+Carry any unresolved risks forward into the issue bodies as open questions.
 
 ---
 

@@ -139,6 +139,11 @@
         force: true,
       }
     - {
+        src: "~/.dotfiles/config/opencode/skills/grill-me",
+        dest: "~/.claude/skills/grill-me",
+        force: true,
+      }
+    - {
         src: "~/.dotfiles/config/ghostty",
         dest: "~/.config/ghostty",
         force: true,
