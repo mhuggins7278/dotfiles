@@ -12,12 +12,9 @@
         "@glg/mcp-whois"
       ]
     },
-    "gdsData": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@glg/mcp-gds"
-      ]
+    "gds": {
+      "type": "http",
+      "url": "https://mcp.glgresearch.com/gds/mcp"
     },
     "figma": {
       "type": "sse",
@@ -27,5 +24,6 @@
       "type": "sse",
       "url": "https://mcp.context7.com/sse"
     }
-  }
+  },
+  "tui": "fullscreen"
 }

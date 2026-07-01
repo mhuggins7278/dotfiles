@@ -40,6 +40,11 @@ return { -- Tree-sitter parser manager (replaces archived nvim-treesitter core)
         'yaml',
         'yaml',
         'zsh',
+        -- Salesforce / Apex (required by sf.nvim)
+        'apex',
+        'soql',
+        'sosl',
+        'sflog',
       },
       highlight = true,
     }

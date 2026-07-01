@@ -50,6 +50,13 @@ deleted = '🗑'
 format = "via [$symbol($version )]($style)"
 
 
+[custom.sfdc]
+command = 'python3 -c "import json; v=json.load(open(\".sf/config.json\")).get(\"target-org\",\"\"); print(v) if v else exit(1)"'
+when = '[ -f .sf/config.json ]'
+format = "[☁ $output]($style) "
+style = "blue bold"
+shell = ["zsh", "--no-rcs"]
+
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
 flamingo = "#f2cdcd"

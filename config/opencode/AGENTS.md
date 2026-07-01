@@ -31,7 +31,7 @@ When working inside `~/.dotfiles`, treat home config paths as symlinked targets.
 - **docs**: Documentation specialist for fetching library docs using Context7
 - **browser**: Browser automation and web testing using Chrome DevTools
 - **whois**: GLG employee directory lookup specialist
-- **deployment**: GLG Deployment System (GDS) infrastructure specialist
+- **deployment**: GLG Deployment System (GDS) specialist for querying deployments, deploying/releasing apps, editing GDS config, and troubleshooting auth/session issues
 - **ui-dev**: Frontend UI development with React/Material-UI and Figma
 - **review**: Code reviewer for catching bugs and issues before committing
 

@@ -14,6 +14,11 @@ committed.
 make commits, or offer to do any of the above. Suggest fixes in the review output — the developer
 applies them.
 
+**Never post a review to GitHub without explicit user confirmation.** After presenting findings,
+always ask *"Shall I post this review to the pull request on GitHub?"* and wait for an explicit yes.
+Do not post automatically, do not post proactively, do not interpret silence or general approval as
+confirmation.
+
 Sections marked **[GLG only]** apply exclusively when the repo owner is `glg`. Determine this in
 Step 1 and skip all **[GLG only]** sections if the owner is anything else.
 

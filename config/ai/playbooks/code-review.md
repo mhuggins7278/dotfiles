@@ -209,6 +209,28 @@ If no issues: **No issues found.** Then describe what was reviewed and why it lo
 
 ---
 
+## Post-Review Actions
+
+### No open PR (pre-commit / implementation review)
+
+Do **not** attempt to post anything to GitHub. Present the findings and stop.
+
+### Open PR exists (PR review)
+
+**Never post a review to GitHub without explicit user confirmation.**
+
+After presenting findings, ask: *"Shall I post this review to the pull request on GitHub?"* and
+**wait for an explicit yes before doing anything**. Do not post automatically, do not offer to post
+inline unless asked, do not interpret silence or "looks good" as confirmation.
+
+Only after the user explicitly confirms: post all inline comments in a single API call using
+`REQUEST_CHANGES` for any Blocker, Critical, or Warning, or `COMMENT` for suggestions only.
+Write inline comments as direct technical observations — state what's wrong, why it matters, and
+how to fix it. Use GitHub suggestion syntax (` ```suggestion `) for mechanical fixes so the author
+can apply them with one click.
+
+---
+
 ## Verdict Block
 
 Always close with this machine-readable block:

@@ -184,3 +184,5 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
 fi
 source "$_zoxide_cache"
 
+
+SF_AC_ZSH_SETUP_PATH=/Users/mhuggins/Library/Caches/sf/autocomplete/zsh_setup && test -f $SF_AC_ZSH_SETUP_PATH && source $SF_AC_ZSH_SETUP_PATH; # sf autocomplete setup

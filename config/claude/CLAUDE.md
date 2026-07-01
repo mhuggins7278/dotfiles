@@ -32,7 +32,7 @@ back to the source. When agent behavior needs updating, edit the playbook at
 - **docs**: Documentation specialist for fetching library docs using Context7
 - **browser**: Browser automation and web testing specialist using Playwright
 - **ui-dev**: Frontend UI development specialist for React and Material-UI with Figma integration
-- **deployment**: GLG Deployment System (GDS) specialist for infrastructure queries
+- **deployment**: GLG Deployment System (GDS) specialist for querying deployments, deploying/releasing apps, editing GDS config, and troubleshooting auth/session issues
 - **whois**: Employee directory specialist for finding and looking up GLG employees
 
 ## GitHub Issues
