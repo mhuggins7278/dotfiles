@@ -48,6 +48,12 @@
       "url": "https://mcp.glgresearch.com/gds/mcp",
       "enabled": true
     },
+    "know": {
+      "type": "remote",
+      "url": "https://mcp.glgresearch.com/know/mcp",
+      "enabled": true
+    },
+
     "figma": {
       "type": "remote",
       "url": "http://127.0.0.1:3845/mcp",
