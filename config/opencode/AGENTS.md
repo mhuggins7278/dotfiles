@@ -35,6 +35,13 @@ When working inside `~/.dotfiles`, treat home config paths as symlinked targets.
 - **ui-dev**: Frontend UI development with React/Material-UI and Figma
 - **review**: Code reviewer for catching bugs and issues before committing
 
+## Skills
+
+Not sure which skill fits your situation? Run `/ask-matt` — it routes across the full set (the
+engineering flow adopted from [mattpocock/skills](https://github.com/mattpocock/skills): `grill-with-docs`
+→ `to-spec` → `to-tickets` → `implement` (drives `tdd` + the `review` subagent) → `commit`, plus
+`triage`, `diagnosing-bugs`, `domain-modeling`, `codebase-design`, and the GLG/personal skills below).
+
 ## GitHub Issues
 
 - **Do not assign issues** to the user unless explicitly asked. Create issues unassigned by default.

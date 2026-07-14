@@ -1,8 +1,8 @@
 ---
 description: GLG Deployment System (GDS) specialist for querying deployments, deploying/releasing apps, editing GDS configuration, and troubleshooting auth/session issues
 mode: subagent
-model: github-copilot/claude-haiku-4.5
-temperature: 0.2
+model: github-copilot/gpt-5.6-luna
+variant: medium
 tools:
   gds*: true
 ---

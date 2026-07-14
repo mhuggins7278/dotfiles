@@ -94,11 +94,6 @@
         force: true,
       }
     - {
-        src: "~/.dotfiles/config/opencode/skills/plan",
-        dest: "~/.claude/skills/plan",
-        force: true,
-      }
-    - {
         src: "~/.dotfiles/config/opencode/skills/commit",
         dest: "~/.claude/skills/commit",
         force: true,
@@ -141,6 +136,97 @@
     - {
         src: "~/.dotfiles/config/opencode/skills/grill-me",
         dest: "~/.claude/skills/grill-me",
+        force: true,
+      }
+    # Claude Code — skills adopted from mattpocock/skills
+    - {
+        src: "~/.dotfiles/config/opencode/skills/ask-matt",
+        dest: "~/.claude/skills/ask-matt",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/grilling",
+        dest: "~/.claude/skills/grilling",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/grill-with-docs",
+        dest: "~/.claude/skills/grill-with-docs",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/to-spec",
+        dest: "~/.claude/skills/to-spec",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/to-tickets",
+        dest: "~/.claude/skills/to-tickets",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/implement",
+        dest: "~/.claude/skills/implement",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/tdd",
+        dest: "~/.claude/skills/tdd",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/triage",
+        dest: "~/.claude/skills/triage",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/domain-modeling",
+        dest: "~/.claude/skills/domain-modeling",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/codebase-design",
+        dest: "~/.claude/skills/codebase-design",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/diagnosing-bugs",
+        dest: "~/.claude/skills/diagnosing-bugs",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/improve-codebase-architecture",
+        dest: "~/.claude/skills/improve-codebase-architecture",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/resolving-merge-conflicts",
+        dest: "~/.claude/skills/resolving-merge-conflicts",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/prototype",
+        dest: "~/.claude/skills/prototype",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/research",
+        dest: "~/.claude/skills/research",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/handoff",
+        dest: "~/.claude/skills/handoff",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/teach",
+        dest: "~/.claude/skills/teach",
+        force: true,
+      }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/writing-great-skills",
+        dest: "~/.claude/skills/writing-great-skills",
         force: true,
       }
     - {

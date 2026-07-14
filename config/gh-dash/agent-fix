@@ -37,8 +37,15 @@ fi
 
 BRANCH="issue_${ISSUE_NUM}"
 
-# Create worktree (or switch to existing) via wt
-wt -C "$REPO_PATH" switch --create -y --no-cd "$BRANCH"
+# Create worktree (or switch to existing) via wt.
+# --create errors out if the branch already exists (e.g. a prior run already
+# created it), so only pass --create when the branch is genuinely new.
+if git -C "$REPO_PATH" show-ref --verify --quiet "refs/heads/$BRANCH" \
+  || git -C "$REPO_PATH" show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+  wt -C "$REPO_PATH" switch -y --no-cd "$BRANCH"
+else
+  wt -C "$REPO_PATH" switch --create -y --no-cd "$BRANCH"
+fi
 
 # Get authoritative worktree path from git
 WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
@@ -50,12 +57,31 @@ WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
 # Session name = basename of worktree path (matches sesh naming convention)
 SESSION_NAME=$(basename "$WT_PATH")
 
-# Detect dependency install command (read lockfiles before entering session)
+# Detect dependency install command (read lockfiles before entering session).
+# If package.json pins an exact packageManager version (e.g. "pnpm@9.9.0"),
+# use `npx <manager>@<version>` instead of the bare command — the globally
+# installed pnpm/yarn binary may be newer than what the project's pinned
+# Node version supports, and corepack's bundled signature verification is
+# broken against npm's rotated signing keys on older Node releases.
+PKG_MANAGER_FIELD=""
+if [ -f "$WT_PATH/package.json" ]; then
+  PKG_MANAGER_FIELD=$(sed -nE \
+    's/.*"packageManager": *"([^"]+)".*/\1/p' "$WT_PATH/package.json")
+fi
+
 INSTALL_CMD=""
 if [ -f "$WT_PATH/pnpm-lock.yaml" ]; then
-  INSTALL_CMD="pnpm install"
+  if [[ "$PKG_MANAGER_FIELD" == pnpm@* ]]; then
+    INSTALL_CMD="npx --yes $PKG_MANAGER_FIELD install"
+  else
+    INSTALL_CMD="pnpm install"
+  fi
 elif [ -f "$WT_PATH/yarn.lock" ]; then
-  INSTALL_CMD="yarn install"
+  if [[ "$PKG_MANAGER_FIELD" == yarn@* ]]; then
+    INSTALL_CMD="npx --yes $PKG_MANAGER_FIELD install"
+  else
+    INSTALL_CMD="yarn install"
+  fi
 elif [ -f "$WT_PATH/package-lock.json" ]; then
   INSTALL_CMD="npm ci"
 elif [ -f "$WT_PATH/package.json" ]; then
@@ -70,18 +96,21 @@ elif [ -f "$WT_PATH/Cargo.toml" ]; then
   INSTALL_CMD="cargo fetch"
 fi
 
-# Build startup command: pull + install (inside session), then run workon, then kill session
+# Build startup command: pull + install (inside session), then run workon, then kill session.
+# Only auto-kill the session if the whole chain succeeds — if setup or opencode
+# fails, leave the session open so the error is visible instead of vanishing.
 FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
 
 STARTUP="git -C '$WT_PATH' pull origin '$BRANCH' 2>/dev/null || true"
 if [ -n "$INSTALL_CMD" ]; then
-  if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm) ]]; then
+  if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm|npx) ]]; then
     STARTUP="$STARTUP && (cd '$WT_PATH' && $FNM_SETUP && $INSTALL_CMD)"
   else
     STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
   fi
 fi
-STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}' ; tmux kill-session"
+STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}'"
+STARTUP="( $STARTUP ); st=\$?; if [ \$st -eq 0 ]; then tmux kill-session; else echo; echo \"[agent-fix] setup failed (exit \$st) — session left open, exit manually\"; fi"
 
 # Create/connect to named session (sesh handles the client switch internally)
 sesh connect --command "$STARTUP" "$WT_PATH"

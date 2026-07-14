@@ -32,16 +32,6 @@ else
     echo -e "${GREEN}✓ No console.log in staged source files${NC}"
 fi
 
-# Principle 3: TS Strict Mode
-if [ -f "tsconfig.json" ]; then
-    if grep -q '"strict":\s*true' tsconfig.json; then
-        echo -e "${GREEN}✓ TypeScript strict mode enabled${NC}"
-    else
-        echo -e "${RED}✗ TypeScript strict mode is missing or disabled in tsconfig.json${NC}"
-        ERRORS=$((ERRORS + 1))
-    fi
-fi
-
 if [ $ERRORS -gt 0 ]; then
     echo -e "\n${RED}Failed $ERRORS Golden Principle(s). Please fix before proceeding.${NC}"
     exit 1

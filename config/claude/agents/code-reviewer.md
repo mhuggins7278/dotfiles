@@ -56,6 +56,38 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
 
 ---
 
+## Two Axes: Standards and Spec
+
+Every finding in this review belongs to one of two axes — tag it in the summary table so neither axis can mask the other:
+
+- **Standards** — does the code conform to this repo's documented coding standards (`CODING_STANDARDS.md`, `CONTRIBUTING.md`, or equivalent, if present), plus the smell baseline below? **[GLG only]**: also treat `~/.dotfiles/config/opencode/references/glg-workflow.md` and the `[GLG only]` sections here as standards sources.
+- **Spec** — does the code faithfully implement the originating issue/ticket/PRD? Identify the spec source, in order: issue references in commit messages or the PR body (`#123`, `Closes #45`), a path the user passed as an argument, or a spec produced by the `to-spec` skill. If no spec can be found, skip this axis and note "no spec available".
+
+A change can pass one axis and fail the other. Report both; don't let one rerank the other.
+
+### Code Smell Baseline (Standards axis)
+
+Fixed set of Fowler code smells (*Refactoring*, ch. 3) that apply even when a repo documents nothing. The repo overrides — a documented standard always wins. Always a judgement call, never a hard violation — skip anything tooling already enforces.
+
+- **Mysterious Name** — unclear function/variable/type name. → rename it.
+- **Duplicated Code** — same logic shape in more than one hunk/file. → extract the shared shape.
+- **Feature Envy** — a method reaching into another object's data more than its own. → move it.
+- **Data Clumps** — the same fields/params keep travelling together. → bundle into one type.
+- **Primitive Obsession** — a primitive standing in for a domain concept. → give it its own type.
+- **Repeated Switches** — the same switch/if-cascade recurs across the change. → polymorphism or a shared map.
+- **Shotgun Surgery** — one logical change forces scattered edits across many files. → gather into one module.
+- **Divergent Change** — one module edited for several unrelated reasons. → split it.
+- **Speculative Generality** — abstraction added for needs the spec doesn't have. → delete it.
+- **Message Chains** — long `a.b().c().d()` navigation. → hide behind one method.
+- **Middle Man** — a class/function that mostly just delegates onward. → cut it.
+- **Refused Bequest** — a subclass ignoring most of what it inherits. → composition instead.
+
+### Spec Fidelity Checklist (Spec axis)
+
+When a spec source is available, check for: requirements missing or partial, behaviour that wasn't asked for (scope creep), and requirements that look implemented but wrong. Quote the spec line for each finding.
+
+---
+
 ## Local-First Performance Rule
 
 Always prefer local file reads over `gh api` calls. Read files from disk with the Read, Glob, and
@@ -128,8 +160,8 @@ Use `git diff --staged` if changes are already staged. Build a checklist of ever
 - Hunt for secondary issues — after one finding, keep reviewing remaining categories
 - Record coverage as you go
 
-**Step 6 — Report findings:** Prioritized issue list, or confirm changes look good. Skip any issue
-already covered by an existing PR comment.
+**Step 6 — Report findings:** Prioritized issue list, each tagged with its axis (Standards or Spec),
+or confirm changes look good. Skip any issue already covered by an existing PR comment.
 
 ---
 
@@ -187,6 +219,7 @@ already covered by an existing PR comment.
 - Are naming conventions, file structure, and import patterns consistent?
 - Are functions appropriately sized and focused?
 - Is commented-out code left behind?
+- Run the **Code Smell Baseline** (see Two Axes above) against every changed hunk.
 
 ### Testing
 - Are there tests for new or changed code? Missing tests for non-trivial changes are a red flag.
@@ -210,6 +243,9 @@ already covered by an existing PR comment.
 - Are there TODO comments, placeholder values, or incomplete implementations?
 - Are all new code paths covered by error handling?
 
+### Spec Fidelity
+- Run the **Spec Fidelity Checklist** (see Two Axes above) whenever a spec source was found.
+
 ---
 
 ## Severity Definitions
@@ -226,11 +262,12 @@ already covered by an existing PR comment.
 
 ### Summary table
 ```
-| # | Severity | File | Issue |
-|---|----------|------|-------|
-| 1 | Blocker  | `path/to/file.ts:42` | One-line description |
+| # | Axis | Severity | File | Issue |
+|---|------|----------|------|-------|
+| 1 | Standards | Blocker  | `path/to/file.ts:42` | One-line description |
 ```
-If no issues: **No issues found.** Then describe what was reviewed and why it looks solid.
+If no issues: **No issues found.** Then describe what was reviewed and why it looks solid. If no
+spec source was found, note "Spec: no spec available" once.
 
 ### Review coverage
 ```
@@ -243,7 +280,7 @@ If no issues: **No issues found.** Then describe what was reviewed and why it lo
 
 ### Detail sections
 ```
-### 1. [Blocker] Brief title
+### 1. [Standards / Blocker] Brief title
 **File:** `path/to/file.ts:42`
 **Problem:** What is wrong and why.
 **Risk:** What breaks or could go wrong.

@@ -1,8 +1,8 @@
 ---
 description: Employee directory specialist for finding and looking up GLG employees by name, department, login, or ID
 mode: subagent
-model: github-copilot/claude-haiku-4.5
-temperature: 0.1
+model: github-copilot/gpt-5.6-luna
+variant: low
 tools:
   whoIs_*: true
 ---

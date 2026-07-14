@@ -68,6 +68,8 @@ Based on the user interview, fill in these components:
 - **compatibility**: Required tools, dependencies (optional, rarely needed)
 - **the rest of the skill :)**
 
+For the vocabulary and principles behind *why* a skill is structured the way it is (model-invoked vs user-invoked, information hierarchy, leading words, when to split a skill in two), see the `writing-great-skills` skill — read it before drafting a new skill or restructuring an existing one.
+
 ### Skill Writing Guide
 
 #### Anatomy of a Skill

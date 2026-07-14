@@ -258,6 +258,11 @@ WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
 if [ -d "$WORKTREE_PATH" ]; then
   # Worktree already exists — pull latest before continuing
   git -C "$WORKTREE_PATH" pull
+elif git show-ref --verify --quiet "refs/heads/<branch-name>" \
+  || git show-ref --verify --quiet "refs/remotes/origin/<branch-name>"; then
+  # Branch already exists (e.g. a prior run created it) but has no worktree
+  # yet — --create would fail here, so switch without it.
+  wt switch -y --no-cd <branch-name>
 else
   wt switch --create -y --no-cd <branch-name>
 fi
@@ -282,6 +287,10 @@ WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
 if [ -d "$WORKTREE_PATH" ]; then
   # Worktree already exists — pull latest before continuing
   git -C "$WORKTREE_PATH" pull
+elif git -C "$OTHER_REPO_PATH" show-ref --verify --quiet "refs/heads/<branch-name>" \
+  || git -C "$OTHER_REPO_PATH" show-ref --verify --quiet "refs/remotes/origin/<branch-name>"; then
+  # Branch already exists but has no worktree yet — switch without --create.
+  wt -C "$OTHER_REPO_PATH" switch -y <branch-name>
 else
   wt -C "$OTHER_REPO_PATH" switch --create -y <branch-name>
 fi
@@ -324,12 +333,12 @@ FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
 
 if [ -n "$INSTALL_CMD" ]; then
   if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm) ]]; then
-    STARTUP="$FNM_SETUP && $INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+    STARTUP="$FNM_SETUP && $INSTALL_CMD && opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
   else
-    STARTUP="$INSTALL_CMD && opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+    STARTUP="$INSTALL_CMD && opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
   fi
 else
-  STARTUP="opencode --prompt 'Work on <owner/repo>#<number>: $SAFE_TITLE. Run /workon <issue-ref> for full context.'"
+  STARTUP="opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
 fi
 
 sesh connect --command "$STARTUP" "$WORKTREE_PATH"
@@ -396,6 +405,8 @@ Proceed with `/pr`. Link the PR to the sub-issue (not the parent epic), using
 
 | Task | Use |
 |---|---|
+| Build the ticket (TDD + review + commit) | `/implement` — this is what the spawned session runs |
+| Break a bigger effort into tickets first | `/to-tickets` (produces the epic + sub-issues this skill works through) |
 | Commit changes | `/commit` skill |
 | Open a PR | `/pr` skill — after the review gate above |
 | Wrap up a session | `/done` skill |

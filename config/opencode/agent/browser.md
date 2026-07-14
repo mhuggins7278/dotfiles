@@ -1,7 +1,8 @@
 ---
 description: Browser automation and web testing specialist for debugging, performance analysis, and end-to-end testing using Chrome DevTools
 mode: subagent
-temperature: 0.2
+model: github-copilot/gpt-5.6-terra
+variant: medium
 tools:
   chrome-devtools_*: true
 ---

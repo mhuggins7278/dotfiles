@@ -35,6 +35,14 @@ back to the source. When agent behavior needs updating, edit the playbook at
 - **deployment**: GLG Deployment System (GDS) specialist for querying deployments, deploying/releasing apps, editing GDS config, and troubleshooting auth/session issues
 - **whois**: Employee directory specialist for finding and looking up GLG employees
 
+## Skills
+
+Not sure which skill fits your situation? Run `/ask-matt` — it routes across the full set (the
+engineering flow adopted from [mattpocock/skills](https://github.com/mattpocock/skills): `grill-with-docs`
+→ `to-spec` → `to-tickets` → `implement` (drives `tdd` + the `code-reviewer` subagent) → `commit`,
+plus `triage`, `diagnosing-bugs`, `domain-modeling`, `codebase-design`, and the GLG/personal skills
+below).
+
 ## GitHub Issues
 
 - **Do not assign issues** to the user unless explicitly asked. Create issues unassigned by default.

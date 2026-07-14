@@ -1,7 +1,8 @@
 ---
 description: Frontend UI development specialist for React and Material-UI components with Figma design integration
 mode: subagent
-temperature: 0.3
+model: github-copilot/gpt-5.6-terra
+variant: high
 tools:
   figma_*: true
 ---

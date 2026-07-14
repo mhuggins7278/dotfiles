@@ -37,6 +37,56 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
 
 ---
 
+## Two Axes: Standards and Spec
+
+Every finding in this review belongs to one of two axes — tag it in the summary table (see Output
+Format) so neither axis can mask the other:
+
+- **Standards** — does the code conform to this repo's documented coding standards (`CODING_STANDARDS.md`,
+  `CONTRIBUTING.md`, or equivalent, if present), plus the smell baseline below? **[GLG only]**: also
+  treat `~/.dotfiles/config/opencode/references/glg-workflow.md` and the `[GLG only]` sections of this
+  playbook as standards sources.
+- **Spec** — does the code faithfully implement the originating issue/ticket/PRD? Identify the spec
+  source, in order: issue references in commit messages or the PR body (`#123`, `Closes #45`), a path
+  the user passed as an argument, or a spec produced by `to-spec`. If no spec can be found, skip this
+  axis and note "no spec available" — do not fail the review over it.
+
+A change can pass one axis and fail the other — code that follows every standard but implements the
+wrong thing is a Standards pass / Spec fail, and vice versa. Report both; don't let one rerank the other.
+
+### Code Smell Baseline (Standards axis)
+
+On top of whatever the repo documents, the Standards axis always carries this fixed set of Fowler code
+smells (*Refactoring*, ch. 3) — even when a repo documents nothing. Two rules bind it: **the repo
+overrides** (a documented repo standard always wins; where it endorses something the baseline would
+flag, suppress the smell), and it's **always a judgement call** (a labelled heuristic, never a hard
+violation) — skip anything tooling already enforces.
+
+- **Mysterious Name** — a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
+- **Duplicated Code** — the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
+- **Feature Envy** — a method that reaches into another object's data more than its own. → move the method onto the data it envies.
+- **Data Clumps** — the same few fields or params keep travelling together. → bundle them into one type, pass that.
+- **Primitive Obsession** — a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
+- **Repeated Switches** — the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
+- **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
+- **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
+- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
+- **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
+- **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
+
+### Spec Fidelity Checklist (Spec axis)
+
+When a spec source is available, check for:
+
+- Requirements the spec asked for that are missing or partial
+- Behaviour in the diff that wasn't asked for (scope creep)
+- Requirements that look implemented but where the implementation looks wrong
+
+Quote the spec line for each finding.
+
+---
+
 ## Review Process
 
 1. **Detect repo context** — determine owner and repo name. If owner is `glg`, GLG mode is active;
@@ -61,8 +111,9 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
    - Hunt for secondary issues — after finding one real issue, continue through remaining categories
    - Record coverage as you go — track what you inspected and what you couldn't verify
 
-6. **Report findings** — provide a clear, prioritized list of issues or confirm the changes look
-   good. Skip any issue already covered by an existing comment.
+6. **Report findings** — provide a clear, prioritized list of issues, each tagged with its axis
+   (Standards or Spec — see Two Axes above), or confirm the changes look good. Skip any issue already
+   covered by an existing comment.
 
 ---
 
@@ -127,6 +178,7 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
 - Are functions appropriately sized and focused?
 - Is there duplicated code that should be abstracted?
 - Is commented-out code left behind?
+- Run the **Code Smell Baseline** (see Two Axes above) against every changed hunk.
 
 ### Testing
 - Are there tests for new or changed code?
@@ -154,6 +206,9 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
 - Are there TODO comments, placeholder values, or incomplete implementations?
 - Are all new code paths covered by error handling?
 
+### Spec Fidelity
+- Run the **Spec Fidelity Checklist** (see Two Axes above) whenever a spec source was found.
+
 ---
 
 ## Severity Definitions
@@ -171,11 +226,13 @@ Blocking operations cause request queuing → blocked healthchecks → GDS resta
 
 ### Summary table
 ```
-| # | Severity | File | Issue |
-|---|----------|------|-------|
-| 1 | Blocker  | `path/to/file.ts:42` | One-line description |
+| # | Axis | Severity | File | Issue |
+|---|------|----------|------|-------|
+| 1 | Standards | Blocker  | `path/to/file.ts:42` | One-line description |
+| 2 | Spec      | Warning  | `path/to/file.ts:67` | One-line description |
 ```
-If no issues: **No issues found.** Then describe what was reviewed and why it looks solid.
+If no issues: **No issues found.** Then describe what was reviewed and why it looks solid. If no spec
+source was found, note "Spec: no spec available" once instead of leaving the axis silently unchecked.
 
 ### Review coverage
 ```
@@ -188,7 +245,7 @@ If no issues: **No issues found.** Then describe what was reviewed and why it lo
 
 ### Detail sections
 ```
-### 1. [Blocker] Brief title
+### 1. [Standards / Blocker] Brief title
 **File:** `path/to/file.ts:42`
 **Problem:** What is wrong and why.
 **Risk:** What breaks or could go wrong if left unaddressed.
