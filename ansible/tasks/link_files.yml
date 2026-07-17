@@ -138,6 +138,11 @@
         dest: "~/.claude/skills/grill-me",
         force: true,
       }
+    - {
+        src: "~/.dotfiles/config/opencode/skills/salesforce-cli",
+        dest: "~/.claude/skills/salesforce-cli",
+        force: true,
+      }
     # Claude Code — skills adopted from mattpocock/skills
     - {
         src: "~/.dotfiles/config/opencode/skills/ask-matt",

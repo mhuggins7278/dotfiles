@@ -245,22 +245,24 @@ gh project item-add 92 --owner glg \
 
 **Link sub-issues to the epic** (only when an epic was created), using GitHub's native sub-issue relationship:
 
-```bash
-EPIC_ID=$(gh api repos/<REPO>/issues/<epic-number> --jq .node_id)
+Run one `gh api graphql` command per sub-issue. Supply each issue's GraphQL
+node ID directly, which avoids shell variable assignments that plan mode does
+not need permission to execute:
 
-for SPEC in "<REPO>/<sub-number>" "<REPO>/<sub-number>"; do
-  CHILD_ID=$(gh api repos/${SPEC%/*}/issues/${SPEC##*/} --jq .node_id)
-  gh api graphql -f query='
-    mutation($parentId: ID!, $childId: ID!) {
-      addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
-        issue { number }
-        subIssue { number title }
-      }
+```bash
+gh api graphql -f query='
+  mutation($parentId: ID!, $childId: ID!) {
+    addSubIssue(input: {issueId: $parentId, subIssueId: $childId}) {
+      issue { number }
+      subIssue { number title }
     }
-  ' -f parentId="$EPIC_ID" -f childId="$CHILD_ID" \
-    --jq '.data.addSubIssue.subIssue | "#\(.number) \(.title)"'
-done
+  }
+' -f parentId="<epic-node-id>" -f childId="<sub-issue-node-id>" \
+  --jq '.data.addSubIssue.subIssue | "#\(.number) \(.title)"'
 ```
+
+Get an issue's node ID from `gh issue view <number> --repo "<REPO>" --json id
+--jq .id` before making the GraphQL call.
 
 Do NOT close or modify any parent issue.
 

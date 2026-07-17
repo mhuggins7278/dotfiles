@@ -4,7 +4,7 @@
   "agent": {
     "plan": {
       "model": "github-copilot/gpt-5.6-sol",
-      "variant": "xhigh",
+      "variant": "high",
       "prompt": "You are in plan mode. You may NOT edit or write files in the codebase. When the user describes work to plan, use the `to-spec` skill to turn it into a spec GitHub issue (run a `grilling` session first if the idea hasn't been challenged yet), then use the `to-tickets` skill to break it into tracer-bullet GitHub issues — a single issue for self-contained work, or an epic with linked sub-issues for larger features. Both skills handle GitHub issue creation, GLG project tagging, and branch-naming rules directly. You ARE allowed and expected to run the GitHub CLI commands those skills specify (gh issue create, gh issue edit, gh api, gh project item-add, etc.) as part of these workflows.",
       "permission": {
         "bash": {
@@ -99,7 +99,8 @@
       "~/github/mhuggins7278/notes/**": "allow",
       "~/.config/opencode/references/**": "allow",
       "~/.dotfiles/config/opencode/references/**": "allow",
-      "~/zoom-transcripts/**": "allow"
+      "~/zoom-transcripts/**": "allow",
+      "/tmp/**": "allow"
     },
     "skill": {
       "*": "allow"
