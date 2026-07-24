@@ -1,36 +1,40 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Get Spotify status using AppleScript
-if ! pgrep -x "Spotify" > /dev/null; then
-  sketchybar --set "$NAME" label="" icon=""
+SKETCHYBAR="/opt/homebrew/bin/sketchybar"
+SEPARATOR=$'\037'
+
+if ! /usr/bin/pgrep -x "Spotify" > /dev/null; then
+  "$SKETCHYBAR" --set "$NAME" label="" icon=""
   exit 0
 fi
 
-PLAYER_STATE=$(osascript -e 'tell application "Spotify" to player state as string' 2>/dev/null)
+PLAYER_INFO=$(/usr/bin/osascript 2>/dev/null <<'EOF'
+with timeout of 4 seconds
+  tell application "Spotify"
+    set playerState to player state as text
+    if playerState is "playing" or playerState is "paused" then
+      set currentTrack to current track
+      return playerState & (ASCII character 31) & artist of currentTrack & (ASCII character 31) & name of currentTrack
+    end if
+    return playerState
+  end tell
+end timeout
+EOF
+)
 
-if [ "$PLAYER_STATE" = "playing" ]; then
-  TRACK=$(osascript -e 'tell application "Spotify" to name of current track as string' 2>/dev/null)
-  ARTIST=$(osascript -e 'tell application "Spotify" to artist of current track as string' 2>/dev/null)
-  
-  # Truncate if too long
+IFS="$SEPARATOR" read -r PLAYER_STATE ARTIST TRACK <<< "$PLAYER_INFO"
+
+if [[ "$PLAYER_STATE" = "playing" || "$PLAYER_STATE" = "paused" ]]; then
   MAX_LENGTH=30
   DISPLAY="$ARTIST - $TRACK"
-  if [ ${#DISPLAY} -gt $MAX_LENGTH ]; then
+  if (( ${#DISPLAY} > MAX_LENGTH )); then
     DISPLAY="${DISPLAY:0:$MAX_LENGTH}..."
   fi
-  
-  sketchybar --set "$NAME" label="$DISPLAY" icon="󰓇"
-elif [ "$PLAYER_STATE" = "paused" ]; then
-  TRACK=$(osascript -e 'tell application "Spotify" to name of current track as string' 2>/dev/null)
-  ARTIST=$(osascript -e 'tell application "Spotify" to artist of current track as string' 2>/dev/null)
-  
-  MAX_LENGTH=30
-  DISPLAY="$ARTIST - $TRACK"
-  if [ ${#DISPLAY} -gt $MAX_LENGTH ]; then
-    DISPLAY="${DISPLAY:0:$MAX_LENGTH}..."
+  if [[ "$PLAYER_STATE" = "playing" ]]; then
+    "$SKETCHYBAR" --set "$NAME" label="$DISPLAY" icon="󰓇"
+  else
+    "$SKETCHYBAR" --set "$NAME" label="$DISPLAY" icon="󰏤"
   fi
-  
-  sketchybar --set "$NAME" label="$DISPLAY" icon="󰏤"
 else
-  sketchybar --set "$NAME" label="" icon=""
+  "$SKETCHYBAR" --set "$NAME" label="" icon=""
 fi

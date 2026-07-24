@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-PERCENTAGE="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"
-CHARGING="$(pmset -g batt | grep 'AC Power')"
+SKETCHYBAR="/opt/homebrew/bin/sketchybar"
+BATTERY_INFO=$(/usr/bin/pmset -g batt)
 
-if [ "$PERCENTAGE" = "" ]; then
+if [[ $BATTERY_INFO =~ ([0-9]+)% ]]; then
+  PERCENTAGE="${BASH_REMATCH[1]}"
+else
   exit 0
 fi
 
@@ -19,10 +21,10 @@ case "${PERCENTAGE}" in
   *) ICON=""
 esac
 
-if [[ "$CHARGING" != "" ]]; then
+if [[ $BATTERY_INFO == *"AC Power"* ]]; then
   ICON=""
 fi
 
 # The item invoking this script (name $NAME) will get its icon and label
 # updated with the current battery status
-sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}%"
+"$SKETCHYBAR" --set "$NAME" icon="$ICON" label="${PERCENTAGE}%"

@@ -1,37 +1,48 @@
 #!/usr/bin/env bash
 
-# Catppuccin Mocha colors
+SKETCHYBAR="/opt/homebrew/bin/sketchybar"
 RED="0xfff38ba8"
 YELLOW="0xfff9e2af"
 TEXT="0xffcdd6f4"
 
-# Get memory info in GB
-TOTAL_MEM=$(sysctl -n hw.memsize | awk '{print $1/1024/1024/1024}')
-FREE_MEM=$(vm_stat | grep "Pages free" | awk '{print $3}' | sed 's/\.//')
-INACTIVE_MEM=$(vm_stat | grep "Pages inactive" | awk '{print $3}' | sed 's/\.//')
+TOTAL_MEM=$(/usr/sbin/sysctl -n hw.memsize)
+read -r PAGE_SIZE FREE_PAGES INACTIVE_PAGES < <(
+  /usr/bin/vm_stat | /usr/bin/awk '
+    /page size of [0-9]+ bytes/ {
+      for (field = 1; field <= NF; field++) {
+        if ($field == "of") {
+          page_size = $(field + 1)
+          break
+        }
+      }
+    }
+    /Pages free:/ { free_pages = $3; sub(/\.$/, "", free_pages) }
+    /Pages inactive:/ { inactive_pages = $3; sub(/\.$/, "", inactive_pages) }
+    END { print page_size, free_pages, inactive_pages }
+  '
+)
 
-# Page size (usually 4096 bytes)
-PAGE_SIZE=$(vm_stat | grep "page size" | awk '{print $8}')
+if ! [[ "$TOTAL_MEM" =~ ^[0-9]+$ && "$PAGE_SIZE" =~ ^[0-9]+$ && \
+  "$FREE_PAGES" =~ ^[0-9]+$ && "$INACTIVE_PAGES" =~ ^[0-9]+$ ]]; then
+  exit 0
+fi
 
-# Calculate free memory in GB
-FREE_GB=$(echo "scale=1; ($FREE_MEM + $INACTIVE_MEM) * $PAGE_SIZE / 1024 / 1024 / 1024" | bc)
+FREE_BYTES=$(( (FREE_PAGES + INACTIVE_PAGES) * PAGE_SIZE ))
+FREE_TENTHS=$(( FREE_BYTES * 10 / 1024 / 1024 / 1024 ))
+USED_PERCENT=$(( (TOTAL_MEM - FREE_BYTES) * 100 / TOTAL_MEM ))
 
-# Calculate used memory
-USED_GB=$(echo "scale=1; $TOTAL_MEM - $FREE_GB" | bc)
-
-# Calculate percentage used
-PERCENT_USED=$(echo "scale=0; ($USED_GB / $TOTAL_MEM) * 100" | bc)
-
-# Choose icon based on memory usage
-if [ "$PERCENT_USED" -ge 90 ]; then
-  ICON="󰍛"  # Critical
+if (( USED_PERCENT >= 90 )); then
+  ICON="󰍛"
   COLOR="$RED"
-elif [ "$PERCENT_USED" -ge 70 ]; then
-  ICON="󰍛"  # Warning
+elif (( USED_PERCENT >= 70 )); then
+  ICON="󰍛"
   COLOR="$YELLOW"
 else
-  ICON="󰍛"  # Normal
+  ICON="󰍛"
   COLOR="$TEXT"
 fi
 
-sketchybar --set memory icon="$ICON" label="${FREE_GB}GB free" icon.color="$COLOR"
+"$SKETCHYBAR" --set memory \
+  icon="$ICON" \
+  label="$((FREE_TENTHS / 10)).$((FREE_TENTHS % 10))GB free" \
+  icon.color="$COLOR"

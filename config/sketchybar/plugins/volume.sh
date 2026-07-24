@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SKETCHYBAR="/opt/homebrew/bin/sketchybar"
+
 # The volume_change event supplies a $INFO variable in which the current volume
 # percentage is passed to the script.
 
@@ -16,5 +18,5 @@ if [ "$SENDER" = "volume_change" ]; then
     *) ICON="󰖁"
   esac
 
-  sketchybar --set "$NAME" icon="$ICON" label="$VOLUME%"
+  "$SKETCHYBAR" --set "$NAME" icon="$ICON" label="$VOLUME%"
 fi
