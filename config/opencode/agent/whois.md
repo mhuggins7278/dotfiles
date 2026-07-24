@@ -1,7 +1,7 @@
 ---
 description: Employee directory specialist for finding and looking up GLG employees by name, department, login, or ID
 mode: subagent
-model: github-copilot/gpt-5.6-luna
+model: openai/gpt-5.6-luna
 variant: low
 tools:
   whoIs_*: true

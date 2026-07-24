@@ -32,15 +32,15 @@ done
 
 sleep 1
 
-# Install rendered kanata plist to LaunchDaemons if present
+# Install rendered Kanata plist to LaunchDaemons if present.
 if [[ -f "$KANATA_PLIST_SRC" && ! -f "$KANATA_PLIST_DEST" ]]; then
-  echo "Installing kanata LaunchDaemon plist..."
+  echo "Installing Kanata LaunchDaemon plist..."
   sudo cp "$KANATA_PLIST_SRC" "$KANATA_PLIST_DEST"
   sudo chown root:wheel "$KANATA_PLIST_DEST"
   sudo chmod 644 "$KANATA_PLIST_DEST"
 fi
 
-# Restart kanata via LaunchDaemon (bootout first in case it's already loaded)
+# Restart Kanata via LaunchDaemon.
 if [[ -f "$KANATA_PLIST_DEST" ]]; then
   echo "Starting Kanata LaunchDaemon..."
   sudo launchctl bootout system/com.kanata.service 2>/dev/null || true

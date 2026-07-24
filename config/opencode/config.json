@@ -1,9 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "small_model": "github-copilot/gpt-5.6-luna",
+  "small_model": "openai/gpt-5.6-luna",
   "agent": {
     "plan": {
-      "model": "github-copilot/gpt-5.6-sol",
+      "model": "openai/gpt-5.6-sol",
       "variant": "high",
       "prompt": "You are in plan mode. You may NOT edit or write files in the codebase. When the user describes work to plan, use the `to-spec` skill to turn it into a spec GitHub issue (run a `grilling` session first if the idea hasn't been challenged yet), then use the `to-tickets` skill to break it into tracer-bullet GitHub issues — a single issue for self-contained work, or an epic with linked sub-issues for larger features. Both skills handle GitHub issue creation, GLG project tagging, and branch-naming rules directly. You ARE allowed and expected to run the GitHub CLI commands those skills specify (gh issue create, gh issue edit, gh api, gh project item-add, etc.) as part of these workflows.",
       "permission": {
@@ -35,25 +35,25 @@
       }
     },
     "build": {
-      "model": "github-copilot/gpt-5.6-terra",
+      "model": "openai/gpt-5.6-terra",
       "variant": "high"
     },
     "general": {
-      "model": "github-copilot/gpt-5.6-terra",
+      "model": "openai/gpt-5.6-terra",
       "variant": "medium"
     },
     "explore": {
-      "model": "github-copilot/gpt-5.6-luna",
+      "model": "openai/gpt-5.6-luna",
       "variant": "low"
     },
     "scout": {
       "mode": "subagent",
-      "model": "github-copilot/gpt-5.6-luna",
+      "model": "openai/gpt-5.6-luna",
       "variant": "medium"
     }
   },
   "provider": {
-    "github-copilot": {
+    "openai": {
       "models": {
         "gpt-5.6-sol": {
           "variants": {
@@ -81,7 +81,11 @@
               "reasoningEffort": "medium"
             }
           }
-        },
+        }
+      }
+    },
+    "github-copilot": {
+      "models": {
         "gemini-3.1-pro-preview": {
           "variants": {
             "high": {
@@ -106,6 +110,8 @@
       "*": "allow"
     }
   },
+  "formatter": true,
+  "lsp": true,
   "mcp": {
     "whoIs": {
       "type": "local",

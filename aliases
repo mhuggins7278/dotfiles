@@ -5,6 +5,8 @@ alias cat="bat"
 alias ls="eza"
 alias cd="z"
 
+alias oc="opencode"
+
 # Kanata keyboard remapping
 alias kanata-start="~/.dotfiles/scripts/kanata-start.sh"
 alias kanata-stop="~/.dotfiles/scripts/kanata-stop.sh"

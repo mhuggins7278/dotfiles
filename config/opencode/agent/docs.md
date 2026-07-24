@@ -1,7 +1,7 @@
 ---
 description: Documentation specialist for fetching and analyzing library documentation using Context7
 mode: subagent
-model: github-copilot/gpt-5.6-luna
+model: openai/gpt-5.6-luna
 variant: medium
 tools:
   context7_*: true

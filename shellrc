@@ -25,57 +25,119 @@ export GIT_TERMINAL_PROMPT=1
 # export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 #
 
-# Cache BWS secrets and keychain lookups
+# Load the last known-good BWS cache immediately and refresh it in the
+# background. The service-account token remains in Keychain.
+_bws_project_id="61f9a3e0-71a7-4d86-9255-b2a7002e5690"
 _bws_env_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/bws_env"
 _bws_env_cache_dir="${_bws_env_cache:h}"
+_bws_refresh_lock="${_bws_env_cache}.lock"
+_bws_refresh_log="${_bws_env_cache}.log"
 
-_rebuild_bws_cache() {
-  mkdir -p "$_bws_env_cache_dir"
+_rebuild_bws_cache() (
+  umask 077
+  mkdir -p "$_bws_env_cache_dir" || return
+  chmod 700 "$_bws_env_cache_dir" || return
 
-  # Fetch secrets from keychain
-  _bw_password=$(security find-generic-password -s "BW_PASSWORD" -w)
-  _bws_token=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w)
+  local bw_password playwright_mcp_extension_token
+  local bws_token bws_json cache_tmp
+  bw_password=$(security find-generic-password -s "BW_PASSWORD" -w) || {
+    print -u2 "Unable to read BW_PASSWORD from Keychain"
+    return 1
+  }
+  playwright_mcp_extension_token=$(security find-generic-password \
+    -s "PLAYWRIGHT_MCP_EXTENSION_TOKEN" -w) || {
+    print -u2 "Unable to read PLAYWRIGHT_MCP_EXTENSION_TOKEN from Keychain"
+    return 1
+  }
+  bws_token=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w) || {
+    print -u2 "Unable to read BWS_ACCESS_TOKEN from Keychain"
+    return 1
+  }
+  bws_json=$(BWS_ACCESS_TOKEN="$bws_token" command bws secret list \
+    "$_bws_project_id") || {
+    print -u2 "Unable to fetch Bitwarden secrets"
+    return 1
+  }
 
-  # Fetch and parse BWS secrets
-  _bws_json=$(BWS_ACCESS_TOKEN="$_bws_token" bws secret list 61f9a3e0-71a7-4d86-9255-b2a7002e5690)
+  cache_tmp=$(mktemp "${_bws_env_cache}.XXXXXX") || return
+  trap 'rm -f "$cache_tmp"' EXIT HUP INT TERM
 
-  # Generate env cache file
-  cat > "$_bws_env_cache" <<EOF
-export BW_PASSWORD="$_bw_password"
-export BWS_ACCESS_TOKEN="$_bws_token"
-export BW_CLIENTID="$(echo $_bws_json | jq -r '.[] | select(.key | contains("BW_CLIENTID")).value')"
-export BW_CLIENTSECRET="$(echo $_bws_json | jq -r '.[] | select(.key | contains("BW_CLIENTSECRET")).value')"
-export TAVILY_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("TAVILY_API_KEY")).value')"
-export GITHUB_AUTH_TOKEN="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')"
-export GLG_GITHUB_TOKEN="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')"
-export NPM_TOKEN="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GITHUB_AUTH_TOKEN")).value')"
-export OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GLG_OPENAI_API_KEY")).value')"
-export GLG_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("GLG_OPENAI_API_KEY")).value')"
-export CONVERSATIONS_AGENTS_DEV_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
-export AVAILABILITY_UPDATE_OPENAI_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONVERSATIONS_AGENTS_DEV_KEY")).value')"
-export ZH_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("ZH_API_KEY")).value')"
-export CONTEXT7_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("CONTEXT7_API_KEY")).value')"
-export TANSTACK_API_KEY="$(echo $_bws_json | jq -r '.[] | select(.key | contains("TANSTACK_API_KEY")).value')"
-EOF
-  chmod 600 "$_bws_env_cache"
+  {
+    printf 'export BW_PASSWORD=%q\n' "$bw_password"
+    printf 'export PLAYWRIGHT_MCP_EXTENSION_TOKEN=%q\n' \
+      "$playwright_mcp_extension_token"
+    print -r -- "$bws_json" | jq -er '
+      map({key: .key, value: .value}) | from_entries as $secrets
+      | {
+          BW_CLIENTID: $secrets.BW_CLIENTID,
+          BW_CLIENTSECRET: $secrets.BW_CLIENTSECRET,
+          TAVILY_API_KEY: $secrets.TAVILY_API_KEY,
+          GITHUB_AUTH_TOKEN: $secrets.GITHUB_AUTH_TOKEN,
+          GLG_GITHUB_TOKEN: $secrets.GITHUB_AUTH_TOKEN,
+          NPM_TOKEN: $secrets.GITHUB_AUTH_TOKEN,
+          OPENAI_API_KEY: $secrets.GLG_OPENAI_API_KEY,
+          GLG_OPENAI_API_KEY: $secrets.GLG_OPENAI_API_KEY,
+          CONVERSATIONS_AGENTS_DEV_KEY: $secrets.CONVERSATIONS_AGENTS_DEV_KEY,
+          AVAILABILITY_UPDATE_OPENAI_API_KEY:
+            $secrets.CONVERSATIONS_AGENTS_DEV_KEY,
+          ZH_API_KEY: $secrets.ZH_API_KEY,
+          CONTEXT7_API_KEY: $secrets.CONTEXT7_API_KEY,
+          TANSTACK_API_KEY: $secrets.TANSTACK_API_KEY
+        }
+      | if any(.[]; . == null or . == "") then
+          error("one or more expected secrets are missing")
+        else
+          to_entries[] | "export \(.key)=\(.value | @sh)"
+        end
+    '
+  } > "$cache_tmp" || return
+
+  chmod 600 "$cache_tmp" || return
+  mv -f "$cache_tmp" "$_bws_env_cache" || return
+  trap - EXIT HUP INT TERM
+)
+
+_refresh_bws_cache_async() {
+  (
+    umask 077
+    mkdir -p "$_bws_env_cache_dir" || return
+    chmod 700 "$_bws_env_cache_dir" || return
+    : >> "$_bws_refresh_lock" || return
+    zmodload zsh/system || return
+
+    integer lock_fd
+    zsystem flock -t 0 -f lock_fd "$_bws_refresh_lock" \
+      2>/dev/null || return
+    _rebuild_bws_cache > "$_bws_refresh_log" 2>&1
+  ) &!
 }
-
-# Check if we need to regenerate the cache (once per day or if missing)
-if [[ ! -f "$_bws_env_cache" ]] || [[ -n "$(find "$_bws_env_cache" -mmin +1440 2>/dev/null)" ]]; then
-  _rebuild_bws_cache
-fi
 
 bws-cache-rebuild() {
-  _rebuild_bws_cache
-  source "$_bws_env_cache"
+  if _rebuild_bws_cache; then
+    source "$_bws_env_cache"
+    print "Bitwarden secrets cache refreshed"
+  fi
 }
 
-# Source the cached environment variables
-source "$_bws_env_cache"
+bws() {
+  local bws_token
+  bws_token=$(security find-generic-password -s "BWS_ACCESS_TOKEN" -w) || {
+    print -u2 "Unable to read BWS_ACCESS_TOKEN from Keychain"
+    return 1
+  }
+  BWS_ACCESS_TOKEN="$bws_token" command bws "$@"
+}
+
+if [[ -r "$_bws_env_cache" ]]; then
+  source "$_bws_env_cache"
+fi
+unset BWS_ACCESS_TOKEN
+
+if [[ ! -r "$_bws_env_cache" ]] ||
+  () { (( $# > 0 )) } "$_bws_env_cache"(N.mh+24); then
+  _refresh_bws_cache_async
+fi
 export CSX_ZH_WORKSPACE_ID=5d7a5516d7fbc600019bc8ae
 export OPENCODE_EXPERIMENTAL_OXFMT=true
 export OPENCODE_EXPERIMENTAL_MARKDOWN=true
 export OPENCODE_EXPERIMENTAL_LSP_TY=true
-export PLAYWRIGHT_MCP_EXTENSION_TOKEN=GVjA-01ABwREWDaXydokCN9kwVlk_6LcVu_xb7BR0FE
-
-

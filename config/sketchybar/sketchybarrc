@@ -102,9 +102,6 @@ sketchybar --add item spotify center \
                          click_script="osascript -e 'tell application \"Spotify\" to playpause'" \
            --add item memory right \
            --set memory update_freq=5 script="$PLUGIN_DIR/memory.sh" \
-           --add item wifi right \
-           --set wifi update_freq=10 script="$PLUGIN_DIR/wifi.sh" \
-           --subscribe wifi wifi_change \
            --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change \

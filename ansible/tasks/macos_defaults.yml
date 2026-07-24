@@ -126,6 +126,13 @@
   ignore_errors: yes
   tags: kanata
 
+- name: Remove obsolete Kanata LaunchAgent
+  shell: |
+    launchctl bootout gui/$(id -u)/com.kanata.agent 2>/dev/null || true
+    rm -f "$HOME/Library/LaunchAgents/com.kanata.agent.plist"
+  when: ansible_facts.os_family == "Darwin"
+  tags: kanata
+
 - name: Install Kanata LaunchDaemon plist
   template:
     src: "{{ ansible_facts.env.HOME }}/.dotfiles/config/kanata/com.kanata.service.plist.j2"

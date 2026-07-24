@@ -1,7 +1,7 @@
 ---
 description: GLG Deployment System (GDS) specialist for querying deployments, deploying/releasing apps, editing GDS configuration, and troubleshooting auth/session issues
 mode: subagent
-model: github-copilot/gpt-5.6-luna
+model: openai/gpt-5.6-luna
 variant: medium
 tools:
   gds*: true

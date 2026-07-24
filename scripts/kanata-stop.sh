@@ -1,5 +1,5 @@
 #!/bin/bash
-# Stop Kanata
+# Stop Kanata.
 
 if ! pgrep -x kanata > /dev/null; then
     echo "Kanata is not running."

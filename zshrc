@@ -1,5 +1,3 @@
-#
-zmodload zsh/zprof
 # Inline brew shellenv — avoids subprocess + nested path_helper (~50ms savings)
 if [[ -d "/opt/homebrew" ]]; then
   export HOMEBREW_PREFIX="/opt/homebrew"
@@ -46,14 +44,21 @@ zinit ice wait"0" lucid atload"bindkey '^R' fzf-history-widget"
 zinit light softmoth/zsh-vim-mode
 
 
-# Load completions - check cache age (rebuild daily)
-fpath=(/Users/MHuggins/.docker/completions $fpath)
+# Load completions once, rebuilding the cache daily
+fpath=(
+  "$HOME/.docker/completions"
+  "$HOME/Library/Caches/sf/autocomplete/functions/zsh"
+  $fpath
+)
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+if [[ ! -f "$_zcompdump" ]] ||
+  () { (( $# > 0 )) } "$_zcompdump"(N.mh+24); then
   compinit -i
 else
   compinit -i -C
 fi
+unset _zcompdump
 autoload -U +X bashcompinit && bashcompinit
 
 zinit cdreplay -q
@@ -167,11 +172,6 @@ fi
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/mhuggins/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
 eval "$(tv init zsh)"
 
 # Added by LM Studio CLI (lms)
@@ -183,6 +183,3 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
   zoxide init zsh > "$_zoxide_cache"
 fi
 source "$_zoxide_cache"
-
-
-SF_AC_ZSH_SETUP_PATH=/Users/mhuggins/Library/Caches/sf/autocomplete/zsh_setup && test -f $SF_AC_ZSH_SETUP_PATH && source $SF_AC_ZSH_SETUP_PATH; # sf autocomplete setup

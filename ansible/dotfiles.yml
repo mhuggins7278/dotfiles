@@ -96,7 +96,7 @@
     - include_tasks: tasks/link_files.yml
       tags: links
 
-    - include_tasks: tasks/macos_defaults.yml
+    - import_tasks: tasks/macos_defaults.yml
       when: ansible_facts.os_family == "Darwin"
       tags:
         - macos_defaults

@@ -95,15 +95,18 @@ sudo installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg -target
 
 > **Note:** `brew uninstall --cask karabiner-elements` deletes the driver files. Re-run the Ansible playbook (`dotfiles`) or the second `installer` line above to restore them.
 
-### Grant kanata Input Monitoring permission (macOS)
+### Grant Kanata macOS permissions
 
-kanata requires Input Monitoring (Privacy & Security) permission to read from the keyboard. After running `dotfiles`, grant it manually:
+Kanata runs as root to access Karabiner's virtual HID device. It requires both
+Input Monitoring and Accessibility permissions. Homebrew or macOS updates can
+invalidate an existing permission entry, so remove old `kanata` entries first.
 
 1. Open **System Settings → Privacy & Security → Input Monitoring**
-2. Click **+**
+2. Remove every existing **kanata** entry, then click **+**
 3. In the file picker, press **Cmd+Shift+G** and enter `/opt/homebrew/bin/`
 4. Select **kanata** and click Open
-5. Restart kanata: `sudo launchctl bootout system/com.kanata.service && sudo launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist`
+5. Repeat steps 1-4 in **Privacy & Security → Accessibility**
+6. Restart Kanata: `sudo launchctl bootout system/com.kanata.service && sudo launchctl bootstrap system /Library/LaunchDaemons/com.kanata.service.plist`
 
 > **Note:** macOS 26 (Tahoe) doesn't allow browsing to non-app-bundle binaries directly in the file picker — the Cmd+Shift+G path trick is required.
 
