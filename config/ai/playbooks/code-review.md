@@ -281,7 +281,7 @@ After presenting findings, ask: *"Shall I post this review to the pull request o
 inline unless asked, do not interpret silence or "looks good" as confirmation.
 
 Only after the user explicitly confirms: post all inline comments in a single API call using
-`REQUEST_CHANGES` for any Blocker, Critical, or Warning, or `COMMENT` for suggestions only.
+`REQUEST_CHANGES` for any Blocker, Critical, or Warning. If there are only suggestions or no issues found, use `APPROVE`.
 Write inline comments as direct technical observations — state what's wrong, why it matters, and
 how to fix it. Use GitHub suggestion syntax (` ```suggestion `) for mechanical fixes so the author
 can apply them with one click.

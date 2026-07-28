@@ -11,8 +11,12 @@ These rules apply when working in any repository under `~/github/glg/`.
 
 If the current branch contains a `/`, warn the user and stop until it is renamed.
 
-**Format for issue branches:** `issue_<number>`  
-Use the parent issue number for same-repo epics; use the sub-issue number for cross-repo branches. Never use slashes.
+**Format for issue branches:** `issue_<number>`.
+
+For a `/workon` repository lane, use the parent epic number when the parent
+repository has multiple linked tickets. In another repository, use the first
+local ticket number in deterministic dependency order. A one-ticket lane always
+uses that ticket's number. Never use slashes.
 
 ## Issue-First Workflow
 

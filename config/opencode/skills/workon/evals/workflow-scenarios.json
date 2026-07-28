@@ -1,0 +1,35 @@
+{
+  "skill_name": "workon",
+  "scenarios": [
+    {
+      "name": "same-repo-local-chain",
+      "given": "Parent repo has #12 and #19, where #19 depends on #12.",
+      "expect": "Launch one detached lane on issue_<epic-number> that processes #12 then #19, and opens one combined draft PR."
+    },
+    {
+      "name": "independent-cross-repo-lanes",
+      "given": "Parent repo has ready #12 and another repo has ready #55 with no dependency edge.",
+      "expect": "Launch two detached worker sessions without switching the initiating tmux client."
+    },
+    {
+      "name": "cross-repo-next-wave",
+      "given": "Repo B #55 depends on repo A #12, and #12 has no completed entry in a lane PR.",
+      "expect": "Launch repo A only, report repo B as waiting, and require a later workon invocation after repo A records #12 as reviewed and committed."
+    },
+    {
+      "name": "external-multi-ticket-branch",
+      "given": "An external repo has #55 then #61 in dependency order.",
+      "expect": "Use issue_55 for that lane and reuse its existing parent-epic draft PR on later waves."
+    },
+    {
+      "name": "existing-worker",
+      "given": "The target worktree and tmux session already exist.",
+      "expect": "Report the existing worker and do not create a duplicate session or switch clients."
+    },
+    {
+      "name": "external-epic-from-another-repo",
+      "given": "Workon is invoked for another repository's epic while the current directory is a different repository.",
+      "expect": "Clone or reuse the epic repository as a sibling; never create a branch in the current unrelated repository."
+    }
+  ]
+}

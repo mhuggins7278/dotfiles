@@ -1,60 +1,50 @@
 ---
 name: workon
-description: GitHub issue orchestration with sub-issue tracking, worktree sessions, dep installation, and review gates. Always use this skill when the user invokes `/workon`, references a GitHub issue that has sub-issues, asks what to work on next in a feature group, wants a status board of sub-issue progress, or needs to create a worktree to start on an issue. Handles same-repo and cross-repo layouts, auto dep installation, dependency graphs, blocked/ready classification, and review gates before PR. Do NOT trigger for generic issue listing, PR creation, or single-issue work that has no sub-issues.
+description: GitHub epic wave launcher with sub-issue dependency tracking, repository lanes, worktrees, detached tmux workers, and combined draft PRs. Always use this skill when the user invokes `/workon`, references an issue with linked sub-issues, asks what can be worked in parallel in an epic, or wants to launch worktrees for an epic. Handles same-repo chains, cross-repo dependency waves, and a one-ticket workon run. Do NOT trigger for generic issue listing or standalone PR creation.
 ---
 
 # Workon Skill
 
-Work through a GitHub issue that has sub-issues: fetch current state, show a
-status board, recommend the next ticket to pick up, create a worktree,
-install deps, and spawn a session. Provides a review gate before any PR.
+`/workon` launches the current executable wave of a GitHub epic. It finds
+which sub-issues can progress, groups them into repository lanes, and starts
+one detached tmux worker per lane. It does not monitor workers or recursively
+launch later waves. Rerun `/workon <epic>` after workers finish to launch work
+unblocked by their completed draft PRs.
 
-Works for any GitHub repo — not just GLG. When in a GLG repo, additional
-rules apply (see the GLG section below).
+The invocation authorizes all routine setup, implementation, commits, pushes,
+and draft PR work in the launched lanes. Do not ask for an initial or
+between-ticket confirmation. A worker asks only when ambiguity materially
+affects product behavior or architecture, an unsafe action is needed, or it
+cannot recover from a failure.
 
 ## Prerequisites
 
 - `gh` CLI installed and authenticated (`gh auth status`)
 - `wt` (worktrunk) CLI for worktree management (`brew install worktrunk`)
-- `sesh` for session management (`brew install joshmedeski/sesh/sesh`)
 - `tmux` running
 - `jq` installed
 
-If `wt` is missing, warn the user — the status board still works but worktree
-creation won't. If `sesh` is missing, warn and skip session spawning.
+If `wt` or `tmux` is missing, report the missing prerequisite and show the
+status board without launching workers.
 
 ---
 
 ## Workflow
 
-### 1. Parse the Issue Reference
+### 1. Parse the Epic Reference
 
-Accept any of these formats:
+Accept a full issue URL, `owner/repo#number`, `#number`, or `number` in the
+current repository. Resolve the parent owner, repository, and issue number.
+If no reference is supplied, ask the user for one.
 
-- Full URL: `https://github.com/owner/repo/issues/500`
-- Short ref: `owner/repo#500`
-- Number only (current repo): `#500` or `500`
+When the parent repository belongs to `glg`, read
+`~/.dotfiles/config/opencode/references/glg-workflow.md` before continuing.
 
-Resolve owner, repo, and issue number. If `$ARGUMENTS` is empty, ask the user.
+### 2. Fetch the Epic Graph
 
----
-
-### 2. Detect GLG Context
-
-```bash
-OWNER=$(gh repo view --json owner -q .owner.login 2>/dev/null || echo "")
-```
-
-If `$OWNER == "glg"`, read `~/.dotfiles/config/opencode/references/glg-workflow.md`
-now. It governs branch naming (hyphens only, never slashes), issue-first
-workflow, project 92 tagging, and PR reference format. Apply those rules for
-the rest of this session.
-
-For non-GLG repos, use the generic branch naming convention defined in step 7.
-
----
-
-### 3. Fetch Issue and Sub-issues
+Fetch the parent and up to 50 linked sub-issues using GitHub's native
+`subIssues` GraphQL field. For every sub-issue retain its number, title, state,
+body, URL, and repository name-with-owner.
 
 ```bash
 gh api graphql -f query='
@@ -64,7 +54,6 @@ gh api graphql -f query='
         title
         state
         url
-        body
         subIssues(first: 50) {
           nodes {
             number
@@ -72,11 +61,7 @@ gh api graphql -f query='
             state
             url
             body
-            repository {
-              nameWithOwner
-              name
-              owner { login }
-            }
+            repository { nameWithOwner name owner { login } }
           }
         }
       }
@@ -85,319 +70,237 @@ gh api graphql -f query='
 ' -f owner="<owner>" -f repo="<repo>" -F number=<number>
 ```
 
-If the query fails with a scope error, instruct the user:
-`gh auth refresh -s project`
+If the query needs the project scope, instruct the user to run
+`gh auth refresh -s project`. An issue without sub-issues is a one-ticket lane
+in its own repository.
 
-If the issue has **no sub-issues**, treat it as a single-ticket epic
-(one item, always READY). The status board and worktree creation still apply.
+### 3. Build the Dependency Graph
 
----
-
-### 4. Check PR Status for Open Sub-issues (run in parallel)
-
-For each `OPEN` sub-issue, run both searches in parallel:
-
-```bash
-# Search by issue reference in PR body/title
-gh pr list -R <owner>/<repo> --search "#<issue-number>" --state all --limit 100 \
-  --json number,state,url,headRefName
-
-# Search by branch naming convention
-gh pr list -R <owner>/<repo> --limit 100 --json number,state,url,headRefName \
-  --jq '[.[] | select(.headRefName | test("^issue_<number>(-|$)"))]'
-```
-
-A `MERGED` PR counts as done even if the GitHub issue is still open.
-A `CLOSED` PR is ignored.
-
----
-
-### 5. Parse Dependencies from Issue Bodies
-
-Scan each sub-issue's body for dependency declarations (case-insensitive):
+Read each issue body for dependency declarations, case-insensitively:
 
 ```
 (?i)(?:depends on|blocked by|after):?\s+(?:https?://github\.com/)?([\w.-]+/[\w.-]+)?(?:#|/issues/)(\d+)
 ```
 
-Matches: `depends on #123`, `blocked by owner/repo#456`,
-`after https://github.com/owner/repo/issues/789`.
+Bare `#N` references resolve in that sub-issue's repository. A dependency edge
+points from the prerequisite to the dependent ticket.
 
-Bare `#N` resolves relative to the sub-issue's own repo, not the parent's.
+For each issue, fetch candidate PRs in parallel. Use the issue's own repository
+and include merged PRs and their bodies:
 
-If no dependencies are found, treat all tickets as independent (all READY).
-If the dependency graph has cycles, warn and treat cycle participants as READY.
+```bash
+gh pr list -R <issue-owner>/<issue-repo> --search "#<issue-number>" \
+  --state all --limit 100 --json number,state,url,headRefName,body
+```
 
----
+A dependency is satisfied when its issue is closed, has a merged PR, or is
+marked as completed in a prior lane PR's **Included issues** section:
 
-### 6. Classify Each Sub-issue
+```
+- [x] Fixes <owner>/<repo>#<number> (<commit-sha>)
+```
 
-| Status | Condition |
-|---|---|
-| `done` | Issue is `CLOSED`, or has a MERGED PR |
-| `in_progress` | Issue is `OPEN` and has an OPEN or DRAFT PR |
-| `ready` | Issue is `OPEN`, no active PR, all dependencies are `done` |
-| `blocked` | Issue is `OPEN`, no active PR, at least one dependency is not `done` |
+An open or draft PR alone does not satisfy a dependency. It must contain the
+checked entry and commit SHA, which records that the ticket was individually
+reviewed and committed.
 
----
+If the graph has a cycle, report the cycle as blocked. Do not launch it because
+there is no valid first ticket.
 
-### 7. Display the Status Board
+### 4. Form the Executable Wave
+
+Group all sub-issues by repository. A repository lane is executable when it
+contains at least one open ticket whose external dependencies are satisfied.
+
+For each executable lane, include its **local chain**: every same-repository
+dependent that becomes executable by completing tickets already in that lane.
+Order the lane topologically, then by issue number. Do not include a ticket
+whose unresolved dependency is in another repository.
+
+This means independent repositories launch concurrently, while same-repository
+work runs sequentially in one branch and one worker. A later `/workon` run
+creates the next wave after an upstream lane PR records its completed tickets.
+
+### 5. Display the Wave Board
+
+Always show the complete graph, followed by the launch plan:
 
 ```
 Epic: <title> (<owner/repo>#<number>)
-Progress: <done-count>/<total> complete
 
-DONE:
-  [x] <owner/repo>#<N> - <title>
-
-IN PROGRESS:
-  [~] <owner/repo>#<N> - <title>  (PR #<pr> open)
-
-READY:
+READY NOW:
   [ ] <owner/repo>#<N> - <title>
 
-BLOCKED:
+LOCAL CHAINS:
+  <owner/repo>: #12 -> #19
+
+WAITING ON OTHER REPOS:
   [!] <owner/repo>#<N> - <title>
-      blocked by: <owner/repo>#<dep>
+      waiting on: <owner/repo>#<dependency>
+
+IN PROGRESS / DONE:
+  [~|x] <owner/repo>#<N> - <title>
+
+LAUNCHING:
+  <owner/repo>  issue_<branch-number>  #12, #19
 ```
 
-Omit groups with no tickets.
+Omit empty groups. Continue immediately; the board is informational, not an
+approval prompt.
 
----
+### 6. Choose a Stable Lane Branch
 
-### 8. Detect Repo Layout
+Use all linked sub-issues, not only the current wave, to choose a lane branch:
 
-Inspect the repos of all OPEN sub-issues:
+| Lane | Branch |
+|---|---|
+| One ticket in the repository | `issue_<ticket-number>` |
+| Multiple tickets in the parent repository | `issue_<parent-epic-number>` |
+| Multiple tickets in another repository | `issue_<first-local-ticket-number>` |
+
+`first-local-ticket-number` is the first ticket in the lane's deterministic
+topological order, with issue number breaking ties. Before creating a branch,
+search for an open draft PR whose body identifies `Part of <parent-repo>#<parent-number>`.
+Reuse that PR's head branch when it exists; this preserves the branch across
+later waves.
+
+### 7. Create or Reuse Each Worktree
+
+Launch every executable lane. Worktrees and workers must be independent, so a
+problem in one lane never prevents another lane from starting.
 
 ```bash
-PARENT_REPO="<owner>/<repo>"  # the epic/parent issue's repo
-
-UNIQUE_REPOS=(list of unique nameWithOwner values from open sub-issues)
-```
-
-**Same-repo layout** (all sub-issues share the parent's repo, or there are no
-sub-issues):
-
-- Create **one worktree** branched from the parent issue number.
-- All sub-issues are worked in that single worktree.
-- Branch: `issue_<parent-issue-number>`
-
-**Cross-repo layout** (sub-issues span multiple repos):
-
-- Create one worktree per unique repo among the READY tickets.
-- Branch per repo: `issue_<issue-number>` (use the sub-issue number for that repo).
-- Recommend the most valuable repo to tackle first (see step 9).
-
----
-
-### 9. Recommend One Ticket
-
-For **same-repo**: the recommendation is always "start / continue work on the
-parent branch." Skip the menu if a worktree already exists.
-
-For **cross-repo**: pick one READY sub-issue. Prefer the current session's
-repo; otherwise pick the ticket that unblocks the most others. Don't present
-a menu — pick one and explain why.
-
-```
-Recommended action:
-  <owner/repo>#<N> — <title>
-  branch: <branch-name>
-  worktree: <worktree-path>
-
-Proceed? (yes/no)
-```
-
-**Only show the `Proceed?` prompt when there are multiple READY tickets and a
-real choice to confirm.** For single-ticket epics (no sub-issues, or only one
-READY ticket), skip the prompt and proceed automatically.
-
-If the user declines or wants a different ticket, update and re-confirm.
-
-**Branch name format (generic):** `issue_<number>`
-- Use the parent issue number for same-repo epics; use the sub-issue number for cross-repo branches.
-- GLG repos: same format, hyphens only (never slashes) as per `glg-workflow.md`.
-
----
-
-### 10. Create the Worktree
-
-Once the user confirms, execute without further prompts.
-
-**Pre-check — already in the target worktree:**
-
-Before doing any setup, check whether you're already on the target branch:
-
-```bash
-CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
-```
-
-If `$CURRENT_BRANCH` matches the target branch name (e.g. `issue_<number>`),
-the session was launched by an external launcher (such as `agent-fix`) that
-already created the worktree and installed deps. In that case:
-
-1. Announce: *"Already in worktree for branch `<branch>` — skipping setup."*
-2. Skip the rest of step 10 and all of step 11.
-3. Proceed directly to working on the issue.
-
----
-
-**Locate the base repo:**
-
-```bash
-# Current repo root and its parent directory
 REPO_ROOT=$(git rev-parse --show-toplevel)
 REPO_PARENT=$(dirname "$REPO_ROOT")
-```
+CURRENT_REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
+LANE_REPO="<lane-owner>/<lane-repo>"
 
-For the current repo:
+if [ "$LANE_REPO" = "$CURRENT_REPO" ]; then
+  LANE_REPO_PATH="$REPO_ROOT"
+else
+  LANE_REPO_PATH="$REPO_PARENT/<lane-repo>"
+fi
 
-```bash
-WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
+WORKTREE_PATH="$REPO_PARENT/<lane-repo>.<branch-name>"
+
+if [ ! -e "$LANE_REPO_PATH/.git" ]; then
+  git clone git@github.com:<lane-owner>/<lane-repo>.git "$LANE_REPO_PATH"
+fi
+
+LANE_AVAILABLE=true
 
 if [ -d "$WORKTREE_PATH" ]; then
-  # Worktree already exists — pull latest before continuing
-  git -C "$WORKTREE_PATH" pull
-elif git show-ref --verify --quiet "refs/heads/<branch-name>" \
-  || git show-ref --verify --quiet "refs/remotes/origin/<branch-name>"; then
-  # Branch already exists (e.g. a prior run created it) but has no worktree
-  # yet — --create would fail here, so switch without it.
-  wt switch -y --no-cd <branch-name>
+  if [ -n "$(git -C "$WORKTREE_PATH" status --porcelain)" ]; then
+    # Report the lane as unavailable; never mix work into a dirty worktree.
+    LANE_AVAILABLE=false
+  else
+    git -C "$WORKTREE_PATH" pull --ff-only
+  fi
+elif git -C "$LANE_REPO_PATH" show-ref --verify --quiet \
+  "refs/heads/<branch-name>" \
+  || git -C "$LANE_REPO_PATH" show-ref --verify --quiet \
+  "refs/remotes/origin/<branch-name>"; then
+  wt -C "$LANE_REPO_PATH" switch -y --no-cd <branch-name>
 else
-  wt switch --create -y --no-cd <branch-name>
+  wt -C "$LANE_REPO_PATH" switch --create -y --no-cd <branch-name>
 fi
 ```
 
-`--no-cd` suppresses the "Cannot change directory" warning in a non-interactive
-subprocess — the worktree is still created correctly.
+For the parent repository, `LANE_REPO_PATH` may equal `REPO_ROOT`. Do not pull
+when the worktree has uncommitted changes; report that lane as unavailable
+instead of overwriting or mixing work.
 
-For a different repo (cross-repo sub-issue):
+### 8. Launch Detached Lane Workers
 
-```bash
-# Derive sibling path convention: <same-parent-dir>/<repo-name>
-OTHER_REPO_PATH="$REPO_PARENT/<repo-name>"
+Detect the lane's package manager using this order: `pnpm-lock.yaml`,
+`yarn.lock`, `package-lock.json`, `package.json`, `Gemfile.lock`,
+`requirements.txt`, `pyproject.toml`, `go.mod`, then `Cargo.toml`.
 
-# Check if the local clone exists
-if [ ! -d "$OTHER_REPO_PATH" ]; then
-  git clone git@github.com:<owner>/<repo-name>.git "$OTHER_REPO_PATH"
-fi
+Build a worker prompt containing:
 
-WORKTREE_PATH="$REPO_PARENT/<repo-name>.<branch-name>"
+- the parent epic reference;
+- the lane branch and existing lane PR, if any;
+- the ordered local chain of issue references and titles;
+- cross-repository dependencies already satisfied, including branch and commit
+  information where available; and
+- the worker contract below.
 
-if [ -d "$WORKTREE_PATH" ]; then
-  # Worktree already exists — pull latest before continuing
-  git -C "$WORKTREE_PATH" pull
-elif git -C "$OTHER_REPO_PATH" show-ref --verify --quiet "refs/heads/<branch-name>" \
-  || git -C "$OTHER_REPO_PATH" show-ref --verify --quiet "refs/remotes/origin/<branch-name>"; then
-  # Branch already exists but has no worktree yet — switch without --create.
-  wt -C "$OTHER_REPO_PATH" switch -y <branch-name>
-else
-  wt -C "$OTHER_REPO_PATH" switch --create -y <branch-name>
-fi
-```
+The worker contract is:
 
-The worktree lands at `<REPO_PARENT>/<repo-name>.<branch-name>`.
+1. Process the listed tickets in order. Run `/implement` for each ticket.
+2. Choose and record routine test seams autonomously. Pause only for a
+   consequential ambiguity or unrecoverable failure.
+3. Review and commit each ticket separately before advancing to the next local
+   ticket.
+4. Do not invoke `/workon`, switch branches, or start work outside this lane.
+5. After the final listed ticket, run `/pr` to create or update one combined
+   draft PR for the lane. Include the required lane PR body from this prompt.
 
----
-
-### 11. Spawn Session
-
-Detect the package manager for the worktree so the startup command can install
-deps as its first step.
-
-Detection order (first match wins):
-
-| File present | Install command |
-|---|---|
-| `pnpm-lock.yaml` | `pnpm install` |
-| `yarn.lock` | `yarn install` |
-| `package-lock.json` | `npm ci` |
-| `package.json` (no lock) | `npm install` |
-| `Gemfile.lock` | `bundle install` |
-| `requirements.txt` | `pip install -r requirements.txt` |
-| `pyproject.toml` | `poetry install` (if `[tool.poetry]` present) or `pip install -e .` |
-| `go.mod` | `go mod download` |
-| `Cargo.toml` | `cargo fetch` |
-
-If none of the above match, set `INSTALL_CMD=""` and skip the install step.
+Run each worker detached. Keep the initiating OpenCode session and active tmux
+client unchanged.
 
 ```bash
-# Strip double-quotes from title to avoid shell escaping issues
-SAFE_TITLE=$(echo "<title>" | tr -d '"')
-
-# Derive session name the same way sesh does (basename of path)
-SESSION_NAME=$(basename "$WORKTREE_PATH")
-
-# Always set up fnm first, then install deps, then launch opencode
-FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
+SESSION_NAME=$(basename "$WORKTREE_PATH" | tr '.' '_')
+WORKER_PROMPT='<lane worker contract and lane manifest>'
 
 if [ -n "$INSTALL_CMD" ]; then
-  if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm) ]]; then
-    STARTUP="$FNM_SETUP && $INSTALL_CMD && opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
-  else
-    STARTUP="$INSTALL_CMD && opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
-  fi
+  STARTUP="$INSTALL_CMD && opencode --prompt $(printf '%q' "$WORKER_PROMPT")"
 else
-  STARTUP="opencode --prompt 'Implement <owner/repo>#<number>: $SAFE_TITLE. Run /implement <issue-ref>.'"
+  STARTUP="opencode --prompt $(printf '%q' "$WORKER_PROMPT")"
 fi
 
-sesh connect --command "$STARTUP" "$WORKTREE_PATH"
-
-# sesh connect creates the session but the switch may not propagate when
-# called from a subprocess. Explicitly switch the active tmux client.
-tmux switch-client -t "$SESSION_NAME"
+if [ "$LANE_AVAILABLE" = false ]; then
+  # This lane was reported as unavailable during worktree setup.
+  :
+elif tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+  # An existing worker owns this lane. Report it; do not duplicate it.
+  :
+else
+  tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" "$STARTUP"
+fi
 ```
 
-Report: branch created, worktree path, session name (dep install runs in the new session).
-The new session handles dep installation and implementation — this session's job is done.
+For Node lanes, prefix `$INSTALL_CMD` with
+`eval "$(fnm env --shell bash)" && fnm use --install-if-missing &&`.
+`$STARTUP` installs dependencies when needed and then starts `opencode` with
+the worker prompt. Do not use `sesh connect`, `tmux switch-client`, or any
+command that closes or replaces the initiating session.
 
----
+### 9. Create or Update the Lane Draft PR
 
-### 12. Re-check (Subsequent Invocations)
+At the end of its local chain, the worker pushes the lane branch and creates or
+updates one draft PR. The PR must use the repository's template when present.
+Otherwise include:
 
-When `/workon` is invoked again (from any session), repeat steps 3–7.
-GitHub is the source of truth — no local state is cached.
+```markdown
+## Summary
 
-After re-fetching, explicitly call out what changed since last check:
-newly closed tickets, newly unblocked tickets, new PRs opened.
+<combined lane summary>
 
----
+## Included issues
 
-### 13. Review Gate (Before PR)
+- [x] Fixes <owner>/<repo>#<number> (<commit-sha>)
 
-When the user signals that implementation is complete — or when you judge that
-all planned work is done — trigger the review loop before opening a PR.
+## Parent epic
 
-**Do not skip this step.** The review runs on uncommitted changes in the
-working tree (`git diff` + `git diff --staged`). The loop runs until the
-review agent returns `APPROVED` or the user intervenes.
+Part of <parent-owner>/<parent-repo>#<parent-number>
 
-#### Loop
+## Evidence
 
-1. Announce: *"Running code review on current changes before opening a PR."*
-2. Invoke the `review` subagent via the Task tool. Pass it the issue context
-   (owner/repo, issue number, title) so it understands what was being built.
-3. Read the `REVIEW_VERDICT` block at the end of the subagent's output:
-   - `APPROVED` → exit the loop and proceed to "After approval" below.
-   - `NEEDS_WORK` → continue below.
-4. Present the Blocker and Critical issues to the user in a brief summary.
-5. Address each Blocker and Critical issue in the worktree. Warnings and
-   Suggestions are noted but do not block the loop.
-6. Commit the fixes using `/commit`.
-7. Return to step 1.
+- [x] Testing: <summary>
+- [x] Code review: approved per included ticket
+```
 
-**Loop guard:** If `NEEDS_WORK` is returned 3 times in a row, stop looping
-and surface the remaining issues to the user:
+Include every ticket completed in this and prior waves on the lane branch. The
+`Fixes` references close their issues only when the combined PR merges. Do not
+use `Fixes` for the parent epic.
 
-> "The review has flagged issues across 3 iterations. Remaining blockers:
-> [list]. How would you like to proceed — fix manually, skip, or abandon?"
+### 10. Report and Leave Control Intact
 
-Wait for explicit direction before continuing.
-
-#### After approval
-
-Proceed with `/pr`. Link the PR to the sub-issue (not the parent epic), using
-`Fixes <owner>/<repo>#<number>` in the PR body.
+Report each launched, reused, skipped, and blocked lane with its repository,
+issues, branch, worktree, tmux session, and existing PR if present. Keep this
+OpenCode session open for follow-up prompts. It does not poll workers or launch
+later waves automatically.
 
 ---
 
@@ -405,8 +308,8 @@ Proceed with `/pr`. Link the PR to the sub-issue (not the parent epic), using
 
 | Task | Use |
 |---|---|
-| Build the ticket (TDD + review + commit) | `/implement` — this is what the spawned session runs |
-| Break a bigger effort into tickets first | `/to-tickets` (produces the epic + sub-issues this skill works through) |
-| Commit changes | `/commit` skill |
-| Open a PR | `/pr` skill — after the review gate above |
-| Wrap up a session | `/done` skill |
+| Build each lane ticket | `/implement` |
+| Test-first work | `/tdd` |
+| Commit each ticket | `/commit` |
+| Create or update lane PR | `/pr` |
+| Start a later wave | `/workon <epic>` |

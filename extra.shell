@@ -79,3 +79,65 @@ launch_sesh() {
       --bind 'ctrl-d:execute(tmux kill-session -t {})+change-prompt(⚡  )+reload(sesh list -t)'
   )"
 }
+
+oc-session() {
+  local database="$HOME/.local/share/opencode/opencode.db"
+  local command selection session_id directory resume_command tmux_directory
+  local tmux_session=false
+
+  for command in sqlite3 fzf sesh tmux; do
+    (( $+commands[$command] )) || {
+      print -u2 "$command is not installed"
+      return 1
+    }
+  done
+
+  [[ -r "$database" ]] || {
+    print -u2 "OpenCode database is not readable: $database"
+    return 1
+  }
+
+  selection=$(sqlite3 -readonly -tabs -noheader "$database" '
+    SELECT id,
+           directory,
+           replace(replace(replace(title, char(13), " "), char(10), " "),
+                   char(9), " "),
+           strftime("%Y-%m-%d %H:%M", time_updated / 1000,
+                    "unixepoch", "localtime")
+    FROM session
+    WHERE parent_id IS NULL
+      AND time_archived IS NULL
+    ORDER BY time_updated DESC;
+  ' | while IFS=$'\t' read -r session_id directory title updated; do
+    [[ "$directory" == "~/"* ]] && directory="$HOME/${directory#\~/}"
+    [[ -d "$directory" ]] &&
+      printf '%s\t%s\t%s\t%s\n' "$session_id" "$title" "$directory" "$updated"
+  done | fzf --delimiter=$'\t' --with-nth=2,3,4 \
+    --no-sort --prompt='OpenCode session: ')
+
+  [[ -z "$selection" ]] && return 0
+
+  session_id=${selection%%$'\t'*}
+  selection=${selection#*$'\t'}
+  directory=${selection#*$'\t'}
+  directory=${directory%%$'\t'*}
+  resume_command="opencode -s $session_id"
+
+  if (( $+commands[pbcopy] )); then
+    print -rn -- "$resume_command" | pbcopy
+  else
+    print -u2 "Resume command: $resume_command"
+  fi
+  while IFS= read -r tmux_directory; do
+    [[ "$tmux_directory" == "$directory" ]] && {
+      tmux_session=true
+      break
+    }
+  done < <(tmux list-sessions -F '#{session_path}' 2>/dev/null)
+
+  if [[ "$tmux_session" == true ]]; then
+    sesh connect "$directory"
+  else
+    sesh connect --command "$resume_command" "$directory"
+  fi
+}

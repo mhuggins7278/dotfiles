@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "agents": [
+    {
+      "id": "code-review",
+      "playbook": "config/ai/playbooks/code-review.md",
+      "required_capabilities": ["repository-read", "git-read", "github-read"],
+      "mutation": "read-only",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/review.md",
+          "name": "review"
+        },
+        "claude": {
+          "path": "config/claude/agents/code-reviewer.md",
+          "name": "code-reviewer"
+        }
+      }
+    },
+    {
+      "id": "documentation-research",
+      "playbook": "config/ai/playbooks/docs-research.md",
+      "required_capabilities": ["documentation-search"],
+      "mutation": "read-only",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/docs.md",
+          "name": "docs"
+        },
+        "claude": {
+          "path": "config/claude/agents/docs.md",
+          "name": "docs"
+        }
+      }
+    },
+    {
+      "id": "browser-testing",
+      "playbook": "config/ai/playbooks/browser-testing.md",
+      "required_capabilities": ["browser-observe", "browser-interact"],
+      "mutation": "interactive",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/browser.md",
+          "name": "browser"
+        },
+        "claude": {
+          "path": "config/claude/agents/browser.md",
+          "name": "browser"
+        }
+      }
+    },
+    {
+      "id": "ui-development",
+      "playbook": "config/ai/playbooks/ui-dev.md",
+      "required_capabilities": ["repository-read", "figma-inspect"],
+      "mutation": "implementation",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/ui-dev.md",
+          "name": "ui-dev"
+        },
+        "claude": {
+          "path": "config/claude/agents/ui-dev.md",
+          "name": "ui-dev"
+        }
+      }
+    },
+    {
+      "id": "gds-deployment",
+      "playbook": "config/ai/playbooks/gds-deployment.md",
+      "required_capabilities": ["deployment-inspect", "deployment-mutate"],
+      "mutation": "approval-required",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/deployment.md",
+          "name": "deployment"
+        },
+        "claude": {
+          "path": "config/claude/agents/deployment.md",
+          "name": "deployment"
+        }
+      }
+    },
+    {
+      "id": "employee-lookup",
+      "playbook": "config/ai/playbooks/employee-lookup.md",
+      "required_capabilities": ["employee-directory-search"],
+      "mutation": "read-only",
+      "adapters": {
+        "opencode": {
+          "path": "config/opencode/agent/whois.md",
+          "name": "whois"
+        },
+        "claude": {
+          "path": "config/claude/agents/whois.md",
+          "name": "whois"
+        }
+      }
+    }
+  ]
+}

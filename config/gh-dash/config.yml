@@ -5,15 +5,9 @@ prSections:
     filters: is:open review-requested:@me org:glg -review:approved -is:draft
   - title: Work Involved
     filters: is:open involves:@me -author:@me org:glg review:changes_requested
-  - title: Other Pending
-    filters: is:open review-requested:@me -org:glg
-  - title: Other Involved
-    filters: is:open involves:@me -author:@me -org:glg
 issuesSections:
   - title: EI Board
     filters: is:open project:glg/92
-  - title: CSX Board
-    filters: is:open project:glg/85
   - title: My Issues
     filters: is:open author:@me
   - title: Assigned

@@ -29,3 +29,5 @@ Temporary Items
 tmtags
 
 config/tmux/plugins
+
+__pycache__/

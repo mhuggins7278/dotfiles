@@ -1,36 +1,36 @@
 # Agent Guidelines for Dotfiles Repository
 
-## Key Commands
-
-- Update system: `update` (homebrew, git pull dotfiles)
-- Apply dotfiles: `dotfiles` (ansible-playbook with all tasks)
-- Sync packages: `brewsync` (ansible-playbook packages only)
-- Edit with: `nvim` (aliased from vim/vi)
-
 ## Repository Structure
 
-This is an Ansible-managed dotfiles repository supporting macOS and Linux. Main playbook: `ansible/dotfiles.yml`
+This is an Ansible-managed dotfiles repository supporting macOS and Linux.
+The main playbook is `ansible/dotfiles.yml`.
 
-All global config files live in this repository (primarily under `config/`) and are symlinked to their correct system locations via Ansible. **Always read and edit files under `~/.dotfiles/config/` directly — never under `~/.config/`, which contains only symlinks.** When adding or modifying a config file:
+All global config files live in this repository and are symlinked to their
+system locations through Ansible. Always edit repository sources, never a
+symlink destination such as `~/.config/` or `~/.claude/`.
+
+- OpenCode sources live in `config/opencode/`.
+- Claude Code sources live in `config/claude/`.
+- Shared AI policy and playbooks live in `config/ai/`.
+- Shared skills are sourced from `config/opencode/skills/` and linked to both
+  tools.
+
+When adding a new config:
 
 1. Place the file under `~/.dotfiles/config/<tool>/` (or the repo root for dotfiles like `zshrc`)
-2. Add a symlink entry to `ansible/tasks/link_files.yml` following the existing pattern:
-   ```yaml
-   - { src: "~/.dotfiles/config/<tool>", dest: "~/.config/<tool>", force: true }
-   ```
+2. Add its source-to-destination link to `ansible/tasks/link_files.yml`.
 3. If the destination directory is new, add it to the `Create folder` task in `ansible/dotfiles.yml`
-4. Apply with `dotfiles` (or `ansible-playbook --check --diff ansible/dotfiles.yml` to preview)
+4. Preview with `ansible-playbook --check --diff ansible/dotfiles.yml` before applying with `dotfiles`.
+
+## Key Commands
+
+- Update system: `update`
+- Apply dotfiles: `dotfiles`
+- Sync packages: `brewsync`
 
 ## Code Style
 
-- Shell scripts: 2-space indentation, descriptive variable names
-- Config files: Follow existing patterns in each technology
-- Ansible: YAML with proper indentation and task naming
-- No trailing whitespace, 80-char line length preferred
-
-## Development Workflow
-
-- Test Ansible changes: `ansible-playbook --check --diff ansible/dotfiles.yml`
-- Main config files in `config/` directory
-- Custom aliases defined in `aliases` file
-- Shell configuration in `zshrc` with zinit plugin manager
+- Shell scripts use 2-space indentation and descriptive names.
+- Follow each configuration format's existing style.
+- Keep Ansible task names descriptive and YAML properly indented.
+- Avoid trailing whitespace; prefer an 80-character line length where practical.

@@ -18,7 +18,7 @@ A **flow** is a path through the skills. Most engineering work runs along one **
    - `prototype` to answer the question with throwaway code,
    - `handoff` back what you learned, referencing it from the original thread.
 3. **Branch — is this a multi-session build?**
-   - **Yes** → `to-spec` (turn the thread into a spec issue), then `to-tickets` to split it into tracer-bullet GitHub issues, each declaring its **blocking edges** (`depends on <REPO>#N`). Work the frontier one ticket at a time with `implement`, clearing context between tickets. Use `workon` to track sub-issue status across an epic and provision a worktree/session per ticket.
+   - **Yes** → `to-spec` (turn the thread into a spec issue), then `to-tickets` to split it into tracer-bullet GitHub issues, each declaring its **blocking edges** (`depends on <REPO>#N`). Use `workon` to launch the executable frontier as concurrent repository lanes; each lane processes its same-repo chain in one worktree and session.
    - **No** → `implement` right here, in the same context window.
 
    Either way, `implement` builds by driving `tdd` internally — one red-green slice at a time, at seams you agree on first — then closes out by running the `review` subagent (two-axis Standards + Spec check) before committing via `commit`.
@@ -27,7 +27,7 @@ A **flow** is a path through the skills. Most engineering work runs along one **
 
 - **Bugs and requests piling up** → `triage`. Moves issues through triage roles and produces agent-ready issues that `implement` later picks up. Only for issues you didn't create — don't triage tickets `to-tickets` already made.
 - **Something's broken** → `diagnosing-bugs`. For the hard ones — refuses to theorize until it has a tight feedback loop that already goes red on *this* bug, then fixes with a regression test.
-- **Working an existing GitHub epic** → `workon`. Fetches sub-issue status, builds a dependency graph, recommends the next ticket, and provisions a worktree + session for it.
+- **Working an existing GitHub epic** → `workon`. Fetches sub-issue status, builds a dependency graph, and launches the current executable wave as detached repository-lane sessions.
 
 ## Codebase health
 

@@ -46,7 +46,27 @@ Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
 3. Note testing performed (unit tests, Playwright, manual) from session context
 4. Note whether the `review` subagent returned `APPROVED`
 
-### 5. Push and create PR
+### 5. Push, create, or update the PR
+
+For a `/workon` repository lane, first search for an existing open PR on the
+current branch. Update it rather than creating another PR. Its body must retain
+the parent epic reference and one checked, commit-SHA-qualified `Fixes` entry
+for every completed local ticket. Do not use `Fixes` for the parent epic.
+
+```bash
+EXISTING_PR=$(gh pr list --head "$(git branch --show-current)" --state open \
+  --json number,url --jq '.[0].number // empty')
+```
+
+If `EXISTING_PR` is present, first fetch its body so the existing included
+issues and parent epic reference are retained:
+
+```bash
+gh pr view "$EXISTING_PR" --json body --jq .body
+```
+
+Then use `gh pr edit "$EXISTING_PR"` with the updated title and body.
+Otherwise create the draft PR below.
 
 ```bash
 git push -u origin <branch>   # if not yet pushed
@@ -66,9 +86,13 @@ gh pr create --draft --reviewer @copilot --base <base> --title "<title>" --body 
 - [x] **Testing**: <how tested>
 - [x] **Code Review**: <APPROVED by OpenCode review agent | N/A>
 
-## Related Issue
+## Included issues
 
-Fixes <owner>/<repo>#<n>
+- [x] Fixes <owner>/<repo>#<n> (<commit-sha>)
+
+## Parent epic
+
+Part of <parent-owner>/<parent-repo>#<parent-number>
 EOF
 )"
 ```
