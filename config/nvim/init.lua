@@ -169,19 +169,6 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('kickstart-treesitter-indent', { clear = true }),
-  callback = function(event)
-    vim.schedule(function()
-      if vim.api.nvim_buf_is_valid(event.buf) then
-        -- Highlighting is managed by tree-sitter-manager.nvim.
-        -- Set indentexpr to use Neovim's built-in Tree-sitter indent.
-        vim.bo[event.buf].indentexpr = 'v:lua.vim.treesitter.indentexpr()'
-      end
-    end)
-  end,
-})
-
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`

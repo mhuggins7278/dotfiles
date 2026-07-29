@@ -1,8 +1,8 @@
 # Code Review Methodology
 
-This is the canonical, tool-agnostic code review playbook. Agent wrappers for each tool embed or
-reference this content. To update the review methodology, update this file and sync to both
-`config/opencode/agent/review.md` and `config/claude/agents/code-reviewer.md`.
+This is the canonical, tool-agnostic code review playbook. The OpenCode agent
+wrapper embeds or references this content. To update the review methodology,
+update this file and sync to `config/opencode/agent/review.md`.
 
 ---
 

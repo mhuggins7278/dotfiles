@@ -1,8 +1,8 @@
 # GDS Deployment Investigation & Operations Methodology
 
 Canonical playbook for querying, deploying, and troubleshooting GLG Deployment System (GDS)
-infrastructure via the `gds` MCP server. Referenced by `config/opencode/agent/deployment.md` and
-`config/claude/agents/deployment.md`.
+infrastructure via the `gds` MCP server. Referenced by
+`config/opencode/agent/deployment.md`.
 
 ---
 

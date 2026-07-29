@@ -22,10 +22,10 @@ Read `CONTEXT.md` and relevant ADRs (`docs/adr/`) if they exist, so naming and i
 
 ### 2. Build test-first at agreed seams
 
-Use the `tdd` skill wherever the work has a clear seam to test at. Confirm the
-seams with the user before writing any test, unless the prompt explicitly says
-this is a `/workon` lane worker. A lane worker selects and records routine
-seams autonomously so each ticket does not pause the lane.
+Use the `tdd` skill wherever the work has a clear seam to test at. Select and
+record routine seams autonomously so implementation does not pause for an
+ordinary test choice. Ask only when a seam choice materially changes product
+behavior or architecture.
 
 Not every change has a meaningful seam (a pure config tweak, a one-line typo fix) — use judgment; `tdd` is for building or changing behavior, not every edit.
 
@@ -49,7 +49,7 @@ Use the `commit` skill to commit the work to the current branch — it carries t
 
 ### 6. Report
 
-Summarize what was built, the review outcome, and the commit. If the user wants
-a PR, hand off to the `pr` skill. A `/workon` lane worker continues to its next
-listed local ticket; after its final ticket, it updates the lane's combined
-draft PR.
+Summarize what was built, the selected test seams, the review outcome, and the
+commit. If the user wants a PR, hand off to the `pr` skill. A `/workon` lane
+worker continues to its next listed local ticket; after its final ticket, it
+updates the lane's combined draft PR.

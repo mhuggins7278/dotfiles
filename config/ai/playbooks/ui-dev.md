@@ -1,7 +1,7 @@
 # UI Development Methodology (React + MUI)
 
 Canonical, tool-agnostic playbook for frontend UI development. Referenced by
-`config/opencode/agent/ui-dev.md` and `config/claude/agents/ui-dev.md`.
+`config/opencode/agent/ui-dev.md`.
 
 ---
 

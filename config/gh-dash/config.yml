@@ -73,7 +73,7 @@ keybindings:
     - key: O
       name: manual review
       command: >
-        tmux new-window -c {{.RepoPath}} 'nvim -c ":silent Octo pr edit {{.PrNumber}}"'
+        tmux new-window -c {{.RepoPath}} 'tuicr pr {{.PrNumber}}'
     - key: C
       name: agent review
       command: >

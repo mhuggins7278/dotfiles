@@ -6,7 +6,13 @@ disable-model-invocation: true
 
 # To Spec
 
-Take the current conversation context and codebase understanding and produce a spec (also known as a PRD). Do **not** interview the user — just synthesize what you already know. If real gaps remain that block writing the spec, run a `grilling` session on those specific gaps only, not a full interview.
+Own the **aligned to specified** transition from
+`~/.dotfiles/config/ai/playbooks/workflow.md`.
+
+Take the current conversation context and codebase understanding and produce a
+spec (also known as a PRD). Do **not** interview the user or restart a broad
+grilling session. If a material product or architecture decision still blocks
+the spec, ask only about that decision.
 
 ## Process
 
@@ -22,13 +28,11 @@ If `owner == "glg"`, GLG mode is active — read `~/.dotfiles/config/opencode/re
 
 Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec (`CONTEXT.md`, if it exists — see the `domain-modeling` skill), and respect any ADRs in the area you're touching.
 
-### 3. Sketch seams
+### 3. Write and publish the spec
 
-Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible — the fewer seams across the codebase, the better; the ideal number is one.
-
-Check with the user that these seams match their expectations before writing the spec.
-
-### 4. Write and publish the spec
+Derive candidate test seams from the resolved context. Prefer existing public
+seams and record the rationale in the Testing Decisions section. Do not pause
+for routine seam confirmation.
 
 Write the spec using the template below, then publish it:
 
@@ -101,6 +105,6 @@ Any further notes about the feature.
 
 </spec-template>
 
-### 5. Report
+### 4. Report
 
 Report the issue URL. Suggest `to-tickets` next if the spec needs breaking into implementation-sized pieces, or `implement` directly if it's small enough for one session.

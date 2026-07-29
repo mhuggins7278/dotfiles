@@ -1,7 +1,7 @@
 # Employee Directory Lookup Methodology
 
 Canonical playbook for GLG employee directory searches. Referenced by
-`config/opencode/agent/whois.md` and `config/claude/agents/whois.md`.
+`config/opencode/agent/whois.md`.
 
 ---
 

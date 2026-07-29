@@ -1,7 +1,7 @@
 # Shared AI Policy
 
-This policy applies to both OpenCode and Claude Code. Tool-specific adapters
-and repository instructions add only behavior that cannot be shared here.
+This policy applies to OpenCode. Tool-specific adapters and repository
+instructions add only behavior that cannot be shared here.
 
 ## Durable Rules
 
@@ -12,12 +12,19 @@ and repository instructions add only behavior that cannot be shared here.
 - Match the surrounding codebase's style, naming, comments, and formatter
   conventions. Handle relevant failure modes without adding speculative guards.
 
+## Workflow Core
+
+For planning and execution, follow
+`~/.dotfiles/config/ai/playbooks/workflow.md`. Do not introduce additional
+approval gates or restart a prior workflow phase unless that playbook requires
+it.
+
 ## Dotfiles Sources
 
 When a request concerns configuration managed by `~/.dotfiles`, edit the
-repository source rather than a symlink destination such as `~/.config/` or
-`~/.claude/`. Source files live under `~/.dotfiles/config/<tool>/` unless the
-configuration is a root-level dotfile.
+repository source rather than a symlink destination such as `~/.config/`.
+Source files live under `~/.dotfiles/config/<tool>/` unless the configuration
+is a root-level dotfile.
 
 ## GLG Repositories
 

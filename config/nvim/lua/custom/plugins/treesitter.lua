@@ -1,53 +1,67 @@
-return { -- Tree-sitter parser manager (replaces archived nvim-treesitter core)
-  'romus204/tree-sitter-manager.nvim',
+return {
+  'nvim-treesitter/nvim-treesitter',
   lazy = false,
+  build = ':TSUpdate',
   dependencies = {
     { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
   },
   config = function()
-    require('tree-sitter-manager').setup {
-      ensure_installed = {
-        'bash',
-        'c',
-        'css',
-        'dockerfile',
-        'dtd',
-        'git_config',
-        'git_rebase',
-        'gitattributes',
-        'gitcommit',
-        'gitignore',
-        'go',
-        'graphql',
-        'html',
-        'http',
-        'javascript',
-        'jsdoc',
-        'json',
-        'json5',
-        'lua',
-        'markdown',
-        'markdown_inline',
-        'mermaid',
-        'nginx',
-        'python',
-        'sql',
-        'tsx',
-        'typescript',
-        'vim',
-        'vimdoc',
-        'xml',
-        'yaml',
-        'yaml',
-        'zsh',
-        -- Salesforce / Apex (required by sf.nvim)
-        'apex',
-        'soql',
-        'sosl',
-        'sflog',
-      },
-      highlight = true,
+    local languages = {
+      'bash',
+      'c',
+      'css',
+      'dockerfile',
+      'dtd',
+      'git_config',
+      'git_rebase',
+      'gitattributes',
+      'gitcommit',
+      'gitignore',
+      'go',
+      'graphql',
+      'html',
+      'http',
+      'javascript',
+      'jsdoc',
+      'json',
+      'json5',
+      'lua',
+      'markdown',
+      'markdown_inline',
+      'mermaid',
+      'nginx',
+      'python',
+      'sql',
+      'tsx',
+      'typescript',
+      'vim',
+      'vimdoc',
+      'xml',
+      'yaml',
+      'zsh',
+      -- Salesforce / Apex (required by sf.nvim)
+      'apex',
+      'soql',
+      'sosl',
+      'sflog',
     }
+
+    require('nvim-treesitter').install(languages)
+
+    vim.api.nvim_create_autocmd('FileType', {
+      group = vim.api.nvim_create_augroup('treesitter-features', { clear = true }),
+      callback = function(event)
+        -- Parser names do not always match filetypes, so enable features only
+        -- after Neovim confirms a parser is available for this buffer.
+        if pcall(vim.treesitter.start, event.buf) then
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(event.buf) then
+              vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end
+          end)
+        end
+      end,
+    })
 
     -- Incremental node selection via Neovim's built-in vim.treesitter._select.
     -- Calls select_parent directly to bypass mini.ai which overrides the 'n' text object.

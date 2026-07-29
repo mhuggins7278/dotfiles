@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate that each shared agent contract has both tool adapters."""
+"""Validate that each shared agent contract has an OpenCode adapter."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 CONTRACT_PATH = ROOT / "config/ai/agent-contracts.json"
-REQUIRED_ADAPTERS = {"opencode", "claude"}
+REQUIRED_ADAPTERS = {"opencode"}
 VALID_MUTATION_LEVELS = {
     "read-only",
     "interactive",
@@ -82,7 +82,7 @@ def validate_agent(agent: object, seen_ids: set[str]) -> None:
 
     adapters = agent.get("adapters")
     if not isinstance(adapters, dict) or set(adapters) != REQUIRED_ADAPTERS:
-        fail(f"{agent_id}.adapters must contain exactly: opencode, claude")
+        fail(f"{agent_id}.adapters must contain exactly: opencode")
 
     playbook_reference = str(playbook_text)
     for tool, adapter in adapters.items():

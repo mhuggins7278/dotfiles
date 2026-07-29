@@ -235,6 +235,10 @@ The worker contract is:
 4. Do not invoke `/workon`, switch branches, or start work outside this lane.
 5. After the final listed ticket, run `/pr` to create or update one combined
    draft PR for the lane. Include the required lane PR body from this prompt.
+6. End with exactly one result marker: `LANE_RESULT: COMPLETE` after the lane
+   PR is updated, or `LANE_RESULT: BLOCKED` followed by the ticket and exact
+   decision or unrecoverable failure that needs attention. Never stop on a bare
+   question.
 
 Run each worker detached. Keep the initiating OpenCode session and active tmux
 client unchanged.
@@ -298,7 +302,8 @@ use `Fixes` for the parent epic.
 ### 10. Report and Leave Control Intact
 
 Report each launched, reused, skipped, and blocked lane with its repository,
-issues, branch, worktree, tmux session, and existing PR if present. Keep this
+issues, branch, worktree, tmux session, and existing PR if present. Workers
+must provide their `LANE_RESULT` marker in the detached session. Keep this
 OpenCode session open for follow-up prompts. It does not poll workers or launch
 later waves automatically.
 

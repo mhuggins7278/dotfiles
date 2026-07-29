@@ -10,10 +10,6 @@
         "opencode": {
           "path": "config/opencode/agent/review.md",
           "name": "review"
-        },
-        "claude": {
-          "path": "config/claude/agents/code-reviewer.md",
-          "name": "code-reviewer"
         }
       }
     },
@@ -25,10 +21,6 @@
       "adapters": {
         "opencode": {
           "path": "config/opencode/agent/docs.md",
-          "name": "docs"
-        },
-        "claude": {
-          "path": "config/claude/agents/docs.md",
           "name": "docs"
         }
       }
@@ -42,10 +34,6 @@
         "opencode": {
           "path": "config/opencode/agent/browser.md",
           "name": "browser"
-        },
-        "claude": {
-          "path": "config/claude/agents/browser.md",
-          "name": "browser"
         }
       }
     },
@@ -57,10 +45,6 @@
       "adapters": {
         "opencode": {
           "path": "config/opencode/agent/ui-dev.md",
-          "name": "ui-dev"
-        },
-        "claude": {
-          "path": "config/claude/agents/ui-dev.md",
           "name": "ui-dev"
         }
       }
@@ -74,10 +58,6 @@
         "opencode": {
           "path": "config/opencode/agent/deployment.md",
           "name": "deployment"
-        },
-        "claude": {
-          "path": "config/claude/agents/deployment.md",
-          "name": "deployment"
         }
       }
     },
@@ -89,10 +69,6 @@
       "adapters": {
         "opencode": {
           "path": "config/opencode/agent/whois.md",
-          "name": "whois"
-        },
-        "claude": {
-          "path": "config/claude/agents/whois.md",
           "name": "whois"
         }
       }

@@ -1,7 +1,7 @@
 # Documentation Research Methodology
 
-Canonical, tool-agnostic playbook for library documentation research. Referenced by
-`config/opencode/agent/docs.md` and `config/claude/agents/docs.md`.
+Canonical, tool-agnostic playbook for library documentation research.
+Referenced by `config/opencode/agent/docs.md`.
 
 ---
 

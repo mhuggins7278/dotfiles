@@ -11,8 +11,7 @@ return {
   -- filetypes inside the project — LWC, config files, etc.)
   event = 'VeryLazy',
 
-  -- nvim-treesitter omitted intentionally: tree-sitter-manager.nvim is the
-  -- installed replacement and provides the same parser infrastructure.
+  -- nvim-treesitter is configured separately and provides parser support.
   -- fzf-lua omitted intentionally: metadata browser skipped for now.
 
   init = function()

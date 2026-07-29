@@ -7,13 +7,11 @@ The main playbook is `ansible/dotfiles.yml`.
 
 All global config files live in this repository and are symlinked to their
 system locations through Ansible. Always edit repository sources, never a
-symlink destination such as `~/.config/` or `~/.claude/`.
+symlink destination such as `~/.config/`.
 
 - OpenCode sources live in `config/opencode/`.
-- Claude Code sources live in `config/claude/`.
 - Shared AI policy and playbooks live in `config/ai/`.
-- Shared skills are sourced from `config/opencode/skills/` and linked to both
-  tools.
+- OpenCode skills live in `config/opencode/skills/`.
 
 When adding a new config:
 

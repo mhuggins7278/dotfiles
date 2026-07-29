@@ -1,7 +1,7 @@
 # Browser Testing & Automation Methodology
 
-Canonical, tool-agnostic playbook for browser automation, debugging, and testing. Referenced by
-`config/opencode/agent/browser.md` and `config/claude/agents/browser.md`.
+Canonical, tool-agnostic playbook for browser automation, debugging, and testing.
+Referenced by `config/opencode/agent/browser.md`.
 
 ---
 

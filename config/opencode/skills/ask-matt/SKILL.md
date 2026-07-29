@@ -10,18 +10,19 @@ You don't remember every skill, so ask.
 
 A **flow** is a path through the skills. Most engineering work runs along one **main flow**, with a few **on-ramps** merging onto it. Everything else is standalone, GLG/personal tooling, or a vocabulary layer that runs underneath.
 
-## The main flow: idea → ship
+## The main flow: idea to ship
 
-1. **`grill-with-docs`** — sharpen the idea by interview. Use this when you **have a codebase**: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. No codebase? Use `grill-me` instead — same `grilling` primitive underneath, but stateless.
+1. **`grill-with-docs`** — sharpen an unclear idea by interview. Use this when you **have a codebase**: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. No codebase? Use `grill-me` instead. Skip this phase when the material decisions are already resolved.
 2. **Branch — can you settle every question in conversation?** If a question needs a runnable answer (state, business logic, a UI you have to see), detour through a prototype, bridged by **`handoff`** in both directions:
    - `handoff` out, then open a fresh session against that file,
    - `prototype` to answer the question with throwaway code,
    - `handoff` back what you learned, referencing it from the original thread.
-3. **Branch — is this a multi-session build?**
-   - **Yes** → `to-spec` (turn the thread into a spec issue), then `to-tickets` to split it into tracer-bullet GitHub issues, each declaring its **blocking edges** (`depends on <REPO>#N`). Use `workon` to launch the executable frontier as concurrent repository lanes; each lane processes its same-repo chain in one worktree and session.
-   - **No** → `implement` right here, in the same context window.
+3. **`to-spec`** — turn the aligned thread into a spec issue without restarting the interview.
+4. **Branch — does the spec need multiple independent tickets?**
+   - **Yes** → `to-tickets` publishes tracer-bullet GitHub issues after one approval. Use `workon` to launch the executable frontier as concurrent repository lanes; each lane processes its same-repo chain in one worktree and session.
+   - **No** → `implement` the spec right here, in the same context window.
 
-   Either way, `implement` builds by driving `tdd` internally — one red-green slice at a time, at seams you agree on first — then closes out by running the `review` subagent (two-axis Standards + Spec check) before committing via `commit`.
+   Either way, `implement` builds by driving `tdd` internally, selecting routine seams autonomously, then closes out by running the `review` subagent (two-axis Standards + Spec check) before committing via `commit`.
 
 ## On-ramps
 
@@ -49,8 +50,7 @@ A **flow** is a path through the skills. Most engineering work runs along one **
 - **`research`** — delegate reading legwork to a background agent against primary sources; leaves a cited markdown file to feed into `grill-with-docs`.
 - **`teach`** — learn a concept over multiple sessions using the current directory as a stateful workspace.
 - **`resolving-merge-conflicts`** — resolve an in-progress git merge/rebase conflict.
-- **`writing-great-skills`** — reference for writing and editing skills well; `skill-creator` points here for style guidance.
-- **`skill-creator`** — the full create/eval/iterate loop for a skill, with real benchmark scripts. Reach for this over `writing-great-skills` when you need to actually build and test a new skill, not just polish prose.
+- **`writing-great-skills`** — reference for writing and editing skills well.
 
 ## GLG & personal (not part of Matt's flow)
 
@@ -61,7 +61,7 @@ A **flow** is a path through the skills. Most engineering work runs along one **
 - **`git-context`** — get oriented in an unfamiliar repo before reading code.
 - **`observe-glg`** — query production logs for GDS-deployed services.
 - **`playwright-cli`** — browser automation for web testing.
-- **`retro`** — post-session retrospective; updates this repo's `AGENTS.md`/`CLAUDE.md` with new gotchas.
+- **`retro`** — post-session retrospective; updates this repo's `AGENTS.md` with new gotchas.
 - **`done`** — end-of-session wrap-up note.
 - **`date`** — get the current date without guessing.
 
