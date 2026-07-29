@@ -1,7 +1,13 @@
+local install_dir = vim.fs.joinpath(vim.fn.stdpath 'data', 'nvim-treesitter')
+
 return {
   'nvim-treesitter/nvim-treesitter',
   lazy = false,
-  build = ':TSUpdate',
+  build = function()
+    local treesitter = require 'nvim-treesitter'
+    treesitter.setup { install_dir = install_dir }
+    treesitter.update()
+  end,
   dependencies = {
     { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
   },
@@ -46,7 +52,9 @@ return {
       'sflog',
     }
 
-    require('nvim-treesitter').install(languages)
+    local treesitter = require 'nvim-treesitter'
+    treesitter.setup { install_dir = install_dir }
+    treesitter.install(languages)
 
     vim.api.nvim_create_autocmd('FileType', {
       group = vim.api.nvim_create_augroup('treesitter-features', { clear = true }),
