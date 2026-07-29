@@ -241,19 +241,11 @@ create it (daily note creation is handled by the notes vault workflows).
 
 If the daily note **exists**:
 
-1. **Insert follow-up items and pending tasks under `## Tasks`** — use the Edit
-   tool to insert each actionable follow-up or unresolved pending task as an
-   unchecked checkbox immediately after the last existing item in the
-   `## Tasks` section. Append a backlink to the session note so the task points
-   back to its source:
-   ```markdown
-   - [ ] <follow-up item> [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|session note]]
-   ```
-   Only add items that are clearly actionable by the user. Skip vague,
-   reference-only, or non-user-owned items. Use `- [ ]` state for all new items
-   (see `daily-notes` skill for the full checkbox type table). Prefer adding
-   the backlink at the end of the task so the action stays readable while still
-   making it easy to jump to the full session summary.
+1. Load the `daily-notes` skill and use its canonical task-note workflow for
+   each actionable follow-up or unresolved user-owned task. Add the resulting
+   task wikilink to the appropriate daily-note section with a backlink to the
+   session note. Do not insert raw task checkboxes into the daily note;
+   task-file status is the source of truth.
 
 2. **Add a backlink with TL;DR in the Notes section** — use the Edit tool to insert this
    line after the last existing item under `## Notes`:

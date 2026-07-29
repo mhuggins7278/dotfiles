@@ -4,10 +4,11 @@ description: >
   Inline daily notes capture and lightweight review — quickly track what the
   user needs to do, what they did, what they're waiting on, what they owe, and
   what they want to remember in today's note without switching context. Use
-  this skill whenever the user says things like "track this," "note this,"
-  "I just shipped...," "I'm waiting on...," "I owe...," "what's open?,"
-  "what did I get done?," or otherwise wants daily-note updates to happen in
-  the flow of work. For full morning planning, end-of-day review, meeting
+  this skill for daily-note capture, mutation, or factual lightweight review —
+  phrases like "track this," "note this," "I just shipped...," "I'm waiting
+  on...," "I owe...," "what's open?," or "what did I get done?". For
+  prioritization, nudges, recommendations, or meeting briefs, use
+  `exec-assistant` instead. For full morning planning, end-of-day review, meeting
   transcript processing, weekly summaries, or larger cleanup passes, open a
   session in the notes vault where the full workflow is defined.
 ---

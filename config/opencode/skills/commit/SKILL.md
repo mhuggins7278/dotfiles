@@ -16,14 +16,12 @@ Commit staged and unstaged changes safely.
 - User says "commit this", "commit the changes", "make a commit"
 - User asks you to save work to git
 
-## CRITICAL: GLG Workflow Rules
+## GLG Workflow Rules
 
-For any repo under `~/github/glg/`, read `~/.dotfiles/config/opencode/references/glg-workflow.md` for:
-- **Branch naming rules** (no slashes — hyphens only, always)
-- **Issue-first workflow** (require an open issue before committing)
-- **Project 92 tagging** when creating issues
-
-If the current branch contains a `/`, warn the user and stop until it is renamed.
+For repos under `~/github/glg/`, read
+`~/.dotfiles/config/opencode/references/glg-workflow.md` before committing and
+apply its branch, issue-first, and project rules. Stop if those rules identify
+an invalid branch or missing issue.
 
 ## Safety Rules
 

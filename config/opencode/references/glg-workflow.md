@@ -39,17 +39,11 @@ Default GitHub Project: **`glg` project `92` (`Enterprise Integration`)**
 gh project item-add 92 --owner glg --url "$(gh issue view <number> --repo "$REPO" --json url -q .url)"
 ```
 
-## PR Issue References
+## Pull Requests
 
-Always link PRs to their associated issue using the `Fixes` keyword so the issue auto-closes on merge:
-
-```
-Fixes <owner>/<repo>#<number>
-```
-
-Example: `Fixes glg/streamliner#5232`
-
-Include this in the PR body, not just the title.
+The `/pr` skill owns pull-request issue links and closing-keyword syntax. When
+a GLG workflow creates or updates a PR, invoke `/pr` and follow its `Issue
+Links That Close on Merge` section rather than duplicating those mechanics here.
 
 ## SQL Templates & DB Queries
 

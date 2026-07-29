@@ -11,9 +11,36 @@ description: >
 
 ## GLG Rules (repos under `~/github/glg/` only)
 
-- **No slashes in branch names** — use hyphens (`feature-foo`, not `feature/foo`). If current branch has a `/`, warn and stop.
-- **Issue-first**: Every PR needs an open GitHub issue. Check branch name, commits, or user input for an issue number. Validate with `gh issue view <n>`. If missing, stop and prompt the user to create one (add it to project 92: `gh issue create --project "Enterprise Integration" ...`).
-- **Link the PR to its issue** with `Fixes <owner>/<repo>#<n>` in the PR body.
+For repos under `~/github/glg/`, read
+`~/.dotfiles/config/opencode/references/glg-workflow.md` before creating or
+updating the PR. It owns branch naming, issue-first, and project rules.
+
+## Issue Links That Close on Merge
+
+When a PR addresses one or more issues, put one closing reference per issue in
+the PR **description**. Use the syntax that matches where the issue lives:
+
+```text
+## Linked issues
+
+Fixes #<same-repository-issue-number>
+Fixes <owner>/<repository>#<different-repository-issue-number>
+```
+
+The `Fixes` lines must be plain text in the description, outside code fences.
+Do not put them only in the title, a PR/review comment, a checklist entry, or a
+markdown link. Keep commit SHAs and other bookkeeping on separate lines. A
+comment or a plain `#123` reference can make an issue look related without
+causing it to close.
+
+GitHub only applies closing keywords when the PR targets the repository's
+default branch. Verify that before creating or updating the PR. Afterward,
+verify the body and GitHub's parsed links. If the PR intentionally targets a
+non-default branch, an empty `closingIssuesReferences` result is expected:
+
+```bash
+gh pr view <pr-number> --json baseRefName,closingIssuesReferences
+```
 
 ## Workflow
 
@@ -37,7 +64,7 @@ Use `origin/<base>` (remote ref) to avoid "unknown revision" errors. If missing,
 
 ### 3. Check for PR template
 
-Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and use its structure verbatim (write "N/A" for inapplicable sections). If not found, use the default body in step 5.
+Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its structure (write "N/A" for inapplicable sections). If not found, use the default body in step 5. In either case, ensure the final body contains the dedicated `## Linked issues` section and one exact closing line for every associated issue.
 
 ### 4. Compile evidence
 
@@ -50,8 +77,9 @@ Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
 
 For a `/workon` repository lane, first search for an existing open PR on the
 current branch. Update it rather than creating another PR. Its body must retain
-the parent epic reference and one checked, commit-SHA-qualified `Fixes` entry
-for every completed local ticket. Do not use `Fixes` for the parent epic.
+the parent epic reference, one checked commit-SHA-qualified `Included issues`
+entry, and one matching plain-text `Fixes` line for every completed local
+ticket. Do not use `Fixes` for the parent epic.
 
 ```bash
 EXISTING_PR=$(gh pr list --head "$(git branch --show-current)" --state open \
@@ -59,13 +87,15 @@ EXISTING_PR=$(gh pr list --head "$(git branch --show-current)" --state open \
 ```
 
 If `EXISTING_PR` is present, first fetch its body so the existing included
-issues and parent epic reference are retained:
+issues, linked-issue lines, and parent epic reference are retained. Add any
+missing closing lines to the description; do not add them only as a comment:
 
 ```bash
 gh pr view "$EXISTING_PR" --json body --jq .body
 ```
 
-Then use `gh pr edit "$EXISTING_PR"` with the updated title and body.
+Then use `gh pr edit "$EXISTING_PR" --title "<title>" --body "$BODY"` with the
+updated title and body.
 Otherwise create the draft PR below.
 
 ```bash
@@ -86,9 +116,13 @@ gh pr create --draft --reviewer @copilot --base <base> --title "<title>" --body 
 - [x] **Testing**: <how tested>
 - [x] **Code Review**: <APPROVED by OpenCode review agent | N/A>
 
+## Linked issues
+
+Fixes <issue-closing-reference>
+
 ## Included issues
 
-- [x] Fixes <owner>/<repo>#<n> (<commit-sha>)
+- [x] <owner>/<repository>#<n> (<commit-sha>)
 
 ## Parent epic
 

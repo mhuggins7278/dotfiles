@@ -97,12 +97,14 @@ A dependency is satisfied when its issue is closed, has a merged PR, or is
 marked as completed in a prior lane PR's **Included issues** section:
 
 ```
-- [x] Fixes <owner>/<repo>#<number> (<commit-sha>)
+- [x] <owner>/<repo>#<number> (<commit-sha>)
 ```
 
 An open or draft PR alone does not satisfy a dependency. It must contain the
 checked entry and commit SHA, which records that the ticket was individually
-reviewed and committed.
+reviewed and committed. When reading older lane PRs, also accept the previous
+ledger format where `Fixes` was prefixed to the fully qualified issue
+reference; new and updated PR bodies keep the closing reference separate.
 
 If the graph has a cycle, report the cycle as blocked. Do not launch it because
 there is no valid first ticket.
@@ -228,10 +230,9 @@ Build a worker prompt containing:
 The worker contract is:
 
 1. Process the listed tickets in order. Run `/implement` for each ticket.
-2. Choose and record routine test seams autonomously. Pause only for a
-   consequential ambiguity or unrecoverable failure.
-3. Review and commit each ticket separately before advancing to the next local
-   ticket.
+2. Let `/implement` own test-seam selection, review, and the separate commit for
+   each ticket. Confirm it completed before advancing.
+3. Pause only for a consequential ambiguity or unrecoverable failure.
 4. Do not invoke `/workon`, switch branches, or start work outside this lane.
 5. After the final listed ticket, run `/pr` to create or update one combined
    draft PR for the lane. Include the required lane PR body from this prompt.
@@ -274,7 +275,9 @@ command that closes or replaces the initiating session.
 
 At the end of its local chain, the worker pushes the lane branch and creates or
 updates one draft PR. The PR must use the repository's template when present.
-Otherwise include:
+Regardless of the template, invoke `/pr` with every completed local ticket;
+`/pr` owns the `## Linked issues` section and closing-keyword syntax. Keep the
+commit ledger in `## Included issues`. Without a template, use:
 
 ```markdown
 ## Summary
@@ -283,7 +286,7 @@ Otherwise include:
 
 ## Included issues
 
-- [x] Fixes <owner>/<repo>#<number> (<commit-sha>)
+- [x] <owner>/<repo>#<number> (<commit-sha>)
 
 ## Parent epic
 
@@ -295,9 +298,10 @@ Part of <parent-owner>/<parent-repo>#<parent-number>
 - [x] Code review: approved per included ticket
 ```
 
-Include every ticket completed in this and prior waves on the lane branch. The
-`Fixes` references close their issues only when the combined PR merges. Do not
-use `Fixes` for the parent epic.
+Include every ticket completed in this and prior waves on the lane branch and
+pass them all to `/pr`, which adds the closing references to the PR description.
+Do not include the parent epic among those tickets; it is a `Part of` reference
+only.
 
 ### 10. Report and Leave Control Intact
 
