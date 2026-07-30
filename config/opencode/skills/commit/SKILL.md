@@ -51,22 +51,25 @@ Scan `git status` output for sensitive files before running `git add`:
 - Flag any `.env`, `*.pem`, `*.key`, `*credentials*`, `*token*`, or similar files
 - Warn the user and do NOT stage those files unless they explicitly confirm it is safe
 
-### 3. Check Golden Principles
-Run `~/.dotfiles/config/opencode/scripts/check-principles.sh` to mechanically enforce cross-repo conventions. If it fails, fix the errors before committing.
-
-### 4. Draft the Commit Message
+### 3. Draft the Commit Message
 
 - Summarize the nature of the change: new feature, enhancement, bug fix, refactor, test, docs, chore
 - Use accurate verbs: "add" = wholly new, "update" = enhancement, "fix" = bug fix
 - Focus on the *why* over the *what*
 - Keep it concise: 1-2 sentences max
 
-### 5. Stage and Commit (run sequentially)
+### 4. Stage and Check
+
+Stage only the relevant files with `git add <relevant files>`, then run
+`~/.dotfiles/config/opencode/scripts/check-principles.sh` to enforce the
+automated repository rules. If the check fails, fix the errors before
+committing.
+
+### 5. Commit (run sequentially)
 
 If there is nothing to commit (clean working tree), report that to the user and stop.
 
 ```bash
-git add <relevant files>
 git commit -m "<message>"
 git status
 ```

@@ -64,14 +64,16 @@ Use `origin/<base>` (remote ref) to avoid "unknown revision" errors. If missing,
 
 ### 3. Check for PR template
 
-Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its structure (write "N/A" for inapplicable sections). If not found, use the default body in step 5. In either case, ensure the final body contains the dedicated `## Linked issues` section and one exact closing line for every associated issue.
+Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its structure (write "N/A" for inapplicable sections). If not found, use the default body in step 5. In either case, ensure the final body contains an evidence section, the dedicated `## Linked issues` section, and one exact closing line for every associated issue.
 
 ### 4. Compile evidence
 
 1. If the repo has `package.json`, `pnpm-lock.yaml`, `yarn.lock`, or `package-lock.json`: run `eval "$(fnm env --shell bash)" && fnm use --install-if-missing`, then install deps with the appropriate lockfile command (`pnpm install` / `yarn install` / `npm ci`).
-2. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh`
-3. Note testing performed (unit tests, Playwright, manual) from session context
-4. Note whether the `review` subagent returned `APPROVED`
+2. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh "origin/<base>...HEAD"`
+3. Run the repository's documented lint, format-check, and typecheck commands
+   when available. Do not invent commands; record exact commands and results.
+4. Note testing performed (unit tests, Playwright, manual) from session context
+5. Note whether the `review` subagent returned `APPROVED`
 
 ### 5. Push, create, or update the PR
 
@@ -112,7 +114,8 @@ gh pr create --draft --reviewer @copilot --base <base> --title "<title>" --body 
 
 ## Evidence
 
-- [x] **Golden Principles**: Passed
+- [x] **Automated checks**: Passed
+- [x] **Linting/formatting/typecheck**: <commands and results | N/A>
 - [x] **Testing**: <how tested>
 - [x] **Code Review**: <APPROVED by OpenCode review agent | N/A>
 

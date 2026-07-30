@@ -33,7 +33,19 @@ Run typechecking regularly and single test files regularly during the loop. Run 
 
 ### 4. Review
 
-Once the implementation is done, invoke the `review` subagent via the Task tool against the uncommitted diff. Pass it the issue/ticket context (repo, issue number, title) so it understands what was being built.
+Once the implementation is done, announce:
+
+> `Review phase: dispatching configured Review Subagent (review).`
+
+Invoke the configured `review` agent through the Task tool with
+`subagent_type=review` against the uncommitted diff. This must be a Task
+subagent dispatch, not an inline review and not a generic `general` or
+`explore` subagent. Pass it the issue/ticket context (repo, issue number,
+title) so it understands what was being built.
+
+After the Task result returns, announce:
+
+> `Review phase: Review Subagent (review) returned REVIEW_VERDICT: <value>.`
 
 Read the `REVIEW_VERDICT` block at the end of its output:
 - `APPROVED` → proceed to commit.

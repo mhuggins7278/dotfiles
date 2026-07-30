@@ -168,8 +168,27 @@ later waves.
 
 ### 7. Create or Reuse Each Worktree
 
-Launch every executable lane. Worktrees and workers must be independent, so a
-problem in one lane never prevents another lane from starting.
+Before running the worktree setup, detect whether this session is already the
+worker for the selected lane:
+
+```bash
+CURRENT_BRANCH=$(git branch --show-current)
+CURRENT_REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
+
+if [ "$CURRENT_REPO" = "<lane-owner>/<lane-repo>" ] \
+  && [ "$CURRENT_BRANCH" = "<branch-name>" ]; then
+  ALREADY_IN_LANE=true
+else
+  ALREADY_IN_LANE=false
+fi
+```
+
+When `ALREADY_IN_LANE=true`, this session was launched inside the prepared
+worktree (for example by `agent-fix`). Do not pull, switch worktrees, create a
+tmux session, or launch another OpenCode worker. Continue directly to the
+worker contract in the next step. When false, launch every executable lane.
+Worktrees and workers must be independent, so a problem in one lane never
+prevents another lane from starting.
 
 ```bash
 REPO_ROOT=$(git rev-parse --show-toplevel)
@@ -214,7 +233,12 @@ instead of overwriting or mixing work.
 
 ### 8. Launch Detached Lane Workers
 
-Detect the lane's package manager using this order: `pnpm-lock.yaml`,
+If `ALREADY_IN_LANE=true`, execute the worker contract below in the current
+session and skip detached-session setup. The caller has already prepared the
+worktree and dependencies. Otherwise, continue with the detached worker flow.
+
+When `ALREADY_IN_LANE=false`, detect the lane's package manager using this
+order: `pnpm-lock.yaml`,
 `yarn.lock`, `package-lock.json`, `package.json`, `Gemfile.lock`,
 `requirements.txt`, `pyproject.toml`, `go.mod`, then `Cargo.toml`.
 
@@ -231,7 +255,10 @@ The worker contract is:
 
 1. Process the listed tickets in order. Run `/implement` for each ticket.
 2. Let `/implement` own test-seam selection, review, and the separate commit for
-   each ticket. Confirm it completed before advancing.
+   each ticket. Its review phase must dispatch the configured Review Subagent
+   with `subagent_type=review` through the Task tool. Do not replace that
+   dispatch with an inline review or a different subagent. Confirm the
+   `Review Subagent (review)` result and ticket completion before advancing.
 3. Pause only for a consequential ambiguity or unrecoverable failure.
 4. Do not invoke `/workon`, switch branches, or start work outside this lane.
 5. After the final listed ticket, run `/pr` to create or update one combined

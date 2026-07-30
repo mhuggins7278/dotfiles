@@ -106,6 +106,7 @@
       "~/.dotfiles/config/ai/playbooks/**": "allow",
       "~/.config/opencode/references/**": "allow",
       "~/.dotfiles/config/opencode/references/**": "allow",
+      "~/.dotfiles/config/opencode/scripts/**": "allow",
       "~/zoom-transcripts/**": "allow",
       "/tmp/**": "allow"
     },
