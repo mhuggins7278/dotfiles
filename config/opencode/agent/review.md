@@ -1,8 +1,8 @@
 ---
 description: Reviews recent code changes for bugs, edge cases, and quality issues. Invoke after building a feature or fixing a bug to catch problems before committing.
 mode: all
-model: github-copilot/gemini-3.1-pro-preview
-variant: high
+model: openai/gpt-5.6-luna
+variant: xhigh
 tools:
   read: true
   write: false

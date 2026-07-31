@@ -81,6 +81,9 @@
             },
             "medium": {
               "reasoningEffort": "medium"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh"
             }
           }
         }
