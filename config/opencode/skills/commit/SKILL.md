@@ -20,8 +20,10 @@ Commit staged and unstaged changes safely.
 
 For repos under `~/github/glg/`, read
 `~/.dotfiles/config/opencode/references/glg-workflow.md` before committing and
-apply its branch, issue-first, and project rules. Stop if those rules identify
-an invalid branch or missing issue.
+apply its branch, issue-first, and project rules. Do not block an existing PR
+solely because its branch contains `/`; branch-format guidance applies to
+branches intended to publish GDS images or deployments. Stop for a missing
+issue.
 
 ## Safety Rules
 

@@ -4,19 +4,24 @@ These rules apply when working in any repository under `~/github/glg/`.
 
 ## Branch Naming
 
-**Never use a slash (`/`) in a branch name.** Slashes break the deployment pipeline when promoting branches to the testing environment. This is a hard stop, not a preference.
+For branches intended to publish GDS images or deployments, prefer hyphens
+over slashes (`/`) for compatibility with the GDS deployment workflow.
 
-- WRONG: `feature/foo`, `fix/bar`, `chore/anything`
-- RIGHT: `feature-foo`, `fix-bar`, `chore-anything`
+- Prefer: `feature-foo`, `fix-bar`, `chore-anything`
+- Avoid for GDS deployment branches: `feature/foo`, `fix/bar`,
+  `chore/anything`
 
-If the current branch contains a `/`, warn the user and stop until it is renamed.
+Do not block an existing PR solely because its branch contains `/`. The guidance
+applies when creating a branch that will publish a GDS image or be deployed;
+confirm the configured build and deployment paths before requiring a rename.
 
 **Format for issue branches:** `issue_<number>`.
 
 For a `/workon` repository lane, use the parent epic number when the parent
 repository has multiple linked tickets. In another repository, use the first
 local ticket number in deterministic dependency order. A one-ticket lane always
-uses that ticket's number. Never use slashes.
+uses that ticket's number. Prefer hyphens over slashes when the branch will
+publish a GDS image or deployment.
 
 ## Issue-First Workflow
 

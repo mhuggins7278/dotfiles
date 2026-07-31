@@ -32,7 +32,8 @@ For work under `~/github/glg/`:
 
 - Require an associated GitHub issue before implementation, commits, or pull
   requests. If no valid open issue exists, pause for the issue workflow.
-- Branch names must use hyphens, not `/`.
+- For branches intended to publish GDS images or deployments, prefer hyphens
+  over `/`. Do not block an existing PR solely because its branch contains `/`.
 - Search `~/github/glg/epiquery-templates/` before changing SQL templates or
   database queries.
 - Load `~/.dotfiles/config/opencode/references/glg-workflow.md` for project

@@ -13,7 +13,9 @@ description: >
 
 For repos under `~/github/glg/`, read
 `~/.dotfiles/config/opencode/references/glg-workflow.md` before creating or
-updating the PR. It owns branch naming, issue-first, and project rules.
+updating the PR. It owns branch naming, issue-first, and project rules. Do not
+block an existing PR solely because its branch contains `/`; branch-format
+guidance applies to branches intended to publish GDS images or deployments.
 
 ## Issue Links That Close on Merge
 
