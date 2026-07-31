@@ -37,21 +37,21 @@
       }
     },
     "build": {
-      "model": "openai/gpt-5.6-terra",
-      "variant": "high"
+      "model": "openai/gpt-5.6-luna",
+      "variant": "max"
     },
     "general": {
-      "model": "openai/gpt-5.6-terra",
+      "model": "openai/gpt-5.6-luna",
       "variant": "medium"
     },
     "explore": {
       "model": "openai/gpt-5.6-luna",
-      "variant": "low"
+      "variant": "medium"
     },
     "scout": {
       "mode": "subagent",
       "model": "openai/gpt-5.6-luna",
-      "variant": "medium"
+      "variant": "high"
     }
   },
   "provider": {

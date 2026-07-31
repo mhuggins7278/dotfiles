@@ -77,7 +77,7 @@ A change can pass one axis and fail the other — code that follows every standa
 
 ### Code Smell Baseline (Standards axis)
 
-On top of whatever the repo documents, the Standards axis always carries this fixed set of Fowler code smells (*Refactoring*, ch. 3) — even when a repo documents nothing. Two rules bind it: **the repo overrides** (a documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell), and it's **always a judgement call** (a labelled heuristic, never a hard violation) — skip anything tooling already enforces.
+On top of whatever the repo documents, the Standards axis always carries this fixed set of Fowler code smells (_Refactoring_, ch. 3) — even when a repo documents nothing. Two rules bind it: **the repo overrides** (a documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell), and it's **always a judgement call** (a labelled heuristic, never a hard violation) — skip anything tooling already enforces.
 
 - **Mysterious Name** — a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
 - **Duplicated Code** — the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.

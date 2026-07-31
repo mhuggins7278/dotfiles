@@ -7,6 +7,8 @@ export const NotificationPlugin: Plugin = async ({
   directory,
   worktree,
 }) => {
+  const notifiedPermissionSessions = new Set<string>();
+
   const isGhosttyFocused = async (): Promise<boolean> => {
     try {
       const result =
@@ -83,6 +85,11 @@ export const NotificationPlugin: Plugin = async ({
 
   return {
     event: async ({ event }) => {
+      if (event.type === "permission.replied") {
+        notifiedPermissionSessions.delete(event.properties.sessionID);
+        return;
+      }
+
       if (
         event.type !== "session.idle" &&
         event.type !== "session.error" &&
@@ -93,6 +100,8 @@ export const NotificationPlugin: Plugin = async ({
       if (!(await shouldNotify())) return;
 
       if (event.type === "permission.asked") {
+        if (notifiedPermissionSessions.has(event.properties.sessionID)) return;
+        notifiedPermissionSessions.add(event.properties.sessionID);
         await notify("OpenCode needs permission", "Action required");
         return;
       }
