@@ -144,7 +144,7 @@ IN PROGRESS / DONE:
   [~|x] <owner/repo>#<N> - <title>
 
 LAUNCHING:
-  <owner/repo>  issue_<branch-number>  #12, #19
+  <owner/repo>  issue-<branch-number>  #12, #19
 ```
 
 Omit empty groups. Continue immediately; the board is informational, not an
@@ -156,15 +156,18 @@ Use all linked sub-issues, not only the current wave, to choose a lane branch:
 
 | Lane | Branch |
 |---|---|
-| One ticket in the repository | `issue_<ticket-number>` |
-| Multiple tickets in the parent repository | `issue_<parent-epic-number>` |
-| Multiple tickets in another repository | `issue_<first-local-ticket-number>` |
+| One ticket in the repository | `issue-<ticket-number>` |
+| Multiple tickets in the parent repository | `issue-<parent-epic-number>` |
+| Multiple tickets in another repository | `issue-<first-local-ticket-number>` |
 
 `first-local-ticket-number` is the first ticket in the lane's deterministic
 topological order, with issue number breaking ties. Before creating a branch,
 search for an open draft PR whose body identifies `Part of <parent-repo>#<parent-number>`.
 Reuse that PR's head branch when it exists; this preserves the branch across
 later waves.
+
+When creating a new lane branch, use only lowercase letters, numbers, and
+hyphens. Issue lanes must use `issue-<number>`; never generate `issue_<number>`.
 
 ### 7. Create or Reuse Each Worktree
 

@@ -32,8 +32,9 @@ For work under `~/github/glg/`:
 
 - Require an associated GitHub issue before implementation, commits, or pull
   requests. If no valid open issue exists, pause for the issue workflow.
-- For branches intended to publish GDS images or deployments, prefer hyphens
-  over `/`. Do not block an existing PR solely because its branch contains `/`.
+- For branches intended to publish GDS images or deployments, use lowercase
+  letters, numbers, and hyphens only. Do not block an existing PR solely
+  because its branch contains `/`; this rule applies when creating branches.
 - Search `~/github/glg/epiquery-templates/` before changing SQL templates or
   database queries.
 - Load `~/.dotfiles/config/opencode/references/glg-workflow.md` for project

@@ -3,7 +3,7 @@ if [[ -d "/opt/homebrew" ]]; then
   export HOMEBREW_PREFIX="/opt/homebrew"
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
   export HOMEBREW_REPOSITORY="/opt/homebrew"
-  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+  path=(/opt/homebrew/bin /opt/homebrew/sbin /opt/homebrew/opt/curl/bin $path)
   [ -z "${MANPATH-}" ] || export MANPATH=":${MANPATH#:}"
   export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
 fi
@@ -99,7 +99,6 @@ path=(
 $path
 $GOPATH
 $PNPM_HOME
-"$HOMEBREW_PREFIX/opt/curl/bin"
 $HOME/.local/bin
 $HOME/.local/share
 $HOME/.cargo/bin

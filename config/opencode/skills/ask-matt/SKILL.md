@@ -46,7 +46,8 @@ A **flow** is a path through the skills. Most engineering work runs along one **
 
 ## Standalone
 
-- **`prototype`** — a small, throwaway program that answers one design question. Keep the answer, delete the code.
+- **`grilling`** — the interview primitive itself: work in rounds, ask the current frontier, and let the user's decisions drive the next round.
+- **`prototype`** — a small, throwaway program that answers one design question. Keep the answer and capture the prototype on its throwaway branch.
 - **`research`** — delegate reading legwork to a background agent against primary sources; leaves a cited markdown file to feed into `grill-with-docs`.
 - **`teach`** — learn a concept over multiple sessions using the current directory as a stateful workspace.
 - **`resolving-merge-conflicts`** — resolve an in-progress git merge/rebase conflict.

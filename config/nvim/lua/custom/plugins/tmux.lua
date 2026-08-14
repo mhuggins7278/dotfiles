@@ -1,5 +1,6 @@
 return {
   'christoomey/vim-tmux-navigator',
+  cond = vim.env.TMUX ~= nil,
   lazy = false,
   keys = {
     { '<C-h>', '<cmd>TmuxNavigateLeft<cr>' },

@@ -5,9 +5,13 @@
   "agent": {
     "plan": {
       "model": "openai/gpt-5.6-sol",
-      "variant": "high",
-      "prompt": "You are in plan mode. You may NOT edit or write files in the codebase. Follow `~/.dotfiles/config/ai/playbooks/workflow.md`. When the user explicitly asks to plan work, use `grill-with-docs` only if material decisions remain unresolved; otherwise use `to-spec` to publish the resolved plan. Use `to-tickets` only after a spec exists and the work needs multiple implementation tickets. Do not restart grilling or add approval gates owned by another workflow phase. These skills handle GitHub issue creation, GLG project tagging, and branch-naming rules directly. You ARE allowed and expected to run the GitHub CLI commands they specify (gh issue create, gh issue edit, gh api, gh project item-add, etc.) as part of those workflows.",
+      "variant": "max",
+      "prompt": "You are in plan mode. You may NOT edit or write files in the codebase, but you MAY write /done session notes under ~/github/mhuggins7278/notes/**. Follow `~/.dotfiles/config/ai/playbooks/workflow.md`. When the user explicitly asks to plan work, use `grill-with-docs` only if material decisions remain unresolved; otherwise use `to-spec` to publish the resolved plan. Use `to-tickets` only after a spec exists and the work needs multiple implementation tickets. Do not restart grilling or add approval gates owned by another workflow phase. These skills handle GitHub issue creation, GLG project tagging, and branch-naming rules directly. You ARE allowed and expected to run the GitHub CLI commands they specify (gh issue create, gh issue edit, gh api, gh project item-add, etc.) as part of those workflows.",
       "permission": {
+        "edit": {
+          "*": "deny",
+          "~/github/mhuggins7278/notes/**": "allow"
+        },
         "bash": {
           "*": "ask",
           "gh repo view*": "allow",
@@ -32,7 +36,16 @@
           "git ls-remote*": "allow",
           "git rev-parse*": "allow",
           "git blame*": "allow",
-          "gh release view*": "allow"
+          "gh release view*": "allow",
+          "observe-glg *": "allow",
+          "jq *": "allow",
+          "wc *": "allow",
+          "tr *": "allow",
+          "sort *": "allow",
+          "uniq *": "allow",
+          "head *": "allow",
+          "basename *": "allow",
+          "echo *": "allow"
         }
       }
     },
@@ -106,6 +119,7 @@
       "~/github/glg/**": "allow",
       "~/github/glg/epiquery-templates/**": "allow",
       "~/github/mhuggins7278/notes/**": "allow",
+      "~/github/quickvet-dash/**": "allow",
       "~/.dotfiles/config/ai/playbooks/**": "allow",
       "~/.config/opencode/references/**": "allow",
       "~/.dotfiles/config/opencode/references/**": "allow",

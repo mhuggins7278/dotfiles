@@ -35,7 +35,7 @@ else
   fi
 fi
 
-BRANCH="issue_${ISSUE_NUM}"
+BRANCH="issue-${ISSUE_NUM}"
 
 # Create worktree (or switch to existing) via wt.
 # --create errors out if the branch already exists (e.g. a prior run already

@@ -4,7 +4,7 @@
     {
       "name": "same-repo-local-chain",
       "given": "Parent repo has #12 and #19, where #19 depends on #12.",
-      "expect": "Launch one detached lane on issue_<epic-number> that processes #12 then #19, and opens one combined draft PR."
+      "expect": "Launch one detached lane on issue-<epic-number> that processes #12 then #19, and opens one combined draft PR."
     },
     {
       "name": "independent-cross-repo-lanes",
@@ -19,7 +19,7 @@
     {
       "name": "external-multi-ticket-branch",
       "given": "An external repo has #55 then #61 in dependency order.",
-      "expect": "Use issue_55 for that lane and reuse its existing parent-epic draft PR on later waves."
+      "expect": "Use issue-55 for that lane and reuse its existing parent-epic draft PR on later waves."
     },
     {
       "name": "existing-worker",

@@ -104,6 +104,12 @@ After synthesizing, write a single sentence (≤ 20 words) capturing the essence
 This is used in the daily note. Example: "explored note capture friction, identified three
 improvements to the done skill."
 
+Also derive a short `session_slug` describing the session's primary focus or outcome. Use 3-6
+lowercase ASCII words joined with hyphens, omit generic words like `session` or `work`, and keep it
+specific enough to help with later search (for example, `improve-note-naming` or
+`reconcile-category-code-mapping`). Do not copy the full TL;DR verbatim; compress it into a useful
+filename label.
+
 ### 3. Determine Output Path
 
 The session notes vault base is:
@@ -113,9 +119,9 @@ NOTES_BASE=~/github/mhuggins7278/notes
 SESSION_DIR=$NOTES_BASE/ai-sessions
 ```
 
-Output path: `$SESSION_DIR/YYYY/MM/YYYY-MM-DD-HHmm.md`
+Output path: `$SESSION_DIR/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>.md`
 
-Example: `ai-sessions/2026/02/2026-02-18-1430.md`
+Example: `ai-sessions/2026/02/2026-02-18-1430-reconcile-category-code-mapping.md`
 
 Create parent directories if they don't exist:
 
@@ -131,7 +137,7 @@ Use the template matching the session type.
 
 ```markdown
 ---
-id: session-YYYY-MM-DD-HHmm
+id: session-YYYY-MM-DD-HHmm-<session_slug>
 date: YYYY-MM-DD
 time: "HH:MM"
 type: coding
@@ -183,7 +189,7 @@ model: <model-name-from-session-context>
 
 ```markdown
 ---
-id: session-YYYY-MM-DD-HHmm
+id: session-YYYY-MM-DD-HHmm-<session_slug>
 date: YYYY-MM-DD
 time: "HH:MM"
 type: exploration
@@ -250,12 +256,12 @@ If the daily note **exists**:
 2. **Add a backlink with TL;DR in the Notes section** — use the Edit tool to insert this
    line after the last existing item under `## Notes`:
    ```markdown
-   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <project> (<branch>)]] — <TL;DR>
+   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>|OpenCode session — <project> (<branch>)]] — <TL;DR>
    ```
    The TL;DR is the single sentence synthesized in Step 2 (≤ 20 words, lowercase, no trailing
    period). For exploration sessions without a branch, use just the topic:
    ```markdown
-   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm|OpenCode session — <topic>]] — <TL;DR>
+   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>|OpenCode session — <topic>]] — <TL;DR>
    ```
    If no `## Notes` section exists, add one at the end of the file.
 

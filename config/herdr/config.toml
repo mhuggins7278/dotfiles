@@ -1,0 +1,69 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = true
+dark_name = "catppuccin"
+light_name = "catppuccin-latte"
+
+[keys]
+prefix = "ctrl+a"
+
+[ui]
+hide_tab_bar_when_single_tab = true
+pane_borders = true
+pane_gaps = true
+show_agent_labels_on_pane_borders = true
+
+agent_panel_sort = "spaces"
+[terminal]
+shell_mode = "auto"
+new_cwd = "follow"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+description = "navigate left across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+description = "navigate down across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+description = "navigate up across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+description = "navigate right across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+alt+h"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+description = "resize left across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+alt+j"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+description = "resize down across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+alt+k"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+description = "resize up across Neovim and Herdr"
+
+[[keys.command]]
+key = "ctrl+alt+l"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+description = "resize right across Neovim and Herdr"

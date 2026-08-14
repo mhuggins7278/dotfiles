@@ -15,7 +15,7 @@
     - {
         src: "~/.dotfiles/config/gh/config.yml",
         dest: "~/.config/gh/config.yml",
-	force: true
+        force: true
       }
     - {
         src: "~/.dotfiles/config/starship.toml",
@@ -46,6 +46,11 @@
     - { src: "~/.dotfiles/config/nvim", dest: "~/.config/nvim", force: true }
     - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: true }
     - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: true }
+    - {
+        src: "~/.dotfiles/config/herdr/config.toml",
+        dest: "~/.config/herdr/config.toml",
+        force: true,
+      }
     - {
         src: "~/.dotfiles/config/opencode",
         dest: "~/.config/opencode",
