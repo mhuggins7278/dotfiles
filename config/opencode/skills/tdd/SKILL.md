@@ -5,7 +5,9 @@ description: Test-driven development. Use when the user wants to build features 
 
 # Test-Driven Development
 
-TDD is the red → green loop. This skill is the reference that makes that loop produce tests worth keeping: what a good test is, where tests go, the anti-patterns, and the rules of the loop. Every section applies on every cycle — consult them before and during the loop, not after.
+TDD is a red, green, refactor loop for work the user explicitly wants built
+test-first. Apply it with judgment rather than forcing ceremony onto changes
+without a meaningful test seam.
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
@@ -34,6 +36,9 @@ case.
 
 ## Rules of the loop
 
-- **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
-- **One slice at a time.** One seam, one test, one minimal implementation per cycle.
-- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+- **Red before green.** Observe the test fail for the intended reason before
+  implementing the behavior.
+- **Work vertically.** Prefer a small end-to-end behavior slice over batches of
+  speculative tests.
+- **Refactor after green.** Improve the implementation while the behavior stays
+  protected, then continue to the next useful slice.

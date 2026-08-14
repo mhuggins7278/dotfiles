@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Runs inside the sesh-created review session. Keeping lifecycle control here
+# avoids passing a shell program through sesh and the user's interactive shell.
+
+set -uo pipefail
+
+if [ "$#" -ne 4 ]; then
+  echo "Usage: agent-review-session <repo_path> <worktree_path> <review_branch> <prompt>" >&2
+  exit 2
+fi
+
+REPO_PATH="$1"
+WT_PATH="$2"
+REVIEW_BRANCH="$3"
+PROMPT="$4"
+
+opencode --agent review --prompt "$PROMPT"
+status=$?
+
+if [ "$status" -ne 0 ]; then
+  echo
+  echo "[agent-review] review failed (exit $status) - session and worktree retained"
+  exec "${SHELL:-/bin/bash}" -l
+fi
+
+if ! wt -C "$REPO_PATH" remove --foreground --force-delete -y \
+  "$REVIEW_BRANCH"; then
+  echo
+  if git -C "$WT_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "[agent-review] cleanup failed - session and worktree retained"
+  elif [ -e "$WT_PATH" ]; then
+    echo "[agent-review] cleanup failed - session and checkout path retained"
+  elif git -C "$REPO_PATH" show-ref --verify --quiet \
+    "refs/heads/$REVIEW_BRANCH"; then
+    echo "[agent-review] cleanup failed - session and branch retained; worktree removed"
+    cd "$REPO_PATH" || exit 1
+  else
+    echo "[agent-review] cleanup reported failure - session retained; worktree and branch removed"
+    cd "$REPO_PATH" || exit 1
+  fi
+  exec "${SHELL:-/bin/bash}" -l
+fi
+
+cd "$REPO_PATH" || exit 1
+
+if ! tmux kill-session; then
+  echo
+  echo "[agent-review] worktree and branch removed, but session cleanup failed - exit manually"
+  exec "${SHELL:-/bin/bash}" -l
+fi

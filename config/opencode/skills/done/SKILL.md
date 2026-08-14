@@ -1,12 +1,8 @@
 ---
 name: done
 description: >
-  End-of-session skill. Synthesizes the full conversation into a structured Obsidian note capturing
-  decisions, changes, questions, and follow-ups. Trigger on "/done", "/wrap", "wrap up", "we're
-  done", "save this session", "end of day", "I'm logging off", "capture this session", "that's
-  enough for now", "good stopping point", "let's call it", "closing up", "taking a break",
-  "I'm done here", "save my work", "note this session", or any indication the user is finishing or
-  pausing a session and wants a record of what happened.
+  Save an end-of-session summary to the notes vault. Use when the user invokes
+  `/done` or explicitly asks to capture or archive the current session.
 ---
 
 # Done Skill — Session Wrap-Up
@@ -15,7 +11,7 @@ Synthesizes everything from the current OpenCode session into a note in the Obsi
 
 ## When to Use
 
-- User runs `/done` or `/wrap` at the end of any session
+- User runs `/done` at the end of a session
 - User says "wrap up this session", "we're done", "save this session", "that's enough for now",
   "good stopping point", "closing up", "I'm done here", or any similar phrase
 

@@ -4,18 +4,20 @@ description: >
   Use this skill when the user asks you to create a pull request, open a PR, or push and create a PR.
   Trigger on "create a PR", "open a pull request", "push this up", "submit for review", "ready to merge",
   "share this with the team", or any request to submit work for review. Provides the full PR creation
-  workflow including branch push, PR template detection, issue-first enforcement, and gh CLI usage.
+  workflow including branch push, PR template detection, production tracking, and gh CLI usage.
 ---
 
 # Pull Request Skill
 
-## GLG Rules (repos under `~/github/glg/` only)
+## GLG Production Tracking (repos under `~/github/glg/` only)
 
 For repos under `~/github/glg/`, read
 `~/.dotfiles/config/opencode/references/glg-workflow.md` before creating or
-updating the PR. It owns branch naming, issue-first, and project rules. Do not
-block an existing PR solely because its branch contains `/`; branch-format
-guidance applies to branches intended to publish GDS images or deployments.
+updating the PR. It owns branch naming, production tracking, and project rules.
+An issue is required for PRs intended to merge into shared or production
+branches, but draft exploratory PRs may omit one. Do not block an existing PR
+solely because its branch contains `/`; branch-format guidance applies to
+branches intended to publish GDS images or deployments.
 
 ## Issue Links That Close on Merge
 
@@ -66,7 +68,13 @@ Use `origin/<base>` (remote ref) to avoid "unknown revision" errors. If missing,
 
 ### 3. Check for PR template
 
-Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its structure (write "N/A" for inapplicable sections). If not found, use the default body in step 5. In either case, ensure the final body contains an evidence section, the dedicated `## Linked issues` section, and one exact closing line for every associated issue.
+Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
+`.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its
+structure (write "N/A" for inapplicable sections). If not found, use the
+default body in step 5. In either case, ensure the final body contains an
+evidence section and the dedicated `## Linked issues` section. Include one
+exact closing line for every associated issue; for exploratory work without an
+issue, state `No linked issue: exploratory work` in that section.
 
 ### 4. Compile evidence
 
@@ -123,7 +131,7 @@ gh pr create --draft --reviewer @copilot --base <base> --title "<title>" --body 
 
 ## Linked issues
 
-Fixes <issue-closing-reference>
+<one `Fixes` line per associated issue, or `No linked issue: exploratory work`>
 
 ## Included issues
 

@@ -23,13 +23,19 @@ repository has multiple linked tickets. In another repository, use the first
 local ticket number in deterministic dependency order. A one-ticket lane always
 uses that ticket's number. Use the `issue-<number>` format for issue lanes.
 
-## Issue-First Workflow
+## Production Work Tracking
 
-All implementation work in GLG repos requires an associated GitHub issue **before** making any code edits, commits, or PRs.
+Use GitHub issues as the default coordination mechanism for production-bound
+work. An issue is required before merging, deploying, or releasing work that
+affects shared or production systems.
+
+Local experiments, POCs, spikes, temporary debugging, and throwaway
+prototypes do not require an issue. Keep exploratory work isolated and clearly
+named. When exploration becomes production work:
 
 1. Check for an existing issue reference in branch context, commit messages, or user-provided input
 2. Validate candidate issue numbers with `gh issue view <number>` — if closed or unrelated, treat as missing
-3. If no valid open issue is found, **pause and prompt the user to create one** before proceeding
+3. If no valid open issue is found, pause and prompt the user to create one before opening the production PR, merging, or deploying
 4. If the user agrees, create the issue and add it to `glg` project `92`
 
 ## Project Tagging

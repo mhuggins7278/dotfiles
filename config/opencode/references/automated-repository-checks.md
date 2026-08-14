@@ -1,8 +1,9 @@
 # Automated Repository Checks
 
 `check-principles.sh` runs a small cross-repository hygiene check before
-commits and pull requests. It is not a substitute for tests, linters, or the
-Review Subagent, and it should not be presented as a quality verdict in a PR.
+commits and pull requests. It is not a substitute for tests, linters, or
+proportional review, and it should not be presented as a quality verdict in a
+PR.
 
 ## Checks
 

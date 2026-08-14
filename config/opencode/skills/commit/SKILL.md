@@ -1,10 +1,8 @@
 ---
 name: commit
 description: >
-  Use this skill when the user asks you to commit changes, stage files, or create a git commit.
-  Trigger on "commit this", "commit the changes", "save my work", "make a commit", "I'm done with
-  this change", "stage these files", or any request to persist changes to git. Provides the safe
-  commit workflow with pre-commit hook awareness and GLG issue-first enforcement.
+  Commit or stage Git changes safely. Use only when the user explicitly asks to
+  commit, stage, or create a Git commit.
 ---
 
 # Commit Skill
@@ -16,14 +14,15 @@ Commit staged and unstaged changes safely.
 - User says "commit this", "commit the changes", "make a commit"
 - User asks you to save work to git
 
-## GLG Workflow Rules
+## GLG Production Tracking
 
 For repos under `~/github/glg/`, read
 `~/.dotfiles/config/opencode/references/glg-workflow.md` before committing and
-apply its branch, issue-first, and project rules. Do not block an existing PR
+apply its branch and production tracking rules. Do not block an existing PR
 solely because its branch contains `/`; branch-format guidance applies to
-branches intended to publish GDS images or deployments. Stop for a missing
-issue.
+branches intended to publish GDS images or deployments. An issue is recommended
+for substantive production work but is not required for local exploratory
+commits. Never block a commit solely because no issue exists.
 
 ## Safety Rules
 
@@ -33,7 +32,7 @@ issue.
 - NEVER commit files that may contain secrets (`.env`, credentials, tokens) — warn the user
 - Amend is allowed ONLY when ALL three conditions are met: (1) user explicitly requested it OR the commit succeeded but a pre-commit hook auto-modified files that need including, AND (2) HEAD commit was created by you in this conversation, AND (3) commit has NOT been pushed to remote
 - If a commit FAILED or was REJECTED by a hook, NEVER amend — fix the issue and create a NEW commit
-  - In repos under `~/github/glg/`, require an associated GitHub issue before committing (see GLG Workflow Rules above).
+  - In repos under `~/github/glg/`, do not block a commit solely because no issue exists.
 
 ## Workflow
 

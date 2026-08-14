@@ -1,37 +1,46 @@
-# Planning And Execution Workflow
+# Autonomy-First Engineering Workflow
 
-This is the canonical workflow for planning and executing engineering work.
-Each state has one owner, one artifact, and one reason to stop. Skills and
-agents must not add a second gate owned by another state.
+Use the smallest process that safely completes the user's request.
 
-| Transition | Owner | Artifact | Stop only when |
-| --- | --- | --- | --- |
-| Unclear idea to aligned | `grill-with-docs` | Updated `CONTEXT.md` and ADRs | A decision needs the user |
-| Aligned to specified | `to-spec` | GitHub spec issue | A material decision is still unknown |
-| Specified to ticketed | `to-tickets` | GitHub issue or epic with sub-issues | Waiting for one publication approval |
-| Ticketed to implemented | `implement` | Commit and verification evidence | A material ambiguity or unrecoverable failure occurs |
-| Executable epic to parallel work | `workon` | Lane branches and draft PRs | A lane reports blocked or complete |
+## Default Loop
 
-## Rules
+1. Understand the request and inspect relevant context.
+2. State consequential assumptions; make reversible choices autonomously.
+3. Implement or investigate directly.
+4. Verify proportionally to the change's size and risk.
+5. Report the outcome, evidence, and anything not verified.
 
-- Use `grill-with-docs` only when decisions are unresolved. It owns the
-  interactive interview and must not publish specs or tickets.
-- `to-spec` synthesizes the resolved conversation and codebase context. It
-  does not restart a broad grilling session. It may ask about a material,
-  unresolved product or architecture decision.
-- `to-tickets` decomposes an approved spec mechanically. It must not restart
-  grilling. Present the full ticket set once and wait for one approval before
-  publishing it.
-- An explicit `implement` or `workon` request authorizes routine execution.
-  Select ordinary test seams autonomously and record them in the implementation
-  summary. Ask only when a choice materially changes product behavior,
-  architecture, or safety.
-- `workon` workers must finish with an explicit `LANE_RESULT: COMPLETE` or
-  `LANE_RESULT: BLOCKED` marker. A blocked result names the ticket and the
-  exact decision or failure that requires attention.
+When tests add confidence, prefer vertical behavior slices exercised through
+existing public seams. Do not invent abstractions or test boundaries solely to
+fit a process.
 
-## Supporting Skills
+Planning, research, prototyping, testing, review, and delegation are
+capabilities to use when they improve the result. They are not mandatory
+phases and do not need separate artifacts by default.
 
-`grilling`, `domain-modeling`, `tdd`, `research`, `prototype`, `review`,
-`commit`, and `pr` support a state owner. They do not create additional user
-approval gates unless the workflow above explicitly calls for one.
+## Ask Only When Needed
+
+Ask when a decision materially changes product behavior, architecture,
+security, privacy, cost, or an irreversible external state. Otherwise choose a
+reasonable default, state it when useful, and continue.
+
+Require explicit authorization before destructive commands, production
+deployments, bulk external publication, posting on the user's behalf, or Git
+pushes and commits the user did not request. Local reading, editing, testing,
+formatting, and ordinary diagnosis do not need approval.
+
+## Proportional Execution
+
+- Use a subagent for specialized tools, independent parallel work, or useful
+  context isolation, not because a workflow always requires one.
+- Match test and review depth to realistic regression risk.
+- Retry only when the failure is transient and the next attempt changes the
+  conditions.
+- Use concise, adaptive output. Emit fixed markers only when another process
+  consumes them.
+- Create specs, tickets, branches, and PRs only when the user explicitly asks
+  or invokes the corresponding command.
+
+Exploration may end in an answer, discarded prototype, or local commit. When
+it becomes shared or production work, apply the repository's coordination and
+release rules at that boundary.

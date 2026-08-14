@@ -2,9 +2,8 @@
 name: retro
 description: >
   Run a post-session retrospective to analyze friction, mistakes, and learnings.
-  Use this skill to update the repo's AGENTS.md with new gotchas, or to propose
-  new playbooks and golden principles. Trigger on "/retro", "run a retro",
-  "let's do a retrospective", or "what did we learn".
+  Use when the user explicitly asks for a retro or wants durable repository
+  guidance captured from the current session.
 ---
 
 # Retrospective Skill
@@ -27,8 +26,9 @@ Categorize the learnings into three buckets:
 **A. Repo-Specific Gotchas (AGENTS.md)**
 Quirks, preferred libraries, test setup commands, or architectural rules specific to this repository.
 
-**B. Missing Playbooks**
-Workflows we did today that are likely to be repeated (e.g., "Adding a new database migration"). These should be documented as step-by-step playbooks.
+**B. Missing Durable Guidance**
+Repository-specific workflows that repeatedly caused friction and belong in
+`AGENTS.md` or a focused skill rather than a one-session transcript.
 
 **C. Golden Principles**
 Systemic invariants that should be checked mechanically across all repos (e.g., "Never commit `console.log`").
@@ -41,7 +41,8 @@ Draft the exact markdown additions (using the "stable content first, volatile de
 ### 4. Apply Updates
 Wait for the user to approve. Once approved:
 - Use the Edit/Write tools to update `AGENTS.md` in the repo root.
-- If new Playbooks or Golden Principles were identified, instruct the user how they should be captured in `~/.dotfiles/config/opencode/`.
+- Capture broader guidance only when the pattern has repeated and the rule is
+  stable enough to justify permanent context.
 
 ## Common Pitfalls
 - Don't pollute `AGENTS.md` with generic programming advice; keep it strictly repo-specific.

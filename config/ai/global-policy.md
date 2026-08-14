@@ -1,23 +1,24 @@
 # Shared AI Policy
 
-This policy applies to OpenCode. Tool-specific adapters and repository
-instructions add only behavior that cannot be shared here.
+This policy applies to OpenCode. Repository instructions add behavior specific
+to the active project.
 
 ## Durable Rules
 
 - Do not assign GitHub issues to the user unless they explicitly ask.
-- Prefer specialized skills and agents when the task matches their scope.
-- Shared specialist methodology lives in `config/ai/playbooks/`; tool adapters
-  must not become independent copies of that methodology.
+- Prefer specialized skills and agents when they provide needed tools,
+  isolation, or meaningful parallelism. Do not delegate mechanically.
 - Match the surrounding codebase's style, naming, comments, and formatter
   conventions. Handle relevant failure modes without adding speculative guards.
+- Use Worktrunk (`wt`) for worktree creation, selection, listing, and removal.
+  Do not call `git worktree` directly.
 
 ## Workflow Core
 
-For planning and execution, follow
-`~/.dotfiles/config/ai/playbooks/workflow.md`. Do not introduce additional
-approval gates or restart a prior workflow phase unless that playbook requires
-it.
+Follow the autonomy-first defaults in
+`~/.dotfiles/config/ai/playbooks/workflow.md`. Treat named workflows as
+optional capabilities, not mandatory phases. Ask only when uncertainty is
+material or an irreversible external action needs authorization.
 
 ## Dotfiles Sources
 
@@ -30,8 +31,13 @@ is a root-level dotfile.
 
 For work under `~/github/glg/`:
 
-- Require an associated GitHub issue before implementation, commits, or pull
-  requests. If no valid open issue exists, pause for the issue workflow.
+- Use GitHub issues as the default coordination mechanism for production-bound
+  work. An issue is required before merging, deploying, or releasing work that
+  affects shared or production systems.
+- Local experiments, POCs, spikes, temporary debugging, and throwaway
+  prototypes do not require an issue. Keep exploratory work isolated and
+  clearly named. When an experiment graduates into production work, create or
+  associate an issue before opening the production PR, merging, or deploying.
 - For branches intended to publish GDS images or deployments, use lowercase
   letters, numbers, and hyphens only. Do not block an existing PR solely
   because its branch contains `/`; this rule applies when creating branches.

@@ -1,13 +1,12 @@
 # Global Context Evaluation
 
 `global-context-scenarios.json` is the acceptance fixture for simplifying
-always-loaded OpenCode context. It complements the existing
-skill trigger and review fixtures; it does not replace them.
+always-loaded OpenCode context and routing behavior.
 
 ## Baseline Procedure
 
-Before changing a context layer, run every scenario with both tools using the
-same repository state and non-destructive permissions. Record:
+Before changing a context layer, run every scenario with the same repository
+state and non-destructive permissions. Record:
 
 - whether every expectation passes;
 - selected skill, agent, and tool family where observable;
@@ -22,7 +21,6 @@ when it regresses a safety, path, conditional-policy, or routing expectation.
 Run these before recording an A/B result:
 
 ```sh
-python3 config/ai/scripts/validate-agent-contracts.py
 python3 -m json.tool config/opencode/config.json >/dev/null
 ansible-playbook --syntax-check --list-tasks ansible/dotfiles.yml
 ansible-playbook --check --diff ansible/dotfiles.yml --tags links
@@ -35,16 +33,12 @@ wc -c -l -w \
   config/opencode/AGENTS.md \
   AGENTS.md \
   config/opencode/agent/*.md \
-  config/ai/playbooks/*.md
+  config/ai/global-policy.md \
+  config/ai/playbooks/workflow.md
 ```
 
-## Contract Scope
+## Runtime Scope
 
-`../agent-contracts.json` declares the expected OpenCode adapters, their
-canonical core playbook, required abstract capabilities, and mutation level.
-The validator confirms that each adapter and its referenced playbook exist
-before later phases reduce adapter bodies or migrate permissions.
-
-The contract deliberately does not infer live MCP availability. Runtime smoke
-tests remain responsible for verifying actual tool namespaces, per-agent
-permission precedence, and MCP connection behavior.
+Static checks do not infer live MCP availability or effective permission order.
+Use `opencode debug config`, `opencode debug agent <name>`, and focused runtime
+smoke tests to verify tool namespaces and mutation boundaries.

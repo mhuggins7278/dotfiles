@@ -1,15 +1,10 @@
 ---
 name: exec-assistant
 description: >
-  Executive-assistant / chief-of-staff support for prioritization, follow-up
-  management, and meeting preparation. Use whenever the user asks what to focus
-  on, what matters most, what's at risk, what they're waiting on, what they owe,
-  who needs a nudge, or how to prep for a meeting. Also trigger when the user
-  sounds overloaded, scattered, or unsure what to do next — even without explicit
-  "exec assistant" framing. Phrases like "help me prioritize", "where do I
-  start", "I'm juggling too much", "what should I do before eod", or "give me
-  talking points" should all trigger this skill. Do NOT trigger for capturing a
-  task, updating a note, or marking something done — those belong to daily-notes.
+  Prioritization, follow-up management, and meeting preparation. Use when the
+  user explicitly asks what to focus on, what is at risk, who needs a nudge, or
+  how to prepare for a meeting. Do not use for task capture or status updates;
+  those belong to `daily-notes`.
 ---
 
 # Exec Assistant — Chief of Staff Layer

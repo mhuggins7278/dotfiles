@@ -3,25 +3,49 @@
 # Usage: agent-fix <issue_number> <repo_name> <repo_path>
 #
 # Pre-flight (mirrors agent-review):
-#   - Creates/switches to a worktree for the issue branch
-#   - Pulls latest if the branch already has an upstream
+#   - Verifies the issue and creates/reuses its worktree
+#   - Fast-forwards a clean worktree when the branch exists remotely
 #   - Installs dependencies before opencode starts
 #   - Creates a dedicated named tmux session via sesh at the worktree path
 
 set -euo pipefail
 
+if [ "$#" -ne 3 ]; then
+  echo "Usage: agent-fix <issue_number> <repo_name> <repo_path>" >&2
+  exit 2
+fi
+
 ISSUE_NUM="$1"
 REPO_NAME="$2"
 REPO_PATH="$3"
+
+# gh-dash commands are shell strings, so they pass RepoPath as inert hex.
+# Octo invokes this script with an argument vector and continues to pass it raw.
+if [[ "$REPO_PATH" == hex:* ]]; then
+  REPO_PATH_HEX="${REPO_PATH#hex:}"
+  if [[ ! "$REPO_PATH_HEX" =~ ^([[:xdigit:]]{2})*$ ]]; then
+    echo "[agent-fix] invalid encoded repository path" >&2
+    exit 1
+  fi
+  REPO_PATH=$(printf '%s' "$REPO_PATH_HEX" | xxd -r -p)
+fi
+
+if [[ ! "$ISSUE_NUM" =~ ^[0-9]+$ ]]; then
+  echo "[agent-fix] invalid issue number: $ISSUE_NUM" >&2
+  exit 1
+fi
+
+if [[ ! "$REPO_NAME" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
+  echo "[agent-fix] invalid repository name: $REPO_NAME" >&2
+  exit 1
+fi
 
 # Ensure the repo is cloned locally under ~/github/{org}/{repo}
 OWNER="${REPO_NAME%%/*}"
 REPO="${REPO_NAME##*/}"
 CANONICAL_REPO_PATH="$HOME/github/$OWNER/$REPO"
 
-if git -C "$REPO_PATH" rev-parse --show-toplevel >/dev/null 2>&1; then
-  REPO_PATH="$REPO_PATH"
-else
+if ! git -C "$REPO_PATH" rev-parse --show-toplevel >/dev/null 2>&1; then
   REPO_PATH="$CANONICAL_REPO_PATH"
 
   if ! git -C "$REPO_PATH" rev-parse --show-toplevel >/dev/null 2>&1; then
@@ -37,25 +61,64 @@ fi
 
 BRANCH="issue-${ISSUE_NUM}"
 
+# Resolve the remote whose URL names the selected repository rather than
+# assuming origin points at it.
+TARGET_REMOTE=""
+REPO_NAME_LOWER=$(tr '[:upper:]' '[:lower:]' <<<"$REPO_NAME")
+while IFS= read -r remote; do
+  remote_url=$(git -C "$REPO_PATH" config --get "remote.$remote.url")
+  remote_repo="$remote_url"
+  if [[ "$remote_repo" == *"://"* ]]; then
+    remote_repo="${remote_repo#*://}"
+    remote_repo="${remote_repo#*/}"
+  else
+    remote_repo="${remote_repo#*:}"
+  fi
+  remote_repo="${remote_repo%.git}"
+  remote_repo_lower=$(tr '[:upper:]' '[:lower:]' <<<"$remote_repo")
+
+  if [ "$remote_repo_lower" = "$REPO_NAME_LOWER" ]; then
+    TARGET_REMOTE="$remote"
+    break
+  fi
+done < <(git -C "$REPO_PATH" remote)
+
+if [ -z "$TARGET_REMOTE" ]; then
+  echo "[agent-fix] no Git remote matches $REPO_NAME in $REPO_PATH" >&2
+  exit 1
+fi
+
+# Verify the target before creating local state, then fetch the exact base used
+# for a new issue branch. Existing remote issue branches are fetched explicitly.
+gh issue view "$ISSUE_NUM" -R "$REPO_NAME" --json number --jq .number >/dev/null
+DEFAULT_BRANCH=$(gh repo view "$REPO_NAME" --json defaultBranchRef \
+  --jq .defaultBranchRef.name)
+git -C "$REPO_PATH" fetch "$TARGET_REMOTE" \
+  "+refs/heads/$DEFAULT_BRANCH:refs/remotes/$TARGET_REMOTE/$DEFAULT_BRANCH"
+
+REMOTE_BRANCH_EXISTS=false
+if git -C "$REPO_PATH" ls-remote --exit-code --heads "$TARGET_REMOTE" "$BRANCH" \
+  >/dev/null 2>&1; then
+  git -C "$REPO_PATH" fetch "$TARGET_REMOTE" \
+    "+refs/heads/$BRANCH:refs/remotes/$TARGET_REMOTE/$BRANCH"
+  REMOTE_BRANCH_EXISTS=true
+fi
+
 # Create worktree (or switch to existing) via wt.
 # --create errors out if the branch already exists (e.g. a prior run already
 # created it), so only pass --create when the branch is genuinely new.
 if git -C "$REPO_PATH" show-ref --verify --quiet "refs/heads/$BRANCH" \
-  || git -C "$REPO_PATH" show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
-  wt -C "$REPO_PATH" switch -y --no-cd "$BRANCH"
+  || git -C "$REPO_PATH" show-ref --verify --quiet \
+    "refs/remotes/$TARGET_REMOTE/$BRANCH"; then
+  WT_RESULT=$(wt -C "$REPO_PATH" switch -y --no-cd --format json "$BRANCH")
 else
-  wt -C "$REPO_PATH" switch --create -y --no-cd "$BRANCH"
+  WT_RESULT=$(wt -C "$REPO_PATH" switch --create \
+    --base "$TARGET_REMOTE/$DEFAULT_BRANCH" \
+    -y --no-cd --format json "$BRANCH")
 fi
 
-# Get authoritative worktree path from git
-WT_PATH=$(git -C "$REPO_PATH" worktree list --porcelain \
-  | awk -v branch="refs/heads/$BRANCH" '
-      /^worktree / { path = substr($0, 10) }
-      $0 == "branch " branch { print path; exit }
-    ')
-
-# Session name = basename of worktree path (matches sesh naming convention)
-SESSION_NAME=$(basename "$WT_PATH")
+# Use Worktrunk's structured output rather than assuming its path template.
+WT_PATH=$(jq -er '.path' <<<"$WT_RESULT")
 
 # Detect dependency install command (read lockfiles before entering session).
 # If package.json pins an exact packageManager version (e.g. "pnpm@9.9.0"),
@@ -96,21 +159,30 @@ elif [ -f "$WT_PATH/Cargo.toml" ]; then
   INSTALL_CMD="cargo fetch"
 fi
 
-# Build startup command: pull + install (inside session), then run workon, then kill session.
+# Build startup command: sync + install (inside session), then run workon.
 # Only auto-kill the session if the whole chain succeeds — if setup or opencode
 # fails, leave the session open so the error is visible instead of vanishing.
-FNM_SETUP='eval "$(fnm env --shell bash)" && fnm use --install-if-missing'
-
-STARTUP="git -C '$WT_PATH' pull origin '$BRANCH' 2>/dev/null || true"
+printf -v WT_PATH_ARG '%q' "$WT_PATH"
+printf -v BRANCH_ARG '%q' "$BRANCH"
+printf -v PROMPT_ARG '%q' "/workon ${REPO_NAME}#${ISSUE_NUM}"
+STARTUP="true"
+if [ "$REMOTE_BRANCH_EXISTS" = true ] \
+  && [ -z "$(git -C "$WT_PATH" status --porcelain)" ]; then
+  printf -v TARGET_REMOTE_ARG '%q' "$TARGET_REMOTE"
+  STARTUP="git -C $WT_PATH_ARG pull --ff-only $TARGET_REMOTE_ARG $BRANCH_ARG"
+fi
 if [ -n "$INSTALL_CMD" ]; then
   if [[ "$INSTALL_CMD" =~ ^(pnpm|yarn|npm|npx) ]]; then
-    STARTUP="$STARTUP && (cd '$WT_PATH' && $FNM_SETUP && $INSTALL_CMD)"
+    STARTUP="$STARTUP && (cd $WT_PATH_ARG"
+    STARTUP="$STARTUP && eval \"\$(fnm env --shell bash)\""
+    STARTUP="$STARTUP && fnm use --install-if-missing && $INSTALL_CMD)"
   else
-    STARTUP="$STARTUP && (cd '$WT_PATH' && $INSTALL_CMD)"
+    STARTUP="$STARTUP && (cd $WT_PATH_ARG && $INSTALL_CMD)"
   fi
 fi
-STARTUP="$STARTUP && opencode --prompt '/workon ${REPO_NAME}#${ISSUE_NUM}'"
-STARTUP="( $STARTUP ); st=\$?; if [ \$st -eq 0 ]; then tmux kill-session; else echo; echo \"[agent-fix] setup failed (exit \$st) — session left open, exit manually\"; fi"
+STARTUP="$STARTUP && opencode --prompt $PROMPT_ARG"
+CLEANUP="tmux kill-session"
+STARTUP="( $STARTUP ); st=\$?; if [ \$st -ne 0 ]; then echo; echo \"[agent-fix] workflow failed (exit \$st) — session and worktree retained\"; exec \"\${SHELL:-/bin/bash}\" -l; elif ! $CLEANUP; then echo; echo \"[agent-fix] workflow completed, but session cleanup failed — issue worktree retained; exit manually\"; exec \"\${SHELL:-/bin/bash}\" -l; fi"
 
 # Create/connect to named session (sesh handles the client switch internally)
 sesh connect --command "$STARTUP" "$WT_PATH"

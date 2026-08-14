@@ -59,7 +59,7 @@ keybindings:
       name: agent fix
       command: >
         ~/.dotfiles/config/gh-dash/agent-fix
-        {{.IssueNumber}} '{{.RepoName}}' {{.RepoPath}}
+        {{.IssueNumber}} {{.RepoName}} hex:{{printf "%x" .RepoPath}}
     - key: B
       command: >
         tmux display-popup -d {{.RepoPath}} -w 65 -h 10 -E 'ghprb {{.IssueNumber}}'
@@ -78,7 +78,7 @@ keybindings:
       name: agent review
       command: >
         ~/.dotfiles/config/gh-dash/agent-review
-        {{.PrNumber}} '{{.RepoName}}' {{.RepoPath}}
+        {{.PrNumber}} {{.RepoName}} hex:{{printf "%x" .RepoPath}}
 repoPaths:
   glg/*: ~/github/glg/*
   Learn-Build-Teach/*: ~/github/mhuggins7278/*
