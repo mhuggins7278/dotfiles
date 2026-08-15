@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Diagnose hard, ambiguous, intermittent, or performance-related bugs. Use when the user explicitly asks for diagnosis or an ordinary reproduction-and-fix loop is insufficient.
+description: Diagnose hard, ambiguous, intermittent, or performance-related bugs. Use when a symptom resists ordinary reproduction, needs a tight feedback loop, or requires root-cause investigation. Use observe-glg when the evidence is production GDS logs, and prototype when the question is design or state uncertainty.
 ---
 
 # Diagnosing Bugs

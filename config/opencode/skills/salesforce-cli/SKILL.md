@@ -92,3 +92,11 @@ sf <command> --help
 sf plugins
 sf doctor
 ```
+
+## Completion
+
+For a deploy, retrieve, query, or test run, report the exact target org,
+command, result or job ID, and verification state. A submitted asynchronous
+job is not a completed deployment: inspect its result with the CLI's report or
+resume command. For mutations, include the confirmation boundary and any
+warnings or partial-failure state.

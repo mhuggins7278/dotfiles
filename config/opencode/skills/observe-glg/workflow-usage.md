@@ -26,7 +26,9 @@ URI_PATTERN="<computed_regex>"
 
 #### U2. Query access logs
 
-Use the `-f` flag with a raw OPAL regex filter to match the URI pattern. Use a high limit — usage stats need volume.
+Use the `-f` flag with the wrapper's OPAL filter syntax to match the URI
+pattern. Confirm exact syntax with `observe-glg --help` or a known repository
+query before running it. Use a high limit; usage stats need volume.
 
 ```bash
 SERVICE="<service_name>"
@@ -35,12 +37,19 @@ START="<time_range>"  # e.g. -30d, -7d, -24h
 
 > **Why `-f` instead of `--request_uri`?** The `--request_uri` flag with `%` prefix does a contains match, but for route patterns with wildcards in the middle (e.g. `member/[^/?]+/profile`), a proper regex via `-f` is needed.
 
-For simple patterns without mid-path wildcards (e.g. just a prefix), `--request_uri %<prefix>` is acceptable too.
+For simple patterns without mid-path wildcards (e.g. just a prefix),
+`--request_uri "%<prefix>"` is acceptable too.
+
+```bash
+observe-glg -S "$SERVICE" -s "$START" -i access \
+  -f "request_uri ~ \"$URI_PATTERN\"" -l 10000 \
+  -O "$TMP_DIR/access.json"
+```
 
 #### U3. Check result count
 
 ```bash
-ACCESS_COUNT=$(wc -l < /tmp/obs_access.json 2>/dev/null | tr -d ' ')
+ACCESS_COUNT=$(jq -s length "$TMP_DIR/access.json" 2>/dev/null || printf '0')
 echo "Matching requests: $ACCESS_COUNT"
 ```
 
@@ -53,41 +62,41 @@ If results are capped at the limit, note this in the summary ("at least N reques
 
 #### U4. Analyze usage stats
 
-Run the following jq analyses on `/tmp/obs_access.json`:
+Run the following jq analyses on `"$TMP_DIR/access.json"`:
 
 **Total request count:**
 ```bash
-wc -l < /tmp/obs_access.json | tr -d ' '
+jq -s length "$TMP_DIR/access.json"
 ```
 
 **Breakdown by HTTP method:**
 ```bash
-jq -r '.http_method' /tmp/obs_access.json | sort | uniq -c | sort -rn
+jq -r '.http_method' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn
 ```
 
 **Status code distribution:**
 ```bash
-jq -r '.status_code' /tmp/obs_access.json | sort | uniq -c | sort -rn
+jq -r '.status_code' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn
 ```
 
 **Top callers by `src` query parameter:**
 ```bash
-jq -r '(.request_uri | split("?") | if length > 1 then .[1] | split("&") | map(select(startswith("src="))) | first // "src=unknown" | ltrimstr("src=") else "no-src" end)' /tmp/obs_access.json | sort | uniq -c | sort -rn
+jq -r '(.request_uri | split("?") | if length > 1 then .[1] | split("&") | map(select(startswith("src="))) | first // "src=unknown" | ltrimstr("src=") else "no-src" end)' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn
 ```
 
 **Top callers by http_referrer (path only):**
 ```bash
-jq -r '(.http_referrer // "") | if . == "" or . == "null" or . == null then "no-referrer" else capture("https?://[^/]+(?<path>/.*)") | .path // "no-path" end' /tmp/obs_access.json | sort | uniq -c | sort -rn | head -20
+jq -r '(.http_referrer // "") | if . == "" or . == "null" or . == null then "no-referrer" else capture("https?://[^/]+(?<path>/.*)") | .path // "no-path" end' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn | head -20
 ```
 
 **Top callers by user_agent (to distinguish browser vs service-to-service):**
 ```bash
-jq -r '.user_agent // "unknown"' /tmp/obs_access.json | sort | uniq -c | sort -rn | head -10
+jq -r '.user_agent // "unknown"' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn | head -10
 ```
 
 **Traffic by cluster:**
 ```bash
-jq -r '.cluster // "unknown"' /tmp/obs_access.json | sort | uniq -c | sort -rn
+jq -r '.cluster // "unknown"' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn
 ```
 
 #### U5. Present findings

@@ -57,3 +57,24 @@ into a checklist merely to make the process deterministic.
   additive and are not allowlists.
 - Keep agent files authoritative and concise rather than duplicating a second
   canonical playbook.
+
+## Local QA Before Publishing A Skill
+
+Before adding or materially changing a skill, check:
+
+- The description names the capability and each genuinely distinct trigger
+  branch, using concrete local nouns where possible.
+- The primary file contains universal steps and completion criteria; branch-only
+  reference is disclosed behind a precise local pointer.
+- Durable rules have one owner. Other skills point to that owner instead of
+  restating the rule.
+- Environment facts come from source files, local `--help`, repository scripts,
+  or runtime inspection unless the fact is an unwritten convention or gotcha.
+- Mutation boundaries are explicit and post-action state is verified.
+- Every local markdown link resolves, the folder and frontmatter names match,
+  and the skill inventory audit passes.
+
+OpenCode does not support a portable `disable-model-invocation` frontmatter
+switch. Preserve natural-language routing for useful skills; use commands for
+explicit orchestration, publication, and multi-artifact workflows rather than
+pretending a skill is user-only.

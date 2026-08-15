@@ -1,299 +1,80 @@
 ---
 name: done
-description: >
-  Save an end-of-session summary to the notes vault. Use when the user invokes
-  `/done` or explicitly asks to capture or archive the current session.
+description: Save an end-of-session summary to the notes vault. Use when the user invokes `/done` or explicitly asks to wrap up, save, or archive the current session.
 ---
 
-# Done Skill — Session Wrap-Up
+# Session Wrap-Up
 
-Synthesizes everything from the current OpenCode session into a note in the Obsidian vault.
+Capture the current session as one searchable note, then add a compact backlink
+and actionable follow-ups to today's daily note. This skill writes only inside
+`~/github/mhuggins7278/notes`.
 
-## When to Use
+## 1. Gather context
 
-- User runs `/done` at the end of a session
-- User says "wrap up this session", "we're done", "save this session", "that's enough for now",
-  "good stopping point", "closing up", "I'm done here", or any similar phrase
-
-## Session Type
-
-Before writing the note, classify the session as one of:
-
-- **coding** — the session made concrete code or file changes, ran commands, modified configs, etc.
-- **exploration** — the session was primarily discussion, planning, research, or brainstorming with
-  no (or incidental) file changes
-
-Use these signals to decide:
-- Any files written, edited, or deleted → **coding**
-- Git commits or diffs referenced → **coding**
-- Primarily conversation, questions, ideation → **exploration**
-
-Use the appropriate template from the sections below. When in doubt, prefer **exploration** — a
-leaner note is better than one full of empty sections.
-
-## Workflow
-
-### 1. Gather Context (Run in Parallel)
-
-Run all of the following at once:
+Run these independent lookups in parallel, using the repository root returned
+by the first command for the other Git commands:
 
 ```bash
 date "+%Y-%m-%d %H:%M"
-git rev-parse --show-toplevel 2>/dev/null || echo "not a git repo"
-git remote get-url origin 2>/dev/null || echo "no remote"
-git branch --show-current 2>/dev/null || echo "unknown"
-git log --oneline -5 2>/dev/null || echo "no commits"
+git rev-parse --show-toplevel 2>/dev/null || printf 'not a git repo\n'
+git remote get-url origin 2>/dev/null || printf 'no remote\n'
+git branch --show-current 2>/dev/null || printf 'unknown\n'
+git log --oneline -5 2>/dev/null || printf 'no commits\n'
 ```
 
-Run git commands from the repo root identified by `git rev-parse --show-toplevel`. If the shell's working directory differs, use the `workdir` parameter of the Bash tool.
+Classify the session as `coding` when files, configs, commands, commits, or
+diffs materially changed. Otherwise classify it as `exploration`. If uncertain,
+choose exploration and omit empty sections.
 
-Capture:
-- `date`: `YYYY-MM-DD`
-- `time`: `HH:MM`
-- `repo`: short name derived from remote URL (e.g., `glg/myglg` or `mhuggins7278/dotfiles`)
-- `branch`: current git branch
-- `working_dir`: absolute path of repo root (or `$PWD` if not a git repo)
-- `project`: repo short name, or directory basename if not a git repo
-- `model`: the model name from the current session context (visible in the system prompt)
+## 2. Synthesize
 
-**Multi-repo sessions**: If the session touched multiple repos, use the repo where the most significant work happened for the frontmatter. List all repos touched in the `## Context` section.
+Review the full conversation. Capture every changed path, key decisions,
+questions and resolutions, follow-ups, and context needed to resume. For an
+exploration session, capture insights, ideas, decisions, open questions, and
+follow-ups instead. Use the appropriate template in
+[coding-template.md](references/coding-template.md) or
+[exploration-template.md](references/exploration-template.md).
 
-### 2. Synthesize the Session
+Also derive:
 
-Review the entire conversation and extract the fields appropriate to the session type:
+- a one-sentence TL;DR of 20 words or fewer for today's note;
+- a specific `session_slug` of 3-6 lowercase ASCII words joined with hyphens;
+- the exact changed paths, verified with repository tools rather than guessed.
 
-#### Coding session fields
+## 3. Write the session note
 
-**Summary** — 2-4 sentences describing what the session accomplished overall.
+Use the current date and time from `date`. Store the note at:
 
-**Changes Made** — concrete file-level or system-level changes. For each:
-- What file/thing was changed (verify the exact path using the Glob or Read tool — do not guess)
-- What was done (created, edited, deleted, configured)
-- One-line reason
-
-**Key Decisions** — architectural, design, or direction choices made. Focus on *why*, not just *what*.
-
-**Questions Raised** — questions that came up (answered or unanswered). Include resolution if there was one.
-
-**Follow-ups** — unresolved items, next steps, things to revisit.
-
-**Context** — technical context useful for picking up where this left off.
-
-#### Exploration session fields
-
-**Summary** — 2-4 sentences describing the purpose and outcome of the session.
-
-**Key Insights** — the most important things learned, realized, or discovered. What changed in
-understanding? What was confirmed or refuted?
-
-**Ideas Generated** — specific ideas, proposals, or options that emerged.
-
-**Decisions** — anything that was decided or agreed upon, even provisionally.
-
-**Open Questions** — things that came up but weren't resolved; threads worth following.
-
-**Follow-ups** — concrete next actions, even if small.
-
-#### TL;DR (all sessions)
-
-After synthesizing, write a single sentence (≤ 20 words) capturing the essence of the session.
-This is used in the daily note. Example: "explored note capture friction, identified three
-improvements to the done skill."
-
-Also derive a short `session_slug` describing the session's primary focus or outcome. Use 3-6
-lowercase ASCII words joined with hyphens, omit generic words like `session` or `work`, and keep it
-specific enough to help with later search (for example, `improve-note-naming` or
-`reconcile-category-code-mapping`). Do not copy the full TL;DR verbatim; compress it into a useful
-filename label.
-
-### 3. Determine Output Path
-
-The session notes vault base is:
-
-```
-NOTES_BASE=~/github/mhuggins7278/notes
-SESSION_DIR=$NOTES_BASE/ai-sessions
+```text
+~/github/mhuggins7278/notes/ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>.md
 ```
 
-Output path: `$SESSION_DIR/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>.md`
+Create its parent directory if needed. Preserve the coding or exploration
+frontmatter from the selected template. Link an existing project note in the
+heading when one clearly matches; do not create a project note automatically.
 
-Example: `ai-sessions/2026/02/2026-02-18-1430-reconcile-category-code-mapping.md`
+## 4. Update today's daily note
 
-Create parent directories if they don't exist:
+Load `daily-notes` before any daily-note mutation. Resolve the path with:
 
 ```bash
-mkdir -p "$SESSION_DIR/YYYY/MM"
+obsidian daily:path
+obsidian daily:read
 ```
 
-### 4. Write the Note
+If today's note does not exist, skip this step without creating it. Otherwise:
 
-Use the template matching the session type.
+1. Use the daily-notes task model for each clearly actionable user-owned
+   follow-up. Add the resulting task wikilink to the appropriate section with
+   a backlink to this session note.
+2. Add one backlink and the TL;DR under `## Notes`:
+   `[[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>|OpenCode session — <project or topic>]] — <tldr>`
+3. Read first and make targeted edits. Preserve frontmatter and unrelated
+   content; do not insert raw task checkboxes into task sections.
 
-#### Coding session template
+## 5. Verify and report
 
-```markdown
----
-id: session-YYYY-MM-DD-HHmm-<session_slug>
-date: YYYY-MM-DD
-time: "HH:MM"
-type: coding
-tags:
-  - ai-session
-  - opencode
-project: <repo-short-name>
-repo: <owner/repo>
-branch: <branch>
-working_dir: <absolute-path>
-model: <model-name-from-session-context>
----
-
-# Session: [[work/projects/<ProjectName>|<project>]] — YYYY-MM-DD HH:MM
-
-## Summary
-
-<2-4 sentence overview of what the session accomplished>
-
-## Changes Made
-
-- `path/to/file.ext` — created/edited/deleted: <reason>
-- ...
-
-## Key Decisions
-
-- **<decision title>**: <what was decided and why>
-- ...
-
-## Questions Raised
-
-- **<question>**: <resolution or "unresolved">
-- ...
-
-## Follow-ups
-
-- [ ] <actionable next step>
-- [ ] ...
-
-## Context
-
-- **Repos touched**: <list if multi-repo session>
-- **Key paths**: <config dirs, notable file locations>
-- **Commands to know**: <any non-obvious commands used or needed>
-- **Constraints / gotchas**: <anything that would trip you up picking this up later>
-```
-
-#### Exploration session template
-
-```markdown
----
-id: session-YYYY-MM-DD-HHmm-<session_slug>
-date: YYYY-MM-DD
-time: "HH:MM"
-type: exploration
-tags:
-  - ai-session
-  - opencode
-project: <topic or repo if relevant, else omit>
-model: <model-name-from-session-context>
----
-
-# Session: <Topic> — YYYY-MM-DD HH:MM
-
-## Summary
-
-<2-4 sentence overview of what was explored and what came of it>
-
-## Key Insights
-
-- <most important thing learned or realized>
-- ...
-
-## Ideas Generated
-
-- <specific idea or proposal>
-- ...
-
-## Decisions
-
-- **<decision>**: <what was settled and why>
-- ...
-
-## Open Questions
-
-- <unresolved question worth following up on>
-- ...
-
-## Follow-ups
-
-- [ ] <concrete next action>
-- [ ] ...
-```
-
-### 5. Update Today's Daily Note
-
-Uses the same note structure and CLI conventions as the `daily-notes` skill.
-Do not hardcode the path — always resolve it via the CLI.
-
-```bash
-obsidian daily:path   # get today's note path
-obsidian daily:read   # read the current note
-```
-
-If the daily note **does not exist yet**, skip this step silently — do not
-create it (daily note creation is handled by the notes vault workflows).
-
-If the daily note **exists**:
-
-1. Load the `daily-notes` skill and use its canonical task-note workflow for
-   each actionable follow-up or unresolved user-owned task. Add the resulting
-   task wikilink to the appropriate daily-note section with a backlink to the
-   session note. Do not insert raw task checkboxes into the daily note;
-   task-file status is the source of truth.
-
-2. **Add a backlink with TL;DR in the Notes section** — use the Edit tool to insert this
-   line after the last existing item under `## Notes`:
-   ```markdown
-   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>|OpenCode session — <project> (<branch>)]] — <TL;DR>
-   ```
-   The TL;DR is the single sentence synthesized in Step 2 (≤ 20 words, lowercase, no trailing
-   period). For exploration sessions without a branch, use just the topic:
-   ```markdown
-   - [[ai-sessions/YYYY/MM/YYYY-MM-DD-HHmm-<session_slug>|OpenCode session — <topic>]] — <TL;DR>
-   ```
-   If no `## Notes` section exists, add one at the end of the file.
-
-When making these edits, read the resolved daily note path first, then apply
-targeted edits — do not rewrite the full file.
-
-### 6. Backlink the Project
-
-Use the Glob tool to check if a project file exists at:
-```
-$NOTES_BASE/work/projects/*.md
-```
-
-If a file matching the project name exists, use an Obsidian backlink in the heading:
-```
-[[work/projects/ProjectName|project]]
-```
-
-If no project file exists for this repo, use plain text in the heading and skip the backlink.
-
-Do **not** create a new project file automatically — leave that to the daily notes workflow.
-
-### 7. Confirm Output
-
-After writing the file, report:
-- The full path to the note
-- A one-line session summary
-- The number of follow-up items captured
-
-## Common Pitfalls
-
-- Do not infer the date — always run `date` first
-- Do not guess file paths in Changes Made — verify with Glob or Read before writing
-- Do not truncate the Changes Made list — include every file touched
-- Follow-ups and pending tasks copied into the daily note should be specific and actionable, not vague ("look into X" is bad; "investigate why X fails when Y is null" is good)
-- Every task copied into the daily note should include a backlink to the session note so the source context is easy to recover later
-- Keep Key Decisions focused on non-obvious choices — don't list things that had only one option
-- Do not hardcode the model name — read it from the session context
-- For Obsidian-specific syntax (wikilinks, callouts, frontmatter), refer to `~/.dotfiles/config/opencode/references/obsidian-markdown.md`
+Re-read the session note and daily note after writing. Confirm the session note
+exists, the backlink is present, and every captured task has the expected task
+file/status. Report the full note path, one-line summary, and number of
+follow-ups captured. Never expose secrets or sensitive personal data.

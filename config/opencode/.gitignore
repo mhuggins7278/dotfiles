@@ -4,3 +4,6 @@ bun.lock
 **/__pycache__/
 **/*.pyc
 skills/*-workspace/
+!skills/review-agent-workspace/
+skills/review-agent-workspace/*
+!skills/review-agent-workspace/test-code/

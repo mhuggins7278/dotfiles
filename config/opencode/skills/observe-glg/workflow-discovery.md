@@ -8,20 +8,20 @@ Use this workflow when the user gives no specific issue (just a service name, "c
 SERVICE="<service_name>"
 START="-1h"
 
-observe-glg -S "$SERVICE" -s "$START" --log_level ERROR -l 200 -O /tmp/obs_app.json
+observe-glg -S "$SERVICE" -s "$START" --log_level ERROR -l 200 -O "$TMP_DIR/app.json"
 ```
 
 #### D2. Query 5xx responses from access logs
 
 ```bash
-observe-glg -S "$SERVICE" -s "$START" -i access --status_code 5 -l 200 -O /tmp/obs_access.json
+observe-glg -S "$SERVICE" -s "$START" -i access --status_code 5 -l 200 -O "$TMP_DIR/access.json"
 ```
 
 #### D3. Check result counts
 
 ```bash
-APP_COUNT=$(wc -l < /tmp/obs_app.json 2>/dev/null | tr -d ' ')
-ACCESS_COUNT=$(wc -l < /tmp/obs_access.json 2>/dev/null | tr -d ' ')
+APP_COUNT=$(jq -s length "$TMP_DIR/app.json" 2>/dev/null || printf '0')
+ACCESS_COUNT=$(jq -s length "$TMP_DIR/access.json" 2>/dev/null || printf '0')
 echo "App errors: $APP_COUNT | Access 5xx: $ACCESS_COUNT"
 ```
 
@@ -34,18 +34,20 @@ If **both** queries return 0 results, expand and re-run D1 + D2:
 3. `-s -3d`
 4. `-s -7d`
 
-Stop as soon as either returns results. If all windows return 0: tell the user the service appears healthy — no errors or 5xx in the last 7 days.
+Stop as soon as either returns results. If all windows return 0, report that no
+matching observations were returned in the examined windows. Do not claim the
+service is healthy based on log absence alone.
 
 #### D5. Summarize recurring issues
 
 If results exist, analyze and present a **numbered list of top issues**:
 
 ```bash
-jq -r 'select(.log_level == "ERROR") | .message_json | if .__text then .__text else (. | tostring) end' /tmp/obs_app.json | sort | uniq -c | sort -rn | head -10
+jq -r 'select(.log_level == "ERROR") | .message_json | if .__text then .__text else (. | tostring) end' "$TMP_DIR/app.json" | sort | uniq -c | sort -rn | head -10
 ```
 
 ```bash
-jq -r '"\(.status_code) \(.http_method) \(.request_uri)"' /tmp/obs_access.json | sort | uniq -c | sort -rn | head -10
+jq -r '"\(.status_code) \(.http_method) \(.request_uri)"' "$TMP_DIR/access.json" | sort | uniq -c | sort -rn | head -10
 ```
 
 Present as:

@@ -4,6 +4,12 @@ mode: subagent
 model: openai/gpt-5.6-terra
 variant: high
 permission:
+  read: allow
+  edit: allow
+  glob: allow
+  grep: allow
+  bash: ask
+  task: deny
   figma_*: allow
 ---
 

@@ -21,10 +21,16 @@ when it regresses a safety, path, conditional-policy, or routing expectation.
 Run these before recording an A/B result:
 
 ```sh
+python3 config/opencode/scripts/audit-skills.py
 python3 -m json.tool config/opencode/config.json >/dev/null
 ansible-playbook --syntax-check --list-tasks ansible/dotfiles.yml
 ansible-playbook --check --diff ansible/dotfiles.yml --tags links
 ```
+
+The skill audit validates skill names, frontmatter, duplicate names, and local
+markdown references. It reports directories without `SKILL.md` as warnings so
+workspace fixtures and ignored external shadows remain visible without being
+mistaken for runtime skills.
 
 Measure the current static context surface with:
 

@@ -85,20 +85,20 @@
 
 - name: Download Karabiner-DriverKit-VirtualHIDDevice standalone pkg
   get_url:
-    url: "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v6.12.0/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg"
-    dest: "/tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg"
-    checksum: "sha256:27b4221328c2f39abdb3f9d999a1af2235a70dc81d2ff4af99f44dc91873f5ad"
+    url: "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v8.0.0/Karabiner-DriverKit-VirtualHIDDevice-8.0.0.pkg"
+    dest: "/tmp/Karabiner-DriverKit-VirtualHIDDevice-8.0.0.pkg"
+    checksum: "sha256:0d412ea49613b70a981d816461dc3019b84a9659fde0a156939697283a61a7ac"
   when:
     - ansible_facts.os_family == "Darwin"
-    - vhid_installed_version.stdout | default('') != "6.12.0"
+    - vhid_installed_version.stdout | default('') != "8.0.0"
   tags: kanata
 
 - name: Install Karabiner-DriverKit-VirtualHIDDevice standalone pkg
-  shell: installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg -target /
+  shell: installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-8.0.0.pkg -target /
   become: yes
   when:
     - ansible_facts.os_family == "Darwin"
-    - vhid_installed_version.stdout | default('') != "6.12.0"
+    - vhid_installed_version.stdout | default('') != "8.0.0"
   tags: kanata
 
 - name: Disable Karabiner-Core-Service system daemon (keep VirtualHIDDevice-Daemon)
@@ -115,6 +115,7 @@
     uid=$(id -u {{ ansible_facts.env.USER }})
     for label in \
       org.pqrs.service.agent.Karabiner-Core-Service \
+      org.pqrs.service.agent.Karabiner-Core-Service-rev2 \
       org.pqrs.service.agent.karabiner_console_user_server \
       org.pqrs.service.agent.Karabiner-NotificationWindow \
       org.pqrs.service.agent.Karabiner-Menu \

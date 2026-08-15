@@ -90,7 +90,7 @@ If you previously had `karabiner-elements` installed via brew, uninstall it afte
 
 ```bash
 brew uninstall --cask karabiner-elements
-sudo installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-6.12.0.pkg -target /
+sudo installer -pkg /tmp/Karabiner-DriverKit-VirtualHIDDevice-8.0.0.pkg -target /
 ```
 
 > **Note:** `brew uninstall --cask karabiner-elements` deletes the driver files. Re-run the Ansible playbook (`dotfiles`) or the second `installer` line above to restore them.

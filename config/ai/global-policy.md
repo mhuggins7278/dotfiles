@@ -10,6 +10,9 @@ to the active project.
   isolation, or meaningful parallelism. Do not delegate mechanically.
 - Match the surrounding codebase's style, naming, comments, and formatter
   conventions. Handle relevant failure modes without adding speculative guards.
+- Run `date` whenever the current date or time is needed for filenames,
+  frontmatter, logs, notes, or other date-sensitive output; never infer it from
+  conversation context.
 - Use Worktrunk (`wt`) for worktree creation, selection, listing, and removal.
   Do not call `git worktree` directly.
 

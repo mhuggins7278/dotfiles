@@ -33,6 +33,45 @@
         "The review explains the consequence (client request hangs or times out)",
         "The review suggests adding a res.status(500) error response in the catch block"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review the change in test-code/diff-focus.ts. The comment-marked legacy code was unchanged and is explicitly out of scope. Focus on the new search helper, report any concrete defect it introduces, and do not report the legacy issue.",
+      "expected_output": "The reviewer reports the SQL injection in the new search helper, explains that user input is interpolated into the query, suggests parameterized SQL, and leaves the unchanged legacy token logging unreported.",
+      "files": ["test-code/diff-focus.ts"],
+      "scope": {
+        "changed_files": ["test-code/diff-focus.ts"],
+        "changed_area": "The function marked CHANGED; the function marked UNCHANGED is pre-existing and out of scope."
+      },
+      "expectations": [
+        "The review identifies SQL injection in the CHANGED search helper",
+        "The review explains the impact of interpolating user input into SQL",
+        "The review suggests parameterized query arguments",
+        "The review does not report the UNCHANGED legacy token logging as a finding",
+        "The review includes a concise scope or coverage note"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review the changed order total contract and its consumers. The return value can now be null for orders without items. Trace the callers in the supplied files and identify every concrete consumer that still assumes a number. Keep the review focused on this contract change.",
+      "expected_output": "The reviewer finds the null-handling regression in both checkout.ts and receipt.ts, explains the runtime failure, and recommends handling the nullable result or preserving a numeric contract.",
+      "files": [
+        "test-code/order-total.ts",
+        "test-code/checkout.ts",
+        "test-code/receipt.ts"
+      ],
+      "scope": {
+        "changed_files": ["test-code/order-total.ts"],
+        "consumers": ["test-code/checkout.ts", "test-code/receipt.ts"]
+      },
+      "expectations": [
+        "The review identifies the nullable return contract in order-total.ts",
+        "The review checks both supplied consumers",
+        "The review identifies the checkout.ts null dereference",
+        "The review identifies the receipt.ts null dereference",
+        "The review explains the runtime impact and gives a concrete fix direction",
+        "The review does not expand into unrelated repository concerns"
+      ]
     }
   ]
 }

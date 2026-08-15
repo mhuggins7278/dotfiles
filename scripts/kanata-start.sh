@@ -22,6 +22,7 @@ sudo launchctl bootout system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/
 # Disable + stop user-level Karabiner agents
 for label in \
   org.pqrs.service.agent.Karabiner-Core-Service \
+  org.pqrs.service.agent.Karabiner-Core-Service-rev2 \
   org.pqrs.service.agent.karabiner_console_user_server \
   org.pqrs.service.agent.Karabiner-NotificationWindow \
   org.pqrs.service.agent.Karabiner-Menu \

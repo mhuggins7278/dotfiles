@@ -1,9 +1,6 @@
 ---
 name: retro
-description: >
-  Run a post-session retrospective to analyze friction, mistakes, and learnings.
-  Use when the user explicitly asks for a retro or wants durable repository
-  guidance captured from the current session.
+description: Run a post-session retrospective to analyze friction, mistakes, and learnings. Use when the user explicitly asks for a retro or wants durable repository guidance proposed from the current session.
 ---
 
 # Retrospective Skill
@@ -43,6 +40,10 @@ Wait for the user to approve. Once approved:
 - Use the Edit/Write tools to update `AGENTS.md` in the repo root.
 - Capture broader guidance only when the pattern has repeated and the rule is
   stable enough to justify permanent context.
+
+Completion means the report separates repo-specific guidance, missing durable
+guidance, and mechanical principles; it includes exact proposed edits; and no
+file is changed without approval.
 
 ## Common Pitfalls
 - Don't pollute `AGENTS.md` with generic programming advice; keep it strictly repo-specific.

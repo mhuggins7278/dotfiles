@@ -4,6 +4,10 @@ mode: subagent
 model: openai/gpt-5.6-luna
 variant: medium
 permission:
+  read: allow
+  edit: deny
+  bash: deny
+  task: deny
   gds*: allow
 ---
 

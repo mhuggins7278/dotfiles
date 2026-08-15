@@ -48,6 +48,11 @@ gh pr view <pr-number> --json baseRefName,closingIssuesReferences
 
 ## Workflow
 
+The request to create or update a PR authorizes the required push and GitHub
+mutation for that PR. It does not authorize merging, releasing, or deploying.
+If the user asks only for preparation, keep the work local and stop before
+pushes or GitHub mutations.
+
 ### 1. Detect base branch
 
 ```bash
@@ -145,3 +150,7 @@ EOF
 ```
 
 Always return the PR URL to the user.
+
+After creating or updating a PR, fetch it with `gh pr view` and verify the title,
+base branch, body, issue-closing references, and draft state. Report the URL and
+any verification gap; a successful `git push` alone is not PR completion.
