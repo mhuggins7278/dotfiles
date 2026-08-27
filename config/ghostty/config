@@ -26,7 +26,7 @@ clipboard-paste-protection = false
 macos-option-as-alt = true
 
 # Session Management
-initial-command = zsh -i -c "launch_sesh"
+initial-command = zsh -i -c "if [[ -n \"${CMUX_WORKSPACE_ID:-}\" ]]; then exec zsh; else launch_sesh; fi"
 
 # Mouse Support (better tmux integration)
 mouse-hide-while-typing = true
@@ -52,6 +52,5 @@ focus-follows-mouse = false
 
 # True color support for neovim
 # Ghostty automatically supports 24-bit color
-
 
 

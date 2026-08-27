@@ -9,7 +9,8 @@
       "expectations": [
         "The review identifies Math.floor as incorrect for computing total pages",
         "The review explains the consequence (wrong page count or inaccessible last page items)",
-        "The review suggests using Math.ceil instead"
+        "The review suggests using Math.ceil instead",
+        "The review includes a concrete code example showing the Math.ceil fix"
       ]
     },
     {
@@ -20,7 +21,8 @@
       "expectations": [
         "The review identifies the missing await on db.orders.update()",
         "The review explains the consequence (update may not complete, race condition, or unhandled rejection)",
-        "The review suggests adding await to db.orders.update()"
+        "The review suggests adding await to db.orders.update()",
+        "The review includes a concrete code example showing await on db.orders.update()"
       ]
     },
     {
@@ -31,7 +33,8 @@
       "expectations": [
         "The review identifies that the catch block sends no HTTP response to the client",
         "The review explains the consequence (client request hangs or times out)",
-        "The review suggests adding a res.status(500) error response in the catch block"
+        "The review suggests adding a res.status(500) error response in the catch block",
+        "The review includes a concrete code example showing the error response in the catch block"
       ]
     },
     {
@@ -47,6 +50,7 @@
         "The review identifies SQL injection in the CHANGED search helper",
         "The review explains the impact of interpolating user input into SQL",
         "The review suggests parameterized query arguments",
+        "The review includes a concrete parameterized-query example or equivalent code shape",
         "The review does not report the UNCHANGED legacy token logging as a finding",
         "The review includes a concise scope or coverage note"
       ]
@@ -70,6 +74,7 @@
         "The review identifies the checkout.ts null dereference",
         "The review identifies the receipt.ts null dereference",
         "The review explains the runtime impact and gives a concrete fix direction",
+        "The review includes a concrete nullable-result handling example or equivalent code shape",
         "The review does not expand into unrelated repository concerns"
       ]
     }

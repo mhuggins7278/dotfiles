@@ -5,7 +5,10 @@ model: openai/gpt-5.6-luna
 variant: medium
 permission:
   read: allow
-  edit: deny
+  edit:
+    "*": deny
+    "~/github/mhuggins7278/notes": allow
+    "~/github/mhuggins7278/notes/**": allow
   bash: deny
   task: deny
   gds*: allow
@@ -23,4 +26,5 @@ steps from memory.
 
 Never report success from a push or accepted request alone. Watch the rollout
 through ECS and route health, then report evidence, warnings, and any remaining
-uncertainty.
+uncertainty. You may write to the notes repository when the task explicitly
+calls for note capture.

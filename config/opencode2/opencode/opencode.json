@@ -1,0 +1,55 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": ["~/.dotfiles/config/opencode/skills"],
+  "permissions": [
+    { "action": "whoIs_*", "resource": "*", "effect": "allow" },
+    { "action": "gds_*", "resource": "*", "effect": "allow" },
+    { "action": "know_*", "resource": "*", "effect": "allow" },
+    { "action": "figma_*", "resource": "*", "effect": "allow" },
+    { "action": "context7_*", "resource": "*", "effect": "allow" }
+  ],
+  "mcp": {
+    "servers": {
+      "whoIs": {
+        "type": "local",
+        "command": ["npx", "-y", "@glg/mcp-whois"],
+        "codemode": false
+      },
+      "gds": {
+        "type": "remote",
+        "url": "https://mcp.glgresearch.com/gds/mcp",
+        "oauth": {
+          "client_id": "75tbln562jv8m44es51gfamu7f",
+          "callback_port": 19876,
+          "redirect_uri": "http://127.0.0.1:19876/callback"
+        },
+        "codemode": false
+      },
+      "know": {
+        "type": "remote",
+        "url": "https://mcp.glgresearch.com/know/mcp",
+        "oauth": {
+          "client_id": "75tbln562jv8m44es51gfamu7f",
+          "callback_port": 19876,
+          "redirect_uri": "http://127.0.0.1:19876/callback"
+        },
+        "codemode": false
+      },
+      "figma": {
+        "type": "remote",
+        "url": "http://127.0.0.1:3845/mcp",
+        "oauth": false,
+        "codemode": false
+      },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "oauth": false,
+        "headers": {
+          "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+        },
+        "codemode": false
+      }
+    }
+  }
+}

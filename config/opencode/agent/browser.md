@@ -4,7 +4,10 @@ mode: subagent
 model: openai/gpt-5.6-terra
 variant: medium
 permission:
-  edit: deny
+  edit:
+    "*": deny
+    "~/github/mhuggins7278/notes": allow
+    "~/github/mhuggins7278/notes/**": allow
   bash:
     "*": deny
     "playwright-cli": allow
@@ -16,6 +19,8 @@ when command syntax is uncertain. Prefer accessibility snapshots for element
 discovery, refresh snapshots after page changes, and collect console or network
 evidence when diagnosing a failure.
 
-Do not modify repository files. Put screenshots, traces, and generated browser
-artifacts in the OS temporary directory unless the user requested a repository
-artifact. Report the tested flow, observed result, and any unverified behavior.
+Do not modify files in the tested repository. Put screenshots, traces, and
+generated browser artifacts in the OS temporary directory unless the user
+requested a repository artifact. You may write to the notes repository when the
+task explicitly calls for note capture. Report the tested flow, observed result,
+and any unverified behavior.

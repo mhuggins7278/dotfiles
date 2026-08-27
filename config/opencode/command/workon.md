@@ -3,17 +3,20 @@ description: Launch the executable work from a GitHub issue or epic
 agent: build
 ---
 
-Resolve the GitHub issue or epic in $ARGUMENTS. Fetch linked sub-issues and
-their repositories, inspect declared dependencies and existing PRs, and show a
-compact status board of ready, active, complete, and blocked work.
-Treat ready work as the current frontier. Keep unresolved or still-vague work
-visible without launching it.
-
 When the current repository and branch already match a requested single-issue
 lane (`owner/repo` on `issue-<number>`), treat the current process as a worker
 prepared by a caller such as `agent-fix`. Work in this worktree and session. Do
 not pull, switch or create another worktree, invoke `/workon` recursively, or
-start another tmux or OpenCode process.
+start another tmux or OpenCode process. This is an execution workflow: start
+investigating and implementing the issue in this turn. Do not stop after
+reporting the work context, a status board, or a plan, and do not ask the user
+to confirm before beginning.
+
+For any other request, resolve the GitHub issue or epic in $ARGUMENTS. Fetch
+linked sub-issues and their repositories, inspect declared dependencies and
+existing PRs, and show a compact status board of ready, active, complete, and
+blocked work. Treat ready work as the current frontier and keep unresolved or
+still-vague work visible without launching it.
 
 Invoking `/workon` authorizes routine implementation, commits, pushes, and
 draft PRs for clearly executable tickets. It does not authorize destructive Git

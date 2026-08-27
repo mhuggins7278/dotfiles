@@ -2,14 +2,16 @@
   "$schema": "https://opencode.ai/config.json",
   "small_model": "openai/gpt-5.6-luna",
   "instructions": ["~/.dotfiles/config/ai/global-policy.md"],
+  "plugin": ["opencode-cmux", "opencode-parser"],
   "agent": {
     "plan": {
       "model": "openai/gpt-5.6-sol",
       "variant": "max",
-      "prompt": "You are in plan mode. Inspect the codebase and produce a concise, actionable plan. Do not edit project files or mutate GitHub. Ask only when a decision materially changes behavior, architecture, safety, privacy, or cost; otherwise state reasonable assumptions and proceed. Use `~/.dotfiles/config/ai/playbooks/workflow.md` as proportional guidance, not a mandatory phase sequence. You may write session notes under ~/github/mhuggins7278/notes/** only when the user invokes /done.",
+      "prompt": "You are in plan mode. Inspect the codebase and produce a concise, actionable plan. Do not edit project files or mutate GitHub. Ask only when a decision materially changes behavior, architecture, safety, privacy, or cost; otherwise state reasonable assumptions and proceed. Use `~/.dotfiles/config/ai/playbooks/workflow.md` as proportional guidance, not a mandatory phase sequence. You may write session notes under ~/github/mhuggins7278/notes/** when requested, including via /done.",
       "permission": {
         "edit": {
           "*": "deny",
+          "~/github/mhuggins7278/notes": "allow",
           "~/github/mhuggins7278/notes/**": "allow"
         },
         "bash": {
@@ -50,15 +52,40 @@
     },
     "build": {
       "model": "openai/gpt-5.6-luna",
-      "variant": "max"
+      "variant": "max",
+      "permission": {
+        "bash": {
+          "git commit*": "allow",
+          "git commit*--amend*": "ask",
+          "git commit*--no-verify*": "ask",
+          "git commit*-a*": "ask",
+          "git push*": "allow",
+          "git push*--delete*": "ask",
+          "git push*--force*": "ask",
+          "git push*-f*": "ask",
+          "git push*--mirror*": "ask",
+          "gh repo view*": "allow",
+          "gh issue list*": "allow",
+          "gh issue view*": "allow",
+          "gh pr list*": "allow",
+          "gh pr view*": "allow",
+          "gh project list*": "allow",
+          "gh project item-list*": "allow",
+          "gh pr create*": "allow",
+          "gh pr edit*": "allow",
+          "gh api repos/*/pulls/*/comments*": "allow",
+          "gh api repos/*/pulls/*/reviews*": "allow",
+          "gh api repos/*/issues/*/comments*": "allow"
+        }
+      }
     },
     "general": {
       "model": "openai/gpt-5.6-luna",
-      "variant": "medium"
+      "variant": "high"
     },
     "explore": {
       "model": "openai/gpt-5.6-luna",
-      "variant": "medium"
+      "variant": "high"
     }
   },
   "provider": {
@@ -109,6 +136,11 @@
     }
   },
   "permission": {
+    "edit": {
+      "*": "allow",
+      "~/github/mhuggins7278/notes": "allow",
+      "~/github/mhuggins7278/notes/**": "allow"
+    },
     "bash": {
       "*": "allow",
       "git commit*": "ask",
@@ -137,8 +169,10 @@
       "gh project item-add*": "ask"
     },
     "external_directory": {
+      "~/github/**": "allow",
       "~/github/glg/**": "allow",
       "~/github/glg/epiquery-templates/**": "allow",
+      "~/github/mhuggins7278/notes": "allow",
       "~/github/mhuggins7278/notes/**": "allow",
       "~/github/quickvet-dash/**": "allow",
       "~/.dotfiles/config/ai/playbooks/**": "allow",
@@ -174,7 +208,6 @@
       "url": "https://mcp.glgresearch.com/know/mcp",
       "enabled": true
     },
-
     "figma": {
       "type": "remote",
       "url": "http://127.0.0.1:3845/mcp",

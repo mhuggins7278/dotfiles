@@ -51,6 +51,9 @@ For work under `~/github/glg/`:
 
 ## Notes Routing
 
+- The notes repository at `~/github/mhuggins7278/notes/` is available for reading
+  and writing from every working directory. Agents may write there when the
+  task calls for note capture without changing the active project.
 - Use `daily-notes` to capture, update, or complete notes and task records.
 - Use `exec-assistant` for prioritization, follow-up triage, and meeting
   preparation. Do not use `daily-notes` for judgment or recommendations.

@@ -69,7 +69,6 @@
         - "~/.config/wezterm/"
         - "~/.config/gh-dash/"
         - "~/.config/sesh/"
-        - "~/.config/herdr/"
         - "~/.config/kanata/"
         - "~/.local/share/zsh/"
         - "~/Library/Application Support/Code/User/"

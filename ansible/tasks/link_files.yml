@@ -47,13 +47,13 @@
     - { src: "~/.dotfiles/config/tmux", dest: "~/.config/tmux", force: true }
     - { src: "~/.dotfiles/config/sesh", dest: "~/.config/sesh", force: true }
     - {
-        src: "~/.dotfiles/config/herdr/config.toml",
-        dest: "~/.config/herdr/config.toml",
+        src: "~/.dotfiles/config/opencode",
+        dest: "~/.config/opencode",
         force: true,
       }
     - {
-        src: "~/.dotfiles/config/opencode",
-        dest: "~/.config/opencode",
+        src: "~/.dotfiles/config/opencode2",
+        dest: "~/.config/opencode2",
         force: true,
       }
     - {

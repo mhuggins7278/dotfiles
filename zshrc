@@ -139,6 +139,9 @@ zle -N fzf-history-widget
 # fnm (Fast Node Manager)
 eval "$(fnm env --shell zsh)"
 
+# OpenCode 2 beta
+path=("$HOME/.dotfiles/scripts" "$HOME/.opencode/bin" $path)
+
 # Ensure Ctrl+R uses fzf for history search (after all plugins loaded)
 bindkey '^R' fzf-history-widget
 
@@ -182,3 +185,8 @@ if [[ ! -f "$_zoxide_cache" ]] || [[ /opt/homebrew/bin/zoxide -nt "$_zoxide_cach
   zoxide init zsh > "$_zoxide_cache"
 fi
 source "$_zoxide_cache"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/mhuggins/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
