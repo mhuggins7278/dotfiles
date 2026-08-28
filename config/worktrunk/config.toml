@@ -4,3 +4,14 @@
 # Worktree path template — creates sibling directories alongside the main checkout.
 # Example: ~/github/glg/front-toolbox-plugin → ~/github/glg/front-toolbox-plugin.test
 worktree-path = "{{ repo_path }}/../{{ repo }}.{{ branch | sanitize }}"
+
+# Refresh remote refs before every switch or worktree creation. This makes
+# remote-branch and PR resolution use current GitHub state.
+[pre-switch]
+fetch = "{% if remote %}git fetch --prune {{ remote }}{% endif %}"
+
+# New worktrees for an existing remote branch should track it. Fast-forward
+# when the local branch is behind; stop on divergence instead of using stale
+# or ambiguous code.
+[pre-start]
+track = "{% if remote %}if git show-ref --verify --quiet refs/remotes/{{ remote }}/{{ branch }}; then if ! git rev-parse --abbrev-ref '@{upstream}' >/dev/null 2>&1; then git branch --set-upstream-to={{ remote }}/{{ branch }}; fi; git merge --ff-only '@{upstream}'; fi{% endif %}"

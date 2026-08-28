@@ -14,6 +14,10 @@ When tests add confidence, prefer vertical behavior slices exercised through
 existing public seams. Do not invent abstractions or test boundaries solely to
 fit a process.
 
+Treat newly surfaced failures as caused by the current work until evidence
+shows otherwise. Do not dismiss them as pre-existing or unrelated merely
+because the connection is unclear.
+
 Planning, research, prototyping, testing, review, and delegation are
 capabilities to use when they improve the result. They are not mandatory
 phases and do not need separate artifacts by default.
@@ -33,6 +37,10 @@ formatting, and ordinary diagnosis do not need approval.
 
 - Use a subagent for specialized tools, independent parallel work, or useful
   context isolation, not because a workflow always requires one.
+- When delegating, define the outcome, scope, inputs, side-effect boundaries,
+  acceptance checks, and expected evidence. Verify completion against the
+  resulting artifacts and focused checks, not the report alone. When rework is
+  needed, return the concrete failed evidence and keep the request bounded.
 - Match test and review depth to realistic regression risk.
 - Retry only when the failure is transient and the next attempt changes the
   conditions.

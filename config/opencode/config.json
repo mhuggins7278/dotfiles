@@ -220,6 +220,11 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       },
       "enabled": true
+    },
+    "playwright-extension": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--extension"],
+      "enabled": true
     }
   }
 }

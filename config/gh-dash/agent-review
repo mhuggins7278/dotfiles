@@ -88,6 +88,9 @@ fi
 
 # Resolve the exact comparison range. Fetching GitHub's pull ref works for PRs
 # from forks and gives us an independent ref to verify after Worktrunk setup.
+# Keep this synthetic ref outside refs/remotes so the global pre-switch prune
+# hook does not delete it before Worktrunk uses it as the creation base.
+PR_REF="refs/opencode-pr/$PR_NUM"
 IFS=$'\t' read -r BRANCH BASE_BRANCH < <(
   gh pr view "$PR_NUM" -R "$REPO_NAME" \
     --json headRefName,baseRefName \
@@ -96,9 +99,8 @@ IFS=$'\t' read -r BRANCH BASE_BRANCH < <(
 
 git -C "$REPO_PATH" fetch "$TARGET_REMOTE" \
   "+refs/heads/$BASE_BRANCH:refs/remotes/$TARGET_REMOTE/$BASE_BRANCH" \
-  "+refs/pull/$PR_NUM/head:refs/remotes/$TARGET_REMOTE/opencode-pr/$PR_NUM"
-HEAD_REF="refs/remotes/$TARGET_REMOTE/opencode-pr/$PR_NUM"
-HEAD_SHA=$(git -C "$REPO_PATH" rev-parse "$HEAD_REF")
+  "+refs/pull/$PR_NUM/head:$PR_REF"
+HEAD_SHA=$(git -C "$REPO_PATH" rev-parse "$PR_REF")
 git -C "$REPO_PATH" cat-file -e "$HEAD_SHA^{commit}"
 
 # Use a local branch owned by this wrapper so Worktrunk can manage the full
@@ -135,7 +137,7 @@ if git -C "$REPO_PATH" show-ref --verify --quiet \
 fi
 
 WT_RESULT=$(wt -C "$REPO_PATH" switch --create \
-  --base "$TARGET_REMOTE/opencode-pr/$PR_NUM" \
+  --base "$PR_REF" \
   -y --no-cd --format json "$REVIEW_BRANCH")
 WT_PATH=$(jq -er '.path' <<<"$WT_RESULT")
 SESSION_NAME=$(basename "$WT_PATH")
@@ -157,8 +159,9 @@ printf -v SESSION_RUNNER_ARG '%q' "$SESSION_RUNNER"
 printf -v REPO_PATH_ARG '%q' "$REPO_PATH"
 printf -v WT_PATH_ARG '%q' "$WT_PATH"
 printf -v REVIEW_BRANCH_ARG '%q' "$REVIEW_BRANCH"
+printf -v PR_REF_ARG '%q' "$PR_REF"
 printf -v PROMPT_ARG '%q' "$PROMPT"
-STARTUP="$SESSION_RUNNER_ARG $REPO_PATH_ARG $WT_PATH_ARG $REVIEW_BRANCH_ARG $PROMPT_ARG"
+STARTUP="$SESSION_RUNNER_ARG $REPO_PATH_ARG $WT_PATH_ARG $REVIEW_BRANCH_ARG $PR_REF_ARG $PROMPT_ARG"
 
 # Create/connect to named session (sesh handles the client switch internally)
 sesh connect --command "$STARTUP" "$WT_PATH"

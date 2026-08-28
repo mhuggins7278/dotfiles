@@ -5,15 +5,16 @@
 
 set -uo pipefail
 
-if [ "$#" -ne 4 ]; then
-  echo "Usage: agent-review-session <repo_path> <worktree_path> <review_branch> <prompt>" >&2
+if [ "$#" -ne 5 ]; then
+  echo "Usage: agent-review-session <repo_path> <worktree_path> <review_branch> <pr_ref> <prompt>" >&2
   exit 2
 fi
 
 REPO_PATH="$1"
 WT_PATH="$2"
 REVIEW_BRANCH="$3"
-PROMPT="$4"
+PR_REF="$4"
+PROMPT="$5"
 
 opencode --agent review --prompt "$PROMPT"
 status=$?
@@ -40,6 +41,10 @@ if ! wt -C "$REPO_PATH" remove --foreground --force-delete -y \
     cd "$REPO_PATH" || exit 1
   fi
   exec "${SHELL:-/bin/bash}" -l
+fi
+
+if ! git -C "$REPO_PATH" update-ref -d "$PR_REF"; then
+  echo "[agent-review] temporary PR ref cleanup failed: $PR_REF" >&2
 fi
 
 cd "$REPO_PATH" || exit 1

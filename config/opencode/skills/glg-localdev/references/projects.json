@@ -1,0 +1,32 @@
+{
+  "projects": {
+    "glg/consultations-api": {
+      "service": "consultations-api",
+      "port": 3020,
+      "securityMode": "verifiedSession",
+      "command": ["npm", "run", "dev"],
+      "portEnv": "PORT"
+    },
+    "glg/prism": {
+      "service": "prism",
+      "port": 8700,
+      "securityMode": "verifiedSession",
+      "command": ["npm", "run", "dev"],
+      "portEnv": null
+    },
+    "glg/settings-api": {
+      "service": "settings-api",
+      "port": 4000,
+      "securityMode": "verifiedSession",
+      "command": ["npm", "run", "local"],
+      "portEnv": "PORT"
+    },
+    "glg/streamliner": {
+      "service": "streamliner",
+      "port": 9090,
+      "securityMode": "verifiedSession",
+      "command": ["npm", "run", "local"],
+      "portEnv": "PORT"
+    }
+  }
+}
