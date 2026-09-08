@@ -17,3 +17,17 @@ startup_command = ". ~/.config/sesh/scripts/node-app.sh"
 name = "prism"
 path = "~/github/glg/prism"
 startup_command = ". ~/.config/sesh/scripts/node-app.sh"
+
+
+[tui]
+prompt = "> "
+placeholder = "Filter sessions... "
+show_icons = false
+show_windows = false
+window_name_format = "#{window_name}"
+alias_auto_connect_delay = "150ms"
+alias_filter_prefix = "/"
+preview = false
+preview_width = 60
+preview_min_width = 100
+preview_border = "line"

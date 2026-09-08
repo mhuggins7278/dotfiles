@@ -13,6 +13,10 @@ KANATA_PLIST_DEST="/Library/LaunchDaemons/com.kanata.service.plist"
 # Acquire sudo credentials upfront
 sudo -v || exit 1
 
+echo "Quitting Karabiner-Elements to prevent keyboard-grab conflicts..."
+osascript -e 'tell application "Karabiner-Elements" to quit' 2>/dev/null || true
+sleep 2
+
 echo "Disabling Karabiner-Core-Service..."
 
 # Disable + stop the system daemon that grabs the keyboard (keep VirtualHIDDevice-Daemon)
@@ -23,6 +27,7 @@ sudo launchctl bootout system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/
 for label in \
   org.pqrs.service.agent.Karabiner-Core-Service \
   org.pqrs.service.agent.Karabiner-Core-Service-rev2 \
+  org.pqrs.service.agent.Karabiner-Console-User-Server \
   org.pqrs.service.agent.karabiner_console_user_server \
   org.pqrs.service.agent.Karabiner-NotificationWindow \
   org.pqrs.service.agent.Karabiner-Menu \
@@ -33,8 +38,15 @@ done
 
 sleep 1
 
-# Install rendered Kanata plist to LaunchDaemons if present.
-if [[ -f "$KANATA_PLIST_SRC" && ! -f "$KANATA_PLIST_DEST" ]]; then
+if sudo launchctl print system/org.pqrs.service.daemon.Karabiner-Core-Service >/dev/null 2>&1 \
+  || launchctl print "gui/$(id -u)/org.pqrs.service.agent.Karabiner-Core-Service-rev2" >/dev/null 2>&1; then
+  echo "Karabiner-Core-Service is still running; refusing to start Kanata."
+  echo "Quit Karabiner-Elements, then run this command again."
+  exit 1
+fi
+
+# Install the repository plist so launchd uses the current flags.
+if [[ -f "$KANATA_PLIST_SRC" ]]; then
   echo "Installing Kanata LaunchDaemon plist..."
   sudo cp "$KANATA_PLIST_SRC" "$KANATA_PLIST_DEST"
   sudo chown root:wheel "$KANATA_PLIST_DEST"

@@ -1,156 +1,61 @@
 ---
 name: pr
-description: >
-  Use this skill when the user asks you to create a pull request, open a PR, or push and create a PR.
-  Trigger on "create a PR", "open a pull request", "push this up", "submit for review", "ready to merge",
-  "share this with the team", or any request to submit work for review. Provides the full PR creation
-  workflow including branch push, PR template detection, production tracking, and gh CLI usage.
+description: Create or update a GitHub pull request. Use when the user explicitly asks to open, push, submit, or share a PR for review.
 ---
 
-# Pull Request Skill
+# Pull Requests
 
-## GLG Production Tracking (repos under `~/github/glg/` only)
+The request to create or update a PR authorizes the push and GitHub mutation
+needed for that PR. It does not authorize merging, releasing, or deploying. If
+the user asks only for preparation, keep the work local.
 
-For repos under `~/github/glg/`, read
-`~/.dotfiles/config/opencode/references/glg-workflow.md` before creating or
-updating the PR. It owns branch naming, production tracking, and project rules.
-An issue is required for PRs intended to merge into shared or production
-branches, but draft exploratory PRs may omit one. Do not block an existing PR
-solely because its branch contains `/`; branch-format guidance applies to
-branches intended to publish GDS images or deployments.
+## Context
 
-## Issue Links That Close on Merge
-
-When a PR addresses one or more issues, put one closing reference per issue in
-the PR **description**. Use the syntax that matches where the issue lives:
-
-```text
-## Linked issues
-
-Fixes #<same-repository-issue-number>
-Fixes <owner>/<repository>#<different-repository-issue-number>
-```
-
-The `Fixes` lines must be plain text in the description, outside code fences.
-Do not put them only in the title, a PR/review comment, a checklist entry, or a
-markdown link. Keep commit SHAs and other bookkeeping on separate lines. A
-comment or a plain `#123` reference can make an issue look related without
-causing it to close.
-
-GitHub only applies closing keywords when the PR targets the repository's
-default branch. Verify that before creating or updating the PR. Afterward,
-verify the body and GitHub's parsed links. If the PR intentionally targets a
-non-default branch, an empty `closingIssuesReferences` result is expected:
-
-```bash
-gh pr view <pr-number> --json baseRefName,closingIssuesReferences
-```
-
-## Workflow
-
-The request to create or update a PR authorizes the required push and GitHub
-mutation for that PR. It does not authorize merging, releasing, or deploying.
-If the user asks only for preparation, keep the work local and stop before
-pushes or GitHub mutations.
-
-### 1. Detect base branch
+Resolve the repository's default branch with:
 
 ```bash
 gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name'
 ```
 
-Use the result as `<base>` everywhere. Fallback: `git remote show origin | grep 'HEAD branch' | awk '{print $NF}'`
+Inspect status, commits, and the diff against that branch. Read a PR template
+when present. Run documented checks relevant to the change, but do not install
+dependencies or run unrelated suites by default. Record exact commands and
+results, including meaningful checks that were unavailable.
 
-### 2. Gather context (run all in parallel)
+For a repository under `~/github/glg/`, read
+`~/.dotfiles/config/opencode/references/glg-workflow.md` before creating or
+updating the PR. It owns branch naming, production tracking, and project rules.
 
-```bash
-git status -sb
-git log origin/<base>...HEAD --oneline
-git diff origin/<base>...HEAD --stat
-```
+## Issue links
 
-Use `origin/<base>` (remote ref) to avoid "unknown revision" errors. If missing, fetch first: `git fetch origin <base>`
+Put one closing reference per associated issue in the PR description, outside
+code fences:
 
-### 3. Check for PR template
-
-Glob for `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
-`.github/PULL_REQUEST_TEMPLATE/*.md`. If found, read and preserve its
-structure (write "N/A" for inapplicable sections). If not found, use the
-default body in step 5. In either case, ensure the final body contains an
-evidence section and the dedicated `## Linked issues` section. Include one
-exact closing line for every associated issue; for exploratory work without an
-issue, state `No linked issue: exploratory work` in that section.
-
-### 4. Compile evidence
-
-1. If the repo has `package.json`, `pnpm-lock.yaml`, `yarn.lock`, or `package-lock.json`: run `eval "$(fnm env --shell bash)" && fnm use --install-if-missing`, then install deps with the appropriate lockfile command (`pnpm install` / `yarn install` / `npm ci`).
-2. Run `~/.dotfiles/config/opencode/scripts/check-principles.sh "origin/<base>...HEAD"`
-3. Run the repository's documented lint, format-check, and typecheck commands
-   when available. Do not invent commands; record exact commands and results.
-4. Note testing performed (unit tests, Playwright, manual) from session context
-5. Note whether the `review` subagent returned `APPROVED`
-
-### 5. Push, create, or update the PR
-
-For a `/workon` repository lane, first search for an existing open PR on the
-current branch. Update it rather than creating another PR. Its body must retain
-the parent epic reference, one checked commit-SHA-qualified `Included issues`
-entry, and one matching plain-text `Fixes` line for every completed local
-ticket. Do not use `Fixes` for the parent epic.
-
-```bash
-EXISTING_PR=$(gh pr list --head "$(git branch --show-current)" --state open \
-  --json number,url --jq '.[0].number // empty')
-```
-
-If `EXISTING_PR` is present, first fetch its body so the existing included
-issues, linked-issue lines, and parent epic reference are retained. Add any
-missing closing lines to the description; do not add them only as a comment:
-
-```bash
-gh pr view "$EXISTING_PR" --json body --jq .body
-```
-
-Then use `gh pr edit "$EXISTING_PR" --title "<title>" --body "$BODY"` with the
-updated title and body.
-Otherwise create the draft PR below.
-
-```bash
-git push -u origin <branch>   # if not yet pushed
-
-gh pr create --draft --reviewer @copilot --base <base> --title "<title>" --body "$(cat <<'EOF'
-## Summary
-
-- <bullet>
-
-## Details
-
-<prose>
-
-## Evidence
-
-- [x] **Automated checks**: Passed
-- [x] **Linting/formatting/typecheck**: <commands and results | N/A>
-- [x] **Testing**: <how tested>
-- [x] **Code Review**: <APPROVED by OpenCode review agent | N/A>
-
+```text
 ## Linked issues
 
-<one `Fixes` line per associated issue, or `No linked issue: exploratory work`>
-
-## Included issues
-
-- [x] <owner>/<repository>#<n> (<commit-sha>)
-
-## Parent epic
-
-Part of <parent-owner>/<parent-repo>#<parent-number>
-EOF
-)"
+Fixes #<same-repository-number>
+Fixes <owner>/<repository>#<number>
 ```
 
-Always return the PR URL to the user.
+Use `No linked issue: exploratory work` when appropriate. Verify the PR targets
+the default branch because GitHub only applies closing keywords there. After
+creation or update, fetch the PR with:
 
-After creating or updating a PR, fetch it with `gh pr view` and verify the title,
-base branch, body, issue-closing references, and draft state. Report the URL and
-any verification gap; a successful `git push` alone is not PR completion.
+```bash
+gh pr view <number> --json baseRefName,body,closingIssuesReferences,isDraft,url
+```
+
+## Workon lanes
+
+For a `/workon` lane, search for an existing open PR on the current branch and
+update it rather than creating a duplicate. Preserve the parent epic reference,
+commit-qualified included-issue entries, and matching plain-text closing lines
+for completed local tickets. Do not use `Fixes` for the parent epic.
+
+## Completion
+
+Push and create or update the PR only after compiling the title, summary,
+evidence, linked issues, and any repository-required sections. Return the PR
+URL. Fetch it afterward and verify the title, base branch, body, issue-closing
+references, and draft state; a successful push alone is not completion.

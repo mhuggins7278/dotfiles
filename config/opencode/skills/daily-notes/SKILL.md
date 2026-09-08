@@ -1,6 +1,6 @@
 ---
 name: daily-notes
-description: Daily-note capture, task updates, or lightweight review. Use when the user says "track this", "note this", "I owe", "I'm waiting on", "what's open", "mark that done", or "what did I get done". Use exec-assistant for prioritization or recommendations, and the notes-vault workflow for morning planning, end-of-day review, meetings, or cleanup passes.
+description: Capture or update daily notes and task state. Use for explicit note capture, status changes, completion, or lightweight review; use exec-assistant for judgment.
 ---
 
 # Daily Notes

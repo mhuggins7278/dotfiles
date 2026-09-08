@@ -34,14 +34,10 @@ ACCESS_COUNT=$(jq -s length "$TMP_DIR/access.json" 2>/dev/null || printf '0')
 echo "App results: $APP_COUNT | Access results: $ACCESS_COUNT"
 ```
 
-If **0 results**, expand the time window and re-run T2/T3:
-
-1. `-s -1h` (initial)
-2. `-s -24h`
-3. `-s -3d`
-4. `-s -7d`
-
-Stop expanding once you get results or exhaust all windows.
+If **0 results**, expand the time window based on the symptom and likely log
+ingestion delay. Start with `-24h`; use `-3d` or `-7d` only when the incident
+could plausibly be older or the shorter query is inconclusive. Stop expanding
+once the evidence answers the question or the wider window would add noise.
 
 #### T5. Correlate app + access logs
 

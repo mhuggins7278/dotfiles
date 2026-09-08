@@ -21,11 +21,12 @@ The two branches produce very different artifacts — getting this wrong wastes 
 1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious — but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure.
 2. **One command to run.** Whatever the project's existing task runner supports — `pnpm <name>`, `python <path>`, `bun <path>`, etc. The user must be able to start it without thinking.
 3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE — wipe me" name.
-4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast.
+4. **Skip production polish.** Avoid unrelated tests, error handling, or
+   abstractions beyond what makes the prototype runnable. Add focused checks
+   when they are part of the question being answered.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
 6. **Capture it when done.** Fold any validated decision into the real code. If
-   the prototype is promoted into production work, create or associate an
-   implementation issue and capture the validated decision there. Otherwise,
-   leave the prototype isolated on its throwaway branch or discard it. Capture
-   the answer too — the verdict and the question it settled — in the issue or a
-   commit. The main branch keeps only the validated decision.
+   a GLG experiment becomes production-bound, create or associate an issue
+   before its production PR, merge, or deployment. Otherwise leave the
+   prototype isolated on its throwaway branch or discard it. Capture the
+   question and verdict wherever the surrounding project records decisions.

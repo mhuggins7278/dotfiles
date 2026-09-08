@@ -38,9 +38,12 @@ Pick whichever shape best fits the question being asked, *not* whichever is easi
 
 This is what makes the prototype useful past its own lifetime: when the question's been answered, the validated reducer / machine / function set can be lifted into the real module on its own.
 
-### 4. Build the smallest TUI that exposes the state
+### 4. Build the smallest interactive surface that exposes the state
 
-Build it as a **lightweight TUI** — on every tick, clear the screen (`console.clear()` / `print("\033[2J\033[H")` / equivalent) and re-render the whole frame. The user should always see one stable view, not an ever-growing scrollback.
+Build the smallest interactive surface that fits the host project. A
+lightweight TUI is a good default for a logic prototype, but use an existing
+browser or test harness when that better exposes the question. Keep the view
+stable and render the relevant state after each action.
 
 Each frame has two parts, in this order:
 

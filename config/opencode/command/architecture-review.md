@@ -1,6 +1,6 @@
 ---
 description: Find high-value opportunities to deepen a codebase's modules
-agent: build
+agent: reporter
 ---
 
 Audit the current codebase for architectural friction, using $ARGUMENTS as an
@@ -12,8 +12,10 @@ Use the `codebase-design` vocabulary where it clarifies the analysis, but do
 not force every observation into that model. Delegate exploration only when
 the repository is large enough to benefit.
 
-Create a self-contained visual HTML report in the OS temporary directory with
-three to five concrete candidates. For each, show the affected files, current
-friction, a plausible direction, realistic benefits, risks, and recommendation
-strength. End with the best first move. Do not modify the repository or begin
-the refactor; ask which candidate the user wants to explore.
+Return a self-contained report with the evidence-backed candidates that matter
+for this codebase. For each, show the affected files, current friction, a
+plausible direction, realistic benefits, risks, and recommendation strength.
+End with the best first move. Create an HTML artifact in the OS temporary
+directory only when it improves the result or the user asks for one. Do not
+modify the repository or begin the refactor; ask which candidate the user wants
+to explore.

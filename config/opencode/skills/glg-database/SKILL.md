@@ -1,6 +1,6 @@
 ---
 name: glg-database
-description: Author and review GLG Epiquery SQL templates and SchemaTron database changes. Use when searching or changing epiquery-templates, choosing execution masks or query targets, preparing SchemaTron DDL, DML, code objects, or permissions, or troubleshooting Epiquery template behavior.
+description: Author or review GLG Epiquery SQL and SchemaTron database changes. Use for migrations, templates, query targets, database permissions, or related troubleshooting.
 ---
 
 # GLG Database Work

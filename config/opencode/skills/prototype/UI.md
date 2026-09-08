@@ -35,7 +35,9 @@ In both sub-shapes the floating bottom bar is identical.
 
 ### 1. State the question and pick N
 
-Default to **3 variants**. More than 5 stops being radically different and starts being noise — cap there.
+Choose the smallest number of variants that answers the question. Three is a
+useful default for open-ended visual exploration; use one when the user asks
+for a targeted variation and do not exceed five without a reason.
 
 Write down the plan in one line, in the prototype's location or a top-of-file comment:
 

@@ -1,6 +1,6 @@
 ---
 name: salesforce-cli
-description: Salesforce CLI (`sf`) workflow for authenticating orgs, deploying or retrieving metadata, querying SOQL, running Apex or tests, and inspecting Salesforce project configuration. Use whenever a user asks to operate a Salesforce org or DX project from the command line.
+description: Operate a Salesforce org or DX project with the `sf` CLI. Use for authentication, metadata, SOQL, Apex, tests, or project inspection.
 ---
 
 # Salesforce CLI

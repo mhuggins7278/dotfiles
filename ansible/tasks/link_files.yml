@@ -52,11 +52,6 @@
         force: true,
       }
     - {
-        src: "~/.dotfiles/config/opencode2",
-        dest: "~/.config/opencode2",
-        force: true,
-      }
-    - {
         src: "~/.dotfiles/config/ghostty",
         dest: "~/.config/ghostty",
         force: true,

@@ -101,6 +101,13 @@
     - vhid_installed_version.stdout | default('') != "8.0.0"
   tags: kanata
 
+- name: Quit Karabiner-Elements before starting Kanata
+  shell: osascript -e 'tell application "Karabiner-Elements" to quit'
+  when: ansible_facts.os_family == "Darwin"
+  changed_when: false
+  failed_when: false
+  tags: kanata
+
 - name: Disable Karabiner-Core-Service system daemon (keep VirtualHIDDevice-Daemon)
   shell: |
     launchctl disable system/org.pqrs.service.daemon.Karabiner-Core-Service
@@ -113,10 +120,11 @@
 - name: Disable Karabiner user-level agents
   shell: |
     uid=$(id -u {{ ansible_facts.env.USER }})
-    for label in \
-      org.pqrs.service.agent.Karabiner-Core-Service \
-      org.pqrs.service.agent.Karabiner-Core-Service-rev2 \
-      org.pqrs.service.agent.karabiner_console_user_server \
+       for label in \
+       org.pqrs.service.agent.Karabiner-Core-Service \
+       org.pqrs.service.agent.Karabiner-Core-Service-rev2 \
+       org.pqrs.service.agent.Karabiner-Console-User-Server \
+       org.pqrs.service.agent.karabiner_console_user_server \
       org.pqrs.service.agent.Karabiner-NotificationWindow \
       org.pqrs.service.agent.Karabiner-Menu \
       org.pqrs.service.agent.karabiner_session_monitor; do

@@ -1,7 +1,7 @@
 ---
 description: Documentation specialist for focused library and framework questions using Context7.
 mode: subagent
-model: openai/gpt-5.6-luna
+model: openai/gpt-5.6-luna-fast
 variant: medium
 permission:
   edit:

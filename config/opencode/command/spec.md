@@ -1,6 +1,6 @@
 ---
 description: Publish the resolved plan as a concise GitHub spec issue
-agent: build
+agent: publisher
 ---
 
 Synthesize the current conversation, repository context, and $ARGUMENTS into
@@ -17,4 +17,5 @@ do not invent a seam merely to complete the template.
 
 Create the issue with `gh`. For a GLG repository, follow
 `~/.dotfiles/config/opencode/references/glg-workflow.md` for project tagging.
-Return the issue URL.
+After creation, fetch the issue and verify its title, state, and URL. Return the
+verified issue URL, or report the mutation error and any incomplete state.

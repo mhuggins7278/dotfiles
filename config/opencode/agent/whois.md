@@ -1,7 +1,7 @@
 ---
 description: Employee directory specialist for GLG people lookups by name, department, login, or ID.
 mode: subagent
-model: openai/gpt-5.6-luna
+model: openai/gpt-5.6-luna-fast
 variant: low
 permission:
   edit:

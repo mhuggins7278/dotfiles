@@ -1,6 +1,6 @@
 ---
 description: Break a spec into a minimal set of executable GitHub issues
-agent: build
+agent: publisher
 ---
 
 Resolve the spec or epic in $ARGUMENTS, using conversation context when the
@@ -23,4 +23,7 @@ another gate, add native sub-issue relationships when an epic is useful, and
 apply GLG project tagging from
 `~/.dotfiles/config/opencode/references/glg-workflow.md` when relevant.
 
-Return each issue URL and identify which tickets are immediately executable.
+After publishing, fetch every created issue and verify its title, state, URL,
+and any requested sub-issue relationships. Return the verified issue URLs,
+identify which tickets are immediately executable, and report any incomplete
+mutation explicitly.

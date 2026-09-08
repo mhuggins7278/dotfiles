@@ -1,6 +1,6 @@
 ---
 name: glg-localdev
-description: Set up and test GLG local development through glgroup and Docker. Use when running the current GLG project behind local.dev.glgresearch.com, registering a host-app, mounting an epiquery-templates worktree, executing an Epiquery template locally, or inspecting and stopping harness-owned localdev state.
+description: Run GLG local development through glgroup and Docker. Use for local.dev.glgresearch.com, host-app registration, Epiquery execution, or harness lifecycle.
 ---
 
 # GLG Local Development

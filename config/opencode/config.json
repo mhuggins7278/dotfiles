@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "small_model": "openai/gpt-5.6-luna",
+  "small_model": "openai/gpt-5.6-luna-fast",
   "instructions": ["~/.dotfiles/config/ai/global-policy.md"],
   "plugin": ["opencode-cmux", "opencode-parser"],
   "agent": {
@@ -51,15 +51,15 @@
       }
     },
     "build": {
-      "model": "openai/gpt-5.6-luna",
+      "model": "openai/gpt-5.6-luna-fast",
       "variant": "max",
       "permission": {
         "bash": {
-          "git commit*": "allow",
+          "git commit*": "ask",
           "git commit*--amend*": "ask",
           "git commit*--no-verify*": "ask",
           "git commit*-a*": "ask",
-          "git push*": "allow",
+          "git push*": "ask",
           "git push*--delete*": "ask",
           "git push*--force*": "ask",
           "git push*-f*": "ask",
@@ -67,62 +67,33 @@
           "gh repo view*": "allow",
           "gh issue list*": "allow",
           "gh issue view*": "allow",
+          "gh issue create*": "ask",
+          "gh issue edit*": "ask",
+          "gh issue close*": "ask",
+          "gh issue reopen*": "ask",
+          "gh issue comment*": "ask",
           "gh pr list*": "allow",
           "gh pr view*": "allow",
           "gh project list*": "allow",
           "gh project item-list*": "allow",
-          "gh pr create*": "allow",
-          "gh pr edit*": "allow",
-          "gh api repos/*/pulls/*/comments*": "allow",
-          "gh api repos/*/pulls/*/reviews*": "allow",
-          "gh api repos/*/issues/*/comments*": "allow"
+          "gh pr create*": "ask",
+          "gh pr edit*": "ask",
+          "gh api repos/*/pulls/*/comments*": "ask",
+          "gh api repos/*/pulls/*/reviews*": "ask",
+          "gh api repos/*/issues/*/comments*": "ask"
         }
       }
     },
     "general": {
-      "model": "openai/gpt-5.6-luna",
+      "model": "openai/gpt-5.6-luna-fast",
       "variant": "high"
     },
     "explore": {
-      "model": "openai/gpt-5.6-luna",
+      "model": "openai/gpt-5.6-luna-fast",
       "variant": "high"
     }
   },
   "provider": {
-    "openai": {
-      "models": {
-        "gpt-5.6-sol": {
-          "variants": {
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
-          }
-        },
-        "gpt-5.6-terra": {
-          "variants": {
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "high": {
-              "reasoningEffort": "high"
-            }
-          }
-        },
-        "gpt-5.6-luna": {
-          "variants": {
-            "low": {
-              "reasoningEffort": "low"
-            },
-            "medium": {
-              "reasoningEffort": "medium"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh"
-            }
-          }
-        }
-      }
-    },
     "github-copilot": {
       "models": {
         "gemini-3.1-pro-preview": {

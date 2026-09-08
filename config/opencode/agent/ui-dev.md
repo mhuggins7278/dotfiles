@@ -1,5 +1,5 @@
 ---
-description: Frontend implementation specialist for React and Material UI with optional Figma inspection.
+description: Frontend implementation specialist for React UI work with optional Figma inspection.
 mode: subagent
 model: openai/gpt-5.6-terra
 variant: high
@@ -23,6 +23,7 @@ abstractions, prop layers, or reusable components without a demonstrated need.
 Preserve the project's styling approach rather than imposing Material UI when
 the codebase uses something else.
 
-Verify the page on desktop and mobile, exercise important interaction states,
-and check keyboard and accessible-name behavior. Match the established visual
+For page-level or responsive work, verify desktop and mobile behavior. For
+focused components, exercise the important states instead. Check keyboard and
+accessible-name behavior when relevant, and match the established visual
 language instead of producing a generic replacement layout.

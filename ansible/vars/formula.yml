@@ -236,6 +236,7 @@ formula:
   sevenzip:
   shared-mime-info:
   felixkratz/formulae/sketchybar:
+  felixkratz/formulae/borders:
   shellcheck:
   silicon:
   simdjson:
@@ -251,6 +252,7 @@ formula:
   swagger-codegen:
   telnet:
   terraform:
+  terminal-notifier:
   tesseract:
   the_silver_searcher:
   theora:

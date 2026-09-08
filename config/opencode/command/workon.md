@@ -1,6 +1,6 @@
 ---
 description: Launch the executable work from a GitHub issue or epic
-agent: build
+agent: executor
 ---
 
 When the current repository and branch already match a requested single-issue

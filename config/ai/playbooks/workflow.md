@@ -10,6 +10,14 @@ Use the smallest process that safely completes the user's request.
 4. Verify proportionally to the change's size and risk.
 5. Report the outcome, evidence, and anything not verified.
 
+Before mutating files or external state, inspect the relevant current state,
+including uncommitted work and existing artifacts. Preserve unrelated changes
+and keep the requested scope bounded.
+
+Do not turn this loop into a ritual. Read the context needed for the current
+question, choose checks that provide useful evidence, and widen the scope only
+when the change or result warrants it.
+
 When tests add confidence, prefer vertical behavior slices exercised through
 existing public seams. Do not invent abstractions or test boundaries solely to
 fit a process.
@@ -21,6 +29,10 @@ because the connection is unclear.
 Planning, research, prototyping, testing, review, and delegation are
 capabilities to use when they improve the result. They are not mandatory
 phases and do not need separate artifacts by default.
+
+When implementation is authorized, do not stop at diagnosis or a plan. Continue
+through the requested completion boundary, or report the exact blocker,
+evidence, and action needed to proceed.
 
 ## Ask Only When Needed
 
@@ -46,8 +58,9 @@ formatting, and ordinary diagnosis do not need approval.
   conditions.
 - Use concise, adaptive output. Emit fixed markers only when another process
   consumes them.
-- Create specs, tickets, branches, and PRs only when the user explicitly asks
-  or invokes the corresponding command.
+- Create or publish shared artifacts only when the user explicitly asks or
+  invokes the corresponding command. Local branches and reversible preparation
+  do not need a separate approval.
 
 Exploration may end in an answer, discarded prototype, or local commit. When
 it becomes shared or production work, apply the repository's coordination and

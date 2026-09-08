@@ -1,6 +1,7 @@
 node_modules
 package.json
 bun.lock
+service.json
 **/__pycache__/
 **/*.pyc
 skills/*-workspace/

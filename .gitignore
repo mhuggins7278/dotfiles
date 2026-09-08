@@ -31,3 +31,8 @@ tmtags
 config/tmux/plugins
 
 __pycache__/
+
+# Local OpenCode service credentials and generated browser artifacts
+config/opencode2/**/service.json
+.playwright-cli/
+.playwright-mcp/

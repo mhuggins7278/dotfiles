@@ -1,6 +1,6 @@
 ---
 description: Write a compact handoff for a fresh agent session
-agent: build
+agent: reporter
 ---
 
 Write a handoff document for the current conversation, tailored to $ARGUMENTS

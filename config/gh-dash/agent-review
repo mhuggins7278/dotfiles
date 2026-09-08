@@ -117,8 +117,12 @@ if git -C "$REPO_PATH" show-ref --verify --quiet \
   WT_RESULT=$(wt -C "$REPO_PATH" switch -y --no-cd \
     --format json "$REVIEW_BRANCH")
   WT_PATH=$(jq -er '.path' <<<"$WT_RESULT")
-  SESSION_NAME=$(basename "$WT_PATH")
-  if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+  # Resolve the live session through sesh instead of assuming its name is the
+  # worktree basename. Sesh may derive a different name from config or Git.
+  SESSION_NAME=$(sesh list --tmux --json | jq -er --arg path "$WT_PATH" \
+    'map(select(.Path == $path) | .Name) | first // empty' 2>/dev/null || true)
+  if [ -n "$SESSION_NAME" ] \
+    && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     if [ "$(git -C "$WT_PATH" rev-parse HEAD)" != "$HEAD_SHA" ]; then
       echo "[agent-review] retained session is for an outdated PR head" >&2
       exit 1
@@ -127,7 +131,7 @@ if git -C "$REPO_PATH" show-ref --verify --quiet \
       echo "[agent-review] retained review worktree is not clean: $WT_PATH" >&2
       exit 1
     fi
-    sesh connect "$WT_PATH"
+    sesh connect --switch "$WT_PATH"
     exit 0
   fi
 
@@ -163,5 +167,6 @@ printf -v PR_REF_ARG '%q' "$PR_REF"
 printf -v PROMPT_ARG '%q' "$PROMPT"
 STARTUP="$SESSION_RUNNER_ARG $REPO_PATH_ARG $WT_PATH_ARG $REVIEW_BRANCH_ARG $PR_REF_ARG $PROMPT_ARG"
 
-# Create/connect to named session (sesh handles the client switch internally)
-sesh connect --command "$STARTUP" "$WT_PATH"
+# This is a script-triggered launch, so switch the current client rather than
+# attempting a nested attach when gh-dash is already running inside tmux.
+sesh connect --switch --command "$STARTUP" "$WT_PATH"

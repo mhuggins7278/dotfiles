@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Deep-module design vocabulary. Use when designing a module's interface, deciding where a seam belongs, making code more testable or AI-navigable, or when `/architecture-review` needs this vocabulary.
+description: Analyze module boundaries, interfaces, and seams. Use for architecture decisions or `/architecture-review`, not routine test-first implementation.
 ---
 
 # Codebase Design

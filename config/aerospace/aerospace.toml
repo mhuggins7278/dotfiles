@@ -1,6 +1,9 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+# Keep this configuration on the current AeroSpace compatibility version.
+config-version = 2
+
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -10,6 +13,7 @@ after-login-command = []
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
+	'exec-and-forget /opt/homebrew/bin/borders active_color=0xff89dceb inactive_color=0xff45475a width=5.0 style=round',
 	'exec-and-forget sketchybar --trigger aerospace_workspace_change',
 ]
 

@@ -1,7 +1,7 @@
 ---
-description: GLG Deployment System specialist for deployment inspection, releases, configuration, and auth troubleshooting.
+description: GLG Deployment System specialist for deployment inspection and auth troubleshooting.
 mode: subagent
-model: openai/gpt-5.6-luna
+model: openai/gpt-5.6-luna-fast
 variant: medium
 permission:
   read: allow

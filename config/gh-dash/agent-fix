@@ -184,5 +184,6 @@ STARTUP="$STARTUP && opencode --prompt $PROMPT_ARG"
 CLEANUP="tmux kill-session"
 STARTUP="( $STARTUP ); st=\$?; if [ \$st -ne 0 ]; then echo; echo \"[agent-fix] workflow failed (exit \$st) — session and worktree retained\"; exec \"\${SHELL:-/bin/bash}\" -l; elif ! $CLEANUP; then echo; echo \"[agent-fix] workflow completed, but session cleanup failed — issue worktree retained; exit manually\"; exec \"\${SHELL:-/bin/bash}\" -l; fi"
 
-# Create/connect to named session (sesh handles the client switch internally)
-sesh connect --command "$STARTUP" "$WT_PATH"
+# This is a script-triggered launch, so switch the current client rather than
+# attempting a nested attach when gh-dash is already running inside tmux.
+sesh connect --switch --command "$STARTUP" "$WT_PATH"
