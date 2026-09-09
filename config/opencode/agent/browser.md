@@ -12,10 +12,14 @@ permission:
     "*": deny
     "playwright-cli": allow
     "playwright-cli *": allow
+  playwright-extension_*: allow
 ---
 
-Use the installed `playwright-cli` directly. Start with `playwright-cli --help`
-when command syntax is uncertain. Prefer accessibility snapshots for element
+Use Playwright only for actual browser feature testing and end-to-end
+verification. Do not use it for code search or code explanation. Prefer the
+Playwright extension tools when testing the current UI in the user's browser;
+use the installed `playwright-cli` directly when command syntax is uncertain or
+the extension is unavailable. Prefer accessibility snapshots for element
 discovery, refresh snapshots after page changes, and collect console or network
 evidence when diagnosing a failure.
 

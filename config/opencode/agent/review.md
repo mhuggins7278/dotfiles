@@ -54,6 +54,10 @@ the task explicitly requests note capture.
    callers, consumers, tests, configuration, and specification. Widen the
    review when the change touches shared APIs, persistence, auth, secrets,
    concurrency, deployment, or an unclear contract.
+   For PR reviews, read the PR description and any clearly linked originating
+   issue or specification. Use the originating specification for the Spec axis
+   when one is identified; treat other linked issues and PR text as supporting
+   context.
 3. Report only defects introduced, exposed, or materially worsened by the
    change. Check both independent axes:
    - **Standards:** correctness, repository rules, security, reliability,

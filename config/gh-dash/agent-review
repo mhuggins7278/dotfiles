@@ -158,7 +158,7 @@ if [ -n "$(git -C "$WT_PATH" status --porcelain)" ]; then
   exit 1
 fi
 
-PROMPT="Review PR #${PR_NUM} in ${REPO_NAME} from ${BRANCH} against ${TARGET_REMOTE}/${BASE_BRANCH}. Use the PR as the Spec source when it links one."
+PROMPT="Review PR #${PR_NUM} in ${REPO_NAME} from ${BRANCH} against ${TARGET_REMOTE}/${BASE_BRANCH}."
 printf -v SESSION_RUNNER_ARG '%q' "$SESSION_RUNNER"
 printf -v REPO_PATH_ARG '%q' "$REPO_PATH"
 printf -v WT_PATH_ARG '%q' "$WT_PATH"
