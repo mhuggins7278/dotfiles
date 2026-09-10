@@ -1,0 +1,25 @@
+;; Minimal Omarchy configuration preserving native keybindings and Caps Compose.
+
+(defcfg
+  process-unmapped-keys yes
+  concurrent-tap-hold yes
+)
+
+(defsrc
+  a s d f j k l ;
+)
+
+(defalias
+  a   (tap-hold 200 250 a lmet)
+  s   (tap-hold 200 250 s lalt)
+  d   (tap-hold 200 250 d lctl)
+  f   (tap-hold 200 250 f lsft)
+  j   (tap-hold 200 250 j rsft)
+  k   (tap-hold 200 250 k rctl)
+  l   (tap-hold 200 250 l ralt)
+  sem (tap-hold 200 250 ; rmet)
+)
+
+(deflayer base
+  @a @s @d @f @j @k @l @sem
+)
